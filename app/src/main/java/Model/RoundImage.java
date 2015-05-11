@@ -115,6 +115,7 @@ public class RoundImage extends Drawable {
     }
 
     public Bitmap getBitmap() {
+        String g;
         return mBitmap;
     }
 
