@@ -1,0 +1,193 @@
+package com.sinapp.sharathsind.tradepost;
+
+import java.io.IOException;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+
+
+import com.google.android.gms.common.ConnectionResult;
+
+
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+
+import Model.Variables;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.plus.model.people.Person;
+import com.trade.tradepost.R;
+
+import android.support.v4.app.FragmentActivity;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
+
+public class FirstTime extends FragmentActivity implements OnClickListener,
+        ConnectionCallbacks, OnConnectionFailedListener {
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+        FbFragment mainFragment;
+        FbFragment.f = this;
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks((ConnectionCallbacks) this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
+        if (savedInstanceState == null) {
+            // Add the fragment on initial activity setup
+            mainFragment = new FbFragment(this);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, mainFragment)
+                    .commit();
+        } else {
+            // Or set the fragment from restored state info
+            mainFragment = (FbFragment) getSupportFragmentManager()
+                    .findFragmentById(android.R.id.content);
+        }
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode != RESULT_OK) {
+                mSignInClicked = false;
+            }
+
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.reconnect();
+            }
+        } else {
+            FbFragment.b.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.first_time, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void start() {
+        startActivity(new Intent(FirstTime.this, ToolBar.class));
+        finish();
+    }
+
+    private static final int PROFILE_PIC_SIZE = 400;
+    private static final int RC_SIGN_IN = 0;
+
+
+    // Google client to interact with Google API
+    private GoogleApiClient mGoogleApiClient;
+
+
+    /**
+     * A flag indicating that a PendingIntent is in progress and prevents us
+     * from starting further intents.
+     */
+    private boolean mIntentInProgress;
+
+    private boolean mSignInClicked;
+
+    private ConnectionResult mConnectionResult;
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (!mGoogleApiClient.isConnecting()) {
+            mSignInClicked = true;
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // TODO Auto-generated method stub
+        if (!mIntentInProgress) {
+            if (mSignInClicked && result.hasResolution()) {
+                // The user has already clicked 'sign-in' so we attempt to resolve all
+                // errors until the user is signed in, or they cancel.
+                try {
+                    result.startResolutionForResult(this, RC_SIGN_IN);
+                    mIntentInProgress = true;
+                } catch (IntentSender.SendIntentException e) {
+                    // The intent was canceled before it was sent.  Return to the default
+                    // state and attempt to connect to get an updated ConnectionResult.
+                    mIntentInProgress = false;
+                    mGoogleApiClient.connect();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
+            Variables.username = personName;
+            String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+            Variables.email = email;
+            String personPhoto = currentPerson.getImage().getUrl();
+            try {
+                URL imageURL = new URL(personPhoto);
+                Variables.profilepic = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            String personGooglePlusProfile = currentPerson.getUrl();
+            start();
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+}

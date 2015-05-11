@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tradepost</string>
+    <string name="hello_world">Welcome to</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_first_time">FirstTime</string>
+    <string name="title_activity_sign_in_email">SignIn</string>
+    <string name="app_id">766732026780315</string>
+    <string name="title_activity_toolbar">Toolbar</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="title_activity_tool_bar">ToolBar</string>
+    <string name="terms">By proceeding I agree to Trade Post </string>
+    <string name="conditions">terms and conditons</string>
+
+    <string-array name="contries">
+        <item>Select</item>
+        <item>Montreal</item>
+    </string-array>
+
+    <string name="title_activity_main">Main</string>
+
+</resources>
