@@ -35,7 +35,7 @@ public class userdata {
     }
 
     public void addUser(String user, String password, String email, boolean isfb, boolean isGooolePlus, File f) {
-        
+        String s;
         ParseObject newUser = new ParseObject("user");
         newUser.put("username", user);
         newUser.put("password", password);
