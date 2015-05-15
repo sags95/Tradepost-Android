@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.trade.tradepost.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
 package Model;
 
-import com.trade.tradepost.R;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -10,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.sinapp.sharathsind.tradepost.R;
 
 public class ToolBarAdaptar extends BaseAdapter {
     LayoutInflater inflater;

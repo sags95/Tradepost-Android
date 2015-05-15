@@ -30,7 +30,6 @@ import android.os.Bundle;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.plus.model.people.Person;
-import com.trade.tradepost.R;
 
 import android.support.v4.app.FragmentActivity;
 import android.util.Base64;

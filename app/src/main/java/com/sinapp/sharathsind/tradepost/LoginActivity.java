@@ -29,7 +29,6 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
-import com.trade.tradepost.R;
 
 import java.util.ArrayList;
 import java.util.List;
