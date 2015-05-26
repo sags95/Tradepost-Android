@@ -4,12 +4,14 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.trade.tradepost.ToolBar">
+    tools:context="com.sinapp.sharathsind.tradepost.ToolBar">
 
     <!--
          As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions.
     -->
+
+
 
     <FrameLayout
         android:id="@+id/container"
@@ -30,7 +32,7 @@
 
     <fragment
         android:id="@+id/navigation_drawer"
-        android:name="com.trade.tradepost.NavigationDrawerFragment"
+        android:name="com.sinapp.sharathsind.tradepost.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"

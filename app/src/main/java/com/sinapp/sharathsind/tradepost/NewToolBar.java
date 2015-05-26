@@ -1,28 +1,21 @@
 package com.sinapp.sharathsind.tradepost;
 
-import Model.Variables;
-
 import android.app.Activity;
 import android.app.ActionBar;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-public class ToolBar extends FragmentActivity implements
+public class NewToolBar extends FragmentActivity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -37,11 +30,13 @@ public class ToolBar extends FragmentActivity implements
      */
     private CharSequence mTitle;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private boolean isInFront;
 
-        setContentView(R.layout.activity_tool_bar);
+
+    protected void onCreate(Bundle savedInstanceState, int resLayoutID)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(resLayoutID);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
@@ -65,16 +60,32 @@ public class ToolBar extends FragmentActivity implements
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.container,
-                        PlaceholderFragment.newInstance(position + 1)).commit();
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        //fragmentManager
+                //.beginTransaction()
+                //.replace(R.id.container,
+                  //      PlaceholderFragment.newInstance(position +1 )).commit();
+
+
+        switch (position) {
+            case 0: {
+                break;
+            }
+            case 1: {
+                startActivity(new Intent(getApplicationContext(),MarketPlaceActivity.class));
+            }
+            case  2:{
+
+                break;
+            }
+        }
     }
 
     public void onSectionAttached(int number) {
@@ -93,7 +104,6 @@ public class ToolBar extends FragmentActivity implements
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -158,7 +168,7 @@ public class ToolBar extends FragmentActivity implements
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((ToolBar) activity).onSectionAttached(getArguments().getInt(
+            ((NewToolBar) activity).onSectionAttached(getArguments().getInt(
                     ARG_SECTION_NUMBER));
         }
     }

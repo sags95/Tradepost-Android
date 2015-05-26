@@ -120,7 +120,7 @@ public class FbFragment extends Fragment implements
         // TODO Auto-generated method stub
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.activity_first_time, container, false);
-        LoginButton authButton = (LoginButton) view.findViewById(R.id.title1);
+        LoginButton authButton = (LoginButton) view.findViewById(R.id.fb_sign_in_btn);
         authButton.setReadPermissions(Arrays.asList("public_profile", "email"));
         b = CallbackManager.Factory.create();
         authButton.registerCallback(b, new FacebookCallback<LoginResult>() {
@@ -164,7 +164,7 @@ public class FbFragment extends Fragment implements
 
             }
         });
-        SignInButton google = (SignInButton) view.findViewById(R.id.sign_in_button);
+        SignInButton google = (SignInButton) view.findViewById(R.id.google_sign_in_btn);
         google.setOnClickListener(f);
         Button email = (Button) view.findViewById(R.id.sign_in_button1);
         email.setOnClickListener(new OnClickListener() {

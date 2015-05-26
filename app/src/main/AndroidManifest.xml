@@ -33,16 +33,21 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/sample_img"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/CustomActionBarTheme"
+
+
+        >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
 
         <activity
             android:name=".Welcome"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,10 +56,17 @@
         </activity>
         <activity
             android:name=".FirstTime"
-            android:label="@string/title_activity_first_time"></activity>
+            android:label="@string/title_activity_first_time"
+            android:theme="@style/NoActionBar"
+
+            >
+
+        </activity>
         <activity
             android:name=".SignInEmail"
-            android:label="@string/title_activity_sign_in_email"></activity>
+            android:label="@string/title_activity_sign_in_email">
+
+        </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:label="@string/app_name"
@@ -62,20 +74,40 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
-        <activity
-            android:name=".Toolbar"
-            android:label="@string/title_activity_toolbar"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/NoActionBar"
+            >
+
+        </activity>
         <activity
             android:name=".ToolBar"
-            android:label="@string/title_activity_tool_bar"></activity>
+            android:label="@string/title_activity_tool_bar">
+
+        </activity>
         <activity
             android:name=".LoginActivity1"
             android:label="@string/title_activity_login_activity1"
-            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/NoActionBar"
+            >
+
+        </activity>
         <activity
-            android:name=".Main"
-            android:label="@string/title_activity_main"></activity>
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main">
+
+        </activity>
+        <activity
+            android:name=".NewToolBar"
+            android:label="@string/title_activity_main">
+
+        </activity>
+        <activity
+            android:name=".MarketPlaceActivity"
+            android:label="Market Place">
+
+        </activity>
+
     </application>
 
 </manifest>

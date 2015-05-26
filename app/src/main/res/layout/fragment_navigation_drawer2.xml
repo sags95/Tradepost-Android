@@ -5,5 +5,7 @@
     android:choiceMode="singleChoice"
     android:divider="@android:color/transparent"
     android:dividerHeight="0dp"
-    android:background="#cccc"
-    tools:context="com.trade.tradepost.NavigationDrawerFragment" />
+    android:background="@color/white"
+    tools:context="com.trade.tradepost.NavigationDrawerFragment"
+
+    />

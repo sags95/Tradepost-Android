@@ -5,6 +5,7 @@ import java.io.File;
 import android.app.Activity;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Relation;
 import android.view.GestureDetector;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,11 +26,16 @@ public class Welcome extends Activity implements OnClickListener {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/black_jack.ttf");
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setTypeface(type);
+
         boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "user.db");
         if (b) {
             startActivity(new Intent(this, ToolBar.class));

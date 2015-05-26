@@ -15,8 +15,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="title_activity_tool_bar">ToolBar</string>
-    <string name="terms">By proceeding I agree to Trade Post </string>
-    <string name="conditions">terms and conditons</string>
+    <string name="terms">By proceeding I agree to Trade Post \nterms and conditions </string>
+    <string name="tour_text"><b><u>take a tour</u></b></string>
+
+
 
     <string-array name="contries">
         <item>Select</item>

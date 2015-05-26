@@ -1,10 +1,14 @@
 package com.sinapp.sharathsind.tradepost;
 
-import Model.ToolBarAdaptar;
+import Model.RoundImage;
+import Model.ToolBarAdapter;
+import Model.Variables;
 
 import android.app.Activity;
 import android.app.ActionBar;
-import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,9 +24,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -60,6 +68,12 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private ArrayList<Variables> variablesArrayList;
+    private Variables variables;
+
+    public static final String[] titles = new String[]{"sample1","sample2","sample3","sample4"};
+
+
 
     public NavigationDrawerFragment() {
     }
@@ -83,6 +97,16 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
+
+        variablesArrayList=new ArrayList<>();
+        RoundImage r = new RoundImage(BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_launcher));
+
+        for(int i=0;i<titles.length;i++){
+            variables = new Variables(titles[i],r.getBitmap());
+            variablesArrayList.add(variables);
+        }
+
+
     }
 
     @Override
@@ -97,7 +121,7 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+                R.layout.fragment_navigation_drawer2, container, false);
 
         mDrawerListView
                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,9 +131,32 @@ public class NavigationDrawerFragment extends Fragment {
                         selectItem(position);
                     }
                 });
-        mDrawerListView.setAdapter(new ToolBarAdaptar(getActivity()));
+        mDrawerListView.setAdapter(new ToolBarAdapter(getActivity(),variablesArrayList));
+
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+        View header=inflater.inflate(R.layout.header, null);
+        ImageView pro =(ImageView)header.findViewById(R.id.profile_image);
+        TextView username = (TextView)header.findViewById(R.id.name);
+        TextView email = (TextView)header.findViewById(R.id.email);
+
+        Bitmap icon= BitmapFactory.decodeResource(this.getResources(),R.drawable.com_facebook_button_icon);
+        Variables.setProfilepic(icon);
+        RoundImage r = new RoundImage(Variables.profilepic);
+        pro.setImageBitmap(r.getBitmap());
+
+
+        pro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                //Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                Log.d("test","testing");
+            }
+        });
+        mDrawerListView.addHeaderView(header);
+
         return mDrawerListView;
     }
 
