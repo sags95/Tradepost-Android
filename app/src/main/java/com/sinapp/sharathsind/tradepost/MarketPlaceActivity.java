@@ -22,7 +22,6 @@ import Model.MarketPlaceDataAdapter;
  * Created by HenryChiang on 15-05-23.
  */
 public class MarketPlaceActivity extends NewToolBar {
-
     private StaggeredGridView mGridView;
     private MarketPlaceDataAdapter mAdapter;
 
