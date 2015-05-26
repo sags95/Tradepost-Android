@@ -28,7 +28,6 @@ public class MarketPlaceActivity extends NewToolBar {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_marketplace);
-
         setTitle("Pinterest Layout Demo");
         mGridView = (StaggeredGridView) findViewById(R.id.grid_view);
 
