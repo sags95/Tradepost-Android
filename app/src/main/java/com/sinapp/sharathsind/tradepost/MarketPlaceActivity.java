@@ -22,13 +22,14 @@ import Model.MarketPlaceDataAdapter;
  * Created by HenryChiang on 15-05-23.
  */
 public class MarketPlaceActivity extends NewToolBar {
+
     private StaggeredGridView mGridView;
     private MarketPlaceDataAdapter mAdapter;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_marketplace);
-        setTitle("Pinterest Layout Demo");
+
         mGridView = (StaggeredGridView) findViewById(R.id.grid_view);
 
         mAdapter = new MarketPlaceDataAdapter(this, R.layout.list_item_staggeredgrid, MarketPlaceData.generateSampleData());
@@ -36,5 +37,6 @@ public class MarketPlaceActivity extends NewToolBar {
         mGridView.setAdapter(mAdapter);
 
     }
+
 
 }

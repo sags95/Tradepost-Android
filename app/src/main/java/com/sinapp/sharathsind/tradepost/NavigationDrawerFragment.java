@@ -1,6 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
 import Model.RoundImage;
+import Model.RoundImageHelper;
 import Model.ToolBarAdapter;
 import Model.Variables;
 
@@ -99,10 +100,11 @@ public class NavigationDrawerFragment extends Fragment {
         selectItem(mCurrentSelectedPosition);
 
         variablesArrayList=new ArrayList<>();
-        RoundImage r = new RoundImage(BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_launcher));
+        Bitmap roundImg= RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.ic_launcher));
 
         for(int i=0;i<titles.length;i++){
-            variables = new Variables(titles[i],r.getBitmap());
+            variables = new Variables(titles[i],roundImg);
             variablesArrayList.add(variables);
         }
 
@@ -141,10 +143,9 @@ public class NavigationDrawerFragment extends Fragment {
         TextView username = (TextView)header.findViewById(R.id.name);
         TextView email = (TextView)header.findViewById(R.id.email);
 
-        Bitmap icon= BitmapFactory.decodeResource(this.getResources(),R.drawable.com_facebook_button_icon);
-        Variables.setProfilepic(icon);
-        RoundImage r = new RoundImage(Variables.profilepic);
-        pro.setImageBitmap(r.getBitmap());
+        Bitmap roundProImg= RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.com_facebook_button_icon));
+        pro.setImageBitmap(roundProImg);
 
 
         pro.setOnClickListener(new View.OnClickListener() {
