@@ -90,6 +90,7 @@ public class NavigationDrawerFragment extends Fragment {
                 .getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
+
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState
                     .getInt(STATE_SELECTED_POSITION);
@@ -133,15 +134,20 @@ public class NavigationDrawerFragment extends Fragment {
                         selectItem(position);
                     }
                 });
+
+        //add header view **MUST BE CALLED BEFORE setAdapter**
+        View header=inflater.inflate(R.layout.header, null);
+        ImageView pro =(ImageView)header.findViewById(R.id.profile_image);
+        TextView username = (TextView)header.findViewById(R.id.name);
+        TextView email = (TextView)header.findViewById(R.id.email);
+        mDrawerListView.addHeaderView(header);
+
+
         mDrawerListView.setAdapter(new ToolBarAdapter(getActivity(),variablesArrayList));
 
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
-        View header=inflater.inflate(R.layout.header, null);
-        ImageView pro =(ImageView)header.findViewById(R.id.profile_image);
-        TextView username = (TextView)header.findViewById(R.id.name);
-        TextView email = (TextView)header.findViewById(R.id.email);
 
         Bitmap roundProImg= RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
                 R.drawable.com_facebook_button_icon));
@@ -156,7 +162,6 @@ public class NavigationDrawerFragment extends Fragment {
                 Log.d("test","testing");
             }
         });
-        mDrawerListView.addHeaderView(header);
 
         return mDrawerListView;
     }
@@ -186,6 +191,7 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.

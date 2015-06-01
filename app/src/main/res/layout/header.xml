@@ -8,9 +8,8 @@
 
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_launcher"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="15dp"
         />

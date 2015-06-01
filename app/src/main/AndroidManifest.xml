@@ -105,7 +105,8 @@
         </activity>
         <activity
             android:name=".MarketPlaceActivity"
-            android:label="Market Place">
+            android:label="Market Place"
+            >
 
         </activity>
 
@@ -117,6 +118,14 @@
 
         <activity
             android:name=".ChatActivity"
+            android:label="Chat"
+            android:windowSoftInputMode="stateHidden"
+            >
+
+        </activity>
+
+        <activity
+            android:name=".ListingProcessActivity"
             android:label="Chat"
             android:windowSoftInputMode="stateHidden"
             >

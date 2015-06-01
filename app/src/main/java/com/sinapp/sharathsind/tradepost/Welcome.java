@@ -32,7 +32,7 @@ public class Welcome extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/black_jack.ttf");
+        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
         TextView title = (TextView) findViewById(R.id.title);
         title.setTypeface(type);
 
