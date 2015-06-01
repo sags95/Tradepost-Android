@@ -68,10 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:layout_marginTop="10dp"
         android:text="Sign in with email"
+        android:textColor="@color/white"
         android:background="@drawable/b"
         android:layout_below="@id/or" />
 

@@ -4,8 +4,12 @@
     <color name="blue">#00f</color>
     <color name="red">#f00</color>
     <color name="background">#4ECAAE</color>
+    <color name="color_primary">#4ECAAE</color>
+    <color name="color_primary_dark">#2CA88C</color>
     <color name="white">#FFFFFF</color>
     <color name="lightgrey">#80D3D3D3</color>
+    <color name="blue_fab_primary">#33b5e5</color>
+    <color name="blue_fab_primary_dark">#1193C3</color>
 
 
 </resources>

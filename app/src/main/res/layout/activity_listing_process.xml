@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/lightgrey"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_gravity="center_horizontal"
+
+        >
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="POST YOUR ITEM"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingBottom="16dp"
+                android:background="@color/lightgrey"
+                />
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/section1"
+                android:paddingBottom="16dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:background="@color/lightgrey"
+                >
+
+                <ImageView
+                    android:id="@+id/section1_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_section1"
+                    android:paddingBottom="8dp"
+
+                    />
+                <TextView
+                    android:id="@+id/section1_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section1_text"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="4dp"
+                    android:layout_toRightOf="@+id/section1_img"
+
+                    />
+
+                <EditText
+                    android:id="@+id/section1_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Item name here"
+                    android:layout_below="@+id/section1_text"
+
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/section2"
+                android:paddingBottom="16dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:background="@color/lightgrey"
+
+                >
+
+                <ImageView
+                    android:id="@+id/section2_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_section2"
+                    android:paddingBottom="8dp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/section2_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section2_text"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="32dp"
+                    android:paddingLeft="4dp"
+                    android:layout_toRightOf="@+id/section2_img"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/section2_img_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/section2_text"
+                    android:layout_toLeftOf="@+id/section2_or"
+                    android:src="@drawable/ic_section2_camera"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:paddingBottom="16dp"
+                    />
+
+                <TextView
+                    android:id="@+id/section2_or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OR"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="32dp"
+                    android:layout_alignBottom="@+id/section2_img_folder"
+                    android:layout_centerHorizontal="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/section2_img_folder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/section2_or"
+                    android:layout_below="@+id/section2_text"
+                    android:src="@drawable/ic_section2_camera"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:paddingBottom="16dp"
+                    />
+
+                <TextView
+                    android:id="@+id/section2_text_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section2_text_camera"
+                    android:gravity="center"
+                    android:layout_below="@+id/section2_or"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignLeft="@id/section2_img_camera"
+                    android:layout_alignRight="@id/section2_img_camera"
+                    />
+
+                <TextView
+                    android:id="@+id/section2_text_folder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section2_text_folder"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignRight="@id/section2_img_folder"
+                    android:layout_alignLeft="@id/section2_img_folder"
+                    />
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/section3"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:background="@color/white"
+                >
+
+                <ImageView
+                    android:id="@+id/section3_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_section2"
+                    android:paddingBottom="8dp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/section3_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section3_text"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="32dp"
+                    android:paddingLeft="4dp"
+                    android:layout_toRightOf="@+id/section3_img"
+
+                    />
+
+                <SeekBar
+
+                    android:id="@+id/seekBar1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/section3_text"
+                    android:max="10"
+
+                    />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/section4"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:background="@color/lightgrey"
+                >
+
+                <ImageView
+                    android:id="@+id/section4_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_section2"
+                    android:paddingBottom="8dp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/section4_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section4_text"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="32dp"
+                    android:paddingLeft="4dp"
+                    android:layout_toRightOf="@+id/section4_img"
+
+                    />
+
+                <EditText
+                    android:id="@+id/section4_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/section4_text"
+                    android:background="#FFFFFF"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:id="@+id/section5">
+
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

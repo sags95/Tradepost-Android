@@ -1,6 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
 import Model.RoundImage;
+import Model.RoundImageHelper;
 import Model.ToolBarAdapter;
 import Model.Variables;
 
@@ -89,6 +90,7 @@ public class NavigationDrawerFragment extends Fragment {
                 .getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
+
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState
                     .getInt(STATE_SELECTED_POSITION);
@@ -99,10 +101,11 @@ public class NavigationDrawerFragment extends Fragment {
         selectItem(mCurrentSelectedPosition);
 
         variablesArrayList=new ArrayList<>();
-        RoundImage r = new RoundImage(BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_launcher));
+        Bitmap roundImg= RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.ic_launcher));
 
         for(int i=0;i<titles.length;i++){
-            variables = new Variables(titles[i],r.getBitmap());
+            variables = new Variables(titles[i],roundImg);
             variablesArrayList.add(variables);
         }
 
@@ -131,20 +134,24 @@ public class NavigationDrawerFragment extends Fragment {
                         selectItem(position);
                     }
                 });
+
+        //add header view **MUST BE CALLED BEFORE setAdapter**
+        View header=inflater.inflate(R.layout.header, null);
+        ImageView pro =(ImageView)header.findViewById(R.id.profile_image);
+        TextView username = (TextView)header.findViewById(R.id.name);
+        TextView email = (TextView)header.findViewById(R.id.email);
+        mDrawerListView.addHeaderView(header);
+
+
         mDrawerListView.setAdapter(new ToolBarAdapter(getActivity(),variablesArrayList));
 
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
-        View header=inflater.inflate(R.layout.header, null);
-        ImageView pro =(ImageView)header.findViewById(R.id.profile_image);
-        TextView username = (TextView)header.findViewById(R.id.name);
-        TextView email = (TextView)header.findViewById(R.id.email);
 
-        Bitmap icon= BitmapFactory.decodeResource(this.getResources(),R.drawable.com_facebook_button_icon);
-        Variables.setProfilepic(icon);
-        RoundImage r = new RoundImage(Variables.profilepic);
-        pro.setImageBitmap(r.getBitmap());
+        Bitmap roundProImg= RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
+                R.drawable.com_facebook_button_icon));
+        pro.setImageBitmap(roundProImg);
 
 
         pro.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +162,6 @@ public class NavigationDrawerFragment extends Fragment {
                 Log.d("test","testing");
             }
         });
-        mDrawerListView.addHeaderView(header);
 
         return mDrawerListView;
     }
@@ -185,6 +191,7 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.

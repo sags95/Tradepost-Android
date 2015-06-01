@@ -80,9 +80,13 @@ public class NewToolBar extends FragmentActivity implements
             }
             case 1: {
                 startActivity(new Intent(getApplicationContext(),MarketPlaceActivity.class));
+                break;
             }
             case  2:{
-
+                startActivity(new Intent(getApplicationContext(), WebServiceActivityTest.class));
+                break;
+            }case  3: {
+                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
                 break;
             }
         }
