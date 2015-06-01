@@ -98,10 +98,7 @@
             android:name=".MarketPlaceActivity"
             android:label="Market Place" >
         </activity>
-        <activity
-            android:name=".WebServiceActivityTest"
-            android:label="Test Activity" >
-        </activity>
+        
         <activity
             android:name=".ChatActivity"
             android:label="Chat"
