@@ -24,6 +24,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.model.people.Person;
 
+import Model.RegisterWebService;
 import Model.Variables;
 
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -141,10 +143,41 @@ public class FbFragment extends Fragment implements
                                     Variables.email = (String) c.getString("email");
                                     Variables.id = (String) c.getString("id");
                                     Variables.username = (String) c.getString("name");
+                                    URL imageURL = null;
+                                    try {
+                                        imageURL = new URL("https://graph.facebook.com/" + Variables.id + "/picture?type=large");
+                                    } catch (MalformedURLException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+
+                                    try {
+                                        Variables.profilepic = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                                       // bitmap = Variables.profilepic;
+                                    } catch (IOException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+                                  new AsyncTask<String,String,String>()
+                                  {
+                                      @Override
+                                      protected void onPostExecute(String s) {
+                                          super.onPostExecute(s);
+                                          f.start();
+                                      }
+
+                                      @Override
+                                      protected String doInBackground(String... params) {
+
+                                             return RegisterWebService.signUp(Variables.username,Variables.email," ","fb",Variables.profilepic,true);
+
+                                      }
+                                  }.execute(null,null,null);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                f.start();
+
                             }
 
                         });
