@@ -18,10 +18,10 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.plus.PlusClient;
+
 import com.google.android.gms.plus.model.people.Person;
 
 import Model.RegisterWebService;
@@ -47,8 +47,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class FbFragment extends Fragment implements
-        ConnectionCallbacks, OnConnectionFailedListener {
+public class FbFragment extends Fragment {
 
     public static FirstTime f;
     public static CallbackManager b;
@@ -221,31 +220,14 @@ public class FbFragment extends Fragment implements
     private static final int RC_SIGN_IN = 0;
 
     /* Client used to interact with Google APIs. */
-    private PlusClient mGoogleApiClient;
+
 
     /* A flag indicating that a PendingIntent is in progress and prevents
      * us from starting further intents.
      */
     private boolean mIntentInProgress;
 
-    @Override
-    public void onConnectionFailed(ConnectionResult arg0) {
-        // TODO Auto-generated method stub
 
-        Toast.makeText(getActivity(), arg0.getErrorCode(), Toast.LENGTH_LONG).show();
-    }
-
-
-    @Override
-    public void onConnected(Bundle bundle) {
-
-    }
-
-    @Override
-    public void onDisconnected() {
-        // TODO Auto-generated method stub
-
-    }
 
 
 }

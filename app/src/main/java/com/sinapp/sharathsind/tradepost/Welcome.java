@@ -20,6 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
+
 
 public class Welcome extends Activity implements OnClickListener {
 
@@ -32,7 +35,18 @@ public class Welcome extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+        InstanceID instanceID = InstanceID.getInstance(this);
+        try {
+            String token = instanceID.getToken( "923650940708",
+                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            Constants.GCM_Key=token;
+
+        }
+        catch(Exception e)
+        {
+
+        }
+            Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
         TextView title = (TextView) findViewById(R.id.title);
         title.setTypeface(type);
 
