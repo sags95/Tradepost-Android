@@ -149,6 +149,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
 
+
         Bitmap roundProImg= RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
                 R.drawable.com_facebook_button_icon));
         pro.setImageBitmap(roundProImg);

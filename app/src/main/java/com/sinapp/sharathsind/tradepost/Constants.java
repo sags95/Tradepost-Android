@@ -1,5 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import services.GCMService;
 
 /**
@@ -7,6 +9,8 @@ import services.GCMService;
  */
 public class Constants {
     public final static String URl="http:192.168.2.15:8084/";
-public static String GCM_Key;
+public static String GCM_Key,username;
+    public static int userid;
+public static SQLiteDatabase db;
 
 }
