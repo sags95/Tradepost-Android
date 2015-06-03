@@ -28,6 +28,9 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
                 android:background="@color/lightgrey"
                 />
 
@@ -56,9 +59,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/section1_text"
                     android:paddingTop="4dp"
-                    android:paddingBottom="16dp"
+                    android:paddingBottom="12dp"
                     android:paddingLeft="4dp"
                     android:layout_toRightOf="@+id/section1_img"
+                    android:layout_alignBottom="@id/section1_img"
 
                     />
 
@@ -99,9 +103,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/section2_text"
                     android:paddingTop="4dp"
-                    android:paddingBottom="32dp"
+                    android:paddingBottom="12dp"
                     android:paddingLeft="4dp"
                     android:layout_toRightOf="@+id/section2_img"
+                    android:layout_alignBottom="@id/section2_img"
                     />
 
 
@@ -138,6 +143,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:paddingBottom="16dp"
+
                     />
 
                 <TextView
@@ -193,9 +199,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/section3_text"
                     android:paddingTop="4dp"
-                    android:paddingBottom="32dp"
+                    android:paddingBottom="12dp"
                     android:paddingLeft="4dp"
                     android:layout_toRightOf="@+id/section3_img"
+                    android:layout_alignBottom="@id/section3_img"
 
                     />
 
@@ -206,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_below="@id/section3_text"
-                    android:max="10"
+                    android:max="5"
 
                     />
 
@@ -231,6 +238,7 @@
                     android:src="@drawable/ic_section2"
                     android:paddingBottom="8dp"
 
+
                     />
 
                 <TextView
@@ -239,9 +247,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/section4_text"
                     android:paddingTop="4dp"
-                    android:paddingBottom="32dp"
+                    android:paddingBottom="12dp"
                     android:paddingLeft="4dp"
                     android:layout_toRightOf="@+id/section4_img"
+                    android:layout_alignBottom="@id/section4_img"
 
                     />
 
@@ -249,8 +258,65 @@
                     android:id="@+id/section4_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="100dp"
                     android:layout_below="@+id/section4_text"
                     android:background="#FFFFFF"
+
+                    />
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:id="@+id/section5"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/section5_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_section2"
+                    android:paddingBottom="8dp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/section5_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section5_text"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="4dp"
+                    android:layout_toRightOf="@+id/section5_img"
+                    android:layout_alignBottom="@id/section5_img"
+
+                    />
+
+                <EditText
+                    android:id="@+id/section5_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name Your TAGS...."
+                    android:layout_below="@+id/section5_text"
+                    android:layout_toLeftOf="@+id/section5_plus"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/section5_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_primary"
+                    android:layout_below="@+id/section5_text"
+                    android:layout_alignParentRight="true"
                     />
 
             </RelativeLayout>
@@ -258,9 +324,57 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:id="@+id/section5">
+                android:id="@+id/section6"
+                android:background="@color/lightgrey">
+
+                <ImageView
+                    android:id="@+id/section6_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_section2"
+                    android:paddingBottom="8dp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/section6_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section6_text"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="4dp"
+                    android:layout_toRightOf="@+id/section6_img"
+                    android:layout_alignBottom="@id/section6_img"
+
+                    />
+
+                <EditText
+                    android:id="@+id/section6_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Pick a Category"
+                    android:layout_below="@+id/section6_text"
+                    android:layout_toLeftOf="@+id/section6_plus"
+                    android:background="@color/white"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/section6_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_fab_primary"
+                    android:layout_below="@+id/section6_text"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@id/section6_edit"
+                    />
 
             </RelativeLayout>
 
