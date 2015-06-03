@@ -1,10 +1,12 @@
 package com.sinapp.sharathsind.tradepost;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,6 +32,7 @@ import Model.Variables;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -159,6 +162,7 @@ public class FbFragment extends Fragment {
                                     }
                                   new AsyncTask<String,String,String>()
                                   {
+                                      SQLiteDatabase myDB;
                                       @Override
                                       protected void onPostExecute(String s) {
                                           super.onPostExecute(s);
@@ -166,9 +170,18 @@ public class FbFragment extends Fragment {
                                       }
 
                                       @Override
+                                      protected void onPreExecute() {
+
+
+                                          super.onPreExecute();
+
+                                      }
+
+                                      @Override
                                       protected String doInBackground(String... params) {
 
-                                             return RegisterWebService.signUp(Variables.username,Variables.email," ","fb",Variables.profilepic,true);
+
+                                          return RegisterWebService.signUp(Variables.username, Variables.email, " ", "fb", Variables.profilepic, true, Constants.db);
 
                                       }
                                   }.execute(null,null,null);

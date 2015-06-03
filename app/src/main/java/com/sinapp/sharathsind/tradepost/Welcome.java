@@ -5,7 +5,9 @@ import java.io.File;
 import android.app.Activity;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Relation;
 import android.view.GestureDetector;
@@ -23,6 +25,9 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+import Model.RegisterWebService;
+import Model.Variables;
+
 
 public class Welcome extends Activity implements OnClickListener {
 
@@ -30,31 +35,105 @@ public class Welcome extends Activity implements OnClickListener {
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
     private TextView title;
-
+    InstanceID instanceID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        InstanceID instanceID = InstanceID.getInstance(this);
+        boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "tradepostdb.db");
+        if (b) {
+            try{
+                Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
+
+            }catch(Exception e)
+            {
+                String s=e.toString();
+            }
+         //   startActivity(new Intent(this, ToolBar.class));
+           // finish();
+        }
+        else
+        {
+        try{
+           Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
+            try {
+
+                Constants.db.execSQL("Create table IF NOT EXISTS login` (\n" +
+                        "  `username` varchar ,\n" +
+                        "  `password` varchar ,\n" +
+                        "  `email` varchar,\n" +
+                        "  `itype` varchar  '',\n" +
+                        "  `profilepicture` varchar ,\n" +
+                        "  `emailconfirm` varchar ,\n" +
+                        "  `userid` int(10) ");
+                try {
+
+                    Constants.db.execSQL("Create table IF NOT EXISTS login` (\n" +
+                            "  `username` varchar ,\n" +
+                            "  `password` varchar ,\n" +
+                            "  `email` varchar,\n" +
+                            "  `itype` varchar  '',\n" +
+                            "  `profilepicture` varchar ,\n" +
+                            "  `emailconfirm` varchar ,\n" +
+                            "  `userid` int(10) ");
+
+                }
+                catch(Exception e)
+                {
+                    String s=e.toString();
+
+                }
+
+
+            }
+            catch(Exception e)
+            {
+                String s=e.toString();
+
+            }
+
+
+        }catch(Exception e)
+        {
+String s=e.toString();
+        }
+
+        }
+
+         instanceID = InstanceID.getInstance(this);
+
+
         try {
-            String token = instanceID.getToken( "923650940708",
-                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-            Constants.GCM_Key=token;
+            new AsyncTask<String,String,String>()
+            {
+
+                @Override
+                protected String doInBackground(String... params) {
+                    try {
+                        String token = instanceID.getToken("923650940708",
+                                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                        Constants.GCM_Key = token;
+                    }
+                    catch(Exception e)
+                    {
+                        String s=e.toString();
+                    }
+                    return null;
+                }
+            }.execute(null,null,null);
+
 
         }
         catch(Exception e)
         {
+            String s=e.toString();
 
         }
             Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
         TextView title = (TextView) findViewById(R.id.title);
         title.setTypeface(type);
 
-        boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "user.db");
-        if (b) {
-            startActivity(new Intent(this, ToolBar.class));
-            finish();
-        }
+
 
         RelativeLayout r = (RelativeLayout) findViewById(R.id.screen);
         final GestureDetector gestureDetector = new GestureDetector(this, new MyGestureDetector());
