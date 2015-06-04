@@ -88,11 +88,12 @@
 
             <RelativeLayout
                 android:id="@+id/attach_bar"
-                android:layout_alignParentBottom="false"
                 android:layout_width="match_parent"
                 android:background="@color/lightgrey"
                 android:paddingBottom="8dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="invisible"
                 >
 
                 <View

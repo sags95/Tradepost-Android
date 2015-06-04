@@ -26,20 +26,15 @@ public class ChatActivity extends NewToolBar {
         sendBar = (RelativeLayout)findViewById(R.id.send_bar);
         attachBar = (RelativeLayout)findViewById(R.id.attach_bar);
 
-
-        RelativeLayout.LayoutParams attachBarparams = (RelativeLayout.LayoutParams)attachBar.getLayoutParams();
-
-
-
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RelativeLayout.LayoutParams sendBarparams = (RelativeLayout.LayoutParams)sendBar.getLayoutParams();
-                RelativeLayout.LayoutParams attachBarparams = (RelativeLayout.LayoutParams)attachBar.getLayoutParams();
+                //RelativeLayout.LayoutParams attachBarparams = (RelativeLayout.LayoutParams)attachBar.getLayoutParams();
                 sendBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-                attachBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,1);
                 sendBar.setLayoutParams(sendBarparams);
-                attachBar.setLayoutParams(attachBarparams);
+                //attachBar.setLayoutParams(attachBarparams);
+                attachBar.setVisibility(View.VISIBLE);
             }
         });
 
