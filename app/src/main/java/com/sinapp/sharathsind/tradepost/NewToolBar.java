@@ -79,13 +79,17 @@ public class NewToolBar extends FragmentActivity implements
                 break;
             }
             case 1: {
+                finish();
                 startActivity(new Intent(getApplicationContext(),MarketPlaceActivity.class));
                 break;
             }
             case  2:{
+                finish();
+
                 startActivity(new Intent(getApplicationContext(), ListingProcessActivity.class));
                 break;
             }case  3: {
+                finish();
                 startActivity(new Intent(getApplicationContext(), ChatActivity.class));
                 break;
             }
