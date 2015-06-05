@@ -65,8 +65,42 @@ public class RegisterWebService {
 
         return null;
     }
-    public static String sendMsg(String msg,Bitmap picture)
+    public static String sendMsg(String msg,Bitmap picture,int userid)
     {
+        SoapObject request = new SoapObject(NAMESPACE, "hello");
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        picture.compress(Bitmap.CompressFormat.PNG,100, baos);
+
+
+
+        byte [] b1=baos.toByteArray();
+        ContentValues cv=new ContentValues();
+        String temp= Base64.encodeToString(b1, Base64.DEFAULT);
+        request.addProperty("attachment", temp);
+        request.addProperty("userid",Constants.userid);
+        request.addProperty("uname",Constants.username);
+        request.addProperty("filetype","png");
+        request.addProperty("recuserid",userid);
+        request.addProperty("msg",msg);
+
+
+
+
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+
+        envelope.setOutputSoapObject(request);
+
+        HttpTransportSE ht = new HttpTransportSE(URL);
+        try {
+            ht.call("http://webser/Register/helloRequest", envelope);
+            SoapPrimitive response = (SoapPrimitive)envelope.getResponse();
+            String res=response.getValue().toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
 
         return null;

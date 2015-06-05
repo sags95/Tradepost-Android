@@ -59,6 +59,7 @@
                     android:layout_alignParentLeft="true"
                     android:src="@drawable/ic_fab_primary"
                     android:textSize="18sp"
+
                     android:clickable="true"
                     />
 
@@ -71,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:hint="@string/message_hint"
+                    android:singleLine="false"
                     android:inputType="textShortMessage"
                     android:imeOptions="actionSend"
                     />

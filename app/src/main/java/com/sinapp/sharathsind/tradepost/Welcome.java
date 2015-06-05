@@ -5,6 +5,8 @@ import java.io.File;
 import android.app.Activity;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -45,12 +47,21 @@ public class Welcome extends Activity implements OnClickListener {
             try{
                 Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
 
+                Cursor c=Constants.db.rawQuery("select * from login",null);
+                c.moveToFirst();
+               Constants.userid=c.getInt(c.getColumnIndex("userid"));
+                Constants.username=c.getString(c.getColumnIndex("username"));
+
+
+
+
             }catch(Exception e)
             {
                 String s=e.toString();
             }
-         //   startActivity(new Intent(this, ToolBar.class));
-           // finish();
+            startActivity(new Intent(this, ToolBar.class));
+
+            finish();
         }
         else
         {
