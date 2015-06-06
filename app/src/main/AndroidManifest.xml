@@ -111,6 +111,13 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
 
+        <activity
+            android:name=".SingleListingActivity"
+            android:label="Listing"
+            >
+
+        </activity>
+
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"

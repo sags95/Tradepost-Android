@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/single_listing_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        />
+
+
+    <ScrollView
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/single_listing_scroll"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/single_listing_img_layout">
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:id="@+id/single_listing_img"
+                    android:src="@drawable/ic_fab_primary"
+                    android:paddingBottom="8dp"
+                    />
+
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/single_listing_other_layout"
+                android:layout_below="@+id/single_listing_img_layout"
+                android:background="@color/lightgrey"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                >
+
+                <TextView
+                    android:id="@+id/single_listing_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="I want"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+
+                    />
+
+                <LinearLayout
+                    android:id="@+id/single_listing_tags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:layout_below="@+id/single_listing_text"
+
+                    >
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tag1"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/single_listing_des_text"
+                    android:layout_below="@+id/single_listing_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:background="@color/white"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/single_listing_des_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:text="Sample Description"
+                    android:layout_below="@+id/single_listing_des_text"
+                    android:background="@color/white"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/single_listing_des_input"
+                    />
+
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
