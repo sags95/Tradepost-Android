@@ -69,24 +69,17 @@ public class Welcome extends Activity implements OnClickListener {
            Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
             try {
 
-                Constants.db.execSQL("Create table IF NOT EXISTS login` (\n" +
-                        "  `username` varchar ,\n" +
-                        "  `password` varchar ,\n" +
-                        "  `email` varchar,\n" +
-                        "  `itype` varchar  '',\n" +
-                        "  `profilepicture` varchar ,\n" +
-                        "  `emailconfirm` varchar ,\n" +
-                        "  `userid` int(10) ");
+
                 try {
 
-                    Constants.db.execSQL("Create table IF NOT EXISTS login` (\n" +
-                            "  `username` varchar ,\n" +
-                            "  `password` varchar ,\n" +
-                            "  `email` varchar,\n" +
-                            "  `itype` varchar  '',\n" +
-                            "  `profilepicture` varchar ,\n" +
-                            "  `emailconfirm` varchar ,\n" +
-                            "  `userid` int(10) ");
+                    Constants.db.execSQL("Create table IF NOT EXISTS login (" +
+                            "  username varchar ," +
+                            "  password varchar ," +
+                            "  email varchar," +
+                            "  itype varchar  ," +
+                            "  profilepicture varchar ," +
+                            "  emailconfirm varchar ," +
+                            "  userid int(10))");
 
                 }
                 catch(Exception e)

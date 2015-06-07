@@ -37,5 +37,6 @@
     </string-array>
 
     <string name="title_activity_main">Main</string>
+    <string name="title_activity_picture_msg">PictureMsg</string>
 
 </resources>

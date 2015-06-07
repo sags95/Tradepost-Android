@@ -148,10 +148,15 @@
             android:name="services.IDService"
             android:enabled="true"
             android:exported="false" >
-          <intent-filter>
-              <action android:name="com.google.android.gms.iid.InstanceID"/>
-          </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
         </service>
+
+        <activity
+            android:name=".PictureMsg"
+            android:label="@string/title_activity_picture_msg" >
+        </activity>
     </application>
 
 </manifest>

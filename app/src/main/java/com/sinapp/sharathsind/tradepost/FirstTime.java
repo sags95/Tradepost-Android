@@ -13,6 +13,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
+import Model.RegisterWebService;
 import Model.Variables;
 
 import android.app.Activity;
@@ -23,7 +24,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -178,6 +181,32 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
                 e.printStackTrace();
             }
             String personGooglePlusProfile = currentPerson.getUrl();
+            new AsyncTask<String,String,String>()
+            {
+                SQLiteDatabase myDB;
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    //start();
+                }
+
+                @Override
+                protected void onPreExecute() {
+
+
+                    super.onPreExecute();
+
+                }
+
+                @Override
+                protected String doInBackground(String... params) {
+
+
+                    return RegisterWebService.signUp(Variables.username, Variables.email, " ", "g+", Variables.profilepic, true, Constants.db);
+
+                }
+            }.execute(null,null,null);
+
             start();
         }
 
