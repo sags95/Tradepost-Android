@@ -90,7 +90,7 @@ public class NewToolBar extends FragmentActivity implements
                 break;
             }case  3: {
                 finish();
-                startActivity(new Intent(getApplicationContext(), SingleListingActivity.class));
+                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
                 break;
             }case  4: {
                 finish();
@@ -120,7 +120,8 @@ public class NewToolBar extends FragmentActivity implements
         actionBar.setTitle(mTitle);
     }
 
-    @Override
+    //commented out on June 6
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
@@ -131,15 +132,14 @@ public class NewToolBar extends FragmentActivity implements
             return true;
         }
         return super.onCreateOptionsMenu(menu);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);

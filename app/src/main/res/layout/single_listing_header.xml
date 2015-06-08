@@ -5,28 +5,30 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:background="@color/lightgrey"
     >
 
     <ImageView
         android:id="@+id/single_listing_header_propic"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_fab_primary"/>
+        android:src="@drawable/ic_fab_primary"
+        android:gravity="center_vertical"
+        />
 
     <TextView
         android:id="@+id/single_listing_header_username"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="Username"
-        android:gravity="center_vertical"/>
+        android:gravity="center_vertical"
+        />
 
     <TextView
         android:id="@+id/single_listing_header_time"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="two hours ago"
-        android:gravity="center|right"
+        android:gravity="center_vertical|right"
         />
 
 

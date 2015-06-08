@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.etsy.android.grid.StaggeredGridView;
 import com.melnykov.fab.FloatingActionButton;
@@ -45,14 +47,17 @@ public class MarketPlaceActivity extends NewToolBar {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ListingProcessActivity.class));
+                startActivity(new Intent(getApplicationContext(), ListingProcessActivity.class));
 
             }
         });
 
 
 
+
+
     }
+
 
 
 }
