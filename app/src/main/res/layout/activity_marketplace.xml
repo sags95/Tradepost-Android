@@ -7,7 +7,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sinapp.sharathsind.tradepost.MarketPlaceActivity"
+    tools:context="com.sinapp.sharathsind.tradepost.MarketPlaceActivity1"
     >
 
     <!--
@@ -24,24 +24,22 @@
 
         >
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_fab_primary"
-            fab:fab_colorNormal="@color/color_primary"
-            fab:fab_colorPressed="@color/color_primary_dark"
-
+        <include
+            layout="@layout/marketplace_header"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             />
 
 
+
         <LinearLayout
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_horizontal">
+
+
 
 
             <com.etsy.android.grid.StaggeredGridView
@@ -53,7 +51,25 @@
 
 
 
+
+
+
         </LinearLayout>
+
+
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            fab:fab_colorNormal="@color/color_primary"
+            fab:fab_colorPressed="@color/color_primary_dark"
+
+            />
+
     </FrameLayout>
 
 

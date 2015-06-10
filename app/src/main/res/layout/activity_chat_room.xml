@@ -116,7 +116,7 @@
                         style="?android:textAppearanceSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Folder"
+                        android:text="Camera"
                         android:textStyle="bold"
                         android:layout_weight="1"
 
@@ -127,7 +127,7 @@
                         style="?android:textAppearanceSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Camera"
+                        android:text="Folder"
                         android:textStyle="bold"
                         android:layout_weight="1"
 
