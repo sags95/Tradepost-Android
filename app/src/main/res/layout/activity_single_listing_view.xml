@@ -31,11 +31,23 @@
                 >
 
 
-                <ImageView
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:id="@+id/single_listing_img"
-                    android:src="@drawable/ic_fab_primary"
+                    >
+                </android.support.v4.view.ViewPager>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dots"
+                    android:layout_alignBottom="@+id/pager"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="4dp"
+
                     />
 
 
