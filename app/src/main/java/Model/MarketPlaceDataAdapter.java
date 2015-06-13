@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.etsy.android.grid.util.DynamicHeightImageView;
@@ -15,6 +16,9 @@ import java.util.List;
 /**
  * Created by HenryChiang on 15-05-25.
  */
+
+// Not Used
+
 public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
 
         Activity activity;
@@ -39,7 +43,7 @@ public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
                 convertView = inflater.inflate(resource, parent, false);
 
                 holder = new DealHolder();
-                holder.image = (DynamicHeightImageView)convertView.findViewById(R.id.image);
+               // holder.image = (ImageView)convertView.findViewById(R.id.image);
                 holder.title = (TextView)convertView.findViewById(R.id.title);
                 holder.description = (TextView)convertView.findViewById(R.id.description);
 

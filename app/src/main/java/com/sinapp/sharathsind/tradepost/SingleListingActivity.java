@@ -23,7 +23,7 @@ import Model.CustomPagerAdapter;
 public class SingleListingActivity extends Activity {
 
     private CustomPagerAdapter mCustomPagerAdapter;
-    private final static int NUM_PAGES = 6;
+    private final static int NUM_IMAGES = 6;
     private ViewPager mViewPager;
     private List<ImageView> dots;
 
@@ -67,7 +67,7 @@ public class SingleListingActivity extends Activity {
         dots = new ArrayList<>();
         LinearLayout dotsLayout = (LinearLayout)findViewById(R.id.dots);
 
-        for(int i = 0; i < NUM_PAGES; i++) {
+        for(int i = 0; i < NUM_IMAGES; i++) {
             ImageView dot = new ImageView(this);
             if(i==0){
                 dot.setImageDrawable(getResources().getDrawable(R.drawable.pager_dot_selected));
@@ -104,7 +104,7 @@ public class SingleListingActivity extends Activity {
 
     public void selectDot(int idx) {
         Resources res = getResources();
-        for(int i = 0; i < NUM_PAGES; i++) {
+        for(int i = 0; i < NUM_IMAGES; i++) {
             int drawableId = (i==idx)?(R.drawable.pager_dot_selected):(R.drawable.pager_dot_not_selected);
             Drawable drawable = res.getDrawable(drawableId);
             dots.get(i).setImageDrawable(drawable);

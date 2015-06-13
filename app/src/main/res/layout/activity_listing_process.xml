@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listing_proecss_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -72,6 +73,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Item name here"
                     android:layout_below="@+id/section1_text"
+                    android:maxLines="1"
 
                     />
 
@@ -307,6 +309,7 @@
                     android:hint="Name Your TAGS...."
                     android:layout_below="@+id/section5_text"
                     android:layout_toLeftOf="@+id/section5_plus"
+                    android:maxLines="1"
 
                     />
 
@@ -317,7 +320,22 @@
                     android:src="@drawable/ic_fab_primary"
                     android:layout_below="@+id/section5_text"
                     android:layout_alignParentRight="true"
+                    android:clickable="true"
                     />
+
+                <org.apmem.tools.layouts.FlowLayout
+                    xmlns:f="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/section5_tags"
+                    android:layout_below="@id/section5_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    f:layoutDirection="ltr"
+
+                    >
+
+
+                </org.apmem.tools.layouts.FlowLayout>
 
             </RelativeLayout>
 

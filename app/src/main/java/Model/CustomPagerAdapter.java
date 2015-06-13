@@ -1,6 +1,7 @@
 package Model;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.LinearLayout;
 
 import com.sinapp.sharathsind.tradepost.R;
 
+import java.util.List;
+
 /**
  * Created by HenryChiang on 15-06-12.
  */
@@ -17,13 +20,16 @@ public class CustomPagerAdapter extends PagerAdapter {
 
     Context mContext;
     LayoutInflater mLayoutInflater;
-    int[] mResources = {
+
+
+
+    int[] mResources ={
             R.drawable.sample_img,
             R.drawable.sample_img,
             R.drawable.sample_img,
             R.drawable.sample_img,
             R.drawable.sample_img,
-            R.drawable.sample_img,
+            R.drawable.sample_img
     };
 
     public CustomPagerAdapter(Context context) {
