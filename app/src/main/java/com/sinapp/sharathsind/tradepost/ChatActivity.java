@@ -30,23 +30,32 @@ public class ChatActivity extends NewToolBar {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_chat_room);
 
+
         attachBtn = (ImageView) findViewById(R.id.attach_btn);
         cam = (Button) findViewById(R.id.attachment_cam);
         gallery = (Button) findViewById(R.id.attachment_folder);
         sendBar = (RelativeLayout) findViewById(R.id.send_bar);
         attachBar = (RelativeLayout) findViewById(R.id.attach_bar);
 
+        //open or close attach bar
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RelativeLayout.LayoutParams sendBarparams = (RelativeLayout.LayoutParams) sendBar.getLayoutParams();
-                //RelativeLayout.LayoutParams attachBarparams = (RelativeLayout.LayoutParams)attachBar.getLayoutParams();
-                sendBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
-                sendBar.setLayoutParams(sendBarparams);
-                //attachBar.setLayoutParams(attachBarparams);
-                attachBar.setVisibility(View.VISIBLE);
+                if(attachBar.getVisibility() != View.VISIBLE) {
+                    RelativeLayout.LayoutParams sendBarparams = (RelativeLayout.LayoutParams) sendBar.getLayoutParams();
+                    sendBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+                    sendBar.setLayoutParams(sendBarparams);
+                    attachBar.setVisibility(View.VISIBLE);
+                }else {
+                    RelativeLayout.LayoutParams sendBarparams = (RelativeLayout.LayoutParams) sendBar.getLayoutParams();
+                    sendBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
+                    sendBar.setLayoutParams(sendBarparams);
+                    attachBar.setVisibility(View.GONE);
+                }
             }
         });
+
+
         et = (EditText) findViewById(R.id.send_msg);
         SendController sendController = new SendController(this, et);
         send = (Button) findViewById(R.id.send_btn);

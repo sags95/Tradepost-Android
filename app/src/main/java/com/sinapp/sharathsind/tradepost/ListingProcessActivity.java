@@ -68,7 +68,7 @@ public class ListingProcessActivity extends Activity{
         @Override
         public void onClick(View v) {
             if(tagInput.getText().length()>0&&tagFlowLayout.getChildCount()<MAX_NUM_TAGS){
-                singleTagLayout = (LinearLayout) View.inflate(getApplicationContext(),R.layout.single_tag, null);
+                singleTagLayout = (LinearLayout)View.inflate(getApplicationContext(),R.layout.single_tag, null);
                 singleTagLayout.setId(TAGS_COUNT);
 
                 //Still need to add padding or margin to each tag for spacing
@@ -76,17 +76,17 @@ public class ListingProcessActivity extends Activity{
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
-                tagFlowLayout.addView(singleTagLayout, params);
+                tagFlowLayout.addView(singleTagLayout);
 
                 //Button for removing Tag
-                ImageButton cancelTag = (ImageButton) findViewById(TAGS_COUNT).findViewById(R.id.tag_cancel_btn);
+                ImageView cancelTag = (ImageView) findViewById(TAGS_COUNT).findViewById(R.id.tag_cancel_btn);
                 //cancelTag.setId(TAGS_COUNT);
                 cancelTag.setOnClickListener(tagCancelButtonListener);
 
                 //Tag Name
                 TextView tagName = (TextView) findViewById(TAGS_COUNT).findViewById(R.id.tag_name);
                 //tagName.setId(TAGS_COUNT);
-                tagName.setText(tagInput.getText().toString());
+                tagName.setText(tagInput.getText().toString().trim());
                 //tagName.setTag(tagInput.getText().toString());
 
                 tagInput.setText("");
