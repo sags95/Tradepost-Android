@@ -1,11 +1,14 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,6 +51,11 @@ public class ListingProcessActivity extends Activity{
                 R.drawable.ic_section2_camera));
         camera.setImageBitmap(roundProImg);
         folder.setImageBitmap(roundProImg);
+        camera.setOnClickListener(camBtnListener);
+        folder.setOnClickListener(galleryBtnListener);
+
+        //section 4
+        EditText desEditText = (EditText)findViewById(R.id.section4_edit);
 
 
         //section 5
@@ -70,12 +78,6 @@ public class ListingProcessActivity extends Activity{
             if(tagInput.getText().length()>0&&tagFlowLayout.getChildCount()<MAX_NUM_TAGS){
                 singleTagLayout = (LinearLayout)View.inflate(getApplicationContext(),R.layout.single_tag, null);
                 singleTagLayout.setId(TAGS_COUNT);
-
-                //Still need to add padding or margin to each tag for spacing
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
                 tagFlowLayout.addView(singleTagLayout);
 
                 //Button for removing Tag
@@ -91,8 +93,7 @@ public class ListingProcessActivity extends Activity{
 
                 tagInput.setText("");
                 TAGS_COUNT++;
-                Log.d("Child count","Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
-
+                Log.d("Child Added","Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
             }
 
         }
@@ -102,7 +103,7 @@ public class ListingProcessActivity extends Activity{
         @Override
         public void onClick(View v) {
             tagFlowLayout.removeView((View) v.getParent());
-            Log.d("Child count", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
+            Log.d("Child Removed", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
 
         }
@@ -134,6 +135,35 @@ public class ListingProcessActivity extends Activity{
         }
 
 
+    };
+
+    public View.OnClickListener testingBtnListener2 = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.d("Clicked", "You CLicked");
+
+        }
+
+
+    };
+
+    public View.OnClickListener camBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 0);
+        }
+    };
+
+    public View.OnClickListener galleryBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "Select File"), 1);
+        }
     };
 
 }

@@ -1,10 +1,14 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -20,12 +24,13 @@ import Model.CustomPagerAdapter;
 /**
  * Created by HenryChiang on 15-06-06.
  */
-public class SingleListingActivity extends Activity {
+public class SingleListingActivity extends AppCompatActivity {
 
     private CustomPagerAdapter mCustomPagerAdapter;
     private final static int NUM_IMAGES = 6;
     private ViewPager mViewPager;
     private List<ImageView> dots;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,17 @@ public class SingleListingActivity extends Activity {
         mCustomPagerAdapter = new CustomPagerAdapter(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mCustomPagerAdapter);
+
+        //pass the item details
+        //get the passed data
+        Intent i = getIntent();
+        ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
+        Log.d("item details","item position: " + itemDetails.get(0));
+        Log.d("item details","item title: " + itemDetails.get(1));
+
+        //setup actionbar
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
 
         addDots();
 
@@ -57,6 +73,7 @@ public class SingleListingActivity extends Activity {
         if (item.getItemId() == R.id.actionbar_single_listing) {
             Toast.makeText(this, "OFFER?", Toast.LENGTH_SHORT)
                     .show();
+            startActivity(new Intent(getApplicationContext(),OfferActivity.class));
             return true;
         }
 

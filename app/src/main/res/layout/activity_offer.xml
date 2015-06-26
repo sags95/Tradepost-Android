@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ScrollView
+        android:id="@+id/offer_parent_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:id="@+id/offer_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/white"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        >
+
+        <TextView
+            android:id="@+id/offer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Make an Offer"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textSize="28sp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/offer_details_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/offer_title_bar"
+        android:background="@color/darkgrey"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        >
+
+        <RelativeLayout
+            android:id="@+id/offer_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="16dp"
+            >
+
+        <TextView
+            android:id="@+id/offer_listview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FROM YOUR LISTING"
+            android:textStyle="bold"
+            android:textSize="18sp"
+
+            android:layout_marginBottom="16dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            />
+
+
+                <ListView
+
+                    android:id="@+id/offer_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/offer_listview_title"
+                    >
+                </ListView>
+
+
+
+            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/offer_listview"
+                android:id="@+id/offer_floatlabel_edit"
+                >
+            <EditText
+
+                android:id="@+id/offer_addcash_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Amounts"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+
+                />
+            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+            <Button
+                android:id="@+id/offer_addcash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADD CASH"
+                android:layout_below="@+id/offer_floatlabel_edit"
+                />
+
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/offer_newitem_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR UPLOAD A NEW ITEM"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:layout_below="@+id/offer_details"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/offer_newitem_title"
+            android:layout_marginBottom="16dp"
+            >
+
+            <ImageButton
+                android:id="@+id/offer_cam_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/offer_or"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:clickable="true"
+                android:src="@drawable/ic_section2_camera"
+
+
+                />
+
+            <TextView
+                android:id="@+id/offer_or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:layout_alignBottom="@+id/offer_cam_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="24dp"
+
+                />
+
+            <ImageButton
+                android:id="@+id/offer_gallery_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/offer_or"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:src="@drawable/ic_section2_camera"
+
+
+                />
+
+            <TextView
+                android:id="@+id/offer_text_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/section2_text_camera"
+                android:gravity="center"
+                android:layout_below="@+id/offer_or"
+                android:layout_alignLeft="@id/offer_cam_btn"
+                android:layout_alignRight="@id/offer_cam_btn"
+                />
+
+            <TextView
+                android:id="@+id/offer_text_gallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/section2_text_folder"
+                android:gravity="center"
+                android:layout_below="@+id/offer_or"
+                android:layout_alignRight="@id/offer_gallery_btn"
+                android:layout_alignLeft="@id/offer_gallery_btn"
+                />
+
+
+
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -3,7 +3,7 @@ package services;
 import android.os.Bundle;
 
 import com.google.android.gms.gcm.GcmListenerService;
-import com.sinapp.sharathsind.tradepost.ChatActivity;
+import com.sinapp.sharathsind.tradepost.ChatFragment;
 
 /**
  * Created by sharathsind on 2015-06-01.
@@ -16,7 +16,7 @@ public class GCMService extends GcmListenerService {
 String message=data.getString("message");
         if(message.contains("message"))
         {
-            if(ChatActivity.isAlive)
+            if(ChatFragment.isAlive)
             {
 
 

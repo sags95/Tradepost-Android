@@ -1,6 +1,7 @@
 package Controllers;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
@@ -13,11 +14,11 @@ import Model.RegisterWebService;
  * Created by sharathsind on 2015-06-05.
  */
 public class SendController implements View.OnClickListener {
-    Activity a;
+    Fragment f;
     EditText e;
-  public   SendController(Activity activity,EditText editText)
+  public   SendController(Fragment fragment,EditText editText)
     {
-        this.a=activity;
+        this.f=fragment;
         this.e=editText;
 
     }

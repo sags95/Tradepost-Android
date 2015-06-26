@@ -24,12 +24,12 @@ public class CustomPagerAdapter extends PagerAdapter {
 
 
     int[] mResources ={
+            R.drawable.sample_img3,
             R.drawable.sample_img,
-            R.drawable.sample_img,
-            R.drawable.sample_img,
-            R.drawable.sample_img,
-            R.drawable.sample_img,
-            R.drawable.sample_img
+            R.drawable.sample_img2,
+            R.drawable.sample_img3,
+            R.drawable.sample_img2,
+            R.drawable.sample_img3
     };
 
     public CustomPagerAdapter(Context context) {

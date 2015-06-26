@@ -1,35 +1,27 @@
 package com.sinapp.sharathsind.tradepost;
 
-import Model.Variables;
-
 import android.app.Activity;
 import android.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ToolBar extends FragmentActivity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks {
+        NavigationDrawerFragmentOld.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the
      * navigation drawer.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerFragmentOld mNavigationDrawerFragmentOld;
 
     /**
      * Used to store the last screen title. For use in
@@ -55,7 +47,7 @@ public class ToolBar extends FragmentActivity implements
                 .penaltyLog()
                 .penaltyDeath()
                 .build());
-        mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
+        mNavigationDrawerFragmentOld = (NavigationDrawerFragmentOld) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
         //ImageView im=(ImageView)findViewById(com.trade.tradepost.R.id.profilepic);
@@ -63,7 +55,7 @@ public class ToolBar extends FragmentActivity implements
 
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
+        mNavigationDrawerFragmentOld.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
@@ -100,7 +92,7 @@ public class ToolBar extends FragmentActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+        if (!mNavigationDrawerFragmentOld.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.

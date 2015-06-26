@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sinapp.sharathsind.tradepost.ChatActivity"
+    tools:context="com.sinapp.sharathsind.tradepost.ChatFragment"
     >
 
     <!--
@@ -166,8 +166,8 @@
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        tools:layout="@layout/fragment_navigation_drawer"
-        class ="com.sinapp.sharathsind.tradepost.NavigationDrawerFragment"
+        tools:layout="@layout/fragment_navigation_drawer_old"
+        class ="com.sinapp.sharathsind.tradepost.NavigationDrawerFragmentOld"
         />
 
 </android.support.v4.widget.DrawerLayout>

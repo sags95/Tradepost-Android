@@ -32,10 +32,10 @@
 
     <fragment
         android:id="@+id/navigation_drawer"
-        android:name="com.sinapp.sharathsind.tradepost.NavigationDrawerFragment"
+        android:name="com.sinapp.sharathsind.tradepost.NavigationDrawerFragmentOld"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        tools:layout="@layout/fragment_navigation_drawer" />
+        tools:layout="@layout/fragment_navigation_drawer_old" />
 
 </android.support.v4.widget.DrawerLayout>

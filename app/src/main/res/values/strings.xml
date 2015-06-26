@@ -28,6 +28,8 @@
     <string name="section2_text_camera">Take a photo\nwith your phone</string>
     <string name="section2_text_folder">Browse from\nyour folder</string>
     <string name="actionbar_single_listing"><b>MAKE AN OFFER</b></string>
+    <string name="opendrawer">open</string>
+    <string name="closedrawer">close</string>
 
 
 

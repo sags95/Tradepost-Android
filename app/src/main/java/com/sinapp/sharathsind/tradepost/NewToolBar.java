@@ -5,24 +5,22 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 public class NewToolBar extends FragmentActivity implements
-        NavigationDrawerFragment.NavigationDrawerCallbacks {
+        NavigationDrawerFragmentOld.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the
      * navigation drawer.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerFragmentOld mNavigationDrawerFragmentOld;
 
     /**
      * Used to store the last screen title. For use in
@@ -50,7 +48,7 @@ public class NewToolBar extends FragmentActivity implements
                 .penaltyLog()
                 .penaltyDeath()
                 .build());
-        mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
+        mNavigationDrawerFragmentOld = (NavigationDrawerFragmentOld) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
         //ImageView im=(ImageView)findViewById(com.trade.tradepost.R.id.profilepic);
@@ -58,7 +56,7 @@ public class NewToolBar extends FragmentActivity implements
 
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
+        mNavigationDrawerFragmentOld.setUp(R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
 
@@ -72,32 +70,6 @@ public class NewToolBar extends FragmentActivity implements
                 //.beginTransaction()
                 //.replace(R.id.container,
                   //      PlaceholderFragment.newInstance(position +1 )).commit();
-
-
-        switch (position) {
-            case 0: {
-                break;
-            }
-            case 1: {
-                finish();
-                startActivity(new Intent(getApplicationContext(),MarketPlaceActivity.class));
-                break;
-            }
-            case  2:{
-                finish();
-
-                startActivity(new Intent(getApplicationContext(), ListingProcessActivity.class));
-                break;
-            }case  3: {
-                finish();
-                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
-                break;
-            }case  4: {
-                finish();
-                startActivity(new Intent(getApplicationContext(), SingleListingActivity.class));
-                break;
-            }
-        }
     }
 
     public void onSectionAttached(int number) {

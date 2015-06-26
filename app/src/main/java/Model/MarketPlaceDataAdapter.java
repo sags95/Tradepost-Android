@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.etsy.android.grid.util.DynamicHeightImageView;
@@ -44,8 +43,8 @@ public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
 
                 holder = new DealHolder();
                // holder.image = (ImageView)convertView.findViewById(R.id.image);
-                holder.title = (TextView)convertView.findViewById(R.id.title);
-                holder.description = (TextView)convertView.findViewById(R.id.description);
+                holder.title = (TextView)convertView.findViewById(R.id.pro_username);
+                holder.description = (TextView)convertView.findViewById(R.id.item_title);
 
                 convertView.setTag(holder);
             }
@@ -57,8 +56,8 @@ public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
             holder.image.setImageResource(R.drawable.sample_img);
 
             holder.image.setHeightRatio(1.0);
-            holder.title.setText(data.itemTitle);
-            holder.description.setText(data.itemDescription);
+            holder.title.setText(data.proUsername);
+            holder.description.setText(data.itemTitle);
 
             return convertView;
         }

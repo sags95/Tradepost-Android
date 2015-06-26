@@ -290,7 +290,7 @@ public class LoginActivity1 extends Activity implements LoaderCallbacks<Cursor> 
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(getApplicationContext(), MarketPlaceActivity.class));
+                startActivity(new Intent(getApplicationContext(), NavigationDrawer.class));
                 finish();
 
             } else {

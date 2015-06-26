@@ -44,7 +44,7 @@
         android:allowBackup="true"
         android:icon="@drawable/sample_img"
         android:label="@string/app_name"
-        android:theme="@style/CustomActionBarTheme" >
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
@@ -89,31 +89,38 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
-        <activity
             android:name=".NewToolBar"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name=".MarketPlaceActivity"
-            android:label="Market Place" >
-        </activity>
-        <activity
-            android:name=".ChatActivity"
+            android:name=".ChatFragment"
             android:label="Chat"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".ListingProcessActivity"
-            android:label="Chat"
+            android:label="Listing"
             android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <activity
             android:name=".SingleListingActivity"
             android:label="Listing"
+            >
+
+        </activity>
+
+        <activity
+            android:name=".OfferActivity"
+            android:label="Offer"
+
+            >
+
+        </activity>
+
+        <activity
+            android:name=".NavigationDrawer"
+            android:label="Offer"
             >
 
         </activity>

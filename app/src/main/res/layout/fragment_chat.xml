@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#4Dffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ListView
+        android:id="@+id/listview_chat"
+        android:transcriptMode="alwaysScroll"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/send_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#4D000000"
+        android:layout_above="@+id/send_bar"/>
+
+    <RelativeLayout
+        android:id="@+id/send_bar"
+        android:layout_width="match_parent"
+        android:background="@color/lightgrey"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/attach_bar"
+        android:layout_alignParentBottom="true"
+        >
+
+        <ImageView
+            android:id="@+id/attach_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_fab_primary"
+            android:textSize="18sp"
+
+            android:clickable="true"
+            />
+
+        <EditText
+            android:id="@+id/send_msg"
+            android:layout_toRightOf="@+id/attach_btn"
+            android:layout_toLeftOf="@+id/send_btn"
+            android:layout_alignBottom="@+id/attach_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:hint="@string/message_hint"
+            android:singleLine="false"
+            android:inputType="textShortMessage"
+            android:imeOptions="actionSend"
+            />
+
+        <Button
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/send_msg"
+            />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/attach_bar"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:paddingBottom="4dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#4D000000"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/attachment"
+            android:paddingTop="8dp"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/attachment_cam"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Camera"
+                android:textStyle="bold"
+                android:layout_weight="1"
+
+                />
+
+            <Button
+                android:id="@+id/attachment_folder"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Folder"
+                android:textStyle="bold"
+                android:layout_weight="1"
+
+
+                />
+
+        </LinearLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

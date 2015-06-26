@@ -1,5 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -7,35 +9,53 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import java.util.List;
 
 import Controllers.SendController;
 
 /**
  * Created by HenryChiang on 15-05-26.
  */
-public class ChatActivity extends NewToolBar {
+public class ChatFragment extends Fragment {
 
     public static boolean isAlive;
+    private View rootView;
     ImageView attachBtn;
     RelativeLayout sendBar, attachBar;
     Button cam, gallery;
     EditText et;
     Button send;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_chat_room);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+    }
 
-        attachBtn = (ImageView) findViewById(R.id.attach_btn);
-        cam = (Button) findViewById(R.id.attachment_cam);
-        gallery = (Button) findViewById(R.id.attachment_folder);
-        sendBar = (RelativeLayout) findViewById(R.id.send_bar);
-        attachBar = (RelativeLayout) findViewById(R.id.attach_bar);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+
+        attachBtn = (ImageView)rootView.findViewById(R.id.attach_btn);
+        cam = (Button)rootView.findViewById(R.id.attachment_cam);
+        gallery = (Button)rootView.findViewById(R.id.attachment_folder);
+        sendBar = (RelativeLayout)rootView.findViewById(R.id.send_bar);
+        attachBar = (RelativeLayout)rootView.findViewById(R.id.attach_bar);
+
+        et = (EditText)rootView.findViewById(R.id.send_msg);
+        send = (Button)rootView.findViewById(R.id.send_btn);
+
 
         //open or close attach bar
         attachBtn.setOnClickListener(new View.OnClickListener() {
@@ -56,23 +76,20 @@ public class ChatActivity extends NewToolBar {
         });
 
 
-        et = (EditText) findViewById(R.id.send_msg);
         SendController sendController = new SendController(this, et);
-        send = (Button) findViewById(R.id.send_btn);
+
         send.setOnClickListener(sendController);
         cam.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View v) {
-                                       //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                                       Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                       startActivityForResult(intent, 0);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 0);
+            }
+        });
 
 
-                                   }
-                               }
-
-        );
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,16 +102,22 @@ public class ChatActivity extends NewToolBar {
             }
         });
 
+
+
+
+
+        return rootView;
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 0) {
 
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                Intent intent = new Intent(this, PictureMsg.class);
+                Intent intent = new Intent(getActivity(), PictureMsg.class);
                 intent.putExtra("BitmapImage", thumbnail);
 
             }
@@ -102,7 +125,7 @@ public class ChatActivity extends NewToolBar {
 else{
                 Uri selectedImageUri = data.getData();
                 String[] projection = { MediaStore.MediaColumns.DATA };
-            Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
+            Cursor cursor = getActivity().getContentResolver().query(selectedImageUri, projection, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                 cursor.moveToFirst();
 
@@ -120,7 +143,7 @@ else{
                 options.inSampleSize = scale;
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
-            Intent intent = new Intent(this, PictureMsg.class);
+            Intent intent = new Intent(getActivity(), PictureMsg.class);
             intent.putExtra("BitmapImage", bm);
 
             }
@@ -129,34 +152,30 @@ else{
         }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
 
         super.onStart();
         isAlive = true;
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         isAlive = false;
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         isAlive = false;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         isAlive = true;
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        isAlive = true;
-    }
+
 }
 
