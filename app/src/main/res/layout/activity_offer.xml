@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:float="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.sinapp.sharathsind.tradepost.OfferActivity"
+
     >
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar_default">
+    </include>
 
     <ScrollView
+        android:layout_below="@+id/tool_bar"
         android:id="@+id/offer_parent_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -82,7 +90,7 @@
 
 
 
-            <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/offer_listview"
@@ -100,7 +108,7 @@
                 android:visibility="gone"
 
                 />
-            </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/offer_addcash"

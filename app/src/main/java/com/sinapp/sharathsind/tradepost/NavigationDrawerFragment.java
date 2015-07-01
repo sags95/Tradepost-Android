@@ -28,7 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,6 +38,7 @@ import java.util.List;
 import Model.NavigationDrawerAdapter;
 import Model.NavigationDrawerCallbacks;
 import Model.NavigationItem;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -70,6 +71,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private DrawerLayout mDrawerLayout;
     private RecyclerView mDrawerList;
     private View mFragmentContainerView;
+    private FrameLayout mFragementContainerViewRight;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -153,11 +155,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      * @param toolbar      The Toolbar of the activity.
      */
-    public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
+    public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar,FrameLayout fl) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
+        mFragementContainerViewRight = fl;
 
-        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.color_primary_dark));
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.ColorPrimaryDark));
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.opendrawer, R.string.closedrawer) {
             @Override
@@ -179,15 +182,26 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                if (drawerView != null && drawerView == mFragementContainerViewRight) {
+                    super.onDrawerSlide(drawerView, 0);
+                }
             }
-        };
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset)
+            {
+                if(drawerView!=null && drawerView == mFragementContainerViewRight){
+                    super.onDrawerSlide(drawerView, 0);
+                }else{
+                    super.onDrawerSlide(drawerView, slideOffset);
+                }
+            }
 
+        };
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
             mDrawerLayout.openDrawer(mFragmentContainerView);
         }
-
         // Defer code dependent on restoration of previous instance state.
         mDrawerLayout.post(new Runnable() {
             @Override
@@ -210,13 +224,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
     }
 
-    public void openDrawer() {
-        mDrawerLayout.openDrawer(mFragmentContainerView);
-    }
-
-    public void closeDrawer() {
-        mDrawerLayout.closeDrawer(mFragmentContainerView);
-    }
+    public void openDrawer() {mDrawerLayout.openDrawer(mFragmentContainerView);}
+    public void closeDrawer() {mDrawerLayout.closeDrawer(mFragmentContainerView);}
 
     @Override
     public void onAttach(Activity activity) {
@@ -248,95 +257,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public void setUserData(String user, String email, Bitmap avatar) {
-        ImageView avatarContainer = (ImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
+        CircleImageView avatarContainer = (CircleImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
         ((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
         ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
-        avatarContainer.setImageDrawable(new RoundImage(avatar));
+        avatarContainer.setImageBitmap(avatar);
     }
 
-    public View getGoogleDrawer() {
-        return mFragmentContainerView.findViewById(R.id.googleDrawer);
-    }
-
-    public static class RoundImage extends Drawable {
-        private final Bitmap mBitmap;
-        private final Paint mPaint;
-        private final RectF mRectF;
-        private final int mBitmapWidth;
-        private final int mBitmapHeight;
-
-        public RoundImage(Bitmap bitmap) {
-            mBitmap = bitmap;
-            mRectF = new RectF();
-            mPaint = new Paint();
-            mPaint.setAntiAlias(true);
-            mPaint.setDither(true);
-            final BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-            mPaint.setShader(shader);
-
-            mBitmapWidth = mBitmap.getWidth();
-            mBitmapHeight = mBitmap.getHeight();
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
-            canvas.drawOval(mRectF, mPaint);
-        }
-
-        @Override
-        protected void onBoundsChange(Rect bounds) {
-            super.onBoundsChange(bounds);
-            mRectF.set(bounds);
-        }
-
-        @Override
-        public void setAlpha(int alpha) {
-            if (mPaint.getAlpha() != alpha) {
-                mPaint.setAlpha(alpha);
-                invalidateSelf();
-            }
-        }
-
-        @Override
-        public void setColorFilter(ColorFilter cf) {
-            mPaint.setColorFilter(cf);
-        }
-
-        @Override
-        public int getOpacity() {
-            return PixelFormat.TRANSLUCENT;
-        }
-
-        @Override
-        public int getIntrinsicWidth() {
-            return mBitmapWidth;
-        }
-
-        @Override
-        public int getIntrinsicHeight() {
-            return mBitmapHeight;
-        }
-
-        public void setAntiAlias(boolean aa) {
-            mPaint.setAntiAlias(aa);
-            invalidateSelf();
-        }
-
-        @Override
-        public void setFilterBitmap(boolean filter) {
-            mPaint.setFilterBitmap(filter);
-            invalidateSelf();
-        }
-
-        @Override
-        public void setDither(boolean dither) {
-            mPaint.setDither(dither);
-            invalidateSelf();
-        }
-
-        public Bitmap getBitmap() {
-            return mBitmap;
-        }
-
-    }
 }

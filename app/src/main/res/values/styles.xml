@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
         <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
             <!-- Customize your theme here. -->
-            <item name="colorPrimary">@color/color_primary</item>
-            <item name="colorPrimaryDark">@color/color_primary_dark</item>
+            <item name="colorPrimary">@color/ColorPrimary</item>
+            <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
             <item name="colorAccent">@color/myAccentColor</item>
             <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
             <item name="android:navigationBarColor">@color/myNavigationColor</item>
@@ -26,7 +26,7 @@
         </style>
 
     <style name = "NoActionBar" parent = "Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
 
     </style>
 
@@ -40,7 +40,7 @@
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         >
-        <item name="android:background">@color/color_primary</item>
+        <item name="android:background">@color/ColorPrimary</item>
     </style>
 
 </resources>

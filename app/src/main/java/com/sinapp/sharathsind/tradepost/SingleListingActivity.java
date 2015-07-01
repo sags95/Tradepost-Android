@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,6 +40,7 @@ public class SingleListingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_listing_view);
 
+
         //image slider viewer
         mCustomPagerAdapter = new CustomPagerAdapter(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -53,7 +57,16 @@ public class SingleListingActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        addDots();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+         addDots();
 
     }
 
@@ -61,18 +74,18 @@ public class SingleListingActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         //Need to handle the text of actionbar (Edit or Offer)
-        MenuItem item = menu.add(Menu.NONE,R.id.actionbar_single_listing,1,R.string.actionbar_single_listing);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        MenuItem item;
+        item = menu.add("Offer");
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        //item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.actionbar_single_listing) {
-            Toast.makeText(this, "OFFER?", Toast.LENGTH_SHORT)
-                    .show();
+        if (item.getTitle() == "Offer") {
+            //Toast.makeText(this, "OFFER?", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(),OfferActivity.class));
             return true;
         }

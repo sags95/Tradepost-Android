@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/darkgrey"
+    android:background="@color/white"
     >
 
     <!--
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true"
+        android:background="@color/white"
 
         >
 
@@ -33,7 +35,9 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/image_parentlayout">
+            android:id="@+id/image_parentlayout"
+
+            >
 
 
 
@@ -62,23 +66,29 @@
                 android:clickable="true"
                 />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/pro_img"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/sample_img"
+                android:layout_alignBottom="@+id/item_image"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="-24dp"
+                android:layout_marginLeft="8dp"
+                app:border_width="4dp"
+                app:border_color="#FFFFFF" />
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pro_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/darkgrey"
             android:layout_below="@+id/item_image"
+            android:gravity="right"
+            >
 
-        >
 
 
-                <ImageView
-                android:id="@+id/pro_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"
-                />
 
             <TextView
                 android:id="@+id/pro_username"
@@ -89,8 +99,9 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:textSize="14sp"
-                android:layout_gravity="bottom"
+                android:layout_gravity="center"
                 android:maxLines="1"
+                android:text="User"
 
                 />
 
@@ -98,7 +109,7 @@
                 android:id="@+id/pro_post_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|right"
+                android:layout_gravity="right"
                 android:textSize="12sp"
                 android:text="4 hours ago"
                 android:layout_marginRight="1dp"
@@ -127,7 +138,6 @@
         android:paddingRight="8dp"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:background="@color/darkgrey"
         android:layout_below="@+id/divider_view"/>
 
 

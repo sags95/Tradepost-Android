@@ -2,10 +2,15 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#4Dffffff"
+    android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/chat_rootView"
+    android:clickable="true"
+
+
     >
+
 
     <ListView
         android:id="@+id/listview_chat"
@@ -15,7 +20,9 @@
         android:layout_alignParentRight="true"
         android:layout_above="@+id/send_bar"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        />
 
     <View
         android:layout_width="match_parent"
@@ -26,7 +33,7 @@
     <RelativeLayout
         android:id="@+id/send_bar"
         android:layout_width="match_parent"
-        android:background="@color/lightgrey"
+        android:background="@color/white"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:layout_height="wrap_content"

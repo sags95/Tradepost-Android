@@ -79,24 +79,12 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".ToolBar"
-            android:label="@string/title_activity_tool_bar" >
-        </activity>
-        <activity
             android:name=".LoginActivity1"
             android:label="@string/title_activity_login_activity1"
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateHidden" >
         </activity>
-        <activity
-            android:name=".NewToolBar"
-            android:label="@string/title_activity_main" >
-        </activity>
-        <activity
-            android:name=".ChatFragment"
-            android:label="Chat"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+
         <activity
             android:name=".ListingProcessActivity"
             android:label="Listing"

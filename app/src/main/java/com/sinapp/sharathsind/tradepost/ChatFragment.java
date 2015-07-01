@@ -1,7 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,10 +9,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,10 +37,12 @@ public class ChatFragment extends Fragment {
     Button cam, gallery;
     EditText et;
     Button send;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -47,6 +52,13 @@ public class ChatFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
+        //toolbar
+        //toolbar = (Toolbar)rootView.findViewById(R.id.tool_bar);
+        //((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Chat");
+
+
+        //buttons
         attachBtn = (ImageView)rootView.findViewById(R.id.attach_btn);
         cam = (Button)rootView.findViewById(R.id.attachment_cam);
         gallery = (Button)rootView.findViewById(R.id.attachment_folder);
@@ -61,12 +73,12 @@ public class ChatFragment extends Fragment {
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(attachBar.getVisibility() != View.VISIBLE) {
+                if (attachBar.getVisibility() != View.VISIBLE) {
                     RelativeLayout.LayoutParams sendBarparams = (RelativeLayout.LayoutParams) sendBar.getLayoutParams();
                     sendBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
                     sendBar.setLayoutParams(sendBarparams);
                     attachBar.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     RelativeLayout.LayoutParams sendBarparams = (RelativeLayout.LayoutParams) sendBar.getLayoutParams();
                     sendBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 1);
                     sendBar.setLayoutParams(sendBarparams);
@@ -75,10 +87,25 @@ public class ChatFragment extends Fragment {
             }
         });
 
-
+        //send
         SendController sendController = new SendController(this, et);
-
         send.setOnClickListener(sendController);
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (et.getText().toString().length()==0) {
+                    send.setEnabled(false);
+                    send.setClickable(false);
+                    send.setAlpha(0.2f);
+                } else {
+                    send.setEnabled(true);
+                    send.setClickable(true);
+                    send.setAlpha(1f);
+                }
+            }
+        });
+
+
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +124,7 @@ public class ChatFragment extends Fragment {
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
-                startActivityForResult(   Intent.createChooser(intent, "Select File"),1);
+                startActivityForResult(Intent.createChooser(intent, "Select File"), 1);
 
             }
         });
@@ -105,6 +132,7 @@ public class ChatFragment extends Fragment {
 
 
 
+        //
 
         return rootView;
 
