@@ -19,11 +19,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apmem.tools.layouts.FlowLayout;
+import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.RoundImageHelper;
+import datamanager.FileManager;
+import datamanager.userdata;
 
 /**
  * Created by HenryChiang on 15-05-31.
@@ -166,4 +169,48 @@ public class ListingProcessActivity extends Activity{
         }
     };
 
+public void sendDataToServer(String itemTitle,String descrpition,String[] tags,Bitmap[] images,int condition,int userid,String category)
+    {
+        String item_images[]=new String[images.length];
+        int i=0;
+        for(Bitmap image :images)
+        {
+            item_images[i]= FileManager.encode(image);
+
+            i++;
+
+        }
+        SoapObject object =new SoapObject("http://webser/","additem");
+        object.addProperty("itemname",itemTitle);
+        object.addProperty("latitude", userdata.latitude);
+        object.addProperty("latitude", userdata.longitude);
+        object.addProperty("userid", userdata.userid);
+        object.addProperty("category",category);
+        
+
+
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+ if(requestCode==0)
+ {
+     if(resultCode==RESULT_OK)
+     {
+
+
+
+     }
+
+
+ }
+else {
+
+ }
+
+
+    }
 }
