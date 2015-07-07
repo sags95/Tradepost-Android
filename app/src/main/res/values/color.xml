@@ -2,14 +2,28 @@
 <resources>
     <color name="black">#000</color>
     <color name="blue">#00f</color>
-    <color name="red">#f00</color>
+    <color name="red">#f00000</color>
     <color name="background">#4ECAAE</color>
-    <color name="color_primary">#4ECAAE</color>
-    <color name="color_primary_dark">#2CA88C</color>
+    <color name="ColorPrimary">#4ECAAE</color>
+    <color name="ColorPrimaryDark">#2CA88C</color>
+    <color name="tabsScrollColor">#1193C3</color>
     <color name="white">#FFFFFF</color>
-    <color name="lightgrey">#80D3D3D3</color>
+    <color name="darkgrey">#80D3D3D3</color>
+    <color name="lightgrey">#80F5F5F5</color>
     <color name="blue_fab_primary">#33b5e5</color>
     <color name="blue_fab_primary_dark">#1193C3</color>
+    <color name="cokered_trans">#80f40000</color>
+    <color name="grey">#5e5e5e</color>
+    <color name="myAccentColor">#FF4081</color>
+    <color name="myDrawerBackground">#FFF</color>
+    <color name="myWindowBackground">#FFF</color>
+    <color name="myTextPrimaryColor">#212121</color>
+    <color name="myNavigationColor">#000</color>
+    <color name="lightgrey_chat">#5e5e5e</color>
+
+    <drawable name="pressed_gray">#0c000000</drawable>
+    <drawable name="selected_gray">#2c000000</drawable>
+
 
 
 </resources>

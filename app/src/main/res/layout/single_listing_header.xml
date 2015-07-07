@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
+    android:background="@color/lightgrey"
     >
 
     <ImageView
@@ -30,6 +31,8 @@
         android:text="two hours ago"
         android:gravity="center_vertical|right"
         />
+
+
 
 
 </LinearLayout>

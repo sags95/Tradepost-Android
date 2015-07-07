@@ -59,7 +59,7 @@ public class Welcome extends Activity implements OnClickListener {
             {
                 String s=e.toString();
             }
-            startActivity(new Intent(this, ToolBar.class));
+            startActivity(new Intent(this, NavigationDrawer.class));
 
             finish();
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listing_proecss_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -72,6 +73,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Item name here"
                     android:layout_below="@+id/section1_text"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
 
                     />
 
@@ -109,40 +112,90 @@
                     android:layout_alignBottom="@id/section2_img"
                     />
 
+                <View
+                    android:id="@+id/section2_scroll_top_div"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/black"
+                    android:layout_below="@id/section2_img"
+                    />
 
-                <ImageView
+                <HorizontalScrollView
+                    android:id="@+id/section2_scroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/section2_scroll_top_div"
+
+                    >
+
+                    <org.apmem.tools.layouts.FlowLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_section2_camera"
+
+                            />
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_section2_camera"
+                            />
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_section2_camera"
+                            />
+
+                    </org.apmem.tools.layouts.FlowLayout>
+                </HorizontalScrollView>
+
+                <View
+                    android:id="@+id/section2_scroll_bottom_div"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/black"
+                    android:layout_below="@+id/section2_scroll"
+                    android:layout_marginBottom="8dp"
+                    />
+
+                <ImageButton
                     android:id="@+id/section2_img_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/section2_text"
+                    android:layout_below="@+id/section2_scroll_bottom_div"
                     android:layout_toLeftOf="@+id/section2_or"
-                    android:src="@drawable/ic_section2_camera"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:paddingBottom="16dp"
+                    android:clickable="true"
+
                     />
 
                 <TextView
                     android:id="@+id/section2_or"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/section2_scroll_bottom_div"
                     android:text="OR"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="32dp"
                     android:layout_alignBottom="@+id/section2_img_folder"
                     android:layout_centerHorizontal="true"
+                    android:paddingTop="24dp"
+
                     />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/section2_img_folder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/section2_or"
-                    android:layout_below="@+id/section2_text"
-                    android:src="@drawable/ic_section2_camera"
+                    android:layout_below="@+id/section2_scroll_bottom_div"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:paddingBottom="16dp"
+                    android:clickable="true"
+
 
                     />
 
@@ -258,11 +311,16 @@
                     android:id="@+id/section4_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="100dp"
                     android:layout_below="@+id/section4_text"
                     android:background="#FFFFFF"
+                    android:lines="5"
+                    android:maxLines="5"
+                    android:gravity="left|top"
+
 
                     />
+
+
 
             </RelativeLayout>
 
@@ -276,7 +334,8 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:id="@+id/section5"
-                android:background="@color/white">
+                android:background="@color/white"
+                >
 
                 <ImageView
                     android:id="@+id/section5_img"
@@ -307,7 +366,8 @@
                     android:hint="Name Your TAGS...."
                     android:layout_below="@+id/section5_text"
                     android:layout_toLeftOf="@+id/section5_plus"
-
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
                     />
 
                 <ImageView
@@ -317,7 +377,22 @@
                     android:src="@drawable/ic_fab_primary"
                     android:layout_below="@+id/section5_text"
                     android:layout_alignParentRight="true"
+                    android:clickable="true"
                     />
+
+                <org.apmem.tools.layouts.FlowLayout
+                    xmlns:f="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/section5_tags"
+                    android:layout_below="@id/section5_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    f:layoutDirection="ltr"
+
+                    >
+
+
+                </org.apmem.tools.layouts.FlowLayout>
 
             </RelativeLayout>
 
@@ -363,8 +438,9 @@
                     android:background="@color/white"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-
+                    android:singleLine="true"
                     />
+
 
                 <ImageView
                     android:id="@+id/section6_plus"
@@ -374,6 +450,14 @@
                     android:layout_below="@+id/section6_text"
                     android:layout_alignParentRight="true"
                     android:layout_alignBottom="@id/section6_edit"
+                    />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/section6_spinner"
+                    android:layout_alignRight="@+id/section6_edit"
+                    android:layout_alignBottom="@+id/section6_edit"
                     />
 
             </RelativeLayout>

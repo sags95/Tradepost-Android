@@ -1,29 +1,46 @@
 <resources>
-
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+            <!-- Customize your theme here. -->
+            <item name="colorPrimary">@color/ColorPrimary</item>
+            <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+            <item name="colorAccent">@color/myAccentColor</item>
+            <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
+            <item name="android:navigationBarColor">@color/myNavigationColor</item>
+            <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
-        <item name="android:colorPrimary">@color/color_primary</item>
-        <item name="android:colorPrimaryDark">@color/color_primary_dark</item>
-    </style>
 
-    <style name = "NoActionBar" parent = "android:Theme.Holo.Light.DarkActionBar">
-        <item name = "android:windowActionBar">false</item>
-        <item name = "android:windowNoTitle">true</item>
+            <item name="android:windowBackground">@color/myWindowBackground</item>
+            <item name="android:windowContentTransitions">true</item>
+        </style>
+
+        <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+            <item name="spinBars">true</item>
+            <item name="color">@android:color/white</item>
+        </style>
+
+        <style name="ToolBarStyle" parent="">
+            <item name="android:elevation">@dimen/toolbar_elevation</item>
+            <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+            <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        </style>
+
+    <style name = "NoActionBar" parent = "Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+
     </style>
 
     <!-- the theme applied to the application or activity -->
     <style name="CustomActionBarTheme"
-        parent="@android:style/Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        parent="android:Theme.Holo.Light.DarkActionBar">
 
     </style>
 
     <!-- ActionBar styles -->
     <!-- ActionBar styles -->
     <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/color_primary</item>
+        >
+        <item name="android:background">@color/ColorPrimary</item>
     </style>
 
 </resources>

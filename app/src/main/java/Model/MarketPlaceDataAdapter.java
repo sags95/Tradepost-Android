@@ -15,6 +15,9 @@ import java.util.List;
 /**
  * Created by HenryChiang on 15-05-25.
  */
+
+// Not Used
+
 public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
 
         Activity activity;
@@ -39,9 +42,9 @@ public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
                 convertView = inflater.inflate(resource, parent, false);
 
                 holder = new DealHolder();
-                holder.image = (DynamicHeightImageView)convertView.findViewById(R.id.image);
-                holder.title = (TextView)convertView.findViewById(R.id.title);
-                holder.description = (TextView)convertView.findViewById(R.id.description);
+               // holder.image = (ImageView)convertView.findViewById(R.id.image);
+                holder.title = (TextView)convertView.findViewById(R.id.pro_username);
+                holder.description = (TextView)convertView.findViewById(R.id.item_title);
 
                 convertView.setTag(holder);
             }
@@ -53,8 +56,8 @@ public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
             holder.image.setImageResource(R.drawable.sample_img);
 
             holder.image.setHeightRatio(1.0);
-            holder.title.setText(data.itemTitle);
-            holder.description.setText(data.itemDescription);
+            holder.title.setText(data.proUsername);
+            holder.description.setText(data.itemTitle);
 
             return convertView;
         }
