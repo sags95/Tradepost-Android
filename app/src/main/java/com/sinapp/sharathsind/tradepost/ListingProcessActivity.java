@@ -25,8 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.RoundImageHelper;
+import data.StringVector;
 import datamanager.FileManager;
 import datamanager.userdata;
+import webservices.MainWebService;
 
 /**
  * Created by HenryChiang on 15-05-31.
@@ -171,14 +173,19 @@ public class ListingProcessActivity extends Activity{
 
 public void sendDataToServer(String itemTitle,String descrpition,String[] tags,Bitmap[] images,int condition,int userid,String category)
     {
-        String item_images[]=new String[images.length];
+        StringVector imageArray = new StringVector();
         int i=0;
         for(Bitmap image :images)
         {
-            item_images[i]= FileManager.encode(image);
+            imageArray.add( FileManager.encode(image));
 
             i++;
 
+        }
+        StringVector tag = new StringVector();
+        for(String s:tags)
+        {
+            tag.add(s);
         }
         SoapObject object =new SoapObject("http://webser/","additem");
         object.addProperty("itemname",itemTitle);
@@ -186,7 +193,11 @@ public void sendDataToServer(String itemTitle,String descrpition,String[] tags,B
         object.addProperty("latitude", userdata.longitude);
         object.addProperty("userid", userdata.userid);
         object.addProperty("category",category);
-        
+        object.addProperty("images",imageArray);
+        object.addProperty("tags",tag);
+
+        MainWebService.getMsg(object,"http://192.168.2.15:8084/TDserverWeb/Chat?wsdl","");
+
 
 
 
