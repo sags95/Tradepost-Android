@@ -19,11 +19,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apmem.tools.layouts.FlowLayout;
+import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.RoundImageHelper;
+import data.StringVector;
+import datamanager.FileManager;
+import datamanager.userdata;
+import webservices.MainWebService;
 
 /**
  * Created by HenryChiang on 15-05-31.
@@ -166,4 +171,57 @@ public class ListingProcessActivity extends Activity{
         }
     };
 
+public void sendDataToServer(String itemTitle,String descrpition,String[] tags,Bitmap[] images,int condition,int userid,String category)
+    {
+        StringVector imageArray = new StringVector();
+        int i=0;
+        for(Bitmap image :images)
+        {
+            imageArray.add( FileManager.encode(image));
+
+            i++;
+
+        }
+        StringVector tag = new StringVector();
+        for(String s:tags)
+        {
+            tag.add(s);
+        }
+        SoapObject object =new SoapObject("http://webser/","additem");
+        object.addProperty("itemname",itemTitle);
+        object.addProperty("latitude", userdata.latitude);
+        object.addProperty("latitude", userdata.longitude);
+        object.addProperty("userid", userdata.userid);
+        object.addProperty("category",category);
+        object.addProperty("images",imageArray);
+        object.addProperty("tags",tag);
+
+        MainWebService.getMsg(object,"http://192.168.2.15:8084/TDserverWeb/Chat?wsdl","");
+
+
+
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+ if(requestCode==0)
+ {
+     if(resultCode==RESULT_OK)
+     {
+
+
+
+     }
+
+
+ }
+else {
+
+ }
+
+
+    }
 }
