@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:background="@color/darkgrey"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="?android:attr/selectableItemBackground"
     >
 
     <ImageView
@@ -13,8 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_fab_primary"
-        android:layout_toLeftOf="@+id/marketplace_header_loc"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/marketplace_header_loc"
+
+
 
         />
 
@@ -23,8 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Location"
-        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+
         />
 
 </RelativeLayout>

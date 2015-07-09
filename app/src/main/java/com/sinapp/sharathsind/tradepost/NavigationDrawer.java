@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
@@ -39,6 +39,9 @@ public class NavigationDrawer extends AppCompatActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
+    private Fragment chatPageFrag, notiFrag;
+    private FragmentManager fm;
+
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -50,10 +53,18 @@ public class NavigationDrawer extends AppCompatActivity
         mFrameLayoutRight = (FrameLayout)findViewById(R.id.container_right);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer);
 
+        chatPageFrag = new ChatPageFragment();
+        notiFrag = new NotificationFragment();
         //initialize the right drawer
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_right, new ChatFragment());
+        fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        //transaction.add(R.id.container_right, notiFrag, "chatPageFragment");
+
+        transaction.add(R.id.container_right, chatPageFrag, "chatPageFragment");
+        //transaction.addToBackStack("chatPageFragment");
         transaction.commit();
+        //fm.executePendingTransactions();
+
 
         //Set up drawer and drawer's header
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -80,6 +91,7 @@ public class NavigationDrawer extends AppCompatActivity
                 break;
             }
             case 2: {
+                fragment = new TestingFragment();
                 break;
             }
         }
@@ -106,6 +118,9 @@ public class NavigationDrawer extends AppCompatActivity
         item.setIcon(R.drawable.ic_toolbar_notification);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
+
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -115,27 +130,13 @@ public class NavigationDrawer extends AppCompatActivity
         switch (item.getTitle().toString()){
             case "Chat" :{
                 Toast.makeText(getApplicationContext(), "Chat?", Toast.LENGTH_SHORT).show();
-                if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    mDrawerLayout.openDrawer(Gravity.RIGHT);
-                }else {
-                    if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                        mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                    } else {
-                        openChatFragment();
-                    }
-                }
+                chatPageFragmentHandling();
                 // Set up the drawer.
                 break;
             }
             case "Notification":{
                 Toast.makeText(getApplicationContext(), "Notification?", Toast.LENGTH_SHORT).show();
-                if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }else{
-                    openNotificationFragment();
-                }
-
+                notificationFragmentHandling();
                 break;
             }
             case "Search":{
@@ -159,27 +160,45 @@ public class NavigationDrawer extends AppCompatActivity
         v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+
+                if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                } else if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                 }
             }
         });
 
     }
-    public void openChatFragment(){
+    public void openChatPageFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_right, new ChatFragment());
-        transaction.commit();
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
+        if(!chatPageFrag.isAdded()){
+            transaction.replace(R.id.container_right, chatPageFrag, "chatPageFragment");
+            transaction.commit();
+            mDrawerLayout.openDrawer(Gravity.RIGHT);
+            Log.d("DEBUG", "adding chatPageFrag");
+            Log.d("DEBUG", "chatPageFrag is :"+mDrawerLayout.isDrawerOpen(Gravity.RIGHT));
+        }else{
+            transaction.show(chatPageFrag);
+            transaction.commit();
+            mDrawerLayout.openDrawer(Gravity.RIGHT);
+            Log.d("DEBUG","showing chatPageFrag");
+        }
     }
 
     public void openNotificationFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_right, new NotificationFragment());
-        transaction.commit();
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
+        if(!notiFrag.isAdded()){
+            transaction.replace(R.id.container_right, notiFrag, "notificationFragment");
+            transaction.commit();
+            mDrawerLayout.openDrawer(Gravity.RIGHT);
+            Log.d("DEBUG", "adding notiFrag");
+            Log.d("DEBUG", "notiFrag is :"+mDrawerLayout.isDrawerOpen(Gravity.RIGHT));
+
+        }else{
+            transaction.show(notiFrag);
+            transaction.commit();
+            mDrawerLayout.openDrawer(Gravity.RIGHT);
+            Log.d("DEBUG", "showing notiFrag");
+        }
     }
 
     public void setUpDrawerWidth(){
@@ -191,9 +210,42 @@ public class NavigationDrawer extends AppCompatActivity
         final ViewGroup.LayoutParams params = mNavigationDrawerFragment.getView().getLayoutParams();
         params.width = (int)(Math.round(dpWidth - 112) * density +0.5);
         mNavigationDrawerFragment.getView().setLayoutParams(params);
-
     }
 
+    public void chatPageFragmentHandling(){
+        if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            openChatPageFragment();
+        }else {
+            if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                if(chatPageFrag.isResumed()){
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                    Log.d("DEBUG", "closing chatPageFrag");
+                }else{
+                    openChatPageFragment();
+                }
+            } else {
+                openChatPageFragment();
+            }
+        }
+    }
 
+    public void notificationFragmentHandling(){
+        if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            openNotificationFragment();
+        }else {
+            if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                if(notiFrag.isResumed()){
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                    Log.d("DEBUG", "closing notiFrag");
 
+                }else{
+                    openNotificationFragment();
+                }
+            } else {
+                openNotificationFragment();
+            }
+        }
+    }
 }

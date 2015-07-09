@@ -78,46 +78,56 @@
                 app:border_width="4dp"
                 app:border_color="#FFFFFF" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:id="@+id/pro_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/item_image"
-            android:gravity="right"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical|right"
+
             >
 
-
-
-
             <TextView
-                android:id="@+id/pro_username"
+                android:id="@+id/pro_posted_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:textSize="14sp"
-                android:layout_gravity="center"
+                android:layout_gravity="right"
+                android:textSize="10sp"
+                android:text="Posted "
                 android:maxLines="1"
-                android:text="User"
-
-                />
+                android:gravity="right"
+            />
 
             <TextView
                 android:id="@+id/pro_post_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:textSize="12sp"
-                android:text="4 hours ago"
-                android:layout_marginRight="1dp"
+                android:textSize="10sp"
+                android:text="4 hours"
                 android:maxLines="1"
-            />
+                android:gravity="right"
+                />
 
+            <TextView
+                android:id="@+id/pro_ago_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textSize="10sp"
+                android:text=" ago"
+                android:maxLines="1"
+                android:gravity="right"
+                />
     </LinearLayout>
 
+
+            <!--
     <View
         android:id="@+id/divider_view"
         android:layout_width="match_parent"
@@ -128,17 +138,35 @@
 
         />
 
-    <TextView
-        android:id="@+id/item_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:paddingTop="4dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/divider_view"/>
+        -->
+
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Title Line 1\nTitle Line 2"
+                android:minLines="2"
+                android:layout_below="@+id/pro_bar"/>
+
+            <TextView
+                android:id="@+id/looking_for"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LOOKING FOR"
+                android:textSize="12sp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_below="@+id/item_title"
+                />
+
 
 
 

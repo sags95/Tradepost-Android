@@ -6,7 +6,7 @@
             <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
             <item name="colorAccent">@color/myAccentColor</item>
             <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
-            <item name="android:navigationBarColor">@color/myNavigationColor</item>
+            <item name="android:navigationBarColor">@color/ColorPrimary</item>
             <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
 

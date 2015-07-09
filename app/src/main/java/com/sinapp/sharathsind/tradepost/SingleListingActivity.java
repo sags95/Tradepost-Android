@@ -30,10 +30,17 @@ import Model.CustomPagerAdapter;
 public class SingleListingActivity extends AppCompatActivity {
 
     private CustomPagerAdapter mCustomPagerAdapter;
-    private final static int NUM_IMAGES = 6;
+    private final static int NUM_IMAGES = 4;
     private ViewPager mViewPager;
     private List<ImageView> dots;
     private Toolbar toolbar;
+
+    private int[] imageResources={
+            R.drawable.sample_img,
+            R.drawable.sample_img2,
+            R.drawable.sample_img3,
+            R.drawable.sample_img
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +49,7 @@ public class SingleListingActivity extends AppCompatActivity {
 
 
         //image slider viewer
-        mCustomPagerAdapter = new CustomPagerAdapter(this);
+        mCustomPagerAdapter = new CustomPagerAdapter(this,imageResources);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mCustomPagerAdapter);
 

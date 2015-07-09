@@ -20,17 +20,12 @@ public class CustomPagerAdapter extends PagerAdapter {
 
 
 
-    int[] mResources ={
-            R.drawable.sample_img3,
-            R.drawable.sample_img,
-            R.drawable.sample_img2,
-            R.drawable.sample_img3,
-            R.drawable.sample_img2,
-            R.drawable.sample_img3
-    };
+    int[] mResources;
 
-    public CustomPagerAdapter(Context context) {
+
+    public CustomPagerAdapter(Context context, int[] imageResources) {
         mContext = context;
+        mResources = imageResources;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
