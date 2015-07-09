@@ -11,11 +11,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -39,6 +41,8 @@ public class ListingProcessActivity extends Activity{
     int TAGS_COUNT = 0;
     private FlowLayout tagFlowLayout;
     private LinearLayout singleTagLayout;
+    private String[] categories;
+
 
     private EditText tagInput;
 
@@ -71,6 +75,11 @@ public class ListingProcessActivity extends Activity{
         //using section 6 (Choose a category) plus button for testing
         ImageView testingBtn = (ImageView)findViewById(R.id.section6_plus);
         testingBtn.setOnClickListener(testingBtnListener);
+        categories = getResources().getStringArray(R.array.category_array);
+        Spinner spinner = (Spinner)findViewById(R.id.section6_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_dropdown_item, categories );
+        spinner.setAdapter(adapter);
 
 
 
