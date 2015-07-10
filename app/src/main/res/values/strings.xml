@@ -42,4 +42,19 @@
     <string name="title_activity_main">Main</string>
     <string name="title_activity_picture_msg">PictureMsg</string>
 
+    <string-array name="category_array">
+        <item>Art</item>
+        <item>Clothing</item>
+        <item>Computers</item>
+        <item>Electronics</item>
+        <item>Home/Furniture</item>
+        <item>Music Instruments</item>
+        <item>Phones</item>
+        <item>Sporting Goods</item>
+        <item>Tickets</item>
+        <item>Vehicles</item>
+        <item>Video Games</item>
+        <item>Misc</item>
+    </string-array>
+
 </resources>

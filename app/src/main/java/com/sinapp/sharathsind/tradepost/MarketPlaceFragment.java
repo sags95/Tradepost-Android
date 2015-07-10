@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -7,7 +8,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -19,6 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.github.ksoichiro.android.observablescrollview.ObservableListView;
+import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -28,25 +35,37 @@ import Model.CustomPagerAdapter;
 import Model.MarketPlaceData;
 import Model.MarketPlaceDataAdapter;
 import Model.StaggeredAdapter;
+import Model.StaggeredAdapter2;
 
 /**
  * Created by HenryChiang on 15-06-25.
  */
-public class MarketPlaceFragment  extends Fragment{
+public class MarketPlaceFragment  extends Fragment implements ObservableScrollViewCallbacks {
 
     private MarketPlaceDataAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private StaggeredAdapter stagAdapter;
+    private StaggeredAdapter2 stagAdapter2;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private View rootView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private CustomPagerAdapter mCustomPagerAdapter;
     private ViewPager mViewPager;
-    private final static int NUM_IMAGES_MP = 6;
+    private final static int NUM_IMAGES_MP = 4;
     private List<ImageView> dots;
+    private int[] imageResources = {
+            R.drawable.sample_img,
+            R.drawable.sample_img2,
+            R.drawable.sample_img3,
+            R.drawable.sample_img
+    };
 
-    public MarketPlaceFragment(){}
+    private ObservableRecyclerView recyclerview;
+
+
+
+    public MarketPlaceFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,16 +81,23 @@ public class MarketPlaceFragment  extends Fragment{
 
         rootView = inflater.inflate(R.layout.fragment_marketplace, container, false);
 
-
-
+        /*
+        recyclerview = (ObservableRecyclerView) rootView.findViewById(R.id.recyclerview);
+        recyclerview.setHasFixedSize(true);
+        recyclerview.setScrollViewCallbacks(this);
+        stagAdapter2 = new StaggeredAdapter2(MarketPlaceData.generateSampleData(), listingItemClickListener);
+        recyclerview.setAdapter(stagAdapter2);
+        applyStaggeredGridLayoutManager();
+        */
         //Image Pager
-        //image slider viewer
+
 
         /*
         mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
         mViewPager = (ViewPager)rootView.findViewById(R.id.pager_marketplace);
         mViewPager.setAdapter(mCustomPagerAdapter);
         */
+
 
         //SwipeToRefresh
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
@@ -81,26 +107,44 @@ public class MarketPlaceFragment  extends Fragment{
             public void onRefresh() {
                 Log.d("SwipeToRefresh","Refreshing");
                 mSwipeRefreshLayout.setRefreshing(false);
-
             }
         });
 
         //StaggeredGridView
+        /*mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
+        mRecyclerView.setHasFixedSize(true);
+        stagAdapter = new StaggeredAdapter(getActivity().getApplicationContext(),MarketPlaceData.generateSampleData(),listingItemClickListener, imageResources);
+        mRecyclerView.setAdapter(stagAdapter);
+        applyStaggeredGridLayoutManager();
+        */
+
+        //StaggeredGridView2
+
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        stagAdapter = new StaggeredAdapter(MarketPlaceData.generateSampleData(),listingItemClickListener);
-        mRecyclerView.setAdapter(stagAdapter);
+        stagAdapter2 = new StaggeredAdapter2(MarketPlaceData.generateSampleData(),listingItemClickListener);
+        mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
 
 
+
         //Floating Action Button
-        FloatingActionButton fab = (FloatingActionButton)rootView.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(fabOnClickListener);
         fab.attachToRecyclerView(mRecyclerView);
 
         //Like Button
-        ImageView likeBtn = (ImageView)rootView.findViewById(R.id.image_like_btn);
+        ImageView likeBtn = (ImageView) rootView.findViewById(R.id.image_like_btn);
         //likeBtn.setOnClickListener(likeOnClickListener);
+
+        //Location
+        View includeView = (View)rootView.findViewById(R.id.marketplace_header);
+        includeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog();
+            }
+        });
 
 
 
@@ -109,9 +153,7 @@ public class MarketPlaceFragment  extends Fragment{
     }
 
 
-
-
-    private void applyStaggeredGridLayoutManager(){
+    private void applyStaggeredGridLayoutManager() {
         mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
     }
@@ -135,9 +177,9 @@ public class MarketPlaceFragment  extends Fragment{
             Log.d("child position", String.valueOf(mRecyclerView.getChildPosition(v)));
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
-            TextView itemTitle = (TextView)rootView.findViewById(R.id.item_title);
-            clickedItemDetails.add(0,String.valueOf(mRecyclerView.getChildPosition(v)));
-            clickedItemDetails.add(1,itemTitle.getText().toString());
+            TextView itemTitle = (TextView) rootView.findViewById(R.id.item_title);
+            clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildPosition(v)));
+            clickedItemDetails.add(1, itemTitle.getText().toString());
 
             //Log.d("item details", "item position: " + clickedItemDetails.get(0));
             //Log.d("item details", "item title: " + clickedItemDetails.get(1));
@@ -147,52 +189,28 @@ public class MarketPlaceFragment  extends Fragment{
         }
     };
 
-    public void addDots() {
-        dots = new ArrayList<>();
-        LinearLayout dotsLayout = (LinearLayout)rootView.findViewById(R.id.dots);
-
-        for(int i = 0; i < NUM_IMAGES_MP; i++) {
-            ImageView dot = new ImageView(getActivity().getApplicationContext());
-            if(i==0){
-                dot.setImageDrawable(getResources().getDrawable(R.drawable.pager_dot_selected));
-            }else {
-                dot.setImageDrawable(getResources().getDrawable(R.drawable.pager_dot_not_selected));
-            }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(3,0,3,0);
-
-            dotsLayout.addView(dot,params);
-
-            // dotsLayout.addView(dot);
-            dots.add(dot);
-        }
-
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                selectDot(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll,
+                                boolean dragging) {
     }
 
-    public void selectDot(int idx) {
-        Resources res = getResources();
-        for(int i = 0; i < NUM_IMAGES_MP; i++) {
-            int drawableId = (i==idx)?(R.drawable.pager_dot_selected):(R.drawable.pager_dot_not_selected);
-            Drawable drawable = res.getDrawable(drawableId);
-            dots.get(i).setImageDrawable(drawable);
-        }
+    @Override
+    public void onDownMotionEvent() {
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+    }
+
+    public void customDialog(){
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView( R.layout.location_dialog );
+        dialog.setTitle( "Dialog Details" );
+
+        dialog.show( );
+
     }
 
 

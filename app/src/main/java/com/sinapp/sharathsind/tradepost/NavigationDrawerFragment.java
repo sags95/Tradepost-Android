@@ -163,6 +163,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.ColorPrimaryDark));
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.opendrawer, R.string.closedrawer) {
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);

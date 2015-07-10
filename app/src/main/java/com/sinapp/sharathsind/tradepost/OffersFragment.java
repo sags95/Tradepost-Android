@@ -1,7 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +20,8 @@ public class OffersFragment extends Fragment {
     OffersViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Sent","Received"};
-    int Numboftabs = 2;
+    int numbOfTabs = 2;
     private View rootView;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +37,7 @@ public class OffersFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_offers, container, false);
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new OffersViewPagerAdapter(getFragmentManager(),Titles,Numboftabs);
+        adapter =  new OffersViewPagerAdapter(getFragmentManager(),Titles, numbOfTabs, new OffersTabOne(), new OffersTabTwo());
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager)rootView.findViewById(R.id.offers_viewpager);

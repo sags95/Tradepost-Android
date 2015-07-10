@@ -42,8 +42,8 @@ public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
                 convertView = inflater.inflate(resource, parent, false);
 
                 holder = new DealHolder();
-               // holder.image = (ImageView)convertView.findViewById(R.id.image);
-                holder.title = (TextView)convertView.findViewById(R.id.pro_username);
+                //holder.image = (ImageView)convertView.findViewById(R.id.image);
+                //holder.title = (TextView)convertView.findViewById(R.id.pro_username);
                 holder.description = (TextView)convertView.findViewById(R.id.item_title);
 
                 convertView.setTag(holder);

@@ -3,6 +3,7 @@ package Model;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.widget.FrameLayout;
 
 import com.sinapp.sharathsind.tradepost.OffersTabOne;
 import com.sinapp.sharathsind.tradepost.OffersTabTwo;
@@ -14,14 +15,18 @@ public class OffersViewPagerAdapter extends FragmentStatePagerAdapter {
 
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+    Fragment tab1;
+    Fragment tab2;
 
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
-    public OffersViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb) {
+    public OffersViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb, Fragment tab1, Fragment tab2) {
         super(fm);
 
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
+        this.tab1=tab1;
+        this.tab2=tab2;
 
     }
     //This method return the fragment for the every position in the View Pager
@@ -30,12 +35,10 @@ public class OffersViewPagerAdapter extends FragmentStatePagerAdapter {
 
         if(position == 0) // if the position is 0 we are returning the First tab
         {
-            OffersTabOne tab1 = new OffersTabOne();
             return tab1;
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            OffersTabTwo tab2 = new OffersTabTwo();
             return tab2;
         }
 

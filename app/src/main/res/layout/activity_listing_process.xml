@@ -428,16 +428,15 @@
 
                     />
 
-                <EditText
-                    android:id="@+id/section6_edit"
+                <Spinner
+                    android:id="@+id/section6_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Pick a Category"
                     android:layout_below="@+id/section6_text"
                     android:layout_toLeftOf="@+id/section6_plus"
                     android:background="@color/white"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:singleLine="true"
                     />
 
@@ -449,16 +448,9 @@
                     android:src="@drawable/ic_fab_primary"
                     android:layout_below="@+id/section6_text"
                     android:layout_alignParentRight="true"
-                    android:layout_alignBottom="@id/section6_edit"
+                    android:layout_alignBottom="@id/section6_spinner"
                     />
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/section6_spinner"
-                    android:layout_alignRight="@+id/section6_edit"
-                    android:layout_alignBottom="@+id/section6_edit"
-                    />
 
             </RelativeLayout>
 

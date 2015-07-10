@@ -2,18 +2,16 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     >
 
-
     <include
-    android:id="@+id/marketplace_header"
-    layout="@layout/marketplace_header"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/marketplace_header"
+        layout="@layout/marketplace_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
     />
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,8 +19,9 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_below="@+id/marketplace_header"
-        android:background="@color/white"
     >
+
+
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/activity_main_swipe_refresh_layout"
@@ -41,6 +40,14 @@
         </android.support.v4.widget.SwipeRefreshLayout>
 
 
+        <!--
+        <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+            -->
+
+
 <!--
 <com.etsy.android.grid.StaggeredGridView
     android:id="@+id/grid_view"
@@ -50,8 +57,6 @@
     app:column_count="2" />
   -->
     </LinearLayout>
-
-
 
 
     <com.melnykov.fab.FloatingActionButton
