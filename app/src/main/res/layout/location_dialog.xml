@@ -1,14 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="8dp"
+    >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dialog"
-        />
+        android:text="Good"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Good"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="SSID"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="ABC"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Security"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="SecurityType"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Password"
+        android:textColor="#80000000"
+        android:textSize="@dimen/customTitle" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
+
+    <CheckBox
+        android:id="@+id/showPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="ShowPassword"
+        android:textColor="#000000"
+        android:textSize="@dimen/customEntry" />
 
 </LinearLayout>

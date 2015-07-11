@@ -1,31 +1,42 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
+import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 
-import com.github.ksoichiro.android.observablescrollview.ObservableListView;
-import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -34,13 +45,14 @@ import java.util.List;
 import Model.CustomPagerAdapter;
 import Model.MarketPlaceData;
 import Model.MarketPlaceDataAdapter;
+import Model.RecyclerViewOnClickListener;
 import Model.StaggeredAdapter;
 import Model.StaggeredAdapter2;
 
 /**
  * Created by HenryChiang on 15-06-25.
  */
-public class MarketPlaceFragment  extends Fragment implements ObservableScrollViewCallbacks {
+public class MarketPlaceFragment  extends Fragment {
 
     private MarketPlaceDataAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -60,7 +72,18 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
             R.drawable.sample_img
     };
 
-    private ObservableRecyclerView recyclerview;
+    //for dialog
+    int location_dialog_layout = R.layout.location_dialog2;
+    LayoutInflater li;
+    private AlertDialog dialog;
+    private RadioButton rBPostalCode, rBLocSer;
+    private TextInputLayout postalCodeInput;
+    private EditText pCInputEdit;
+    private SeekBar seekBar;
+    private TextView radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
+    private LinearLayout seekBarLabel;
+
+
 
 
 
@@ -80,6 +103,9 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_marketplace, container, false);
+        li = getActivity().getLayoutInflater();
+
+
 
         /*
         recyclerview = (ObservableRecyclerView) rootView.findViewById(R.id.recyclerview);
@@ -125,6 +151,23 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
         stagAdapter2 = new StaggeredAdapter2(MarketPlaceData.generateSampleData(),listingItemClickListener);
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
+        /*
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Toast.makeText(getActivity(), "you click" + position, Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getActivity(), SingleListingActivity.class);
+                        ArrayList<String> clickedItemDetails = new ArrayList<>();
+                        TextView itemTitle = (TextView) mRecyclerView.getChildAt(position).findViewById(R.id.item_title);
+                        clickedItemDetails.add(0, String.valueOf(position));
+                        clickedItemDetails.add(1, itemTitle.getText().toString());
+                        i.putStringArrayListExtra("itemClicked", clickedItemDetails);
+                        startActivity(i);
+                    }
+                })
+        );
+        */
 
 
 
@@ -177,7 +220,7 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
             Log.d("child position", String.valueOf(mRecyclerView.getChildPosition(v)));
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
-            TextView itemTitle = (TextView) rootView.findViewById(R.id.item_title);
+            TextView itemTitle = (TextView) mRecyclerView.getChildAt(mRecyclerView.getChildPosition(v)).findViewById(R.id.item_title);
             clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildPosition(v)));
             clickedItemDetails.add(1, itemTitle.getText().toString());
 
@@ -189,29 +232,163 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
         }
     };
 
-    @Override
-    public void onScrollChanged(int scrollY, boolean firstScroll,
-                                boolean dragging) {
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
-
-    }
-
     public void customDialog(){
-        Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView( R.layout.location_dialog );
-        dialog.setTitle( "Dialog Details" );
 
-        dialog.show( );
+        final View dialogView = li.inflate(location_dialog_layout, null);
+        final AlertDialog.Builder builder =
+                new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Set Up Your Location");
+        //builder.setMessage("Lorem ipsum dolor ....");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (rBLocSer.isChecked()) {
+                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.setView(dialogView);
+
+        rBPostalCode = (RadioButton)dialogView.findViewById(R.id.radioButton_postalCode);
+        rBLocSer = (RadioButton)dialogView.findViewById(R.id.radioButton_locService);
+        postalCodeInput = (TextInputLayout)dialogView.findViewById(R.id.dialog_postalCode);
+        pCInputEdit = (EditText)dialogView.findViewById(R.id.dialog_postalCode_edit);
+        seekBar = (SeekBar)dialogView.findViewById(R.id.dialog_seekbar);
+        radiusText = (TextView)dialogView.findViewById(R.id.dialog_radius_txt);
+        locServiceText = (TextView)dialogView.findViewById(R.id.dialog_loc_text);
+        seekBarLabel = (LinearLayout)dialogView.findViewById(R.id.dialog_seekbar_label);
+        label25Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_25km);
+        label25Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        label50Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_50km);
+        label75Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_75km);
+        label100Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_100km);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                switch (progress) {
+                    case 0:
+                        label25Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+                        label25Km.setTypeface(Typeface.DEFAULT_BOLD);
+                        setTextStyle(label50Km, label75Km, label100Km);
+                        break;
+                    case 1:
+                        label50Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+                        label50Km.setTypeface(Typeface.DEFAULT_BOLD);
+                        setTextStyle(label25Km, label75Km, label100Km);
+                        break;
+                    case 2:
+                        label75Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+                        label75Km.setTypeface(Typeface.DEFAULT_BOLD);
+                        setTextStyle(label25Km, label50Km, label100Km);
+                        break;
+                    case 3:
+                        label100Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+                        label100Km.setTypeface(Typeface.DEFAULT_BOLD);
+                        setTextStyle(label25Km, label50Km, label75Km);
+                        break;
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+        pCInputEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0&&!Character.isLetterOrDigit(s.charAt(pCInputEdit.length()-1))){
+                    postalCodeInput.setError("Only Letters or Digits Are allowed");
+                    postalCodeInput.setErrorEnabled(true);
+                    //pCInputEdit.getText().delete(s.length()-1,s.length());
+                }else{
+                    postalCodeInput.setErrorEnabled(false);
+                }
+            }
+        });
+
+        rBPostalCode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rBLocSer.setChecked(!isChecked);
+                setPostalCodeInput(1);
+                setLocationService(0);
+
+            }
+        });
+        rBLocSer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rBPostalCode.setChecked(!isChecked);
+                setPostalCodeInput(0);
+                setLocationService(1);
+
+
+            }
+        });
+        label25Km.setTypeface(Typeface.DEFAULT_BOLD);
+        setPostalCodeInput(0);
+        setLocationService(0);
+        builder.show();
+
 
     }
 
+    public void setPostalCodeInput(int visibility){
+        if(visibility == 0){
+            postalCodeInput.setVisibility(View.GONE);
+            pCInputEdit.setVisibility(View.GONE);
+            radiusText.setVisibility(View.GONE);
+            seekBar.setVisibility(View.GONE);
+            seekBarLabel.setVisibility(View.GONE);
+        }else{
+            postalCodeInput.setVisibility(View.VISIBLE);
+            pCInputEdit.setVisibility(View.VISIBLE);
+            radiusText.setVisibility(View.VISIBLE);
+            seekBar.setVisibility(View.VISIBLE);
+            seekBarLabel.setVisibility(View.VISIBLE);
+
+        }
+
+    }
+
+    public void setLocationService(int visibility){
+        if(visibility==0){
+            locServiceText.setVisibility(View.GONE);
+        }else {
+            locServiceText.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    public void setTextStyle(TextView a, TextView b, TextView c){
+
+        a.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
+        b.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
+        c.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
+
+        a.setTypeface(Typeface.DEFAULT);
+        b.setTypeface(Typeface.DEFAULT);
+        c.setTypeface(Typeface.DEFAULT);
+
+
+
+
+
+    }
 
 }

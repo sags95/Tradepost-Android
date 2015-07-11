@@ -22,11 +22,15 @@ public class MarketPlaceData {
             MarketPlaceData data = new MarketPlaceData();
             data.itemImage = "https://jiresal-test.s3.amazonaws.com/deal3.png";
             data.proUsername = "User";
-            data.itemTitle = "Awesome title";
+            data.itemTitle = "Awesome title " + i ;
+
+            /*
             Random ran = new Random();
             int x = ran.nextInt(i + 10);
             for (int j = 0; j < x; j++)
                 data.itemTitle += repeat;
+
+            */
             datas.add(data);
         }
         return datas;

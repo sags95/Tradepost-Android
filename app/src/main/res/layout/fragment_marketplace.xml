@@ -60,16 +60,16 @@
 
 
     <com.melnykov.fab.FloatingActionButton
-    android:id="@+id/fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-    android:layout_marginRight="16dp"
-    android:layout_marginBottom="16dp"
-    android:src="@drawable/fab_plus_icon"
-    fab:fab_colorNormal="@color/ColorPrimary"
-    fab:fab_colorPressed="@color/ColorPrimaryDark"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/fab_plus_icon"
+        fab:fab_colorNormal="@color/ColorPrimary"
+        fab:fab_colorPressed="@color/ColorPrimaryDark"
 
     />
 

@@ -26,6 +26,10 @@ public class StaggeredAdapter2 extends RecyclerView.Adapter<StaggeredAdapter2.Vi
         this.mItemClick=mItemClick;
     }
 
+    public StaggeredAdapter2(List<MarketPlaceData> mData) {
+        this.mData = mData;
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {

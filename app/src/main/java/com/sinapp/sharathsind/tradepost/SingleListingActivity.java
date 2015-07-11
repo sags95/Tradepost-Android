@@ -17,7 +17,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,8 @@ public class SingleListingActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private List<ImageView> dots;
     private Toolbar toolbar;
+    private FloatingActionButton offerFab;
+    private TextView itemTitle;
 
     private int[] imageResources={
             R.drawable.sample_img,
@@ -47,6 +52,10 @@ public class SingleListingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_listing_view);
 
+        //floating action button
+        offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
+        offerFab.setOnClickListener(offerFabOnClickListener);
+
 
         //image slider viewer
         mCustomPagerAdapter = new CustomPagerAdapter(this,imageResources);
@@ -59,6 +68,10 @@ public class SingleListingActivity extends AppCompatActivity {
         ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
         Log.d("item details","item position: " + itemDetails.get(0));
         Log.d("item details","item title: " + itemDetails.get(1));
+
+        //item title
+        itemTitle = (TextView)findViewById(R.id.single_listing_item_title);
+        itemTitle.setText(itemDetails.get(1));
 
         //setup actionbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -80,22 +93,12 @@ public class SingleListingActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        //Need to handle the text of actionbar (Edit or Offer)
-        MenuItem item;
-        item = menu.add("Offer");
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        //item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getTitle() == "Offer") {
-            //Toast.makeText(this, "OFFER?", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getApplicationContext(),OfferActivity.class));
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -147,4 +150,13 @@ public class SingleListingActivity extends AppCompatActivity {
             dots.get(i).setImageDrawable(drawable);
         }
     }
+
+    public View.OnClickListener offerFabOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(getApplicationContext(),OfferActivity.class));
+        }
+    };
+
+
 }
