@@ -1,28 +1,18 @@
 package com.sinapp.sharathsind.tradepost;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
 import android.util.Log;
-import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,18 +24,14 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
 
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import Model.CustomPagerAdapter;
 import Model.MarketPlaceData;
 import Model.MarketPlaceDataAdapter;
-import Model.RecyclerViewOnClickListener;
 import Model.StaggeredAdapter;
 import Model.StaggeredAdapter2;
 
@@ -62,9 +48,7 @@ public class MarketPlaceFragment  extends Fragment {
     private View rootView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ViewPager mViewPager;
-    private final static int NUM_IMAGES_MP = 4;
-    private List<ImageView> dots;
+    private String locationRad="25Km)";
     private int[] imageResources = {
             R.drawable.sample_img,
             R.drawable.sample_img2,
@@ -73,14 +57,15 @@ public class MarketPlaceFragment  extends Fragment {
     };
 
     //for dialog
-    int location_dialog_layout = R.layout.location_dialog2;
+    int location_dialog_layout = R.layout.location_dialog;
     LayoutInflater li;
+
     private AlertDialog dialog;
     private RadioButton rBPostalCode, rBLocSer;
     private TextInputLayout postalCodeInput;
     private EditText pCInputEdit;
     private SeekBar seekBar;
-    private TextView radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
+    private TextView headerRadText,radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
     private LinearLayout seekBarLabel;
 
 
@@ -101,7 +86,6 @@ public class MarketPlaceFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         rootView = inflater.inflate(R.layout.fragment_marketplace, container, false);
         li = getActivity().getLayoutInflater();
 
@@ -182,6 +166,7 @@ public class MarketPlaceFragment  extends Fragment {
 
         //Location
         View includeView = (View)rootView.findViewById(R.id.marketplace_header);
+        headerRadText = (TextView)includeView.findViewById(R.id.marketplace_header_rad);
         includeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +205,7 @@ public class MarketPlaceFragment  extends Fragment {
             Log.d("child position", String.valueOf(mRecyclerView.getChildPosition(v)));
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
-            TextView itemTitle = (TextView) mRecyclerView.getChildAt(mRecyclerView.getChildPosition(v)).findViewById(R.id.item_title);
+            TextView itemTitle = (TextView) mRecyclerView.findViewHolderForPosition(mRecyclerView.getChildPosition(v)).itemView.findViewById(R.id.item_title);
             clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildPosition(v)));
             clickedItemDetails.add(1, itemTitle.getText().toString());
 
@@ -238,12 +223,13 @@ public class MarketPlaceFragment  extends Fragment {
         final AlertDialog.Builder builder =
                 new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Set Up Your Location");
-        //builder.setMessage("Lorem ipsum dolor ....");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (rBLocSer.isChecked()) {
                     startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                } else if (rBPostalCode.isChecked()) {
+                    headerRadText.setText("(Within " + locationRad);
                 }
             }
         });
@@ -272,21 +258,28 @@ public class MarketPlaceFragment  extends Fragment {
                         label25Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
                         label25Km.setTypeface(Typeface.DEFAULT_BOLD);
                         setTextStyle(label50Km, label75Km, label100Km);
+                        locationRad = "25Km)";
                         break;
                     case 1:
                         label50Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
                         label50Km.setTypeface(Typeface.DEFAULT_BOLD);
                         setTextStyle(label25Km, label75Km, label100Km);
+                        locationRad = "50Km)";
+
                         break;
                     case 2:
                         label75Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
                         label75Km.setTypeface(Typeface.DEFAULT_BOLD);
                         setTextStyle(label25Km, label50Km, label100Km);
+                        locationRad = "75Km)";
+
                         break;
                     case 3:
                         label100Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
                         label100Km.setTypeface(Typeface.DEFAULT_BOLD);
                         setTextStyle(label25Km, label50Km, label75Km);
+                        locationRad = "100Km)";
+
                         break;
                 }
             }
@@ -385,10 +378,8 @@ public class MarketPlaceFragment  extends Fragment {
         b.setTypeface(Typeface.DEFAULT);
         c.setTypeface(Typeface.DEFAULT);
 
-
-
-
-
     }
+
+
 
 }
