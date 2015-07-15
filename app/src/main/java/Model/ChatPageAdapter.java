@@ -58,7 +58,7 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
             super(itemView);
             mTextViewItemName = (TextView) itemView.findViewById(R.id.chat_item_name);
             mTextViewItemDetail = (TextView) itemView.findViewById(R.id.chat_item_detail);
-            mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
+            mImageViewItemImg = (ImageView) itemView.findViewById(R.id.chat_item_img);
 
         }
     }

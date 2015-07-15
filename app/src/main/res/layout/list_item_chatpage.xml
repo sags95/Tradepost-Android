@@ -14,8 +14,8 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/sample_img"
         android:id="@+id/chat_item_img"
         android:layout_centerVertical="true"

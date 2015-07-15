@@ -91,7 +91,6 @@ public class NavigationDrawer extends AppCompatActivity
                 break;
             }
             case 2: {
-                fragment = new TestingFragment();
                 break;
             }
         }

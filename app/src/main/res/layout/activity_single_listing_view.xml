@@ -12,7 +12,7 @@
     <include
         layout="@layout/single_listing_header"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:id="@+id/single_listing_header"
         android:layout_below="@+id/tool_bar"
         />
@@ -29,15 +29,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
 
             >
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/single_listing_img_layout"
                 >
-
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
@@ -61,40 +61,34 @@
 
             </RelativeLayout>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/offer_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/fab_plus_icon"
-                android:layout_alignBottom="@+id/single_listing_img_layout"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="-28dp"
-                android:layout_marginRight="16dp"
-                app:backgroundTint="@color/ColorPrimary"
-                app:fabSize="normal"
-                />
-
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/single_listing_other_layout"
                 android:layout_below="@+id/single_listing_img_layout"
                 android:background="@color/lightgrey"
-                android:paddingTop="8dp"
-                android:paddingLeft="16dp"
                 android:paddingRight="16dp"
+                android:paddingLeft="16dp"
                 >
-
                 <TextView
-                    android:id="@+id/single_listing_text"
+                    android:id="@+id/single_listing_item_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="I want"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="18sp"
+
+                    />
+
+                <TextView
+                    android:layout_below="@+id/single_listing_item_title"
+                    android:id="@+id/single_listing_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LOOKING FOR"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
 
                     />
 
@@ -103,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_below="@+id/single_listing_text"
 
                     >
@@ -124,7 +118,6 @@
                     android:background="@color/white"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:paddingLeft="8dp"
                     android:textStyle="bold"
                     />
 
@@ -135,9 +128,8 @@
                     android:text="Sample Description"
                     android:layout_below="@+id/single_listing_des_text"
                     android:background="@color/white"
+                    android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:paddingLeft="8dp"
-
                     />
 
                 <View
@@ -146,10 +138,24 @@
                     android:layout_below="@+id/single_listing_des_input"
                     />
 
-
             </RelativeLayout>
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/offer_fab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_plus_icon"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:layout_alignBottom="@+id/single_listing_img_layout"
+                app:backgroundTint="@color/ColorPrimary"
+                app:fabSize="normal"
+                app:borderWidth="0dp"
+                />
 
         </RelativeLayout>
     </ScrollView>
+
+
+
 </RelativeLayout>

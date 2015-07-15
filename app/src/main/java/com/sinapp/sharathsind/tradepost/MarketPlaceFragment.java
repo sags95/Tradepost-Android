@@ -1,37 +1,35 @@
 package com.sinapp.sharathsind.tradepost;
 
-import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.support.v7.app.AlertDialog;
 
 
-import com.github.ksoichiro.android.observablescrollview.ObservableListView;
-import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import Model.CustomPagerAdapter;
 import Model.MarketPlaceData;
 import Model.MarketPlaceDataAdapter;
 import Model.StaggeredAdapter;
@@ -40,7 +38,7 @@ import Model.StaggeredAdapter2;
 /**
  * Created by HenryChiang on 15-06-25.
  */
-public class MarketPlaceFragment  extends Fragment implements ObservableScrollViewCallbacks {
+public class MarketPlaceFragment  extends Fragment {
 
     private MarketPlaceDataAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -50,9 +48,7 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
     private View rootView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ViewPager mViewPager;
-    private final static int NUM_IMAGES_MP = 4;
-    private List<ImageView> dots;
+    private String locationRad="25Km)";
     private int[] imageResources = {
             R.drawable.sample_img,
             R.drawable.sample_img2,
@@ -60,7 +56,20 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
             R.drawable.sample_img
     };
 
-    private ObservableRecyclerView recyclerview;
+    //for dialog
+    int location_dialog_layout = R.layout.location_dialog;
+    LayoutInflater li;
+
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    private RadioButton rBPostalCode, rBLocSer;
+    private TextInputLayout postalCodeInput;
+    private EditText pCInputEdit;
+    private SeekBar seekBar;
+    private TextView headerRadText,radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
+    private LinearLayout seekBarLabel;
+
+
 
 
 
@@ -78,8 +87,10 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         rootView = inflater.inflate(R.layout.fragment_marketplace, container, false);
+        li = getActivity().getLayoutInflater();
+
+
 
         /*
         recyclerview = (ObservableRecyclerView) rootView.findViewById(R.id.recyclerview);
@@ -125,6 +136,23 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
         stagAdapter2 = new StaggeredAdapter2(MarketPlaceData.generateSampleData(),listingItemClickListener);
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
+        /*
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Toast.makeText(getActivity(), "you click" + position, Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getActivity(), SingleListingActivity.class);
+                        ArrayList<String> clickedItemDetails = new ArrayList<>();
+                        TextView itemTitle = (TextView) mRecyclerView.getChildAt(position).findViewById(R.id.item_title);
+                        clickedItemDetails.add(0, String.valueOf(position));
+                        clickedItemDetails.add(1, itemTitle.getText().toString());
+                        i.putStringArrayListExtra("itemClicked", clickedItemDetails);
+                        startActivity(i);
+                    }
+                })
+        );
+        */
 
 
 
@@ -139,6 +167,7 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
 
         //Location
         View includeView = (View)rootView.findViewById(R.id.marketplace_header);
+        headerRadText = (TextView)includeView.findViewById(R.id.marketplace_header_rad);
         includeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,7 +206,7 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
             Log.d("child position", String.valueOf(mRecyclerView.getChildPosition(v)));
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
-            TextView itemTitle = (TextView) rootView.findViewById(R.id.item_title);
+            TextView itemTitle = (TextView) mRecyclerView.findViewHolderForPosition(mRecyclerView.getChildPosition(v)).itemView.findViewById(R.id.item_title);
             clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildPosition(v)));
             clickedItemDetails.add(1, itemTitle.getText().toString());
 
@@ -189,29 +218,197 @@ public class MarketPlaceFragment  extends Fragment implements ObservableScrollVi
         }
     };
 
-    @Override
-    public void onScrollChanged(int scrollY, boolean firstScroll,
-                                boolean dragging) {
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
-
-    }
-
     public void customDialog(){
-        Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView( R.layout.location_dialog );
-        dialog.setTitle( "Dialog Details" );
 
-        dialog.show( );
+        final View dialogView = li.inflate(location_dialog_layout, null);
+        builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Set Up Your Location");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (rBLocSer.isChecked()) {
+                    headerRadText.setVisibility(View.GONE);
+                    startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                } else if (rBPostalCode.isChecked()) {
+                    getRadiusChanged();
+                    headerRadText.setVisibility(View.VISIBLE);
+                    headerRadText.setText("(Within " + locationRad);
+                }
+            }
+        });
 
+        builder.setNegativeButton("Cancel", null);
+        //set custom view.
+        builder.setView(dialogView);
+
+        //set up the variables
+        rBPostalCode = (RadioButton)dialogView.findViewById(R.id.radioButton_postalCode);
+        rBLocSer = (RadioButton)dialogView.findViewById(R.id.radioButton_locService);
+        postalCodeInput = (TextInputLayout)dialogView.findViewById(R.id.dialog_postalCode);
+        pCInputEdit = (EditText)dialogView.findViewById(R.id.dialog_postalCode_edit);
+        seekBar = (SeekBar)dialogView.findViewById(R.id.dialog_seekbar);
+        radiusText = (TextView)dialogView.findViewById(R.id.dialog_radius_txt);
+        locServiceText = (TextView)dialogView.findViewById(R.id.dialog_loc_text);
+        seekBarLabel = (LinearLayout)dialogView.findViewById(R.id.dialog_seekbar_label);
+        label25Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_25km);
+        label25Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        label50Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_50km);
+        label75Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_75km);
+        label100Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_100km);
+
+        //set progress changed on seekbar
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                switch (progress) {
+                    case 0:
+                        setTypefaceForChosen(label25Km);
+                        setTextStyle(label50Km, label75Km, label100Km);
+                        break;
+                    case 1:
+                        setTypefaceForChosen(label50Km);
+                        setTextStyle(label25Km, label75Km, label100Km);
+                        break;
+                    case 2:
+                        setTypefaceForChosen(label75Km);
+                        setTextStyle(label25Km, label50Km, label100Km);
+                        break;
+                    case 3:
+                        setTypefaceForChosen(label100Km);
+                        setTextStyle(label25Km, label50Km, label75Km);
+                        break;
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        //check the zip/postal code input
+        pCInputEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                setPostalCodeError(s);
+            }
+        });
+
+        rBPostalCode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rBLocSer.setChecked(!isChecked);
+                setPostalCodeError(pCInputEdit.getEditableText());
+                setPostalCodeInput(1);
+                setLocationService(0);
+
+            }
+        });
+        rBLocSer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rBPostalCode.setChecked(!isChecked);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                setPostalCodeInput(0);
+                setLocationService(1);
+            }
+        });
+
+        //initialize
+        label25Km.setTypeface(Typeface.DEFAULT_BOLD);
+        setPostalCodeInput(0);
+        setLocationService(0);
+
+        //showing custom dialog.
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    public void setPostalCodeInput(int visibility){
+        if(visibility == 0){
+            postalCodeInput.setVisibility(View.GONE);
+            pCInputEdit.setVisibility(View.GONE);
+            radiusText.setVisibility(View.GONE);
+            seekBar.setVisibility(View.GONE);
+            seekBarLabel.setVisibility(View.GONE);
+        }else{
+            postalCodeInput.setVisibility(View.VISIBLE);
+            pCInputEdit.setVisibility(View.VISIBLE);
+            radiusText.setVisibility(View.VISIBLE);
+            seekBar.setVisibility(View.VISIBLE);
+            seekBarLabel.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //set different error message according to the input errors.
+    public void setPostalCodeError(Editable s){
+        if (!isPostalCodeValid(s)) {
+            postalCodeInput.setError("Only Letters or Digits Are Allowed.");
+            postalCodeInput.setErrorEnabled(true);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+        }else if(!isPostalCodeValid(s)&&pCInputEdit.length()!=6){
+            postalCodeInput.setError("Only Letters or Digits Are Allowed. Zip/Postal Code Too Short.");
+            postalCodeInput.setErrorEnabled(true);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+        }else if(pCInputEdit.length()!=6){
+            postalCodeInput.setError("Zip/Postal Code Too Short.");
+            postalCodeInput.setErrorEnabled(true);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        }
+        else {
+            postalCodeInput.setErrorEnabled(false);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+
+        }
+    }
+
+    //check if zip/postal code input contains any not acceptable symbols.
+    public boolean isPostalCodeValid(Editable s){
+        if(s.length()>0&&!Character.isLetterOrDigit(s.charAt(pCInputEdit.length()-1))){return false;}
+        for(int i=0;i<s.length();i++){if(!Character.isLetterOrDigit(s.charAt(i))){return false;}}
+        return true;
     }
 
 
+    public void setLocationService(int visibility){
+        if(visibility==0){locServiceText.setVisibility(View.GONE);}
+        else {locServiceText.setVisibility(View.VISIBLE);}
+    }
+
+    public void setTypefaceForChosen(TextView chosenTextView){
+        chosenTextView.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        chosenTextView.setTypeface(Typeface.DEFAULT_BOLD);
+    }
+
+    public void setTextStyle(TextView a, TextView b, TextView c){
+        a.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
+        b.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
+        c.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
+        a.setTypeface(Typeface.DEFAULT);
+        b.setTypeface(Typeface.DEFAULT);
+        c.setTypeface(Typeface.DEFAULT);
+
+    }
+
+    public void getRadiusChanged(){
+        switch (seekBar.getProgress()){
+            case 0:
+                locationRad = "25Km)";
+                break;
+            case 1:
+                locationRad = "50Km)";
+                break;
+            case 2:
+                locationRad = "75Km)";
+                break;
+            case 3:
+                locationRad = "100Km)";
+                break;
+        }
+    }
 }

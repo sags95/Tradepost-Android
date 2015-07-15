@@ -83,6 +83,9 @@ public class ChatPageFragment extends Fragment {
         items.add(new ChatPageItem("Main Title6", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
         items.add(new ChatPageItem("Main Title7", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
         items.add(new ChatPageItem("Main Title8", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
+        items.add(new ChatPageItem("Main Title9", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
+        items.add(new ChatPageItem("Main Title10", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
+        items.add(new ChatPageItem("Main Title11", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
 
         return items;
     }
