@@ -3,10 +3,6 @@ package Model;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.widget.FrameLayout;
-
-import com.sinapp.sharathsind.tradepost.OffersTabOne;
-import com.sinapp.sharathsind.tradepost.OffersTabTwo;
 
 /**
  * Created by HenryChiang on 15-06-27.

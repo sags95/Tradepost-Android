@@ -47,8 +47,10 @@ public class StaggeredAdapter2 extends RecyclerView.Adapter<StaggeredAdapter2.Vi
         viewHolder.mTextViewItemTitle.setText(mData.get(i).itemTitle);
         if (i % 2 == 0) {
             viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img);
-        } else {
+        } else if(i%3 ==0) {
             viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img3);
+        }else{
+            viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img2);
         }
 
         viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {

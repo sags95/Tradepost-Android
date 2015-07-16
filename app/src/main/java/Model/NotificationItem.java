@@ -34,6 +34,7 @@ public class NotificationItem {
 
     }
 
+    //not used.
     public String setMsg(){
         String tempMsg="";
         // create a bold StyleSpan to be used on the SpannableStringBuilder

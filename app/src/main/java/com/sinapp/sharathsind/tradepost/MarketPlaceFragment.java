@@ -227,7 +227,7 @@ public class MarketPlaceFragment  extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (rBLocSer.isChecked()) {
-                    headerRadText.setVisibility(View.GONE);
+                    headerRadText.setText("(Location Service)");
                     startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 } else if (rBPostalCode.isChecked()) {
                     getRadiusChanged();
@@ -350,12 +350,12 @@ public class MarketPlaceFragment  extends Fragment {
             postalCodeInput.setErrorEnabled(true);
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-        }else if(!isPostalCodeValid(s)&&pCInputEdit.length()!=6){
+        }else if(!isPostalCodeValid(s)&&pCInputEdit.length()!=6&&pCInputEdit.length()>0){
             postalCodeInput.setError("Only Letters or Digits Are Allowed. Zip/Postal Code Too Short.");
             postalCodeInput.setErrorEnabled(true);
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-        }else if(pCInputEdit.length()!=6){
+        }else if(pCInputEdit.length()!=6&&pCInputEdit.length()>0){
             postalCodeInput.setError("Zip/Postal Code Too Short.");
             postalCodeInput.setErrorEnabled(true);
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);

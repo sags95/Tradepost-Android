@@ -20,6 +20,7 @@
     <color name="myTextPrimaryColor">#212121</color>
     <color name="myNavigationColor">#000</color>
     <color name="lightgrey_chat">#5e5e5e</color>
+    <color name="green">#32B141</color>
 
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>

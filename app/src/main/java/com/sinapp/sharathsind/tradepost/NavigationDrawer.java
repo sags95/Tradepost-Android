@@ -87,7 +87,7 @@ public class NavigationDrawer extends AppCompatActivity
                 break;
             }
             case 1: {
-                fragment = new OffersFragment();
+                fragment = new MyOffersFragment();
                 break;
             }
             case 2: {

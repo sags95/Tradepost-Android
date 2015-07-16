@@ -149,8 +149,7 @@ public class ChatFragment extends Fragment {
                 intent.putExtra("BitmapImage", thumbnail);
 
             }
-        }
-else{
+        }else{
                 Uri selectedImageUri = data.getData();
                 String[] projection = { MediaStore.MediaColumns.DATA };
             Cursor cursor = getActivity().getContentResolver().query(selectedImageUri, projection, null, null, null);

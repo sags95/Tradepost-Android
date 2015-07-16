@@ -14,12 +14,12 @@ import Model.SlidingTabLayout;
 /**
  * Created by HenryChiang on 15-06-27.
  */
-public class OffersFragment extends Fragment {
+public class MyOffersFragment extends Fragment {
 
     ViewPager pager;
     OffersViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Sent","Received"};
+    CharSequence Titles[]={"Received","Sent"};
     int numbOfTabs = 2;
     private View rootView;
 
@@ -35,9 +35,9 @@ public class OffersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_offers, container, false);
+        rootView = inflater.inflate(R.layout.fragment_myoffers, container, false);
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new OffersViewPagerAdapter(getFragmentManager(),Titles, numbOfTabs, new OffersTabOne(), new OffersTabTwo());
+        adapter =  new OffersViewPagerAdapter(getFragmentManager(),Titles, numbOfTabs, new MyOffersTabOne(), new MyOffersTabTwo());
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager)rootView.findViewById(R.id.offers_viewpager);

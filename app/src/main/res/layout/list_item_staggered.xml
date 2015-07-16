@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/sample_img"
+                android:src="@drawable/sample_img2"
                 android:layout_centerHorizontal="true"
                 android:adjustViewBounds="true"
             />
