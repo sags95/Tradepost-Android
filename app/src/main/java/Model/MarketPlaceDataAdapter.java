@@ -34,7 +34,7 @@ public class MarketPlaceDataAdapter extends ArrayAdapter<MarketPlaceData> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ;
+
             final DealHolder holder;
 
             if (convertView == null) {

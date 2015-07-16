@@ -38,6 +38,7 @@ import java.util.List;
 import Model.NavigationDrawerAdapter;
 import Model.NavigationDrawerCallbacks;
 import Model.NavigationItem;
+import Model.Variables;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -262,6 +263,13 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         ((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
         ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
         avatarContainer.setImageBitmap(avatar);
+        if(Variables.profilepic!=null)
+        {
+            avatarContainer = (CircleImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
+            ((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(Variables.email);
+            ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(Variables.username);
+            avatarContainer.setImageBitmap(Variables.profilepic);
+        }
     }
 
 }

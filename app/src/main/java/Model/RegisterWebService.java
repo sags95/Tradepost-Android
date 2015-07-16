@@ -45,7 +45,7 @@ public class RegisterWebService {
 
         envelope.setOutputSoapObject(request);
 
-        HttpTransportSE ht = new HttpTransportSE(URL);
+        HttpTransportSE ht = new HttpTransportSE(URL,10000000);
         try {
             ht.call(SOAP_ACTION, envelope);
             SoapPrimitive response = (SoapPrimitive)envelope.getResponse();

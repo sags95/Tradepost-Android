@@ -51,7 +51,11 @@ public class Welcome extends Activity implements OnClickListener {
                 c.moveToFirst();
                Constants.userid=c.getInt(c.getColumnIndex("userid"));
                 Constants.username=c.getString(c.getColumnIndex("username"));
-
+if(c.getCount()>0)
+{
+    startActivity(new Intent(this, NavigationDrawer.class));
+    finish();
+}
 
 
 
@@ -59,9 +63,7 @@ public class Welcome extends Activity implements OnClickListener {
             {
                 String s=e.toString();
             }
-            startActivity(new Intent(this, NavigationDrawer.class));
 
-            finish();
         }
         else
         {

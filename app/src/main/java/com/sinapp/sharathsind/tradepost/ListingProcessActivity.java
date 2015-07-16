@@ -42,8 +42,8 @@ public class ListingProcessActivity extends Activity{
     private FlowLayout tagFlowLayout;
     private LinearLayout singleTagLayout;
     private String[] categories;
-
-
+    public ArrayList<String> tags;
+public ArrayList<Bitmap>bits;
     private EditText tagInput;
 
 
@@ -52,7 +52,8 @@ public class ListingProcessActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_process);
         tagFlowLayout = (FlowLayout) findViewById(R.id.section5_tags);
-
+        tags=new ArrayList<String>();
+        bits=new ArrayList<Bitmap>();
         //section 2
         ImageView camera = (ImageView)findViewById(R.id.section2_img_camera);
         ImageView folder = (ImageView)findViewById(R.id.section2_img_folder);
@@ -103,6 +104,7 @@ public class ListingProcessActivity extends Activity{
                 TextView tagName = (TextView) findViewById(TAGS_COUNT).findViewById(R.id.tag_name);
                 //tagName.setId(TAGS_COUNT);
                 tagName.setText(tagInput.getText().toString().trim());
+                tags.add(tagInput.getText().toString().trim());
                 //tagName.setTag(tagInput.getText().toString());
 
                 tagInput.setText("");
@@ -117,6 +119,7 @@ public class ListingProcessActivity extends Activity{
         @Override
         public void onClick(View v) {
             tagFlowLayout.removeView((View) v.getParent());
+            tags.add(((TextView) v).getText().toString().trim());
             Log.d("Child Removed", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
 
