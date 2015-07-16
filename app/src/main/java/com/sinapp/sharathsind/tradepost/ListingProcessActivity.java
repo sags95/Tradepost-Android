@@ -57,6 +57,8 @@ public class ListingProcessActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
 
+    public ArrayList<String> tags;
+public ArrayList<Bitmap>bits;
     private EditText tagInput;
 
 
@@ -80,6 +82,8 @@ public class ListingProcessActivity extends AppCompatActivity {
             }
         });
 
+        tags=new ArrayList<String>();
+        bits=new ArrayList<Bitmap>();
         //section 2
         itemImg1 = (ImageView) findViewById(R.id.section2_item_img1);
         itemImg2 = (ImageView) findViewById(R.id.section2_item_img2);
@@ -159,6 +163,7 @@ public class ListingProcessActivity extends AppCompatActivity {
                 TextView tagName = (TextView) findViewById(TAGS_COUNT).findViewById(R.id.tag_name);
                 //tagName.setId(TAGS_COUNT);
                 tagName.setText(tagInput.getText().toString().trim());
+                tags.add(tagInput.getText().toString().trim());
                 //tagName.setTag(tagInput.getText().toString());
 
                 tagInput.setText("");
@@ -173,6 +178,7 @@ public class ListingProcessActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             tagFlowLayout.removeView((View) v.getParent());
+            tags.add(((TextView) v).getText().toString().trim());
             Log.d("Child Removed", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
 
