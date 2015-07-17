@@ -70,6 +70,7 @@ public ArrayList<Bitmap>bits;
 
         //toolbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        //(toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -152,23 +153,23 @@ public ArrayList<Bitmap>bits;
             if (tagInput.getText().length() > 0 && tagFlowLayout.getChildCount() < MAX_NUM_TAGS) {
                 singleTagLayout = (LinearLayout) View.inflate(getApplicationContext(), R.layout.single_tag, null);
                 singleTagLayout.setId(TAGS_COUNT);
-                tagFlowLayout.addView(singleTagLayout);
-
                 //Button for removing Tag
-                ImageView cancelTag = (ImageView) findViewById(TAGS_COUNT).findViewById(R.id.tag_cancel_btn);
-                //cancelTag.setId(TAGS_COUNT);
+                ImageView cancelTag = (ImageView)singleTagLayout.findViewById(R.id.tag_cancel_btn);
+                cancelTag.setId(TAGS_COUNT);
                 cancelTag.setOnClickListener(tagCancelButtonListener);
 
                 //Tag Name
-                TextView tagName = (TextView) findViewById(TAGS_COUNT).findViewById(R.id.tag_name);
+                TextView tagName = (TextView) singleTagLayout.findViewById(R.id.tag_name);
                 //tagName.setId(TAGS_COUNT);
                 tagName.setText(tagInput.getText().toString().trim());
                 tags.add(tagInput.getText().toString().trim());
-                //tagName.setTag(tagInput.getText().toString());
+                tagName.setTag(tagInput.getText().toString());
 
                 tagInput.setText("");
                 TAGS_COUNT++;
                 Log.d("Child Added", "Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
+                tagFlowLayout.addView(singleTagLayout);
+
             }
 
         }
@@ -178,7 +179,7 @@ public ArrayList<Bitmap>bits;
         @Override
         public void onClick(View v) {
             tagFlowLayout.removeView((View) v.getParent());
-            tags.add(((TextView) v).getText().toString().trim());
+            //tags.add(((TextView) v).getText().toString().trim());
             Log.d("Child Removed", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
 
