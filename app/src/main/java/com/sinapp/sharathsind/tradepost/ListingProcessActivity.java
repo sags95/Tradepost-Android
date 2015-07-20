@@ -70,12 +70,11 @@ public ArrayList<Bitmap>bits;
 
         //toolbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        //(toolbar);
+        toolbar.setTitle("Post Your Item");
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setTitle("Post Your Item");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,8 +166,8 @@ public ArrayList<Bitmap>bits;
 
                 tagInput.setText("");
                 TAGS_COUNT++;
-                Log.d("Child Added", "Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
                 tagFlowLayout.addView(singleTagLayout);
+                Log.d("Child Added", "Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
             }
 

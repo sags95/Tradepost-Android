@@ -106,15 +106,15 @@ public class NavigationDrawer extends AppCompatActivity
         MenuItem item;
 
         item = menu.add("Search");
-        item.setIcon(R.drawable.ic_toolbar_search);
+        item.setIcon(R.drawable.search_icon);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Chat");
-        item.setIcon(R.drawable.ic_toolbar_chat);
+        item.setIcon(R.drawable.chat_icon);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Notification");
-        item.setIcon(R.drawable.ic_toolbar_notification);
+        item.setIcon(R.drawable.notification_icon);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
 

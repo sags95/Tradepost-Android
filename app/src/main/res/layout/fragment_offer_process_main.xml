@@ -4,16 +4,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sinapp.sharathsind.tradepost.OfferActivity"
-
+    tools:context="com.sinapp.sharathsind.tradepost.OfferProcessActivity"
     >
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/toolbar_default">
-    </include>
 
     <ScrollView
-        android:layout_below="@+id/tool_bar"
         android:id="@+id/offer_parent_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -46,30 +40,30 @@
             android:text="FROM YOUR LISTING"
             android:textStyle="bold"
             android:textSize="18sp"
-
-            android:layout_marginBottom="16dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             />
 
-
-                <ListView
-
-                    android:id="@+id/offer_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_below="@+id/offer_listview_title"
-                    >
-                </ListView>
-
-
-
-            <android.support.design.widget.TextInputLayout
+            <TextView
+                android:id="@+id/offer_process_list_main"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/offer_listview_title"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"
+                />
+
+
+
+            <Button
+                android:layout_below="@+id/offer_process_list_main"
+                android:id="@+id/offer_process_addItem_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/offer_listview"
-                android:id="@+id/offer_floatlabel_edit"
-                >
+                android:text="add item"
+                />
+
+
             <EditText
 
                 android:id="@+id/offer_addcash_edit"
@@ -80,16 +74,18 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:visibility="gone"
+                android:layout_below="@+id/offer_process_addItem_btn"
+
+
 
                 />
-            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/offer_addcash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ADD CASH"
-                android:layout_below="@+id/offer_floatlabel_edit"
+                android:layout_below="@+id/offer_addcash_edit"
                 />
 
 
@@ -119,7 +115,7 @@
             >
 
             <ImageButton
-                android:id="@+id/offer_cam_btn"
+                android:id="@+id/offer_process_cam_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/offer_or"
@@ -136,14 +132,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OR"
-                android:layout_alignBottom="@+id/offer_cam_btn"
+                android:layout_alignBottom="@+id/offer_process_cam_btn"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="24dp"
 
                 />
 
             <ImageButton
-                android:id="@+id/offer_gallery_btn"
+                android:id="@+id/offer_process_gallery_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/offer_or"
@@ -162,8 +158,8 @@
                 android:text="@string/section2_text_camera"
                 android:gravity="center"
                 android:layout_below="@+id/offer_or"
-                android:layout_alignLeft="@id/offer_cam_btn"
-                android:layout_alignRight="@id/offer_cam_btn"
+                android:layout_alignLeft="@id/offer_process_cam_btn"
+                android:layout_alignRight="@id/offer_process_cam_btn"
                 />
 
             <TextView
@@ -173,8 +169,8 @@
                 android:text="@string/section2_text_folder"
                 android:gravity="center"
                 android:layout_below="@+id/offer_or"
-                android:layout_alignRight="@id/offer_gallery_btn"
-                android:layout_alignLeft="@id/offer_gallery_btn"
+                android:layout_alignRight="@id/offer_process_gallery_btn"
+                android:layout_alignLeft="@id/offer_process_gallery_btn"
                 />
 
 
@@ -184,6 +180,14 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
+
+            <ImageView
+                android:id="@+id/offer_process_new_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/offer_details_bar"
+                />
 
         </RelativeLayout>
     </ScrollView>

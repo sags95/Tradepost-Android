@@ -97,7 +97,7 @@
         </activity>
 
         <activity
-            android:name=".OfferActivity"
+            android:name=".OfferProcessActivity"
             android:label="Offer"
 
             >
