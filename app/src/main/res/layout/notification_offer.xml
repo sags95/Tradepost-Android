@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <LinearLayout
+        android:id="@+id/noti_offer_myitem_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/darkgrey"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_alignParentTop="true"
+        android:focusable="true"
+        android:clickable="true"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MY ITEM: "
+            android:textSize="12sp"
+
+            />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sample Item Title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/noti_offer_detail_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:layout_below="@+id/noti_offer_myitem_bar"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/noti_offer_user_img"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/sample_img2"
+            android:scaleType="centerCrop"
+            />
+
+        <LinearLayout
+            android:id="@+id/noti_offer_trade_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="20sp"
+                />
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OFFER: "
+                    android:textSize="12sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="An Item"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" for trade."
+                    android:textSize="12sp"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EXTRA: "
+                    android:textSize="12sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$20 CAD"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/noti_offer_swipe_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="swipe to view the item(s)"
+        android:textSize="12sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_below="@+id/noti_offer_detail_bar"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/noti_offer_swipe_text"
+        android:layout_above="@+id/noti_offer_btn_bar"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dots"
+        android:layout_alignBottom="@+id/pager"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:paddingBottom="4dp"
+
+        />
+
+    <RelativeLayout
+        android:id="@+id/noti_offer_btn_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentBottom="true"
+
+
+        >
+
+        <Button
+            android:id="@+id/noti_offer_accept_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:background="@color/green"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+
+            android:layout_alignParentLeft="true"
+            android:layout_alignBaseline="@+id/noti_offer_or"
+            android:layout_marginLeft="20dp"
+            />
+
+        <TextView
+            android:id="@+id/noti_offer_or"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Or"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+
+            />
+
+        <Button
+            android:id="@+id/noti_offer_decline_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decline"
+            android:background="@color/red"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+
+            android:layout_alignParentRight="true"
+            android:layout_alignBaseline="@+id/noti_offer_or"
+            android:layout_marginRight="20dp"
+
+
+            />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
+

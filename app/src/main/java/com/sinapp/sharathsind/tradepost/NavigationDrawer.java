@@ -90,7 +90,12 @@ public class NavigationDrawer extends AppCompatActivity
                 fragment = new MyOffersFragment();
                 break;
             }
-            case 2: {
+            case 3:{
+                fragment = new notificationoffertesting();
+                break;
+            }
+            case 4: {
+                fragment = new CategoryFragment();
                 break;
             }
         }

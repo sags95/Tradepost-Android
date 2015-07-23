@@ -3,12 +3,15 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,7 @@ import Model.ChatPageItem;
 import Model.DividerItemDecoration;
 import Model.NotificationAdapter;
 import Model.NotificationItem;
+import Model.RecyclerViewOnClickListener;
 
 /**
  * Created by HenryChiang on 15-07-01.
@@ -44,6 +48,19 @@ public class NotificationFragment extends Fragment {
         mNotificationAdapter = new NotificationAdapter(notiItem);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
+
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Log.d("viewtype",view.getTag().toString());
+                        if(view.getTag().toString().equals("0")){
+
+                        }
+                    }
+                })
+        );
+
         mRecyclerView.setAdapter(mNotificationAdapter);
         applyLinearLayoutManager();
 
@@ -52,8 +69,8 @@ public class NotificationFragment extends Fragment {
 
     public List<NotificationItem> addItem(String userName, int viewType) {
         List<NotificationItem> items = new ArrayList<NotificationItem>();
-        items.add(new NotificationItem(userName,viewType));
-        items.add(new NotificationItem("User",1));
+        items.add(new NotificationItem(userName, viewType));
+        items.add(new NotificationItem("User", 1));
         items.add(new NotificationItem("UserABC",2));
         items.add(new NotificationItem("UserLong",3));
         items.add(new NotificationItem("UserXYZ",4));
