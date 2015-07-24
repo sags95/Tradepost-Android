@@ -24,26 +24,20 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.support.v7.app.AlertDialog;
-
-
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
 import Model.MarketPlaceData;
-import Model.MarketPlaceDataAdapter;
-import Model.StaggeredAdapter;
-import Model.StaggeredAdapter2;
+import Model.MarketPlaceStaggeredAdapter;
 
 /**
  * Created by HenryChiang on 15-06-25.
  */
 public class MarketPlaceFragment  extends Fragment {
 
-    private MarketPlaceDataAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private StaggeredAdapter stagAdapter;
-    private StaggeredAdapter2 stagAdapter2;
+    private MarketPlaceStaggeredAdapter stagAdapter2;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private View rootView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -70,9 +64,6 @@ public class MarketPlaceFragment  extends Fragment {
     private LinearLayout seekBarLabel;
 
 
-
-
-
     public MarketPlaceFragment() {
     }
 
@@ -80,8 +71,16 @@ public class MarketPlaceFragment  extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Tradepost");
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        LayoutInflater inflator = LayoutInflater.from(getActivity());
+        View v = inflator.inflate(R.layout.toolbar_custom_title, null);
+        TextView title = (TextView) v.findViewById(R.id.title);
+        Typeface type = Typeface.createFromAsset(getResources().getAssets(), "fonts/black_jack.ttf");
+        title.setText("Tradepost");
+        title.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        title.setTypeface(type);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setCustomView(v);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class MarketPlaceFragment  extends Fragment {
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        stagAdapter2 = new StaggeredAdapter2(MarketPlaceData.generateSampleData(),listingItemClickListener);
+        stagAdapter2 = new MarketPlaceStaggeredAdapter(MarketPlaceData.generateSampleData(),listingItemClickListener);
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
         /*

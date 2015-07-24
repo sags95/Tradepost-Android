@@ -213,6 +213,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         });
 
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
+
     }
 
     private void selectItem(int position) {

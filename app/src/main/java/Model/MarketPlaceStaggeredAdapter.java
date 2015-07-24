@@ -15,18 +15,18 @@ import java.util.List;
 /**
  * Created by HenryChiang on 15-06-10.
  */
-public class StaggeredAdapter2 extends RecyclerView.Adapter<StaggeredAdapter2.ViewHolder> {
+public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlaceStaggeredAdapter.ViewHolder> {
 
     private List<MarketPlaceData> mData;
     private View.OnClickListener mItemClick;
 
 
-    public StaggeredAdapter2(List<MarketPlaceData> mData,View.OnClickListener mItemClick) {
+    public MarketPlaceStaggeredAdapter(List<MarketPlaceData> mData, View.OnClickListener mItemClick) {
         this.mData = mData;
         this.mItemClick=mItemClick;
     }
 
-    public StaggeredAdapter2(List<MarketPlaceData> mData) {
+    public MarketPlaceStaggeredAdapter(List<MarketPlaceData> mData) {
         this.mData = mData;
     }
 
