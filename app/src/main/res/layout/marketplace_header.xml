@@ -24,7 +24,7 @@
         android:id="@+id/marketplace_header_img"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/location_icon"
+        android:src="@drawable/ic_location_on_white_24dp"
 
 
 
