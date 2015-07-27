@@ -1,12 +1,10 @@
 package com.sinapp.sharathsind.tradepost;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,11 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +27,6 @@ import Model.CustomPagerAdapter;
 public class SingleListingActivity extends AppCompatActivity {
 
     private CustomPagerAdapter mCustomPagerAdapter;
-    private final static int NUM_IMAGES = 4;
     private ViewPager mViewPager;
     private List<ImageView> dots;
     private Toolbar toolbar;
@@ -107,7 +100,7 @@ public class SingleListingActivity extends AppCompatActivity {
         dots = new ArrayList<>();
         LinearLayout dotsLayout = (LinearLayout)findViewById(R.id.dots);
 
-        for(int i = 0; i < NUM_IMAGES; i++) {
+        for(int i = 0; i < imageResources.length; i++) {
             ImageView dot = new ImageView(this);
             if(i==0){
                 dot.setImageDrawable(getResources().getDrawable(R.drawable.pager_dot_selected));
@@ -144,7 +137,7 @@ public class SingleListingActivity extends AppCompatActivity {
 
     public void selectDot(int idx) {
         Resources res = getResources();
-        for(int i = 0; i < NUM_IMAGES; i++) {
+        for(int i = 0; i < imageResources.length; i++) {
             int drawableId = (i==idx)?(R.drawable.pager_dot_selected):(R.drawable.pager_dot_not_selected);
             Drawable drawable = res.getDrawable(drawableId);
             dots.get(i).setImageDrawable(drawable);
@@ -154,7 +147,7 @@ public class SingleListingActivity extends AppCompatActivity {
     public View.OnClickListener offerFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getApplicationContext(),OfferActivity.class));
+            startActivity(new Intent(getApplicationContext(),OfferProcessActivity.class));
         }
     };
 

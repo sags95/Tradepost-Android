@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public NotificationAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        final int currentPos = i;
+
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_item_notification, viewGroup, false);
         NotificationAdapter.ViewHolder vh = new ViewHolder(v);
-        //v.setOnClickListener(mItemClick);
+
         return vh;
 
     }
@@ -45,6 +48,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         //viewHolder.mImageViewImg
         //viewHolder.mImageViewItemImg.setImageDrawable(mData.get(i).getDrawable());
         viewHolder.mTextViewMsg.setText(sb);
+        viewHolder.itemView.setTag(mData.get(i).getViewType());
     }
 
     @Override

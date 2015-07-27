@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import Model.OffersViewPagerAdapter;
 import Model.SlidingTabLayout;
@@ -27,7 +29,17 @@ public class MyOffersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Offers");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowCustomEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        LayoutInflater inflator = LayoutInflater.from(getActivity());
+        View v = inflator.inflate(R.layout.toolbar_custom_title, null);
+        TextView title = (TextView) v.findViewById(R.id.title);
+        Typeface type = Typeface.createFromAsset(getResources().getAssets(), "fonts/black_jack.ttf");
+        title.setText("My Offers");
+        title.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        title.setTypeface(type);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setCustomView(v);
+
 
     }
 

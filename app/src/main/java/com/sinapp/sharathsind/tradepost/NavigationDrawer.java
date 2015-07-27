@@ -4,6 +4,7 @@ package com.sinapp.sharathsind.tradepost;
  * Created by HenryChiang on 15-06-25.
  */
 
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.graphics.BitmapFactory;
@@ -17,12 +18,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import Model.NavigationDrawerCallbacks;
@@ -48,6 +51,20 @@ public class NavigationDrawer extends AppCompatActivity
         setContentView(R.layout.fragment_container);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        LayoutInflater inflator = LayoutInflater.from(this);
+        View v = inflator.inflate(R.layout.toolbar_custom_title, null);
+        TextView title = (TextView) v.findViewById(R.id.title);
+        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/black_jack.ttf");
+        title.setText("Tradepost");
+        title.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        title.setTypeface(type);
+        getSupportActionBar().setCustomView(v);
+
+
 
         mFrameLayoutContainer = (FrameLayout)findViewById(R.id.container);
         mFrameLayoutRight = (FrameLayout)findViewById(R.id.container_right);
@@ -55,26 +72,24 @@ public class NavigationDrawer extends AppCompatActivity
 
         chatPageFrag = new ChatPageFragment();
         notiFrag = new NotificationFragment();
+
         //initialize the right drawer
         fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        //transaction.add(R.id.container_right, notiFrag, "chatPageFragment");
-
+        //transaction.add(R.id.container_right, new ChatPageFragment() , "chatPageFragment");
         transaction.add(R.id.container_right, chatPageFrag, "chatPageFragment");
-        //transaction.addToBackStack("chatPageFragment");
         transaction.commit();
-        //fm.executePendingTransactions();
-
 
         //Set up drawer and drawer's header
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
-        mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar,mFrameLayoutRight);
+        mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar, mFrameLayoutRight);
         mNavigationDrawerFragment.setUserData("User", "sample@tradepost.com", BitmapFactory.decodeResource(getResources(), R.drawable.sample_img));
 
 
         isAnyDrawerOpen(this.findViewById(android.R.id.content));
-        setUpDrawerWidth();
+        setUpRightDrawerWidth();
+        setUpLeftDrawerWidth();
     }
 
     @Override
@@ -90,7 +105,12 @@ public class NavigationDrawer extends AppCompatActivity
                 fragment = new MyOffersFragment();
                 break;
             }
-            case 2: {
+            case 3:{
+                fragment = new notificationoffertesting();
+                break;
+            }
+            case 4: {
+                fragment = new CategoryFragment();
                 break;
             }
         }
@@ -106,15 +126,15 @@ public class NavigationDrawer extends AppCompatActivity
         MenuItem item;
 
         item = menu.add("Search");
-        item.setIcon(R.drawable.ic_toolbar_search);
+        item.setIcon(R.drawable.search_icon);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Chat");
-        item.setIcon(R.drawable.ic_toolbar_chat);
+        item.setIcon(R.drawable.chat_icon);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Notification");
-        item.setIcon(R.drawable.ic_toolbar_notification);
+        item.setIcon(R.drawable.notification_icon);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
 
@@ -142,7 +162,9 @@ public class NavigationDrawer extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Search?", Toast.LENGTH_SHORT).show();
                 break;
             }
+
         }
+
         return super.onOptionsItemSelected(item);
     }
     @Override
@@ -155,13 +177,47 @@ public class NavigationDrawer extends AppCompatActivity
         }
     }
 
+    public void setUpLeftDrawerWidth(){
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float density  = getResources().getDisplayMetrics().density;
+        float dpWidth  = outMetrics.widthPixels / density;
+        final ViewGroup.LayoutParams params = mNavigationDrawerFragment.getView().getLayoutParams();
+        params.width = (int)(Math.round(dpWidth - 112) * density +0.5);
+        mNavigationDrawerFragment.getView().setLayoutParams(params);
+    }
+
+    public void setUpRightDrawerWidth(){
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float density  = getResources().getDisplayMetrics().density;
+        float dpWidth  = outMetrics.widthPixels / density;
+        final ViewGroup.LayoutParams params = mFrameLayoutRight.getLayoutParams();
+        params.width = (int)(Math.round(dpWidth - 56) * density +0.5);
+        mFrameLayoutRight.setLayoutParams(params);
+    }
+
+
     public void isAnyDrawerOpen(View v){
         v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-
-                if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                /*
+                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                }else if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                }
+                */
+                if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+                    mNavigationDrawerFragment.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+
+                }else{
+                    mNavigationDrawerFragment.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+
                 }
             }
         });
@@ -169,6 +225,7 @@ public class NavigationDrawer extends AppCompatActivity
     }
     public void openChatPageFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        mDrawerLayout.openDrawer(Gravity.RIGHT);
         if(!chatPageFrag.isAdded()){
             transaction.replace(R.id.container_right, chatPageFrag, "chatPageFragment");
             transaction.commit();
@@ -181,10 +238,13 @@ public class NavigationDrawer extends AppCompatActivity
             mDrawerLayout.openDrawer(Gravity.RIGHT);
             Log.d("DEBUG","showing chatPageFrag");
         }
+
+
     }
 
     public void openNotificationFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        mDrawerLayout.openDrawer(Gravity.RIGHT);
         if(!notiFrag.isAdded()){
             transaction.replace(R.id.container_right, notiFrag, "notificationFragment");
             transaction.commit();
@@ -198,26 +258,17 @@ public class NavigationDrawer extends AppCompatActivity
             mDrawerLayout.openDrawer(Gravity.RIGHT);
             Log.d("DEBUG", "showing notiFrag");
         }
-    }
 
-    public void setUpDrawerWidth(){
-        Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
-        float density  = getResources().getDisplayMetrics().density;
-        float dpWidth  = outMetrics.widthPixels / density;
-        final ViewGroup.LayoutParams params = mNavigationDrawerFragment.getView().getLayoutParams();
-        params.width = (int)(Math.round(dpWidth - 112) * density +0.5);
-        mNavigationDrawerFragment.getView().setLayoutParams(params);
     }
 
     public void chatPageFragmentHandling(){
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             openChatPageFragment();
+
         }else {
             if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                if(chatPageFrag.isResumed()){
+                if(chatPageFrag.isResumed()) {
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
                     Log.d("DEBUG", "closing chatPageFrag");
                 }else{
@@ -227,6 +278,7 @@ public class NavigationDrawer extends AppCompatActivity
                 openChatPageFragment();
             }
         }
+
     }
 
     public void notificationFragmentHandling(){
