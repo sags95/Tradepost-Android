@@ -83,7 +83,7 @@ public class NavigationDrawer extends AppCompatActivity
         //Set up drawer and drawer's header
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
-        mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar, mFrameLayoutRight);
+        mNavigationDrawerFragment.setup(R.id.fragment_drawer, mDrawerLayout, mToolbar, mFrameLayoutRight);
         mNavigationDrawerFragment.setUserData("User", "sample@tradepost.com", BitmapFactory.decodeResource(getResources(), R.drawable.sample_img));
 
 
@@ -126,15 +126,15 @@ public class NavigationDrawer extends AppCompatActivity
         MenuItem item;
 
         item = menu.add("Search");
-        item.setIcon(R.drawable.search_icon);
+        item.setIcon(R.drawable.ic_search_black_24dp);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Chat");
-        item.setIcon(R.drawable.chat_icon);
+        item.setIcon(R.drawable.ic_chat_bubble_outline_black_24dp);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Notification");
-        item.setIcon(R.drawable.notification_icon);
+        item.setIcon(R.drawable.ic_notifications_none_black_24dp);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
 
@@ -204,14 +204,13 @@ public class NavigationDrawer extends AppCompatActivity
         v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                /*
-                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }else if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
+                /*
+                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                 }
                 */
+
                 if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
                     mNavigationDrawerFragment.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
 
@@ -219,6 +218,7 @@ public class NavigationDrawer extends AppCompatActivity
                     mNavigationDrawerFragment.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
                 }
+
             }
         });
 

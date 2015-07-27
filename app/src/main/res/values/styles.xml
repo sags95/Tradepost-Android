@@ -3,15 +3,13 @@
         <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
             <!-- Customize your theme here. -->
             <item name="colorPrimary">@color/ColorPrimary</item>
-            <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+            <item name="colorPrimaryDark">@color/grey</item>
             <item name="colorAccent">@color/myAccentColor</item>
             <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
-            <item name="android:navigationBarColor">@color/ColorPrimary</item>
             <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
             <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
             <item name="android:screenOrientation">portrait</item>
 
-            <item name="android:windowBackground">@color/myWindowBackground</item>
             <item name="android:windowContentTransitions">true</item>
         </style>
 
@@ -33,7 +31,7 @@
     </style>
 
     <style name = "NoActionBar" parent = "Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/grey</item>
 
     </style>
 
