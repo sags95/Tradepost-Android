@@ -1,16 +1,21 @@
 package com.sinapp.sharathsind.tradepost;
 
 import java.io.File;
+import java.net.URL;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.ContactsContract.CommonDataKinds.Relation;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -29,6 +34,8 @@ import com.google.android.gms.iid.InstanceID;
 
 import Model.RegisterWebService;
 import Model.Variables;
+import datamanager.MyLocationService;
+import datamanager.userdata;
 
 
 public class Welcome extends Activity implements OnClickListener {
@@ -36,13 +43,22 @@ public class Welcome extends Activity implements OnClickListener {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
     private TextView title;
     InstanceID instanceID;
+ public static    LocationManager locationManager;
+  public static   MyLocationService service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+service=new MyLocationService(this);
         boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "tradepostdb.db");
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, service);
         if (b) {
             try{
                 Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
@@ -50,11 +66,18 @@ public class Welcome extends Activity implements OnClickListener {
                 Cursor c=Constants.db.rawQuery("select * from login",null);
                 c.moveToFirst();
                Constants.userid=c.getInt(c.getColumnIndex("userid"));
-                Constants.username=c.getString(c.getColumnIndex("username"));
+                Variables.email=c.getString(c.getColumnIndex("email"));
+                Variables.username=c.getString(c.getColumnIndex("username"));
+                userdata.userid=Constants.userid;
+      //          URL url = new URL("http://192.168.2.15:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
+        //        Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+//                Constants.username=c.getString(c.getColumnIndex("username"));
 if(c.getCount()>0)
 {
     startActivity(new Intent(this, NavigationDrawer.class));
     finish();
+    //  locationManager.removeUpdates(service);
 }
 
 
@@ -198,6 +221,12 @@ String s=e.toString();
     @Override
     public void onClick(View arg0) {
         // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
     }
 

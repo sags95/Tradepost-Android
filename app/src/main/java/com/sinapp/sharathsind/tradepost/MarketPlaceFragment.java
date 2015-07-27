@@ -1,8 +1,10 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -34,6 +36,8 @@ import Model.MarketPlaceData;
 import Model.MarketPlaceDataAdapter;
 import Model.StaggeredAdapter;
 import Model.StaggeredAdapter2;
+import datamanager.MyLocationService;
+import datamanager.userdata;
 
 /**
  * Created by HenryChiang on 15-06-25.
@@ -75,10 +79,14 @@ public class MarketPlaceFragment  extends Fragment {
 
     public MarketPlaceFragment() {
     }
-
+LocationManager locationManager;
+    MyLocationService service;
+    public static TextView v;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+   //     service =new MyLocationService(this.getActivity());
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Tradepost");
 
@@ -89,7 +97,8 @@ public class MarketPlaceFragment  extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_marketplace, container, false);
         li = getActivity().getLayoutInflater();
-
+//while(userdata.loc!=true);
+  //      Welcome.locationManager.removeUpdates(Welcome.service);
 
 
         /*
@@ -168,6 +177,8 @@ public class MarketPlaceFragment  extends Fragment {
         //Location
         View includeView = (View)rootView.findViewById(R.id.marketplace_header);
         headerRadText = (TextView)includeView.findViewById(R.id.marketplace_header_rad);
+
+
         includeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +186,7 @@ public class MarketPlaceFragment  extends Fragment {
             }
         });
 
-
+        headerRadText.setText(userdata.city);
 
         return rootView;
 

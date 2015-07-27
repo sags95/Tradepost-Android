@@ -1,12 +1,15 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
@@ -24,17 +27,28 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
+import org.ksoap2.HeaderProperty;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.MarshalBase64;
+import org.ksoap2.serialization.MarshalFloat;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.RegisterWebService;
 import Model.RoundImageHelper;
+import Model.Variables;
 import data.StringVector;
 import datamanager.FileManager;
 import datamanager.userdata;
@@ -60,7 +74,7 @@ public class ListingProcessActivity extends AppCompatActivity {
     public ArrayList<String> tags;
 public ArrayList<Bitmap>bits;
     private EditText tagInput;
-
+    Spinner spinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +104,7 @@ public ArrayList<Bitmap>bits;
         itemImg2 = (ImageView) findViewById(R.id.section2_item_img2);
         itemImg3 = (ImageView) findViewById(R.id.section2_item_img3);
         itemImg4 = (ImageView) findViewById(R.id.section2_item_img4);
-
+///spinner=(Spinner)findViewById(R.id.sp)
         camera = (ImageView) findViewById(R.id.section2_img_camera);
         folder = (ImageView) findViewById(R.id.section2_img_folder);
         Bitmap roundProImg = RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
@@ -113,7 +127,7 @@ public ArrayList<Bitmap>bits;
         ImageView testingBtn = (ImageView) findViewById(R.id.section6_plus);
         testingBtn.setOnClickListener(testingBtnListener);
         categories = getResources().getStringArray(R.array.category_array);
-        Spinner spinner = (Spinner) findViewById(R.id.section6_spinner);
+         spinner = (Spinner) findViewById(R.id.section6_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_dropdown_item, categories);
         spinner.setAdapter(adapter);
@@ -132,18 +146,88 @@ public ArrayList<Bitmap>bits;
 
         return super.onCreateOptionsMenu(menu);
     }
-
+String result;
+ ProgressDialog pg;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getTitle().toString()) {
             case "POST": {
-                Toast.makeText(getApplicationContext(), "POST?", Toast.LENGTH_SHORT).show();
-                break;
+             final   EditText tv=(EditText)findViewById(R.id.section1_edit);
+            final    EditText desc=(EditText)findViewById(R.id.section4_edit);
+           final     SeekBar s=(SeekBar)findViewById(R.id.seekBar1);
+         final      int i=s.getProgress();
+                final String title=tv.getText().toString();
+                final String description=desc.getText().toString();
+                final String cat=spinner.getSelectedItem().toString();
+                pg=ProgressDialog.show(ListingProcessActivity.this,"pleasewait","adding",false,false);
+                pg.setCancelable(false);
+                pg.setMessage("please wait..");
+//pg.show();
+               new AsyncTask<String,String,String>()
+                {
+
+                   @Override
+                   protected void onPostExecute(String s) {
+                       super.onPostExecute(s);
+                       pg.dismiss();
+                   }
+
+                   @Override
+                    protected String doInBackground(String... voids) {
+                try {
+String []tagarray=new String[tags.size()];
+         for(int i=0;i<tags.size();i++)
+         {
+             tagarray[i]=tags.get(i);
+         }
+               //     int i=s.get;
+                    SoapPrimitive r= RegisterWebService. sendDataToServer(title,description,tagarray,bits.toArray(),i, userdata.userid,cat);
+                    result=r.getValue().toString();
+                    int i=0;
+ for(Bitmap b:bits)
+ {
+
+ sendDImage(Integer.parseInt(result),FileManager.encode(b),i);
+
+i++;
+ }
+      for(String t:tags)
+          sendtag(Integer.parseInt(result),t);
+//
+
+                } catch (Exception e) {
+                   result=e.toString();
+                    e.printStackTrace();
+                }
+                return "";
+                    }
+                }.execute(null,null);
+        //        a.execute(" ","","");
+
+     //           Toast.makeText(getApplicationContext(), "POST?", Toast.LENGTH_SHORT).show();
+       //         break;
             }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public SoapPrimitive sendDImage(int id,String im,int pic)
+    {
+        SoapObject object = new SoapObject("http://webser/", "addimage");
+        object.addProperty("itemid", id);
+        object.addProperty("pic",pic);
+        object.addProperty("image",im);
+        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
+    }
+    public SoapPrimitive sendtag(int id,String im)
+    {
+        SoapObject object = new SoapObject("http://webser/", "addtag");
+        object.addProperty("itemid", id);
+
+        object.addProperty("tag",im);
+        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
     }
 
     public View.OnClickListener addTagButtonListener = new View.OnClickListener() {
@@ -250,32 +334,42 @@ public ArrayList<Bitmap>bits;
         }
     };
 
-    public void sendDataToServer(String itemTitle, String descrpition, String[] tags, Bitmap[] images, int condition, int userid, String category) {
-        StringVector imageArray = new StringVector();
-        int i = 0;
-        for (Bitmap image : images) {
-            imageArray.add(FileManager.encode(image));
+    private static final String SOAP_ACTION = "http://webser/AddItems/additemRequest";
+    private static final String METHOD_NAME = "additem";
+    private static final String NAMESPACE = "http://webser/";
+    private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
+    public SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
-            i++;
-
-        }
-        StringVector tag = new StringVector();
-        for (String s : tags) {
-            tag.add(s);
-        }
-        SoapObject object = new SoapObject("http://webser/", "additem");
+        SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME);
         object.addProperty("itemname", itemTitle);
+        object.addProperty("description",descrpition);
         object.addProperty("latitude", userdata.latitude);
-        object.addProperty("latitude", userdata.longitude);
+        object.addProperty("longitude", userdata.longitude);
         object.addProperty("userid", userdata.userid);
         object.addProperty("category", category);
-        object.addProperty("images", imageArray);
-        object.addProperty("tags", tag);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        ArrayList<HeaderProperty> headerPropertyArrayList = new ArrayList<HeaderProperty>();
+        headerPropertyArrayList.add(new HeaderProperty("Connection", "close"));
+        envelope.setOutputSoapObject(object);
+        MarshalFloat m=new MarshalFloat();
+        m.register(envelope);
+        new MarshalBase64().register(envelope);
+        HttpTransportSE ht = new HttpTransportSE( URL);
+        try {
+            ht.call(SOAP_ACTION, envelope);
+            SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            //  String res = response.ge().toString();
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/Chat?wsdl", "");
 
+        return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -328,6 +422,7 @@ public ArrayList<Bitmap>bits;
                     itemImg4.setImageBitmap(imageBitmap);
                     break;
             }
+            bits.add(imageBitmap);
             currentImgPos++;
 
         }

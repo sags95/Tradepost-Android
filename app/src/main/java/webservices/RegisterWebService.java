@@ -25,7 +25,7 @@ public class RegisterWebService {
         try {
             ht.call(SOAP_ACTION, envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-            String res = response.getValue().toString();
+            String res = response.getAttribute("return").toString();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -5,6 +5,8 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -15,9 +17,12 @@ import com.google.android.gms.plus.Plus;
 
 import Model.RegisterWebService;
 import Model.Variables;
+import datamanager.MyLocationService;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -26,6 +31,11 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -50,6 +60,8 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new MyLocationService(this));
 
         FbFragment mainFragment;
         FbFragment.f = this;
@@ -184,10 +196,13 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
             new AsyncTask<String,String,String>()
             {
                 SQLiteDatabase myDB;
+                ContentValues cv;
                 @Override
                 protected void onPostExecute(String s) {
+
                     super.onPostExecute(s);
-                    //start();
+                    Constants.db.insert("login",null,cv);
+                    start();
                 }
 
                 @Override
@@ -201,8 +216,8 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
                 @Override
                 protected String doInBackground(String... params) {
 
-
-                    return RegisterWebService.signUp(Variables.username, Variables.email, " ", "g+", Variables.profilepic, true, Constants.db);
+                 cv=   RegisterWebService.signUp(Variables.username, Variables.email, " ", "g+", Variables.profilepic, true, Constants.db);
+                    return " ";
 
                 }
             }.execute(null,null,null);
@@ -216,5 +231,4 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
     public void onConnectionSuspended(int i) {
 
     }
-
 }

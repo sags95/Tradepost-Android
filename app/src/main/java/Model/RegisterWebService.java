@@ -7,13 +7,23 @@ import android.util.Base64;
 
 import com.sinapp.sharathsind.tradepost.Constants;
 
+import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.MarshalBase64;
+import org.ksoap2.serialization.MarshalFloat;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+
+import data.StringVector;
+import datamanager.userdata;
+import webservices.MainWebService;
+import webservices.SoapStringVector;
 
 /**
  * Created by sharathsind on 2015-06-01.
@@ -24,7 +34,7 @@ public class RegisterWebService {
     private static final String NAMESPACE = "http://webser/";
     private static final String URL ="http://192.168.2.15:8084/TDserverWeb/Register?wsdl";
 
-    public static String signUp(String username, String email, String s, String fb, Bitmap profilepic, boolean b,SQLiteDatabase db) {
+    public static ContentValues signUp(String username, String email, String s, String fb, Bitmap profilepic, boolean b,SQLiteDatabase db) {
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
             request.addProperty("username",username);
         request.addProperty("email",email);
@@ -52,19 +62,69 @@ public class RegisterWebService {
             String res=response.getValue().toString();
     cv.put("username",username);
     cv.put("email",email);
-    cv.put("confirm",String.valueOf(b));
-    cv.put("type",fb);
+    cv.put("emailconfirm",String.valueOf(b));
+    cv.put("itype",fb);
     cv.put("userid",res);
     cv.put("password",s);
     cv.put("profilepicture","lib/profile.png");
-          db.insert("login",null,cv);
 
+    //   long l=   db.insert("login",null,cv);
+//long k=l;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return cv;
     }
+    private static final String SOAP_ACTION3 = "http://webser/Register/additemsRequest";
+    private static final String METHOD_NAME3 = "additems";
+   // private static final String NAMESPACE = "http://webser/";
+    //private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
+    public static  SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
+
+        SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME3);
+        object.addProperty("itemname", itemTitle);
+        object.addProperty("desc",descrpition);
+        object.addProperty("latitude", String.format("%.2f",userdata.latitude));
+        PropertyInfo propertyInfo=new PropertyInfo();
+        propertyInfo.setValue(userdata.latitude);
+        propertyInfo.setName("latitude");
+        StringVector tag=new StringVector();
+        for(String h: tags)
+        tag.add(h);
+        object.addProperty("tags",tag);
+        object.addProperty("longi", String.format("%.2f",userdata.longitude));
+        object.addProperty("userid", userdata.userid);
+        object.addProperty("category", category);
+        object.addProperty("condition",condition);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        ArrayList<HeaderProperty> headerPropertyArrayList = new ArrayList<HeaderProperty>();
+        headerPropertyArrayList.add(new HeaderProperty("Connection", "close"));
+        envelope.setOutputSoapObject(object);
+   //    MarshalFloat m=new MarshalFloat();
+     //   m.register(envelope);
+       // new MarshalBase64().register(envelope);
+        System.setProperty("http.keepAlive", "false");
+        HttpTransportSE ht = new HttpTransportSE( URL,50000000);
+
+        ht.debug=true;
+        try {
+
+
+            ht.call(SOAP_ACTION3, envelope,headerPropertyArrayList);
+            ht.getServiceConnection().setRequestProperty("connection","close");
+            SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            //  String res = response.ge().toString();
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+
+    }
+
     public static String sendMsg(String msg,Bitmap picture,int userid)
     {
         SoapObject request = new SoapObject(NAMESPACE, "hello");
@@ -95,7 +155,7 @@ public class RegisterWebService {
         try {
             ht.call("http://webser/Register/helloRequest", envelope);
             SoapPrimitive response = (SoapPrimitive)envelope.getResponse();
-            String res=response.getValue().toString();
+            String res=response.getAttribute("return").toString();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -12,7 +12,10 @@ import java.util.List;
  * Created by sharathsind on 2015-05-01.
  */
 public class userdata {
-public static int[] items,favourites[],userid,offers[];
+public static int[] items,favourites,offers;
+    public static int userid;
    public static double longitude,latitude;
 
+    public static String city;
+    public static boolean loc;
 }

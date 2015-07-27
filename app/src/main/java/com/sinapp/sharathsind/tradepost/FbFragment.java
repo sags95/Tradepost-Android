@@ -29,6 +29,7 @@ import com.google.android.gms.plus.model.people.Person;
 import Model.RegisterWebService;
 import Model.Variables;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
@@ -162,11 +163,14 @@ public class FbFragment extends Fragment {
                                     }
                                   new AsyncTask<String,String,String>()
                                   {
+                                      ContentValues cv;
                                       SQLiteDatabase myDB;
                                       @Override
                                       protected void onPostExecute(String s) {
                                           super.onPostExecute(s);
+                              long l=            Constants.db.insert("login",null,cv);
                                           f.start();
+
                                       }
 
                                       @Override
@@ -179,9 +183,9 @@ public class FbFragment extends Fragment {
 
                                       @Override
                                       protected String doInBackground(String... params) {
+                                       cv=   RegisterWebService.signUp(Variables.username, Variables.email, " ", "fb", Variables.profilepic, true, Constants.db);
 
-
-                                          return RegisterWebService.signUp(Variables.username, Variables.email, " ", "fb", Variables.profilepic, true, Constants.db);
+                                          return "";
 
                                       }
                                   }.execute(null,null,null);
