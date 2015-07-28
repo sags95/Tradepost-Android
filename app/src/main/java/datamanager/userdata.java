@@ -6,13 +6,15 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * Created by sharathsind on 2015-05-01.
  */
 public class userdata {
-public static int[] items,favourites,offers;
+public static HashSet<Integer> items,favourites,offers;
     public static int userid;
    public static double longitude,latitude;
 

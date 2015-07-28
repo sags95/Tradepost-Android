@@ -2,6 +2,8 @@ package com.sinapp.sharathsind.tradepost;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +14,8 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.location.Criteria;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,10 +36,14 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+
 import Model.RegisterWebService;
 import Model.Variables;
 import datamanager.MyLocationService;
 import datamanager.userdata;
+import webservices.MainWebService;
 
 
 public class Welcome extends Activity implements OnClickListener {
@@ -69,7 +77,29 @@ service=new MyLocationService(this);
                 Variables.email=c.getString(c.getColumnIndex("email"));
                 Variables.username=c.getString(c.getColumnIndex("username"));
                 userdata.userid=Constants.userid;
-      //          URL url = new URL("http://192.168.2.15:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
+                Criteria criteria = new Criteria();
+                String provider = locationManager.getBestProvider(criteria, false);
+                Location location = locationManager.getLastKnownLocation(provider);
+                userdata.longitude=location.getLongitude();
+                userdata.latitude=location.getLatitude();
+                new AsyncTask<String,String,String>()
+                {
+
+                    @Override
+                    protected String doInBackground(String... params) {
+                        SoapObject object = new SoapObject("http://webser/", "getuseritems");
+                     //   SoapObject object = new SoapObject("http://webser/", "getuseritems");
+                        object.addProperty("userid",  userdata.userid);
+                  Vector object1=      MainWebService.getMsg1(object,"http://172.20.10.2:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
+    userdata.items=new HashSet<Integer>();
+                        for(Object i:object1)
+                        {
+                            userdata.items.add(Integer.getInteger(((SoapPrimitive)i).getValue().toString()));
+                        }
+                        return null;
+                    }
+                }.execute(null,null,null);
+      //          URL url = new URL("http://172.20.10.2:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
         //        Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
 //                Constants.username=c.getString(c.getColumnIndex("username"));

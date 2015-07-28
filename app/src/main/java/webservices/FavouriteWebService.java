@@ -14,7 +14,7 @@ public class FavouriteWebService {
         SoapObject s=new SoapObject("http://webser/","get");
         s.addProperty("userid", userdata.userid);
 
-      SoapPrimitive soapPrimitive = MainWebService.getMsg(s, "http://192.168.2.15:8084/TDserverWeb/WebSericeFavourites?wsdl", "http://webser/WebSericeFavourites/getRequest");
+      SoapPrimitive soapPrimitive = MainWebService.getMsg(s, "http://172.20.10.2:8084/TDserverWeb/WebSericeFavourites?wsdl", "http://webser/WebSericeFavourites/getRequest");
 
 
 
@@ -25,7 +25,7 @@ public class FavouriteWebService {
         SoapObject s=new SoapObject("http://webser/","remove");
         s.addProperty("userid", userdata.userid);
 
-        SoapPrimitive soapPrimitive = MainWebService.getMsg(s, "http://192.168.2.15:8084/TDserverWeb/WebSericeFavourites?wsdl", "http://webser/WebSericeFavourites/removeRequest");
+        SoapPrimitive soapPrimitive = MainWebService.getMsg(s, "http://172.20.10.2:8084/TDserverWeb/WebSericeFavourites?wsdl", "http://webser/WebSericeFavourites/removeRequest");
 
 
 
