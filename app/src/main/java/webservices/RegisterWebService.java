@@ -13,7 +13,7 @@ public class RegisterWebService {
     private static final String SOAP_ACTION = "http://webser/Chat/getMessageRequest";
     private static final String METHOD_NAME = "getMessage";
     private static final String NAMESPACE = "http://webser/";
-    private static final String URL ="http://172.20.10.2:8084/TDserverWeb/Chat?wsdl";
+    private static final String URL ="http://192.168.2.15:8084/TDserverWeb/Chat?wsdl";
     public static String getMsg(int msgid) {
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         request.addProperty("msgid",msgid);

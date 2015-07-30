@@ -2,15 +2,20 @@ package webservices;
 
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.MarshalBase64;
 import org.ksoap2.serialization.MarshalFloat;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+import org.kxml2.io.KXmlSerializer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import datamanager.ItemResult;
 
 /**
  * Created by sharathsind on 2015-07-06.
@@ -78,13 +83,16 @@ public class MainWebService {
 
 
     }
-    public static SoapObject getMsg2(SoapObject request,String URL,String SOAP_ACTION ) {
+    public static KvmSerializable getMsg2(SoapObject request,String URL,String SOAP_ACTION ) {
         //  SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         // request.addProperty("msgid",msgid);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         ArrayList<HeaderProperty> headerPropertyArrayList = new ArrayList<HeaderProperty>();
         headerPropertyArrayList.add(new HeaderProperty("Connection", "close"));
         envelope.setOutputSoapObject(request);
+        envelope.addMapping("http://webser//", "ItemResult",new ItemResult().getClass());
+        ItemResult ir=new ItemResult();
+
         //    MarshalFloat m=new MarshalFloat();
         //   m.register(envelope);
         // new MarshalBase64().register(envelope);
@@ -97,7 +105,7 @@ public class MainWebService {
 
             ht.call(SOAP_ACTION, envelope,headerPropertyArrayList);
             ht.getServiceConnection().setRequestProperty("connection","close");
-            SoapObject response = (SoapObject) envelope.getResponse();
+            KvmSerializable response = (KvmSerializable) envelope.getResponse();
             //  String res = response.ge().toString();
             return response;
         } catch (Exception e) {
