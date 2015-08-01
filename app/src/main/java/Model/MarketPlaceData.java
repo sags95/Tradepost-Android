@@ -28,7 +28,27 @@ public class MarketPlaceData {
     }
 
 
-    public static ArrayList<MarketPlaceData> generateSampleData() {
+
+    public static ArrayList<MarketPlaceData> generateSampleDataTest() {
+        String repeat = " repeat";
+        final ArrayList<MarketPlaceData> dataTest = new ArrayList<MarketPlaceData>();
+        for (int i = 0; i < 10; i++) {
+            MarketPlaceData data = new MarketPlaceData();
+            data.itemImage = "https://jiresal-test.s3.amazonaws.com/deal3.png";
+            data.proUsername = "User";
+            data.itemTitle = "Awesome title";
+            Random ran = new Random();
+            int x = ran.nextInt(i + 10);
+            for (int j = 0; j < x; j++)
+                data.itemTitle += repeat;
+            dataTest.add(data);
+        }
+        return dataTest;
+
+    }
+
+
+        public static ArrayList<MarketPlaceData> generateSampleData() {
         String repeat = " repeat";
         SoapObject obje=new SoapObject("http://webser/","getItems");
         obje.addProperty("lat", userdata.latitude);

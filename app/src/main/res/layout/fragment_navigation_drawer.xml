@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="168dp"
-        android:background="@color/darkgrey"
+        android:background="@drawable/drawer_background"
         android:id="@+id/navigationHeader"
         android:paddingTop="24dp">
 

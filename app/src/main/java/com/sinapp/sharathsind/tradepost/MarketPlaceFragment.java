@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import Model.MarketPlaceData;
 import Model.MarketPlaceStaggeredAdapter;
+import Model.StaggeredAdapterTest;
 
 /**
  * Created by HenryChiang on 15-06-25.
@@ -41,6 +42,7 @@ public class MarketPlaceFragment  extends Fragment {
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private View rootView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private StaggeredAdapterTest mStaggeredAdapterTest;
 
     private String locationRad="25Km)";
     private int[] imageResources = {
@@ -89,26 +91,6 @@ public class MarketPlaceFragment  extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_marketplace, container, false);
         li = getActivity().getLayoutInflater();
 
-
-
-        /*
-        recyclerview = (ObservableRecyclerView) rootView.findViewById(R.id.recyclerview);
-        recyclerview.setHasFixedSize(true);
-        recyclerview.setScrollViewCallbacks(this);
-        stagAdapter2 = new StaggeredAdapter2(MarketPlaceData.generateSampleData(), listingItemClickListener);
-        recyclerview.setAdapter(stagAdapter2);
-        applyStaggeredGridLayoutManager();
-        */
-        //Image Pager
-
-
-        /*
-        mCustomPagerAdapter = new CustomPagerAdapter(getActivity());
-        mViewPager = (ViewPager)rootView.findViewById(R.id.pager_marketplace);
-        mViewPager.setAdapter(mCustomPagerAdapter);
-        */
-
-
         //SwipeToRefresh
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.ColorPrimary);
@@ -120,21 +102,32 @@ public class MarketPlaceFragment  extends Fragment {
             }
         });
 
-        //StaggeredGridView
-        /*mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
+        //StaggeredGridViewTesting
+        //For Testing Only
+        String[] tempTags= {
+                "hello",
+                "laptop",
+                "android",
+                "iphone",
+                "whatever"
+        };
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        stagAdapter = new StaggeredAdapter(getActivity().getApplicationContext(),MarketPlaceData.generateSampleData(),listingItemClickListener, imageResources);
-        mRecyclerView.setAdapter(stagAdapter);
+        mStaggeredAdapterTest = new StaggeredAdapterTest(MarketPlaceData.generateSampleDataTest(),listingItemClickListener,tempTags);
+        mRecyclerView.setAdapter(mStaggeredAdapterTest);
         applyStaggeredGridLayoutManager();
-        */
 
-        //StaggeredGridView2
 
+
+        /*
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
         stagAdapter2 = new MarketPlaceStaggeredAdapter(MarketPlaceData.generateSampleData(),listingItemClickListener);
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
+        */
+
+
         /*
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {

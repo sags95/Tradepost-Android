@@ -2,15 +2,18 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +46,8 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +74,8 @@ public class ListingProcessActivity extends AppCompatActivity {
     private int requestCodeGal = 1;
     private int currentImgPos = 0;
     private Toolbar toolbar;
+    private Uri mImageUri;
+
 
 
     public ArrayList<String> tags;
@@ -218,7 +225,7 @@ i++;
         object.addProperty("itemid", id);
         object.addProperty("pic",pic);
         object.addProperty("image",im);
-        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
+        return     MainWebService.getMsg(object, "http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
     }
     public SoapPrimitive sendtag(int id,String im)
     {
@@ -226,7 +233,7 @@ i++;
         object.addProperty("itemid", id);
 
         object.addProperty("tag",im);
-        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
+        return     MainWebService.getMsg(object, "http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
     }
 
     public View.OnClickListener addTagButtonListener = new View.OnClickListener() {
@@ -311,11 +318,55 @@ i++;
         @Override
         public void onClick(View v) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File photo=null;
+            try {
+                // place where to store camera taken picture
+                photo = createTemporaryFile("temp", ".jpg");
+                photo.delete();
+            } catch (Exception e) {
+                Log.v("camera", "Can't create file to take picture!");
+                Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT);
+            }
+            mImageUri = Uri.fromFile(photo);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+            //start camera intent
+
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, requestCodeCam);
             }
+
         }
     };
+
+    private File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= Environment.getExternalStorageDirectory();
+        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
+        if(!tempDir.exists())
+        {
+            tempDir.mkdir();
+        }
+        return File.createTempFile(part, ext, tempDir);
+    }
+
+    public Bitmap grabImage()
+    {
+        this.getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = this.getContentResolver();
+        Bitmap bitmap=null;
+        try
+        {
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+            Log.d("cam", "Failed to load", e);
+        }
+
+        return bitmap;
+    }
+
 
     public View.OnClickListener galleryBtnListener = new View.OnClickListener() {
         @Override
@@ -336,7 +387,7 @@ i++;
     private static final String SOAP_ACTION = "http://webser/AddItems/additemRequest";
     private static final String METHOD_NAME = "additem";
     private static final String NAMESPACE = "http://webser/";
-    private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
+    private static final String URL ="http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl";
     public SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
         SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -364,7 +415,7 @@ i++;
         }
 
 
-        return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+        return MainWebService.getMsg(object, "http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
 
@@ -375,9 +426,15 @@ i++;
         super.onActivityResult(requestCode,resultCode,data);
         if (resultCode == RESULT_OK) {
             if(requestCode ==0){
+               /*
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 setImage(imageBitmap);
+                bits.add(imageBitmap);
+                */
+                setImage(grabImage());
+                bits.add(grabImage());
+                //... some code to inflate/create/find appropriate ImageView to place grabbed image
 
             }else if(requestCode == 1){
                 Uri selectedImageUri = data.getData();
@@ -421,7 +478,6 @@ i++;
                     itemImg4.setImageBitmap(imageBitmap);
                     break;
             }
-            bits.add(imageBitmap);
             currentImgPos++;
 
         }
