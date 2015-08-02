@@ -316,6 +316,7 @@ public class MarketPlaceFragment  extends Fragment {
 
         //showing custom dialog.
         dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
     }
 

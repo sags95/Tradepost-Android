@@ -39,6 +39,8 @@
                 android:id="@+id/single_listing_img_layout"
                 >
 
+
+
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
@@ -153,7 +155,22 @@
                 app:borderWidth="0dp"
                 />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="condition"
+                android:textColor="@color/white"
+                android:background="@drawable/tag_btn_shape"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_alignRight="@+id/single_listing_img_layout"
+                android:layout_alignTop="@+id/single_listing_img_layout"
+
+                />
+
         </RelativeLayout>
+
+
     </ScrollView>
 
 

@@ -131,7 +131,6 @@ public class StaggeredAdapterTest extends RecyclerView.Adapter<StaggeredAdapterT
         newTag.setTypeface(Typeface.DEFAULT_BOLD);
         newTag.setClickable(true);
         newTag.setBackgroundResource(R.drawable.tag_btn_shape);
-        newTag.setPadding(8, 8, 8, 8);
         FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0,0,20,20);
         newTag.setLayoutParams(lp);
