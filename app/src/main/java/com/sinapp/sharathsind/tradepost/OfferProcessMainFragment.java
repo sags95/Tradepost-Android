@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -62,6 +63,8 @@ public class OfferProcessMainFragment extends Fragment {
 
         dataPassingListener = (OfferProcessDataPassingListener)getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Make An Offer");
+
 
 
     }
@@ -184,12 +187,12 @@ public class OfferProcessMainFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            if(addCashEdit.getVisibility()==View.GONE) {
+            if(addCashEdit.getVisibility()==View.INVISIBLE) {
                 addCashEdit.setVisibility(View.VISIBLE);
                 addCashBtn.setText("REMOVE CASH");
             }else{
                 addCashEdit.setText("");
-                addCashEdit.setVisibility(View.GONE);
+                addCashEdit.setVisibility(View.INVISIBLE);
                 addCashBtn.setText("ADD CASH");
             }
 
