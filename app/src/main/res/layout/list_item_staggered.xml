@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -138,7 +137,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="Title Line 1\nTitle Line 2"
-                android:minLines="2"
                 android:maxLines="2"
                 android:layout_below="@+id/pro_bar"
                 android:ellipsize="end"

@@ -110,7 +110,12 @@
 
         <activity
             android:name=".NavigationDrawer"
-            android:label="Offer"
+            >
+
+        </activity>
+
+        <activity
+            android:name=".ProfileActivity"
             >
 
         </activity>

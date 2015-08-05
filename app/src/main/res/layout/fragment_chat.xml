@@ -64,6 +64,8 @@
             android:singleLine="false"
             android:inputType="textShortMessage"
             android:imeOptions="actionSend"
+            android:windowSoftInputMode="stateHidden"
+            android:focusable="false"
             />
 
         <Button

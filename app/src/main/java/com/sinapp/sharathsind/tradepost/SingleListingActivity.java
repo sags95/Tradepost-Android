@@ -69,6 +69,8 @@ public class SingleListingActivity extends AppCompatActivity {
         //setup actionbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.ColorPrimary));
+        toolbar.setTitle("Listing");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

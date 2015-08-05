@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/profile_user_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="16dp"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_userImg_placeholder"
+            android:layout_width="81dp"
+            android:layout_height="81dp"
+            android:src="@drawable/sample_img"
+            app:border_width="5dp"
+            app:border_color="@color/darkgrey"
+            android:layout_marginBottom="8dp"
+
+            />
+
+        <TextView
+            android:id="@+id/profile_uername_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/profile_user_join_time_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user since 2015"
+            android:textSize="12sp"
+            android:layout_marginBottom="16dp"
+            />
+
+        <RatingBar
+            android:id="@+id/profile_ratingbar"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:numStars="5"
+            android:progressDrawable="@drawable/ratingbar"
+            />
+    </LinearLayout>
+
+    <Model.SlidingTabLayout
+        android:id="@+id/profile_sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ColorPrimary"
+        android:layout_below="@+id/profile_user_layout"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/profile_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:layout_below="@+id/profile_sliding_tabs"
+        />
+
+</RelativeLayout>

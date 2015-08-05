@@ -9,7 +9,7 @@
     <color name="tabsScrollColor">#1193C3</color>
     <color name="white">#FFFFFF</color>
     <color name="darkwhite">#99D3D3D3</color>
-    <color name="darkgrey">#80D3D3D3</color>
+    <color name="darkgrey">#9E9E9E</color>
     <color name="lightgrey">#80F5F5F5</color>
     <color name="blue_fab_primary">#33b5e5</color>
     <color name="blue_fab_primary_dark">#1193C3</color>
@@ -25,7 +25,5 @@
 
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>
-
-
 
 </resources>

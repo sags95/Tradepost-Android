@@ -5,6 +5,7 @@ package com.sinapp.sharathsind.tradepost;
  */
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -104,6 +105,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             @Override
             public void onClick(View v) {
                 Log.d("click on Header","You clicked on header");
+                startActivity(new Intent(getActivity().getApplicationContext(),ProfileActivity.class));
             }
         });
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);

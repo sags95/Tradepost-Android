@@ -528,24 +528,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/section6_title"
-                    android:layout_toLeftOf="@+id/section6_plus"
                     android:background="@color/white"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:singleLine="true"
                     />
-
-
-                <ImageView
-                    android:id="@+id/section6_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_fab_primary"
-                    android:layout_below="@+id/section6_title"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignBottom="@id/section6_spinner"
-                    />
-
 
             </RelativeLayout>
 

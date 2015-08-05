@@ -92,6 +92,7 @@ public ArrayList<Bitmap>bits;
         //toolbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitle("Post Your Item");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.ColorPrimary));
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -129,9 +130,7 @@ public ArrayList<Bitmap>bits;
         ImageView addTags = (ImageView) findViewById(R.id.section5_plus);
         addTags.setOnClickListener(addTagButtonListener);
 
-        //using section 6 (Choose a category) plus button for testing
-        ImageView testingBtn = (ImageView) findViewById(R.id.section6_plus);
-        testingBtn.setOnClickListener(testingBtnListener);
+        //using section 6 (Choose a category)
         categories = getResources().getStringArray(R.array.category_array);
          spinner = (Spinner) findViewById(R.id.section6_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
