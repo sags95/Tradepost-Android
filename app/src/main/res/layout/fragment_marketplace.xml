@@ -2,18 +2,8 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/darkwhite"
     >
-
-    <!--
-    <include
-        android:layout_alignParentTop="true"
-        android:id="@+id/marketplace_header"
-        layout="@layout/marketplace_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-    />
-    -->
 
     <LinearLayout
         android:id="@+id/recylcerview_layout"
@@ -21,9 +11,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
+
     >
-
-
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/activity_main_swipe_refresh_layout"

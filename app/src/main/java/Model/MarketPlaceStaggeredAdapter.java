@@ -1,5 +1,7 @@
 package Model;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -31,11 +34,15 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
     private View.OnClickListener mItemClick;
     private ViewGroup viewGroup;
     private String[] tags;
+    private Context context;
 
 
-    public MarketPlaceStaggeredAdapter(List<MarketPlaceData> mData, View.OnClickListener mItemClick) {
+
+    public MarketPlaceStaggeredAdapter(Context context,List<MarketPlaceData> mData, View.OnClickListener mItemClick) {
         this.mData = mData;
         this.mItemClick=mItemClick;
+        this.context=context;
+
     }
 
     public MarketPlaceStaggeredAdapter(List<MarketPlaceData> mData) {
@@ -95,7 +102,7 @@ is.close();
         viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("user detail at position","position: " +currentPos);
+                context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
 
             }
         });

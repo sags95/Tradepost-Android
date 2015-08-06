@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class SingleListingActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton offerFab;
     private TextView itemTitle;
+    private RelativeLayout singleListingHeader;
 
     private int[] imageResources={
             R.drawable.sample_img,
@@ -44,6 +46,15 @@ public class SingleListingActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_listing_view);
+
+        //single listing header
+        singleListingHeader= (RelativeLayout)findViewById(R.id.single_listing_header);
+        singleListingHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+            }
+        });
 
         //floating action button
         offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);

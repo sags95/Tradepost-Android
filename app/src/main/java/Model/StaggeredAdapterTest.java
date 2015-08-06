@@ -1,5 +1,7 @@
 package Model;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -27,12 +30,14 @@ public class StaggeredAdapterTest extends RecyclerView.Adapter<StaggeredAdapterT
     private ViewGroup viewGroup;
     private int TAGS_COUNT = 0;
     private String[] tagsTest={};
+    private Context context;
 
 
-    public StaggeredAdapterTest(List<MarketPlaceData> mData, View.OnClickListener mItemClick, String[] tagsTest) {
+    public StaggeredAdapterTest(Context context,List<MarketPlaceData> mData, View.OnClickListener mItemClick, String[] tagsTest) {
         this.mData = mData;
         this.mItemClick=mItemClick;
         this.tagsTest = tagsTest;
+        this.context=context;
     }
 
     public StaggeredAdapterTest(List<MarketPlaceData> mData) {
@@ -79,7 +84,7 @@ public class StaggeredAdapterTest extends RecyclerView.Adapter<StaggeredAdapterT
         viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("user detail at position","position: " +currentPos);
+                context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
 
             }
         });

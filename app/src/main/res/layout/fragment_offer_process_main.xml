@@ -140,7 +140,6 @@
                 android:layout_marginBottom="16dp"
                 android:hint="New Item Title"
                 android:windowSoftInputMode="stateHidden"
-                android:focusable="false"
                 android:singleLine="true"
                 />
 

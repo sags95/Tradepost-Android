@@ -18,6 +18,8 @@ import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -51,6 +53,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.LimitedEditText;
 import Model.RegisterWebService;
 import Model.RoundImageHelper;
 import Model.Variables;
@@ -75,6 +78,7 @@ public class ListingProcessActivity extends AppCompatActivity {
     private int currentImgPos = 0;
     private Toolbar toolbar;
     private Uri mImageUri;
+
 
 
 
@@ -106,12 +110,31 @@ public ArrayList<Bitmap>bits;
 
         tags=new ArrayList<String>();
         bits=new ArrayList<Bitmap>();
+
+        //section 1
+        LimitedEditText itemName = (LimitedEditText) findViewById(R.id.section1_edit);
+        itemName.setMaxLines(1);
+        itemName.setMaxCharacters(70);
+        final TextView itemNameCharCount = (TextView)findViewById(R.id.section1_char_count);
+        itemName.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                itemNameCharCount.setText(String.valueOf(s.length()));
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         //section 2
         itemImg1 = (ImageView) findViewById(R.id.section2_item_img1);
         itemImg2 = (ImageView) findViewById(R.id.section2_item_img2);
         itemImg3 = (ImageView) findViewById(R.id.section2_item_img3);
         itemImg4 = (ImageView) findViewById(R.id.section2_item_img4);
-///spinner=(Spinner)findViewById(R.id.sp)
+        ///spinner=(Spinner)findViewById(R.id.sp)
         camera = (ImageView) findViewById(R.id.section2_img_camera);
         folder = (ImageView) findViewById(R.id.section2_img_folder);
         Bitmap roundProImg = RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
@@ -121,9 +144,26 @@ public ArrayList<Bitmap>bits;
         camera.setOnClickListener(camBtnListener);
         folder.setOnClickListener(galleryBtnListener);
 
-        //section 4
-        EditText desEditText = (EditText) findViewById(R.id.section4_edit);
+        //section 3
+        SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar1);
 
+        //section 4
+        LimitedEditText desEditText = (LimitedEditText) findViewById(R.id.section4_edit);
+        desEditText.setMaxLines(5);
+        desEditText.setMaxCharacters(250);
+        final TextView itemDesCharCount = (TextView)findViewById(R.id.section4_char_count);
+        desEditText.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                itemDesCharCount.setText(String.valueOf(s.length()));
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         //section 5
         tagInput = (EditText) findViewById(R.id.section5_edit);
@@ -146,7 +186,7 @@ public ArrayList<Bitmap>bits;
         MenuItem item;
 
         item = menu.add("POST");
-        item.setIcon(R.drawable.ic_toolbar_search);
+        item.setIcon(R.drawable.ic_send);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);

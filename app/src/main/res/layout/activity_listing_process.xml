@@ -6,12 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightgrey"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     >
 
     <include
         android:id="@+id/tool_bar"
         layout="@layout/toolbar_default">
     </include>
+
+    <View android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_height="1dp"
+        android:id="@+id/separator"
+        android:layout_above="@+id/scrollView"
+        />
 
 
     <ScrollView
@@ -64,7 +73,7 @@
                         />
                 </LinearLayout>
 
-                <EditText
+                <Model.LimitedEditText
                     android:id="@+id/section1_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,8 +81,41 @@
                     android:layout_below="@+id/section1_title"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
-
                     />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/section1_title"
+                    android:layout_alignTop="@+id/section1_title"
+                    android:gravity="center"
+
+                    >
+                    <TextView
+                        android:id="@+id/section1_char_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        />
+                    <TextView
+                        android:id="@+id/section1_char_count_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section1_char_count"
+                        />
+
+                    <TextView
+                        android:id="@+id/section1_char_count_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="70"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section1_char_count_slash"
+                        />
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -344,7 +386,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_below="@id/section3_title"
-                    android:max="5"
+                    android:max="4"
 
                     />
 
@@ -391,7 +433,7 @@
 
 
 
-                <EditText
+                <Model.LimitedEditText
                     android:id="@+id/section4_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -400,9 +442,42 @@
                     android:lines="5"
                     android:maxLines="5"
                     android:gravity="left|top"
-
-
                     />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/section4_title"
+                    android:layout_alignTop="@+id/section4_title"
+                    android:gravity="center"
+
+                    >
+                    <TextView
+                        android:id="@+id/section4_char_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        />
+                    <TextView
+                        android:id="@+id/section4_char_count_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section4_char_count"
+                        />
+
+                    <TextView
+                        android:id="@+id/section4_char_count_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="250"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section4_char_count_slash"
+                        />
+                </RelativeLayout>
 
 
 

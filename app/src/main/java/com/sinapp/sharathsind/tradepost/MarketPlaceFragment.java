@@ -113,7 +113,7 @@ public class MarketPlaceFragment  extends Fragment {
         };
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        mStaggeredAdapterTest = new StaggeredAdapterTest(MarketPlaceData.generateSampleDataTest(),listingItemClickListener,tempTags);
+        mStaggeredAdapterTest = new StaggeredAdapterTest(getActivity(),MarketPlaceData.generateSampleDataTest(),listingItemClickListener,tempTags);
         mRecyclerView.setAdapter(mStaggeredAdapterTest);
         applyStaggeredGridLayoutManager();
 
@@ -212,7 +212,7 @@ public class MarketPlaceFragment  extends Fragment {
 
     public void customDialog(){
 
-        final View dialogView = li.inflate(location_dialog_layout, null);
+        final View dialogView = li.inflate(location_dialog_layout, null,false);
         builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Set Up Your Location");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -229,9 +229,16 @@ public class MarketPlaceFragment  extends Fragment {
             }
         });
 
+
         builder.setNegativeButton("Cancel", null);
         //set custom view.
         builder.setView(dialogView);
+
+        //showing custom dialog.
+        dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
         //set up the variables
         rBPostalCode = (RadioButton)dialogView.findViewById(R.id.radioButton_postalCode);
@@ -271,18 +278,26 @@ public class MarketPlaceFragment  extends Fragment {
                         break;
                 }
             }
+
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
         //check the zip/postal code input
         pCInputEdit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable s) {
                 setPostalCodeError(s);
@@ -293,7 +308,10 @@ public class MarketPlaceFragment  extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 rBLocSer.setChecked(!isChecked);
-                setPostalCodeError(pCInputEdit.getEditableText());
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                if(pCInputEdit.isFocused()&&pCInputEdit.getEditableText().length()!=0) {
+                    setPostalCodeError(pCInputEdit.getEditableText());
+                }
                 setPostalCodeInput(1);
                 setLocationService(0);
 
@@ -304,6 +322,7 @@ public class MarketPlaceFragment  extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 rBPostalCode.setChecked(!isChecked);
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                postalCodeInput.setErrorEnabled(false);
                 setPostalCodeInput(0);
                 setLocationService(1);
             }
@@ -313,51 +332,41 @@ public class MarketPlaceFragment  extends Fragment {
         label25Km.setTypeface(Typeface.DEFAULT_BOLD);
         setPostalCodeInput(0);
         setLocationService(0);
-
-        //showing custom dialog.
-        dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.show();
     }
 
     public void setPostalCodeInput(int visibility){
         if(visibility == 0){
             postalCodeInput.setVisibility(View.GONE);
             pCInputEdit.setVisibility(View.GONE);
-            radiusText.setVisibility(View.GONE);
-            seekBar.setVisibility(View.GONE);
-            seekBarLabel.setVisibility(View.GONE);
         }else{
             postalCodeInput.setVisibility(View.VISIBLE);
             pCInputEdit.setVisibility(View.VISIBLE);
-            radiusText.setVisibility(View.VISIBLE);
-            seekBar.setVisibility(View.VISIBLE);
-            seekBarLabel.setVisibility(View.VISIBLE);
+
         }
     }
 
     //set different error message according to the input errors.
     public void setPostalCodeError(Editable s){
-        if (!isPostalCodeValid(s)) {
-            postalCodeInput.setError("Only Letters or Digits Are Allowed.");
-            postalCodeInput.setErrorEnabled(true);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            if (!isPostalCodeValid(s)) {
+                postalCodeInput.setError("Only Letters or Digits Are Allowed.");
+                postalCodeInput.setErrorEnabled(true);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-        }else if(!isPostalCodeValid(s)&&pCInputEdit.length()!=6&&pCInputEdit.length()>0){
-            postalCodeInput.setError("Only Letters or Digits Are Allowed. Zip/Postal Code Too Short.");
-            postalCodeInput.setErrorEnabled(true);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            } else if (!isPostalCodeValid(s) && pCInputEdit.length() != 6 && pCInputEdit.length() > 0) {
+                postalCodeInput.setError("Only Letters or Digits Are Allowed. Zip/Postal Code Too Short.");
+                postalCodeInput.setErrorEnabled(true);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-        }else if(pCInputEdit.length()!=6&&pCInputEdit.length()>0){
-            postalCodeInput.setError("Zip/Postal Code Too Short.");
-            postalCodeInput.setErrorEnabled(true);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-        }
-        else {
-            postalCodeInput.setErrorEnabled(false);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+            } else if (pCInputEdit.length() != 6 && pCInputEdit.length() >=0) {
+                postalCodeInput.setError("Zip/Postal Code Too Short.");
+                postalCodeInput.setErrorEnabled(true);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+            } else {
+                postalCodeInput.setErrorEnabled(false);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 
-        }
+            }
+
     }
 
     //check if zip/postal code input contains any not acceptable symbols.
