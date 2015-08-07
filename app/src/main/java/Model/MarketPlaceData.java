@@ -23,7 +23,8 @@ public class MarketPlaceData {
     public String proUsername;
     public String itemTitle;
     public int userid;
-
+    public String image[];
+public Item item;
     public MarketPlaceData() {
     }
 
@@ -66,6 +67,14 @@ for(int u1=1;u1<i1;u1++)
             data.proUsername = "User";
             data.itemTitle = ir.item.getItemname();
             data.userid=ir.item.getUserid();
+    data.image=new String[ir.images.length];
+            int ij=0;
+            for(String s:ir.images)
+            {
+                data.image[ij]="http://192.168.2.15:8084/TDserverWeb/images/items/"+ir.item.getItemid()+"/"+s;
+                ij++;
+            }
+            data.item=ir.item;
             /*
             Random ran = new Random();
             int x = ran.nextInt(i + 10);

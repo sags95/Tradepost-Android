@@ -62,5 +62,6 @@
         <item>Use Location Service</item>
 
     </string-array>
+    <string name="title_activity_added_files">Added_files</string>
 
 </resources>

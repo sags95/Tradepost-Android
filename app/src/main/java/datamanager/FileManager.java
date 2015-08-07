@@ -43,7 +43,7 @@ public static Bitmap decode(String encoded)
     public static  String encode(Bitmap profilepic)
     {
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        profilepic.compress(Bitmap.CompressFormat.PNG,100, baos);
+        profilepic.compress(Bitmap.CompressFormat.JPEG,70, baos);
         byte [] b1=baos.toByteArray();
         ContentValues cv=new ContentValues();
         String temp= Base64.encodeToString(b1, Base64.DEFAULT);

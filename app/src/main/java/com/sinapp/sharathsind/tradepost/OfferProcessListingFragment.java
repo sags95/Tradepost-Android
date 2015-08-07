@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import Model.OfferProcessAdapter;
 import Model.OfferProcessItem;
+import datamanager.userdata;
 
 /**
  * Created by HenryChiang on 15-07-18.
@@ -60,8 +61,8 @@ public class OfferProcessListingFragment extends Fragment {
 
         ArrayList<OfferProcessItem> itemsArrayList = new ArrayList<OfferProcessItem>();
 
-        for (int i = 1; i <= 15; i++) {
-            OfferProcessItem offerProcessItem = new OfferProcessItem("Item Title" + i);
+        for (int i = 0; i < userdata.i.size(); i++) {
+            OfferProcessItem offerProcessItem = new OfferProcessItem("Item Title" + userdata.i.get(i).getItemname(),userdata.i.get(i).getItemid());
 
             itemsArrayList.add(offerProcessItem);
         }

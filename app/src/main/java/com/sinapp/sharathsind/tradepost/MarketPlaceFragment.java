@@ -132,7 +132,7 @@ public class MarketPlaceFragment  extends Fragment {
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        stagAdapter2 = new MarketPlaceStaggeredAdapter(MarketPlaceData.generateSampleData(),listingItemClickListener);
+        stagAdapter2 = new MarketPlaceStaggeredAdapter(MarketPlaceData.generateSampleData(),listingItemClickListener,this.getActivity());
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
         /*
@@ -190,6 +190,7 @@ public class MarketPlaceFragment  extends Fragment {
         @Override
         public void onClick(View v) {
             startActivity(new Intent(getActivity(), ListingProcessActivity.class));
+            getActivity().finish();
         }
     };
 
@@ -209,6 +210,7 @@ public class MarketPlaceFragment  extends Fragment {
             clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildPosition(v)));
             clickedItemDetails.add(1, itemTitle.getText().toString());
 
+          //  clickedItemDetails.add(2,);
             //Log.d("item details", "item position: " + clickedItemDetails.get(0));
             //Log.d("item details", "item title: " + clickedItemDetails.get(1));
 

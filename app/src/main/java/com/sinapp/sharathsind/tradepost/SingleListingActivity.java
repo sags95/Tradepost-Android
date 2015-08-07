@@ -2,6 +2,8 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,10 +18,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.CustomPagerAdapter;
+import Model.MarketPlaceData;
+import Model.MarketPlaceStaggeredAdapter;
 
 /**
  * Created by HenryChiang on 15-06-06.
@@ -33,12 +41,7 @@ public class SingleListingActivity extends AppCompatActivity {
     private FloatingActionButton offerFab;
     private TextView itemTitle;
 
-    private int[] imageResources={
-            R.drawable.sample_img,
-            R.drawable.sample_img2,
-            R.drawable.sample_img3,
-            R.drawable.sample_img
-    };
+    private Bitmap[] imageResources;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,33 @@ public class SingleListingActivity extends AppCompatActivity {
         //floating action button
         offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
         offerFab.setOnClickListener(offerFabOnClickListener);
+        Intent i = getIntent();
+        ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
+        MarketPlaceData m= MarketPlaceStaggeredAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
+        imageResources =new Bitmap[m.image.length];
+        int id=0;
+        for(String s : m.image)
+        {
+try {
+    URL url = new URL(s);
+    URLConnection con = url.openConnection();
+    con.setRequestProperty("connection","close");
+
+    InputStream is = con.getInputStream();
+
+
+  imageResources[id] = BitmapFactory.decodeStream(is);
+    is.close();
+    (  (HttpURLConnection)con).disconnect();
+id++;
+}
+catch (Exception e)
+{
+e.printStackTrace();
+}
+
+
+        }
 
 
         //image slider viewer
@@ -57,9 +87,8 @@ public class SingleListingActivity extends AppCompatActivity {
 
         //pass the item details
         //get the passed data
-        Intent i = getIntent();
-        ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
-        Log.d("item details","item position: " + itemDetails.get(0));
+
+
         Log.d("item details","item title: " + itemDetails.get(1));
 
         //item title

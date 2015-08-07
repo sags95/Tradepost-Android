@@ -33,11 +33,7 @@ public class notificationoffertesting extends Fragment {
     private ViewPager mViewPager;
     private List<ImageView> dots;
     private LinearLayout dotsLayout;
-    private int[] imageResources={
-            R.drawable.sample_img,
-            R.drawable.sample_img2,
-            R.drawable.sample_img3,
-    };
+    private Bitmap[] imageResources;
 
     final private String singleItem = "An Item";
     final private String multiItems = "Multi-items";

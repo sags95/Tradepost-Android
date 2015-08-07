@@ -52,7 +52,40 @@ public class MainWebService {
 
 
     }
+    public static SoapPrimitive getretryMsg(SoapObject request,String URL,String SOAP_ACTION,int i ) {
+        //  SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+        // request.addProperty("msgid",msgid);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        ArrayList<HeaderProperty> headerPropertyArrayList = new ArrayList<HeaderProperty>();
+        headerPropertyArrayList.add(new HeaderProperty("Connection", "close"));
+        envelope.setOutputSoapObject(request);
+        //    MarshalFloat m=new MarshalFloat();
+        //   m.register(envelope);
+        // new MarshalBase64().register(envelope);
+        System.setProperty("http.keepAlive", "false");
+        HttpTransportSE ht = new HttpTransportSE( URL,50000000);
 
+        ht.debug=true;
+        try {
+
+
+            ht.call(SOAP_ACTION, envelope,headerPropertyArrayList);
+            ht.getServiceConnection().setRequestProperty("connection","close");
+            SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            //  String res = response.ge().toString();
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(i<4)
+            {
+                return getretryMsg( request, URL, SOAP_ACTION,++ i);
+            }
+        }
+
+        return null;
+
+
+    }
     public static Vector getMsg1(SoapObject request,String URL,String SOAP_ACTION ) {
         //  SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
         // request.addProperty("msgid",msgid);

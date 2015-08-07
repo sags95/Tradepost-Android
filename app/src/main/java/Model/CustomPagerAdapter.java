@@ -1,6 +1,7 @@
 package Model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,10 @@ public class CustomPagerAdapter extends PagerAdapter {
 
 
 
-    int[] mResources;
+   Bitmap[] mResources;
 
 
-    public CustomPagerAdapter(Context context, int[] imageResources) {
+    public CustomPagerAdapter(Context context, Bitmap[] imageResources) {
         mContext = context;
         mResources = imageResources;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,7 +45,7 @@ public class CustomPagerAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        imageView.setImageResource(mResources[position]);
+        imageView.setImageBitmap(mResources[position]);
 
         container.addView(itemView);
 
