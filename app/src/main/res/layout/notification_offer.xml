@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -172,7 +173,7 @@
 
         />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/noti_offer_btn_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -181,55 +182,92 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_alignParentBottom="true"
-
-
         >
 
-        <Button
-            android:id="@+id/noti_offer_accept_btn"
+        <LinearLayout
+            android:id="@+id/noti_offer_accept_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accept"
-            android:background="@color/green"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            android:orientation="vertical"
+            android:layout_weight="1"
 
-            android:layout_alignParentLeft="true"
-            android:layout_alignBaseline="@+id/noti_offer_or"
-            android:layout_marginLeft="20dp"
-            />
+
+
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:id="@+id/noti_offer_accept"
+                android:src="@drawable/ic_check"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                app:border_width="3dp"
+                app:border_color="@color/ColorPrimary"/>
+
+
+            <TextView
+                android:id="@+id/noti_offer_accept_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accept Offer"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+
+                />
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/noti_offer_or"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Or"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
+            android:text="OR"
+            android:layout_gravity="center|top"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
 
             />
 
-        <Button
-            android:id="@+id/noti_offer_decline_btn"
+        <LinearLayout
+            android:id="@+id/noti_offer_decline_layout"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Decline"
-            android:background="@color/red"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
 
-            android:layout_alignParentRight="true"
-            android:layout_alignBaseline="@+id/noti_offer_or"
-            android:layout_marginRight="20dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:id="@+id/noti_offer_cancel"
+                android:src="@drawable/ic_cross"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center_horizontal"
+                app:border_width="3dp"
+                app:border_color="@color/red"/>
 
 
-            />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/noti_offer_cancel_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Decline Offer"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
 
+                />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

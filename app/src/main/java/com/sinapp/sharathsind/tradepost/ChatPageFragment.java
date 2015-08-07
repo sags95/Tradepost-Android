@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 import Model.ChatPageAdapter;
 import Model.ChatPageItem;
 import Model.DividerItemDecoration;
+import Model.EmptyRecyclerView;
 import Model.NavigationDrawerAdapter;
 import Model.NavigationItem;
 import Model.RecyclerViewOnClickListener;
@@ -27,12 +29,10 @@ import Model.RecyclerViewOnClickListener;
  */
 public class ChatPageFragment extends Fragment {
 
-    private View rootView;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private View rootView,emptyView;
+    private EmptyRecyclerView mRecyclerView;
     private ChatPageAdapter mChatPageAdapter;
     private Fragment chatFrag;
-    private ChatPageItem item;
 
 
     @Override
@@ -46,15 +46,18 @@ public class ChatPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_chatpage, container, false);
+        emptyView = rootView.findViewById(R.id.chatpage_emptyView);
         chatFrag = new ChatFragment();
 
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.chatpage_list);
-
-        final List<ChatPageItem> chatItem = addItem();
+        mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.chatpage_list);
+        final List<ChatPageItem> chatItem = null;
         mChatPageAdapter = new ChatPageAdapter(chatItem);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
+
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.setAdapter(mChatPageAdapter);
+
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
@@ -90,9 +93,9 @@ public class ChatPageFragment extends Fragment {
         return items;
     }
     private void applyLinearLayoutManager(){
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
+
 
     @Override
     public void onResume() {

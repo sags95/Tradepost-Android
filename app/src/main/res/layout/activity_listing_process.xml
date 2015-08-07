@@ -6,12 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightgrey"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     >
 
     <include
         android:id="@+id/tool_bar"
         layout="@layout/toolbar_default">
     </include>
+
+    <View android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_height="1dp"
+        android:id="@+id/separator"
+        android:layout_above="@+id/scrollView"
+        />
 
 
     <ScrollView
@@ -25,63 +34,88 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="POST YOUR ITEM"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:layout_height="wrap_content"
+                android:id="@+id/section1"
                 android:paddingBottom="16dp"
                 android:paddingTop="16dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:background="@color/lightgrey"
-                />
-
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/section1"
-                android:paddingBottom="16dp"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:background="@color/lightgrey"
                 >
 
-                <ImageView
-                    android:id="@+id/section1_img"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/section1_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_section1"
-                    android:paddingBottom="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp"
+                    >
+                    <ImageView
+                        android:id="@+id/section1_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_section1"
+                        android:layout_gravity="center_vertical"
 
-                    />
-                <TextView
-                    android:id="@+id/section1_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section1_text"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="4dp"
-                    android:layout_toRightOf="@+id/section1_img"
-                    android:layout_alignBottom="@id/section1_img"
+                        />
+                    <TextView
+                        android:id="@+id/section1_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section1_text"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="4dp"
+                        />
+                </LinearLayout>
 
-                    />
-
-                <EditText
+                <Model.LimitedEditText
                     android:id="@+id/section1_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Item name here"
-                    android:layout_below="@+id/section1_text"
+                    android:layout_below="@+id/section1_title"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
-
                     />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/section1_title"
+                    android:layout_alignTop="@+id/section1_title"
+                    android:gravity="center"
+
+                    >
+                    <TextView
+                        android:id="@+id/section1_char_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        />
+                    <TextView
+                        android:id="@+id/section1_char_count_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section1_char_count"
+                        />
+
+                    <TextView
+                        android:id="@+id/section1_char_count_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="70"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section1_char_count_slash"
+                        />
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -96,33 +130,39 @@
 
                 >
 
-                <ImageView
-                    android:id="@+id/section2_img"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/section2_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_section2"
-                    android:paddingBottom="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp"
+                    >
 
-                    />
+                    <ImageView
+                        android:id="@+id/section2_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_section2"
+                        android:layout_gravity="center_vertical"
+                        />
 
-                <TextView
-                    android:id="@+id/section2_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section2_text"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="4dp"
-                    android:layout_toRightOf="@+id/section2_img"
-                    android:layout_alignBottom="@id/section2_img"
-                    />
+                    <TextView
+                        android:id="@+id/section2_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section2_text"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="4dp"
+
+                        />
+                </LinearLayout>
 
                 <View
                     android:id="@+id/section2_scroll_top_div"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/black"
-                    android:layout_below="@id/section2_img"
+                    android:background="@color/lightgrey"
+                    android:layout_below="@id/section2_title"
                     />
 
                 <LinearLayout
@@ -133,51 +173,67 @@
                     android:orientation="horizontal"
                     >
 
-
-
                     <ImageView
                         android:id="@+id/section2_item_img1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_section2_camera"
+                        android:src="@drawable/ic_image_thumbnail"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
+                        android:background="@color/white"
+                        />
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/lightgrey"
                         />
 
                     <ImageView
                         android:id="@+id/section2_item_img2"
-
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_section2_camera"
+                        android:src="@drawable/ic_image_thumbnail"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
+                        android:background="@color/white"
+                        />
 
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/lightgrey"
                         />
 
                     <ImageView
                         android:id="@+id/section2_item_img3"
-
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_section2_camera"
+                        android:src="@drawable/ic_image_thumbnail"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-
+                        android:background="@color/white"
                         />
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/lightgrey"
+                        />
+
                     <ImageView
                         android:id="@+id/section2_item_img4"
 
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_section2_camera"
+                        android:src="@drawable/ic_image_thumbnail"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-
+                        android:background="@color/white"
                         />
 
                 </LinearLayout>
@@ -186,77 +242,106 @@
                     android:id="@+id/section2_scroll_bottom_div"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/black"
+                    android:background="@color/lightgrey"
                     android:layout_below="@+id/section2_imgs_container"
                     android:layout_marginBottom="8dp"
                     />
 
-                <ImageButton
-                    android:id="@+id/section2_img_camera"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/section2_selection_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_below="@+id/section2_scroll_bottom_div"
-                    android:layout_toLeftOf="@+id/section2_or"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:clickable="true"
+                    android:weightSum="2"
+                    >
 
-                    />
-
-                <TextView
-                    android:id="@+id/section2_or"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/section2_scroll_bottom_div"
-                    android:text="OR"
-                    android:layout_alignBottom="@+id/section2_img_folder"
-                    android:layout_centerHorizontal="true"
-                    android:paddingTop="24dp"
-
-                    />
-
-                <ImageButton
-                    android:id="@+id/section2_img_folder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/section2_or"
-                    android:layout_below="@+id/section2_scroll_bottom_div"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:clickable="true"
+                    <LinearLayout
+                        android:id="@+id/section2_cam_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="0.9"
 
 
-                    />
 
-                <TextView
-                    android:id="@+id/section2_text_camera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section2_text_camera"
-                    android:gravity="center"
-                    android:layout_below="@+id/section2_or"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignLeft="@id/section2_img_camera"
-                    android:layout_alignRight="@id/section2_img_camera"
-                    />
+                        >
 
-                <TextView
-                    android:id="@+id/section2_text_folder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section2_text_folder"
-                    android:gravity="center"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignRight="@id/section2_img_folder"
-                    android:layout_alignLeft="@id/section2_img_folder"
-                    />
+                        <ImageButton
+                            android:id="@+id/section2_img_camera"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:src="@drawable/ic_section2_camera"
+                            android:background="@color/white"
+                            android:layout_gravity="center_horizontal"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/section2_text_cam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section2_text_camera"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+
+                            />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/section2_or"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OR"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/section2_gal_layout"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        >
+
+                        <ImageButton
+                            android:id="@+id/section2_img_folder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_section2_camera"
+                            android:background="@color/white"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/section2_text_folder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section2_text_folder"
+                            android:gravity="center"
+                            android:layout_gravity="center_horizontal"
+
+                            />
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
 
             </RelativeLayout>
 
-
-
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/section3"
                 android:paddingBottom="16dp"
@@ -266,27 +351,33 @@
                 android:background="@color/white"
                 >
 
-                <ImageView
-                    android:id="@+id/section3_img"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/section3_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_section2"
-                    android:paddingBottom="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp"
+                    >
 
-                    />
+                    <ImageView
+                        android:id="@+id/section3_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_section2"
+                        android:layout_gravity="center_vertical"
+                        />
 
-                <TextView
-                    android:id="@+id/section3_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section3_text"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="4dp"
-                    android:layout_toRightOf="@+id/section3_img"
-                    android:layout_alignBottom="@id/section3_img"
+                    <TextView
+                        android:id="@+id/section3_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section3_text"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="4dp"
 
-                    />
+                        />
+
+                </LinearLayout>
 
                 <SeekBar
 
@@ -294,8 +385,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_below="@id/section3_text"
-                    android:max="5"
+                    android:layout_below="@id/section3_title"
+                    android:max="4"
 
                     />
 
@@ -303,7 +394,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/section4"
                 android:paddingBottom="16dp"
@@ -313,47 +404,84 @@
                 android:background="@color/lightgrey"
                 >
 
-                <ImageView
-                    android:id="@+id/section4_img"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/section4_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_section2"
-                    android:paddingBottom="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/section4_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_section2"
+                        android:layout_gravity="center_vertical"
+                        />
+
+                    <TextView
+                        android:id="@+id/section4_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section4_text"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="4dp"
+                        />
+
+                </LinearLayout>
 
 
-                    />
 
-                <TextView
-                    android:id="@+id/section4_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section4_text"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="4dp"
-                    android:layout_toRightOf="@+id/section4_img"
-                    android:layout_alignBottom="@id/section4_img"
-
-                    />
-
-                <EditText
+                <Model.LimitedEditText
                     android:id="@+id/section4_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/section4_text"
+                    android:layout_below="@+id/section4_title"
                     android:background="#FFFFFF"
                     android:lines="5"
                     android:maxLines="5"
                     android:gravity="left|top"
-
-
                     />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/section4_title"
+                    android:layout_alignTop="@+id/section4_title"
+                    android:gravity="center"
+
+                    >
+                    <TextView
+                        android:id="@+id/section4_char_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        />
+                    <TextView
+                        android:id="@+id/section4_char_count_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section4_char_count"
+                        />
+
+                    <TextView
+                        android:id="@+id/section4_char_count_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="250"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section4_char_count_slash"
+                        />
+                </RelativeLayout>
 
 
 
             </RelativeLayout>
-
-
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -366,34 +494,41 @@
                 android:background="@color/white"
                 >
 
-                <ImageView
-                    android:id="@+id/section5_img"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/section5_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_section2"
-                    android:paddingBottom="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp"
+                    >
 
-                    />
+                    <ImageView
+                        android:id="@+id/section5_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_section2"
+                        android:layout_gravity="center_vertical"
 
-                <TextView
-                    android:id="@+id/section5_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section5_text"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="4dp"
-                    android:layout_toRightOf="@+id/section5_img"
-                    android:layout_alignBottom="@id/section5_img"
+                        />
 
-                    />
+                    <TextView
+                        android:id="@+id/section5_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section5_text"
+                        android:paddingLeft="4dp"
+                        android:layout_gravity="center_vertical"
+
+                        />
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/section5_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name Your TAGS...."
-                    android:layout_below="@+id/section5_text"
+                    android:layout_below="@+id/section5_title"
                     android:layout_toLeftOf="@+id/section5_plus"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
@@ -404,7 +539,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_fab_primary"
-                    android:layout_below="@+id/section5_text"
+                    android:layout_below="@+id/section5_title"
                     android:layout_alignParentRight="true"
                     android:clickable="true"
                     />
@@ -435,51 +570,44 @@
                 android:id="@+id/section6"
                 android:background="@color/lightgrey">
 
-                <ImageView
-                    android:id="@+id/section6_img"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/section6_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_section2"
-                    android:paddingBottom="8dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp"
+                    >
 
-                    />
+                    <ImageView
+                        android:id="@+id/section6_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_section2"
+                        android:layout_gravity="center_vertical"
+                        />
 
-                <TextView
-                    android:id="@+id/section6_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/section6_text"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="12dp"
-                    android:paddingLeft="4dp"
-                    android:layout_toRightOf="@+id/section6_img"
-                    android:layout_alignBottom="@id/section6_img"
+                    <TextView
+                        android:id="@+id/section6_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section6_text"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="4dp"
+                        />
 
-                    />
+                    </LinearLayout>
+
 
                 <Spinner
                     android:id="@+id/section6_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/section6_text"
-                    android:layout_toLeftOf="@+id/section6_plus"
+                    android:layout_below="@+id/section6_title"
                     android:background="@color/white"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:singleLine="true"
                     />
-
-
-                <ImageView
-                    android:id="@+id/section6_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_fab_primary"
-                    android:layout_below="@+id/section6_text"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignBottom="@id/section6_spinner"
-                    />
-
 
             </RelativeLayout>
 

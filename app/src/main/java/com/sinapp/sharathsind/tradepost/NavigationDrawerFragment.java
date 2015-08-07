@@ -5,6 +5,8 @@ package com.sinapp.sharathsind.tradepost;
  */
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -22,21 +24,26 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.LimitedEditText;
 import Model.NavigationDrawerAdapter;
 import Model.NavigationDrawerCallbacks;
 import Model.NavigationItem;
@@ -81,6 +88,13 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private boolean mUserLearnedDrawer;
     private RelativeLayout mHeaderLayout;
 
+    //feedback
+    private LinearLayout feedbackLayout;
+    LayoutInflater li;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    int feedback_layout = R.layout.feedback_dialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,11 +114,13 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        li = getActivity().getLayoutInflater();
         mHeaderLayout = (RelativeLayout)view.findViewById(R.id.navigationHeader);
         mHeaderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("click on Header","You clicked on header");
+                Log.d("click on Header", "You clicked on header");
+                startActivity(new Intent(getActivity().getApplicationContext(),ProfileActivity.class));
             }
         });
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
@@ -118,6 +134,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         adapter.setNavigationDrawerCallbacks(this);
         mDrawerList.setAdapter(adapter);
         selectItem(mCurrentSelectedPosition);
+
+        //feedback
+        feedbackLayout = (LinearLayout)view.findViewById(R.id.navigationfooter);
+        feedbackLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog();
+            }
+        });
         return view;
     }
 
@@ -276,4 +301,45 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         }
     }
 
+    public void customDialog() {
+        final View dialogView = li.inflate(feedback_layout, null, false);
+
+        //set up the limit for user input
+        LimitedEditText feedbackEdit = (LimitedEditText)dialogView.findViewById(R.id.feedback_edit);
+        feedbackEdit.setMaxLines(7);
+        feedbackEdit.setMaxCharacters(250);
+
+        final TextView feedbackCharCount = (TextView)dialogView.findViewById(R.id.feedback_char_count);
+        feedbackEdit.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                feedbackCharCount.setText(String.valueOf(s.length()));
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+
+        builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyleFeedback);
+        builder.setTitle("Send Us Feedback!");
+
+        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+        //set custom view.
+        builder.setView(dialogView);
+
+        //showing custom dialog.
+        dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
+    }
 }

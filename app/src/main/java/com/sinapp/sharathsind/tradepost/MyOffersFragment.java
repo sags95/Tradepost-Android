@@ -58,6 +58,7 @@ public class MyOffersFragment extends Fragment {
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout)rootView.findViewById(R.id.sliding_tabs);
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+        tabs.setBackgroundColor(getResources().getColor(R.color.darkgrey));
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {

@@ -4,15 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <include
         android:id="@+id/tool_bar"
         layout="@layout/toolbar_default">
     </include>
 
+
+    <View android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_height="1dp"
+        android:id="@+id/separator"
+        android:layout_above="@+id/single_listing_header"
+        />
+
     <include
         layout="@layout/single_listing_header"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:id="@+id/single_listing_header"
         android:layout_below="@+id/tool_bar"
         />
@@ -38,6 +47,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/single_listing_img_layout"
                 >
+
+
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
@@ -153,7 +164,22 @@
                 app:borderWidth="0dp"
                 />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="condition"
+                android:textColor="@color/white"
+                android:background="@drawable/tag_btn_shape"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_alignRight="@+id/single_listing_img_layout"
+                android:layout_alignTop="@+id/single_listing_img_layout"
+
+                />
+
         </RelativeLayout>
+
+
     </ScrollView>
 
 

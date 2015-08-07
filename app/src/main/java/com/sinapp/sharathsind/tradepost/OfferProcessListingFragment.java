@@ -42,7 +42,6 @@ public class OfferProcessListingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("From Your Listing");
-
         dataPassingListener = (OfferProcessDataPassingListener)getActivity();
 
 

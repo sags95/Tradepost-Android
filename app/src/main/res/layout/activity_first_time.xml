@@ -35,11 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:id="@+id/fb_sign_in_btn"
+        android:layout_alignLeft="@+id/google_sign_in_btn"
+        android:layout_alignRight="@+id/google_sign_in_btn"
 
         />
 
@@ -48,8 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:layout_below="@id/fb_sign_in_btn" />
 
     <TextView
@@ -68,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="Sign in with email"
         android:textColor="@color/white"
         android:background="@drawable/b"

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:background="@color/ColorPrimary"
+    android:background="@drawable/shadow_effect"
     >
 
     <LinearLayout
@@ -36,7 +36,8 @@
         android:layout_height="wrap_content"
         android:text="Location"
         android:textColor="@color/white"
-        android:paddingRight="8dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
         android:layout_gravity="center_vertical"
         android:textSize="18sp"
 

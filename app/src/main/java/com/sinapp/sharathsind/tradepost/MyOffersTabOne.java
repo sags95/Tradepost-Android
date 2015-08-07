@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
 
@@ -22,8 +23,8 @@ import Model.MyOffersItem;
  */
 public class MyOffersTabOne extends Fragment {
 
-    private View rootView;
-    private RecyclerView mRecyclerView;
+    private View rootView,emptyView;
+    private EmptyRecyclerView mRecyclerView;
     private MyOffersAdapter mMyOffersAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private BitmapFactory.Options options;
@@ -33,20 +34,26 @@ public class MyOffersTabOne extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.myoffers_pager_1, container, false);
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.myoffers_received);
+        emptyView = rootView.findViewById(R.id.myoffers_received_emptyView);
+        mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.myoffers_received);
 
         options= new BitmapFactory.Options();
         options.inJustDecodeBounds =true;
         BitmapFactory.decodeResource(getResources(),R.drawable.sample_img,options);
 
+        /*
         final List<MyOffersItem> myOffersItems =
                 addItem("Item Title",
                         BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img),
                         BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img),
                         0,
                         0);
+        */
+        final List<MyOffersItem> myOffersItems = null;
+
         mMyOffersAdapter = new MyOffersAdapter(myOffersItems, getActivity().getApplicationContext());
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.setAdapter(mMyOffersAdapter);
         applyLinearLayoutManager();
 

@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 
 import Model.OfferProcessAdapter;
 import Model.OfferProcessItem;
-import Model.OfferProcessMainAdapter;
 
 /**
  * Created by HenryChiang on 15-07-18.
@@ -45,8 +45,6 @@ public class OfferProcessMainFragment extends Fragment {
     private FragmentManager fragmentManager;
     private ImageView newItemImg;
     private OfferProcessDataPassingListener dataPassingListener;
-    private RecyclerView mRecyclerView;
-    private OfferProcessMainAdapter mOfferProcessMainAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<OfferProcessItem> tempList;
     private String itemText;
@@ -62,6 +60,8 @@ public class OfferProcessMainFragment extends Fragment {
 
         dataPassingListener = (OfferProcessDataPassingListener)getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Make An Offer");
+
 
 
     }
@@ -184,12 +184,12 @@ public class OfferProcessMainFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            if(addCashEdit.getVisibility()==View.GONE) {
+            if(addCashEdit.getVisibility()==View.INVISIBLE) {
                 addCashEdit.setVisibility(View.VISIBLE);
                 addCashBtn.setText("REMOVE CASH");
             }else{
                 addCashEdit.setText("");
-                addCashEdit.setVisibility(View.GONE);
+                addCashEdit.setVisibility(View.INVISIBLE);
                 addCashBtn.setText("ADD CASH");
             }
 
@@ -246,13 +246,6 @@ public class OfferProcessMainFragment extends Fragment {
 
         }
     };
-
-
-    private void applyLinearLayoutManager(){
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-    }
-
 
 }
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="8dp"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    >
+
+    <Model.LimitedEditText
+        android:id="@+id/feedback_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/feedback_dialog_background"
+        android:lines="7"
+        android:maxLines="7"
+        android:hint="Any Comments..."
+        android:gravity="left|top"
+        android:padding="4dp"
+        android:textColor="@color/ColorPrimary"
+        android:textColorHint="@color/ColorPrimary"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:layout_below="@+id/feedback_edit"
+
+        >
+        <TextView
+            android:id="@+id/feedback_char_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/ColorPrimaryDark"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:id="@+id/feedback_char_count_slash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@+id/feedback_char_count"
+            android:textColor="@color/ColorPrimaryDark"
+
+            />
+
+        <TextView
+            android:id="@+id/feedback_char_count_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250"
+            android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@+id/feedback_char_count_slash"
+            android:textColor="@color/ColorPrimaryDark"
+            />
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

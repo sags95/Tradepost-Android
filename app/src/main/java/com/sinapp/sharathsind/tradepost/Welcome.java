@@ -2,7 +2,6 @@ package com.sinapp.sharathsind.tradepost;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
 
@@ -37,14 +36,11 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
-import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import Model.RegisterWebService;
 import Model.Variables;
-import datamanager.Item;
-import datamanager.ItemResult;
 import datamanager.MyLocationService;
 import datamanager.userdata;
 import webservices.MainWebService;
@@ -58,7 +54,6 @@ public class Welcome extends Activity implements OnClickListener {
 
     private TextView title;
     InstanceID instanceID;
-    Cursor c;
  public static    LocationManager locationManager;
   public static   MyLocationService service;
     @Override
@@ -76,7 +71,7 @@ service=new MyLocationService(this);
             try{
                 Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
 
-                 c=Constants.db.rawQuery("select * from login",null);
+                Cursor c=Constants.db.rawQuery("select * from login",null);
                 c.moveToFirst();
                Constants.userid=c.getInt(c.getColumnIndex("userid"));
                 Variables.email=c.getString(c.getColumnIndex("email"));
@@ -89,16 +84,6 @@ service=new MyLocationService(this);
                 userdata.latitude=location.getLatitude();
                 new AsyncTask<String,String,String>()
                 {
-                    @Override
-                    protected void onPostExecute(String s) {
-                        super.onPostExecute(s);
-                        if(c.getCount()>0)
-                        {
-                            startActivity(new Intent(Welcome.this, NavigationDrawer.class));
-                            finish();
-                            //  locationManager.removeUpdates(service);
-                        }
-                    }
 
                     @Override
                     protected String doInBackground(String... params) {
@@ -106,36 +91,12 @@ service=new MyLocationService(this);
                      //   SoapObject object = new SoapObject("http://webser/", "getuseritems");
                         object.addProperty("userid",  userdata.userid);
                   Vector object1=      MainWebService.getMsg1(object,"http://192.168.2.15:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
-    userdata.items=new ArrayList<Integer>();
+    userdata.items=new HashSet<Integer>();
                         for(Object i:object1)
                         {
-                            userdata.items.add(Integer.parseInt(((SoapPrimitive)i).getValue().toString()));
+                            userdata.items.add(Integer.getInteger(((SoapPrimitive)i).getValue().toString()));
                         }
-                        userdata.i=new ArrayList<Item>();
-                        for (Integer i : userdata.items) {
-                            object = new SoapObject("http://webser/", "getItembyId");
-                            object.addProperty("itemid", i);
-
-                            KvmSerializable result1 = MainWebService.getMsg2(object, "http://192.168.2.15:8084/TDserverWeb/GetItems?wsdl"
-                                    , "http://webser/GetItems/getItembyIdRequest");
-
-                            ItemResult ir = new ItemResult();
-                            ir.item = new Item();
-
-                            object = (SoapObject) result1.getProperty(0);
-                            //  for(int u=0;u<object.getPropertyCount())
-                            ir.item.set(object);
-                            userdata.i.add(ir.item);
-                            //  SoapObject o=(SoapObject)result1;
-//     Object j=       o.getProperty("images");
-                            int i1 = result1.getPropertyCount();
-                            ir.images = new String[i1 - 1];
-                            for (int u1 = 1; u1 < i1; u1++) {
-                                ir.images[u1 - 1] = result1.getProperty(u1).toString();
-
-                            }
-                        }
-                            return null;
+                        return null;
 
 
 
@@ -146,7 +107,12 @@ service=new MyLocationService(this);
         //        Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
 //                Constants.username=c.getString(c.getColumnIndex("username"));
-
+if(c.getCount()>0)
+{
+    startActivity(new Intent(this, NavigationDrawer.class));
+    finish();
+    //  locationManager.removeUpdates(service);
+}
 
 
 

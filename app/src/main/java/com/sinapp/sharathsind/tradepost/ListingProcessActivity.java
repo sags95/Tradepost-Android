@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -44,10 +43,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import Model.RegisterWebService;
@@ -73,7 +69,7 @@ public class ListingProcessActivity extends AppCompatActivity {
     private int requestCodeGal = 1;
     private int currentImgPos = 0;
     private Toolbar toolbar;
-ArrayList<String>imfiles;
+
 
     public ArrayList<String> tags;
 public ArrayList<Bitmap>bits;
@@ -85,7 +81,7 @@ public ArrayList<Bitmap>bits;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_process);
         tagFlowLayout = (FlowLayout) findViewById(R.id.section5_tags);
-imfiles=new ArrayList<>();
+
         //toolbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitle("Post Your Item");
@@ -101,7 +97,7 @@ imfiles=new ArrayList<>();
         });
 
         tags=new ArrayList<String>();
-        //bits=new ArrayList<Bitmap>();
+        bits=new ArrayList<Bitmap>();
         //section 2
         itemImg1 = (ImageView) findViewById(R.id.section2_item_img1);
         itemImg2 = (ImageView) findViewById(R.id.section2_item_img2);
@@ -185,18 +181,20 @@ String []tagarray=new String[tags.size()];
              tagarray[i]=tags.get(i);
          }
                //     int i=s.get;
-                    SoapPrimitive r= RegisterWebService. sendDataToServer(title,description,tagarray,null,i, userdata.userid,cat,0);
+                    SoapPrimitive r= RegisterWebService. sendDataToServer(title,description,tagarray,bits.toArray(),i, userdata.userid,cat);
                     result=r.getValue().toString();
                     int i=0;
-                    Added_files.result=Integer.parseInt(result);
-                    Added_files.files=imfiles;
+ for(Bitmap b:bits)
+ {
 
+ sendDImage(Integer.parseInt(result),FileManager.encode(b),i);
 
+i++;
+ }
       for(String t:tags)
           sendtag(Integer.parseInt(result),t);
 //
-startActivity(new Intent(ListingProcessActivity.this,Added_files.class));
-                    finish();
+
                 } catch (Exception e) {
                    result=e.toString();
                     e.printStackTrace();
@@ -214,7 +212,14 @@ startActivity(new Intent(ListingProcessActivity.this,Added_files.class));
         return super.onOptionsItemSelected(item);
     }
 
-
+    public SoapPrimitive sendDImage(int id,String im,int pic)
+    {
+        SoapObject object = new SoapObject("http://webser/", "addimage");
+        object.addProperty("itemid", id);
+        object.addProperty("pic",pic);
+        object.addProperty("image",im);
+        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
+    }
     public SoapPrimitive sendtag(int id,String im)
     {
         SoapObject object = new SoapObject("http://webser/", "addtag");
@@ -306,46 +311,11 @@ startActivity(new Intent(ListingProcessActivity.this,Added_files.class));
         @Override
         public void onClick(View v) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-          Uri  fileUri = getOutputMediaFileUri();
-            takePictureIntent.putExtra( MediaStore.EXTRA_OUTPUT,fileUri);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, requestCodeCam);
             }
         }
     };
-    static File file;
-    private  Uri getOutputMediaFileUri(){
-        file=getOutputMediaFile();
-        imfiles.add(file.toString());
-        return Uri.fromFile(file);
-    }
-
-    /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
-        // This location works best if you want the created images to be s1o+hared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new
-                Date());
-        File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
-
-        return mediaFile;
-    }
 
     public View.OnClickListener galleryBtnListener = new View.OnClickListener() {
         @Override
@@ -397,42 +367,7 @@ startActivity(new Intent(ListingProcessActivity.this,Added_files.class));
         return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
-    public static Bitmap lessResolution (String filePath, int width, int height) {
-        int reqHeight = height;
-        int reqWidth = width;
-        BitmapFactory.Options options = new BitmapFactory.Options();
 
-        // First decode with inJustDecodeBounds=true to check dimensions
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(filePath, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeFile(filePath, options);
-    }
-
-    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            // Calculate ratios of height and width to requested height and width
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            // Choose the smallest ratio as inSampleSize value, this will guarantee
-            // a final image with both dimensions larger than or equal to the
-            // requested height and width.
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-        return inSampleSize;
-    }
 
 
     @Override
@@ -440,8 +375,8 @@ startActivity(new Intent(ListingProcessActivity.this,Added_files.class));
         super.onActivityResult(requestCode,resultCode,data);
         if (resultCode == RESULT_OK) {
             if(requestCode ==0){
-            //    Bundle extras = data.getExtras();
-                Bitmap imageBitmap = lessResolution(file.getAbsolutePath(),100,100);
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
                 setImage(imageBitmap);
 
             }else if(requestCode == 1){
@@ -486,7 +421,7 @@ startActivity(new Intent(ListingProcessActivity.this,Added_files.class));
                     itemImg4.setImageBitmap(imageBitmap);
                     break;
             }
-          //  bits.add(imageBitmap);
+            bits.add(imageBitmap);
             currentImgPos++;
 
         }

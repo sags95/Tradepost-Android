@@ -80,13 +80,19 @@ public class RegisterWebService {
     private static final String METHOD_NAME3 = "additems";
    // private static final String NAMESPACE = "http://webser/";
     //private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
-    public static  SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category,int is) {
+    public static  SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
         SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME3);
         object.addProperty("itemname", itemTitle);
         object.addProperty("desc",descrpition);
         object.addProperty("latitude", String.format("%.2f",userdata.latitude));
-       // PropertyInfo propertyInfo=new PropertyInfo();
+        PropertyInfo propertyInfo=new PropertyInfo();
+        propertyInfo.setValue(userdata.latitude);
+        propertyInfo.setName("latitude");
+        StringVector tag=new StringVector();
+        for(String h: tags)
+        tag.add(h);
+        object.addProperty("tags",tag);
         object.addProperty("longi", String.format("%.2f",userdata.longitude));
         object.addProperty("userid", userdata.userid);
         object.addProperty("category", category);
@@ -103,21 +109,15 @@ public class RegisterWebService {
 
         ht.debug=true;
         try {
-            ht.getServiceConnection().setRequestProperty("KeepAlive","false");
-            ht.getServiceConnection().setRequestProperty("Connection","close");
+
 
             ht.call(SOAP_ACTION3, envelope,headerPropertyArrayList);
-
+            ht.getServiceConnection().setRequestProperty("connection","close");
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
             //  String res = response.ge().toString();
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            if(is<4)
-            {
-                is++;
-                return sendDataToServer(itemTitle, descrpition, tags, images, condition, userid, category, is);
-            }
         }
 
 

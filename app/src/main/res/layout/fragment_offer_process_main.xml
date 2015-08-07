@@ -10,7 +10,9 @@
     <ScrollView
         android:id="@+id/offer_parent_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/lightgrey"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,7 +22,6 @@
         android:id="@+id/offer_details_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/darkgrey"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
@@ -55,15 +56,6 @@
 
 
 
-            <Button
-                android:layout_below="@+id/offer_process_list_main"
-                android:id="@+id/offer_process_addItem_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="add item"
-                />
-
-
             <EditText
 
                 android:id="@+id/offer_addcash_edit"
@@ -71,23 +63,36 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:hint="Amounts"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:visibility="gone"
-                android:layout_below="@+id/offer_process_addItem_btn"
-
-
-
+                android:visibility="invisible"
+                android:layout_below="@+id/offer_process_list_main"
                 />
 
-            <Button
-                android:id="@+id/offer_addcash"
+            <RelativeLayout
+                android:id="@+id/offer_process_addition_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ADD CASH"
                 android:layout_below="@+id/offer_addcash_edit"
-                />
+                android:layout_centerHorizontal="true"
+                >
 
+                <Button
+                    android:id="@+id/offer_process_addItem_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADD ITEM"
+                    />
+
+                <Button
+                    android:id="@+id/offer_addcash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADD CASH"
+                    android:layout_toRightOf="@+id/offer_process_addItem_btn"
+
+                    />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
@@ -103,8 +108,6 @@
             android:textStyle="bold"
             android:layout_below="@+id/offer_details"
             android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-
             />
 
         <RelativeLayout
@@ -114,80 +117,127 @@
             android:layout_marginBottom="16dp"
             >
 
-            <ImageButton
-                android:id="@+id/offer_process_cam_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/offer_or"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:clickable="true"
-                android:src="@drawable/ic_section2_camera"
-
-
-                />
-
-            <TextView
-                android:id="@+id/offer_or"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OR"
-                android:layout_alignBottom="@+id/offer_process_cam_btn"
+            <ImageView
+                android:id="@+id/offer_process_new_img"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:src="@drawable/ic_image_thumbnail"
+                android:background="@color/white"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="24dp"
-
+                android:scaleType="centerCrop"
                 />
 
-            <ImageButton
-                android:id="@+id/offer_process_gallery_btn"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/offer_process_new_img_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/offer_or"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:clickable="true"
-                android:src="@drawable/ic_section2_camera"
-
-
+                android:layout_alignLeft="@+id/offer_process_new_img"
+                android:layout_alignRight="@+id/offer_process_new_img"
+                android:layout_below="@+id/offer_process_new_img"
+                android:layout_marginBottom="16dp"
+                android:hint="New Item Title"
+                android:windowSoftInputMode="stateHidden"
+                android:singleLine="true"
                 />
 
-            <TextView
-                android:id="@+id/offer_text_camera"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:id="@+id/offer_selection_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/section2_text_camera"
-                android:gravity="center"
-                android:layout_below="@+id/offer_or"
-                android:layout_alignLeft="@id/offer_process_cam_btn"
-                android:layout_alignRight="@id/offer_process_cam_btn"
-                />
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_below="@+id/offer_process_new_img_title"
+                >
 
-            <TextView
-                android:id="@+id/offer_text_gallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/section2_text_folder"
-                android:gravity="center"
-                android:layout_below="@+id/offer_or"
-                android:layout_alignRight="@id/offer_process_gallery_btn"
-                android:layout_alignLeft="@id/offer_process_gallery_btn"
-                />
+                <LinearLayout
+                    android:id="@+id/offer_cam_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="0.9"
 
 
 
+                    >
+
+                    <ImageButton
+                        android:id="@+id/offer_process_cam_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:src="@drawable/ic_section2_camera"
+                        android:background="@color/white"
+                        android:layout_gravity="center_horizontal"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/offer_text_camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section2_text_camera"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+
+                        />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/offer_or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OR"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/offer_gal_layout"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/offer_process_gallery_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_section2_camera"
+                        android:background="@color/white"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/offer_text_gallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/section2_text_folder"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+
+                        />
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
 
 
         </RelativeLayout>
 
     </RelativeLayout>
-
-
-            <ImageView
-                android:id="@+id/offer_process_new_img"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/offer_details_bar"
-                />
 
         </RelativeLayout>
     </ScrollView>

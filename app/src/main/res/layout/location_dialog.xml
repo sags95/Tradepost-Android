@@ -39,6 +39,26 @@
             />
     </android.support.design.widget.TextInputLayout>
 
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location Service"
+        android:id="@+id/radioButton_locService"
+        android:layout_gravity="left"
+        android:textSize="@dimen/customEntry"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+
+        />
+
+    <TextView
+        android:id="@+id/dialog_loc_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Using the build-in location service.\n(Will direct you to Location Setting)"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="8dp"
+        />
 
     <TextView
         android:id="@+id/dialog_radius_txt"
@@ -105,30 +125,6 @@
             android:clickable="true"
             />
     </LinearLayout>
-
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location Service"
-        android:id="@+id/radioButton_locService"
-        android:layout_gravity="left"
-        android:textSize="@dimen/customEntry"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-
-        />
-
-    <TextView
-        android:id="@+id/dialog_loc_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Using the build-in location service.\n(Will direct you to Location Setting)"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-
-
-        />
 
 
 

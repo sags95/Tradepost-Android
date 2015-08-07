@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -40,6 +41,7 @@ public class SingleListingActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton offerFab;
     private TextView itemTitle;
+    private RelativeLayout singleListingHeader;
 
     private Bitmap[] imageResources;
 
@@ -47,6 +49,15 @@ public class SingleListingActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_listing_view);
+
+        //single listing header
+        singleListingHeader= (RelativeLayout)findViewById(R.id.single_listing_header);
+        singleListingHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+            }
+        });
 
         //floating action button
         offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
@@ -98,6 +109,8 @@ e.printStackTrace();
         //setup actionbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.ColorPrimary));
+        toolbar.setTitle("Listing");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);

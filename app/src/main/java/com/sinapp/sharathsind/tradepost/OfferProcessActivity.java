@@ -54,7 +54,8 @@ public class OfferProcessActivity extends AppCompatActivity implements OfferProc
         //ToolBar set up
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("Make an Offer");
+        mToolbar.setTitleTextColor(getResources().getColor(R.color.ColorPrimary));
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
