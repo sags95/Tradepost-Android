@@ -19,6 +19,7 @@ import java.util.List;
 import Model.ChatPageAdapter;
 import Model.ChatPageItem;
 import Model.DividerItemDecoration;
+import Model.EmptyRecyclerView;
 import Model.NotificationAdapter;
 import Model.NotificationItem;
 import Model.RecyclerViewOnClickListener;
@@ -28,8 +29,8 @@ import Model.RecyclerViewOnClickListener;
  */
 public class NotificationFragment extends Fragment {
 
-    private View rootView;
-    private RecyclerView mRecyclerView;
+    private View rootView,emptyView;
+    private EmptyRecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private NotificationAdapter mNotificationAdapter;
     private Fragment chatFrag;
@@ -41,14 +42,17 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_notification, container, false);
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.noti_list);
+        emptyView = rootView.findViewById(R.id.noti_emptyView);
+        mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.noti_list);
 
 
-        final List<NotificationItem> notiItem = addItem("Longusername", 0);
+        //final List<NotificationItem> notiItem = addItem("Longusername", 0);
+        final List<NotificationItem> notiItem = null;
+
         mNotificationAdapter = new NotificationAdapter(notiItem);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
-
+        mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
                     @Override

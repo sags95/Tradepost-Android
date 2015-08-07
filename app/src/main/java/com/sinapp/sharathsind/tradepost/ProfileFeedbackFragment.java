@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
 import Model.ProfileFeedbackAdapter;
@@ -25,8 +26,8 @@ import Model.ProfileFeedbackItem;
 public class ProfileFeedbackFragment extends Fragment {
 
 
-    private View rootView;
-    private RecyclerView mRecyclerView;
+    private View rootView,emptyView;
+    private EmptyRecyclerView mRecyclerView;
     private ProfileFeedbackAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -36,12 +37,15 @@ public class ProfileFeedbackFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_profile_feedback, container, false);
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.profile_feedback_recyclerview);
+        emptyView = rootView.findViewById(R.id.profile_feedback_emptyView);
+        mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.profile_feedback_recyclerview);
 
-        final List<ProfileFeedbackItem> feedbackItems =
-                addItem("Sample User Name","no Comment",3.5f);
+        //final List<ProfileFeedbackItem> feedbackItems = addItem("Sample User Name","no Comment",3.5f);
+        final List<ProfileFeedbackItem> feedbackItems = null;
+
         mAdapter = new ProfileFeedbackAdapter(feedbackItems);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.setAdapter(mAdapter);
         applyLinearLayoutManager();
 

@@ -46,6 +46,8 @@
         android:icon="@drawable/sample_img"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
+        android:screenOrientation="portrait"
+
         >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -54,7 +56,9 @@
         <activity
             android:name=".Welcome"
             android:label="@string/app_name"
-            android:theme="@style/NoActionBar" >
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,11 +68,15 @@
         <activity
             android:name=".FirstTime"
             android:label="@string/title_activity_first_time"
-            android:theme="@style/NoActionBar" >
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name=".SignInEmail"
-            android:label="@string/title_activity_sign_in_email" >
+            android:label="@string/title_activity_sign_in_email"
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -78,24 +86,28 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".LoginActivity1"
             android:label="@string/title_activity_login_activity1"
             android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <activity
             android:name=".ListingProcessActivity"
             android:label="Listing"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <activity
             android:name=".SingleListingActivity"
             android:label="Listing"
+            android:screenOrientation="portrait"
             >
 
         </activity>
@@ -103,18 +115,21 @@
         <activity
             android:name=".OfferProcessActivity"
             android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
             >
 
         </activity>
 
         <activity
             android:name=".NavigationDrawer"
+            android:screenOrientation="portrait"
             >
 
         </activity>
 
         <activity
             android:name=".ProfileActivity"
+            android:screenOrientation="portrait"
             >
 
         </activity>

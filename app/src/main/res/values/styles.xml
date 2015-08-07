@@ -46,6 +46,7 @@
         <style name = "NoActionBar" parent = "Theme.AppCompat.Light.NoActionBar">
             <item name="colorPrimaryDark">@color/grey</item>
             <item name="android:windowAnimationStyle">@null</item>
+            <item name="android:screenOrientation">portrait</item>
 
         </style>
 

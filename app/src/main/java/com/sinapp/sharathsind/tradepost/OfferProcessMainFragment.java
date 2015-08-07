@@ -32,7 +32,6 @@ import java.util.ArrayList;
 
 import Model.OfferProcessAdapter;
 import Model.OfferProcessItem;
-import Model.OfferProcessMainAdapter;
 
 /**
  * Created by HenryChiang on 15-07-18.
@@ -46,8 +45,6 @@ public class OfferProcessMainFragment extends Fragment {
     private FragmentManager fragmentManager;
     private ImageView newItemImg;
     private OfferProcessDataPassingListener dataPassingListener;
-    private RecyclerView mRecyclerView;
-    private OfferProcessMainAdapter mOfferProcessMainAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<OfferProcessItem> tempList;
     private String itemText;
@@ -249,13 +246,6 @@ public class OfferProcessMainFragment extends Fragment {
 
         }
     };
-
-
-    private void applyLinearLayoutManager(){
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-    }
-
 
 }
 

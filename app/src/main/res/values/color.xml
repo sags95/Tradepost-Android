@@ -22,6 +22,7 @@
     <color name="myNavigationColor">#000</color>
     <color name="lightgrey_chat">#5e5e5e</color>
     <color name="green">#32B141</color>
+    <color name="dark_primary_color">#388E3C</color>
 
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>
