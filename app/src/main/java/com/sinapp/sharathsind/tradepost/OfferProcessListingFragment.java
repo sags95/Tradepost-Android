@@ -2,8 +2,8 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import Model.CustomLinearLayoutManager;
+import Model.EmptyRecyclerView;
 import Model.OfferProcessAdapter;
 import Model.OfferProcessItem;
 
@@ -24,11 +25,13 @@ import Model.OfferProcessItem;
  */
 public class OfferProcessListingFragment extends Fragment {
 
-    private View rootView;
+    private View rootView,emptyView;
     private OfferProcessDataPassingListener dataPassingListener;
-    private RecyclerView mRecyclerView;
+    private EmptyRecyclerView mRecyclerView;
     private OfferProcessAdapter mOfferProcessAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private CustomLinearLayoutManager mLayoutManager;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
 
 
@@ -54,8 +57,20 @@ public class OfferProcessListingFragment extends Fragment {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         rootView = inflater.inflate(R.layout.fragment_offer_process_listing, container, false);
+        emptyView = rootView.findViewById(R.id.offer_process_emptyView);
+        mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.offer_process_list);
 
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.offer_process_list);
+        //SwipeToRefresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.offer_process_swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.ColorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d("SwipeToRefresh", "Refreshing");
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
 
         ArrayList<OfferProcessItem> itemsArrayList = new ArrayList<OfferProcessItem>();
 
@@ -66,7 +81,24 @@ public class OfferProcessListingFragment extends Fragment {
         }
 
         mOfferProcessAdapter = new OfferProcessAdapter(itemsArrayList);
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (mRecyclerView == null || mRecyclerView.getChildCount() == 0) ?
+                                0 : mRecyclerView.getChildAt(0).getTop();
+                mSwipeRefreshLayout.setEnabled(mLayoutManager.findFirstVisibleItemPosition()==0&&topRowVerticalPosition >= 0);
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.setAdapter(mOfferProcessAdapter);
         applyLinearLayoutManager();
 
@@ -100,7 +132,7 @@ public class OfferProcessListingFragment extends Fragment {
 
 
     private void applyLinearLayoutManager(){
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new CustomLinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 

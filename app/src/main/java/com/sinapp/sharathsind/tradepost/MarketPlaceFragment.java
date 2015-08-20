@@ -77,12 +77,12 @@ public class MarketPlaceFragment  extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         LayoutInflater inflator = LayoutInflater.from(getActivity());
         View v = inflator.inflate(R.layout.toolbar_custom_title, null);
-        TextView title = (TextView) v.findViewById(R.id.title);
-        Typeface type = Typeface.createFromAsset(getResources().getAssets(), "fonts/black_jack.ttf");
-        title.setText("Tradepost");
-        title.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
-        title.setTypeface(type);
+        TextView title1 = (TextView) v.findViewById(R.id.toolbar_title1);
+        TextView title2 = (TextView) v.findViewById(R.id.toolbar_title2);
+        title1.setText("Trade");
+        title2.setVisibility(View.VISIBLE);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setCustomView(v);
+
     }
 
     @Override
@@ -101,6 +101,7 @@ public class MarketPlaceFragment  extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
 
         //StaggeredGridViewTesting
         //For Testing Only
@@ -122,10 +123,10 @@ public class MarketPlaceFragment  extends Fragment {
         /*
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        stagAdapter2 = new MarketPlaceStaggeredAdapter(MarketPlaceData.generateSampleData(),listingItemClickListener);
+        stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),MarketPlaceData.generateSampleData(),listingItemClickListener);
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
-        */
+
 
 
         /*
@@ -214,7 +215,6 @@ public class MarketPlaceFragment  extends Fragment {
 
         final View dialogView = li.inflate(location_dialog_layout, null,false);
         builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Set Up Your Location");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -250,7 +250,7 @@ public class MarketPlaceFragment  extends Fragment {
         locServiceText = (TextView)dialogView.findViewById(R.id.dialog_loc_text);
         seekBarLabel = (LinearLayout)dialogView.findViewById(R.id.dialog_seekbar_label);
         label25Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_25km);
-        label25Km.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        label25Km.setTextColor(getResources().getColor(R.color.ColorPrimary));
         label50Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_50km);
         label75Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_75km);
         label100Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_100km);
@@ -383,7 +383,7 @@ public class MarketPlaceFragment  extends Fragment {
     }
 
     public void setTypefaceForChosen(TextView chosenTextView){
-        chosenTextView.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
+        chosenTextView.setTextColor(getResources().getColor(R.color.ColorPrimary));
         chosenTextView.setTypeface(Typeface.DEFAULT_BOLD);
     }
 

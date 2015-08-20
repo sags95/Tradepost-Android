@@ -30,6 +30,18 @@
     <string name="actionbar_single_listing"><b>MAKE AN OFFER</b></string>
     <string name="opendrawer">open</string>
     <string name="closedrawer">close</string>
+    <string name="itemForTrade_empty">This User Does Not Have Any Item</string>
+    <string name="chatpage_empty">You do not have an Offer</string>
+    <string name="chatpage_empty_detail">please note that the chat is only available when you send or receive an offer from/to other users.</string>
+    <string name="myItems_empty">You Do Not Have Any Item</string>
+    <string name="myItems_empty_btn">Post New Item</string>
+    <string name="myFav_empty">You Do Not Have Any Favorite Item</string>
+    <string name="myFav_empty_btn">GO Back To MarketPlace</string>
+    <string name="noti_empty">No New Notification :(</string>
+    <string name="myoffers_received_empty">You Have Not Received Offer Yet</string>
+    <string name="myoffers_sent_empty">You Have Not Sent Offer Yet</string>
+    <string name="feedback_empty">No Feedback Yet :(</string>
+
 
 
 
@@ -57,10 +69,32 @@
         <item>Misc</item>
     </string-array>
 
+    <!-- LOCATION -->
+
     <string-array name="location_dialog">
         <item>Use Postal Code</item>
         <item>Use Location Service</item>
-
     </string-array>
+
+    <string name="zip_postal_code">Use Postal Code</string>
+    <string name="seekBar_first">"25km</string>
+    <string name="seekBar_second">"50km</string>
+    <string name="seekBar_third">"75km</string>
+    <string name="seekBar_fourth">"100km</string>
+
+
+
+        <string-array name="listArray">
+            <item>Headings</item>
+            <item>Headings and Details</item>
+            <item>All Data</item>
+        </string-array>
+        <string-array name="listValues">
+            <item>1</item>
+            <item>2</item>
+            <item>3</item>
+        </string-array>
+
+
 
 </resources>

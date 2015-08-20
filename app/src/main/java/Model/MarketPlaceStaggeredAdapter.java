@@ -139,15 +139,15 @@ is.close();
 
 
         TextView newTag = new TextView(viewGroup.getContext());
-        newTag.setText(tags[pos]);
+        newTag.setText(tags[pos].toUpperCase());
         newTag.setTextColor(viewGroup.getResources().getColor(R.color.white));
-        newTag.setTextSize(14);
+        newTag.setTextSize(12);
         newTag.setTypeface(Typeface.DEFAULT_BOLD);
         newTag.setClickable(true);
         newTag.setBackgroundResource(R.drawable.tag_btn_shape);
-        newTag.setPadding(8, 8, 8, 8);
+        newTag.setPadding(6, 6, 6, 6);
         FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,0,20,20);
+        lp.setMargins(0,0,15,20);
         newTag.setLayoutParams(lp);
 
 

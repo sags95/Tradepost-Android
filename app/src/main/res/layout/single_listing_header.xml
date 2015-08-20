@@ -30,7 +30,7 @@
             app:border_width="2dp"
             app:border_color="#FFFFFF" />
 
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/single_listing_header_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,13 +42,15 @@
             android:singleLine="true"
             android:maxLines="1"
             android:textColor="@color/white"
+            style="@style/OpenSansRegular"
+
 
             />
     </LinearLayout>
 
 
 
-    <TextView
+    <Model.CustomTextView
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:id="@+id/single_listing_header_time"
@@ -61,6 +63,8 @@
         android:gravity="center_vertical"
         android:layout_alignTop="@+id/single_listing_header_user_layout"
         android:layout_alignBottom="@+id/single_listing_header_user_layout"
+        style="@style/OpenSansLight"
+
         />
 
 

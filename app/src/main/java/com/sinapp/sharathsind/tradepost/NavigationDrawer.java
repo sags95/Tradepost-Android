@@ -5,6 +5,7 @@ package com.sinapp.sharathsind.tradepost;
  */
 
 import android.graphics.Typeface;
+import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.graphics.BitmapFactory;
@@ -51,17 +52,12 @@ public class NavigationDrawer extends AppCompatActivity
         setContentView(R.layout.fragment_container);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+        //mToolbar.setBackgroundColor(getResources().getColor(R.color.lightgrey));
 
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         LayoutInflater inflator = LayoutInflater.from(this);
         View v = inflator.inflate(R.layout.toolbar_custom_title, null);
-        TextView title = (TextView) v.findViewById(R.id.title);
-        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/black_jack.ttf");
-        title.setText("Tradepost");
-        title.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
-        title.setTypeface(type);
         getSupportActionBar().setCustomView(v);
 
 
@@ -105,14 +101,24 @@ public class NavigationDrawer extends AppCompatActivity
                 fragment = new MyOffersFragment();
                 break;
             }
+            case 2:{
+                fragment = new MyItemsFragment();
+                break;
+            }
             case 3:{
-                fragment = new notificationoffertesting();
+                fragment = new MyFavoriteFragment();
                 break;
             }
             case 4: {
                 fragment = new CategoryFragment();
                 break;
             }
+            case 5: {
+                fragment = new SettingsFragment();
+
+                break;
+            }
+
         }
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -126,15 +132,15 @@ public class NavigationDrawer extends AppCompatActivity
         MenuItem item;
 
         item = menu.add("Search");
-        item.setIcon(R.drawable.ic_search_black_24dp);
+        item.setIcon(R.drawable.ic_action_search);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Chat");
-        item.setIcon(R.drawable.ic_chat_bubble_outline_black_24dp);
+        item.setIcon(R.drawable.ic_action_chat);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add("Notification");
-        item.setIcon(R.drawable.ic_notifications_none_black_24dp);
+        item.setIcon(R.drawable.ic_action_notification);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
 

@@ -24,13 +24,13 @@
         android:id="@+id/marketplace_header_img"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_location_on_white_24dp"
+        android:src="@drawable/ic_location"
 
 
 
         />
 
-    <TextView
+    <Model.CustomTextView
         android:id="@+id/marketplace_header_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,17 +40,20 @@
         android:paddingRight="4dp"
         android:layout_gravity="center_vertical"
         android:textSize="18sp"
+        style="@style/OpenSansLight"
 
 
         />
 
-    <TextView
+    <Model.CustomTextView
         android:id="@+id/marketplace_header_rad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:layout_gravity="center_vertical"
+        style="@style/OpenSansRegular"
+
 
 
 

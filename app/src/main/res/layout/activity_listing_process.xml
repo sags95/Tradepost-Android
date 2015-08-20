@@ -63,13 +63,14 @@
                         android:layout_gravity="center_vertical"
 
                         />
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section1_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section1_text"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="4dp"
+                        style="@style/OpenSansRegular"
                         />
                 </LinearLayout>
 
@@ -81,6 +82,7 @@
                     android:layout_below="@+id/section1_title"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
+                    style="@style/OpenSansLight"
                     />
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -146,13 +148,14 @@
                         android:layout_gravity="center_vertical"
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section2_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section2_text"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="4dp"
+                        style="@style/OpenSansRegular"
 
                         />
                 </LinearLayout>
@@ -278,26 +281,27 @@
 
                             />
 
-                        <TextView
+                        <Model.CustomTextView
                             android:id="@+id/section2_text_cam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/section2_text_camera"
                             android:gravity="center"
                             android:layout_gravity="center_horizontal"
-
+                            style="@style/OpenSansLight"
                             />
 
 
                     </LinearLayout>
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section2_or"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="OR"
                         android:layout_gravity="center"
                         android:gravity="center"
+                        style="@style/OpenSansRegular"
                         />
 
                     <LinearLayout
@@ -320,13 +324,14 @@
 
                             />
 
-                        <TextView
+                        <Model.CustomTextView
                             android:id="@+id/section2_text_folder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/section2_text_folder"
                             android:gravity="center"
                             android:layout_gravity="center_horizontal"
+                            style="@style/OpenSansLight"
 
                             />
 
@@ -367,14 +372,14 @@
                         android:layout_gravity="center_vertical"
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section3_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section3_text"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="4dp"
-
+                        style="@style/OpenSansRegular"
                         />
 
                 </LinearLayout>
@@ -389,6 +394,77 @@
                     android:max="4"
 
                     />
+
+                <LinearLayout
+                    android:id="@+id/seekBar_layout"
+                    android:layout_below="@+id/seekBar1"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <Model.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/OpenSansRegular"
+                        android:text="Poor"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:textSize="12sp"
+
+                        />
+
+                    <Model.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fair"
+                        style="@style/OpenSansRegular"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:textSize="12sp"
+
+
+
+                        />
+
+                    <Model.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/OpenSansRegular"
+                        android:text="Great"
+                        android:layout_weight="2"
+                        android:gravity="center_horizontal"
+                        android:textSize="12sp"
+
+
+
+                        />
+                    <Model.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/OpenSansRegular"
+                        android:text="Mint"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:textSize="12sp"
+
+
+                        />
+
+                    <Model.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/OpenSansRegular"
+                        android:text="New"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textSize="12sp"
+                        />
+
+
+
+
+                </LinearLayout>
 
 
             </RelativeLayout>
@@ -420,13 +496,14 @@
                         android:layout_gravity="center_vertical"
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section4_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section4_text"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="4dp"
+                        style="@style/OpenSansRegular"
                         />
 
                 </LinearLayout>
@@ -442,6 +519,7 @@
                     android:lines="5"
                     android:maxLines="5"
                     android:gravity="left|top"
+                    style="@style/OpenSansLight"
                     />
 
                 <RelativeLayout
@@ -511,19 +589,56 @@
 
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section5_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section5_text"
                         android:paddingLeft="4dp"
                         android:layout_gravity="center_vertical"
+                        style="@style/OpenSansRegular"
 
                         />
 
                 </LinearLayout>
 
-                <EditText
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/section5_title"
+                    android:layout_alignTop="@+id/section5_title"
+                    android:gravity="center"
+
+                    >
+                    <TextView
+                        android:id="@+id/section5_tag_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        />
+                    <TextView
+                        android:id="@+id/section5_tag_count_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section5_tag_count"
+                        />
+
+                    <TextView
+                        android:id="@+id/section5_tag_count_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section5_tag_count_slash"
+                        />
+                </RelativeLayout>
+
+
+                <Model.CustomEditText
                     android:id="@+id/section5_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -532,6 +647,7 @@
                     android:layout_toLeftOf="@+id/section5_plus"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
+                    style="@style/OpenSansLight"
                     />
 
                 <ImageView
@@ -586,13 +702,14 @@
                         android:layout_gravity="center_vertical"
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section6_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section6_text"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="4dp"
+                        style="@style/OpenSansRegular"
                         />
 
                     </LinearLayout>

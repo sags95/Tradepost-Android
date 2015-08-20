@@ -2,9 +2,7 @@ package Model;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
 
 import org.apmem.tools.layouts.FlowLayout;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -58,28 +55,33 @@ public class StaggeredAdapterTest extends RecyclerView.Adapter<StaggeredAdapterT
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        final int currentPos = i;
-
         viewHolder.mTextViewItemTitle.setText(mData.get(i).itemTitle);
 
 
-        if(viewHolder.mTagFlowLayout.getChildCount()==0) {
-            for(int j=0;j<tagsTest.length;j++){
+        if(tagsTest.length!=0) {
+            if (viewHolder.mTagFlowLayout.getChildCount() == 0) {
+                for (int j = 0; j < tagsTest.length; j++) {
 
-                viewHolder.mTagFlowLayout.addView(addTags(j));
+                    viewHolder.mTagFlowLayout.addView(addTags(j));
 
+                }
             }
         }
 
 
 
         if (i % 2 == 0) {
-            viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img);
+            viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img5);
         } else if(i%3 ==0) {
             viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img3);
+        }else if(i%5 ==0) {
+            viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img6);
         }else{
             viewHolder.mImageViewItemImg.setImageResource(R.drawable.sample_img2);
         }
+
+
+
 
         viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +102,7 @@ public class StaggeredAdapterTest extends RecyclerView.Adapter<StaggeredAdapterT
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextViewItemTitle;
-        public ImageView mImageViewItemImg;
+        public ImageView mImageViewItemImg,mFavorite;
         public ImageView mImageViewProPic;
         public FlowLayout mTagFlowLayout;
       //  public TextView tagView1,tagView2,tagView3,tagView4,tagView5;
@@ -113,36 +115,40 @@ public class StaggeredAdapterTest extends RecyclerView.Adapter<StaggeredAdapterT
             mTextViewItemTitle = (TextView) itemView.findViewById(R.id.item_title);
             mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
             mTagFlowLayout = (FlowLayout)itemView.findViewById(R.id.marketplace_tags_layout);
-            /*
-            tagView1 = (TextView)itemView.findViewById(R.id.marketplace_tag_1);
-            tagView2 = (TextView)itemView.findViewById(R.id.marketplace_tag_2);
-            tagView3 = (TextView)itemView.findViewById(R.id.marketplace_tag_3);
-            tagView4 = (TextView)itemView.findViewById(R.id.marketplace_tag_4);
-            tagView5 = (TextView)itemView.findViewById(R.id.marketplace_tag_5);
-            */
+            mFavorite = (ImageView)itemView.findViewById(R.id.image_like_btn);
 
 
         }
     }
 
 
-    public TextView addTags(int pos){
+    public CustomTextView addTags(int pos) {
 
-
-        TextView newTag = new TextView(viewGroup.getContext());
-        newTag.setText(tagsTest[pos]);
+        CustomTextView newTag = new CustomTextView(viewGroup.getContext());
+        newTag.setText(tagsTest[pos].toUpperCase());
         newTag.setTextColor(viewGroup.getResources().getColor(R.color.white));
-        newTag.setTextSize(14);
-        newTag.setTypeface(Typeface.DEFAULT_BOLD);
+        newTag.setTextSize(10);
         newTag.setClickable(true);
+        newTag.settingOpenSansLight();
         newTag.setBackgroundResource(R.drawable.tag_btn_shape);
+        newTag.setPadding(DpToPx(2), DpToPx(4), DpToPx(2), DpToPx(4));
         FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,0,20,20);
+        lp.setMargins(0,0,DpToPx(4), DpToPx(8));
+
         newTag.setLayoutParams(lp);
 
 
 
         return newTag;
+
+    }
+
+
+    public int DpToPx(int requireDp ){
+        int dpValue = requireDp; // margin in dips
+        float d = context.getResources().getDisplayMetrics().density;
+        int margin = (int)(dpValue * d); // margin in pixels
+        return margin; // margin in pixels
 
     }
 

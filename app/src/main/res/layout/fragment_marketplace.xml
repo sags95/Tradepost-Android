@@ -26,6 +26,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+
             />
 
         </android.support.v4.widget.SwipeRefreshLayout>
@@ -42,8 +45,11 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:src="@drawable/fab_plus_icon"
-        fab:fab_colorNormal="@color/ColorPrimary"
-        fab:fab_colorPressed="@color/ColorPrimaryDark"
+        fab:fab_colorNormal="@color/fab_primaryColor"
+        fab:fab_colorPressed="@color/red"
+        fab:borderWidth="0dp"
+
+
 
     />
 

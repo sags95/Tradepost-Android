@@ -90,11 +90,12 @@ service=new MyLocationService(this);
                         SoapObject object = new SoapObject("http://webser/", "getuseritems");
                      //   SoapObject object = new SoapObject("http://webser/", "getuseritems");
                         object.addProperty("userid",  userdata.userid);
-                  Vector object1=      MainWebService.getMsg1(object,"http://192.168.43.248:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
+                  Vector object1=      MainWebService.getMsg1(object,"http://104.199.135.162:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
     userdata.items=new HashSet<Integer>();
-                        for(Object i:object1)
-                        {
-                            userdata.items.add(Integer.getInteger(((SoapPrimitive)i).getValue().toString()));
+                        if(object1!=null) {
+                            for (Object i : object1) {
+                                userdata.items.add(Integer.getInteger(((SoapPrimitive) i).getValue().toString()));
+                            }
                         }
                         return null;
 
@@ -103,7 +104,7 @@ service=new MyLocationService(this);
 
                     }
                 }.execute(null,null,null);
-      //          URL url = new URL("http://192.168.43.248:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
+      //          URL url = new URL("http://104.199.135.162:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
         //        Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
 //                Constants.username=c.getString(c.getColumnIndex("username"));
@@ -192,9 +193,6 @@ String s=e.toString();
             String s=e.toString();
 
         }
-            Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setTypeface(type);
 
 
 

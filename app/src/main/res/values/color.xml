@@ -3,8 +3,10 @@
     <color name="black">#000</color>
     <color name="blue">#00f</color>
     <color name="red">#f00000</color>
-    <color name="background">#4ECAAE</color>
-    <color name="ColorPrimary">#4ECAAE</color>
+    <color name="fab_primaryColor">#eb5a5d</color>
+    <color name="background">#65b88e</color>
+    <color name="statusBar_color">#488A66</color>
+    <color name="ColorPrimary">#65b88e</color>
     <color name="ColorPrimaryDark">#2CA88C</color>
     <color name="tabsScrollColor">#1193C3</color>
     <color name="white">#FFFFFF</color>
@@ -24,6 +26,7 @@
     <color name="green">#32B141</color>
     <color name="dark_primary_color">#388E3C</color>
 
+    <color name="text_color">#565656</color>
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>
 

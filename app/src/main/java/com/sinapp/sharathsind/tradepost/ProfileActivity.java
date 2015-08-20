@@ -25,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        adapter =  new OffersViewPagerAdapter(getSupportFragmentManager(),Titles, numbOfTabs, new ChatFragment(), new ProfileFeedbackFragment());
+        adapter =  new OffersViewPagerAdapter(getSupportFragmentManager(),Titles, numbOfTabs, new ProFileItemForTradeFragment(), new ProfileFeedbackFragment());
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager)findViewById(R.id.profile_viewpager);
@@ -36,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity{
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
         tabs.setBackgroundColor(getResources().getColor(R.color.darkgrey));
         // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setTextColorState(R.color.profile_slidingtab_title_color);
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {

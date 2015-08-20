@@ -1,17 +1,15 @@
 package com.sinapp.sharathsind.tradepost;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -21,18 +19,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,15 +41,15 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import Model.CustomSpinnerAdapter;
+import Model.CustomTextView;
 import Model.LimitedEditText;
 import Model.RegisterWebService;
 import Model.RoundImageHelper;
-import Model.Variables;
-import data.StringVector;
 import datamanager.FileManager;
 import datamanager.userdata;
 import webservices.MainWebService;
@@ -78,6 +70,8 @@ public class ListingProcessActivity extends AppCompatActivity {
     private int currentImgPos = 0;
     private Toolbar toolbar;
     private Uri mImageUri;
+    private TextView tagsCount;
+    private ColorStateList oldColors;
 
 
 
@@ -146,6 +140,30 @@ public ArrayList<Bitmap>bits;
 
         //section 3
         SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar1);
+        final LinearLayout seekBarLi = (LinearLayout)findViewById(R.id.seekBar_layout);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                for(int i=0;i<seekBarLi.getChildCount();i++){
+                    if(i!=progress){
+                        CustomTextView temp = (CustomTextView)seekBarLi.getChildAt(i);
+                        temp.setTextColor(oldColors);
+                    }
+                }
+                CustomTextView temp2 =(CustomTextView)seekBarLi.getChildAt(progress);
+                temp2.setTextColor(getResources().getColor(R.color.fab_primaryColor));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         //section 4
         LimitedEditText desEditText = (LimitedEditText) findViewById(R.id.section4_edit);
@@ -169,13 +187,17 @@ public ArrayList<Bitmap>bits;
         tagInput = (EditText) findViewById(R.id.section5_edit);
         ImageView addTags = (ImageView) findViewById(R.id.section5_plus);
         addTags.setOnClickListener(addTagButtonListener);
+        tagsCount = (TextView)findViewById(R.id.section5_tag_count);
+        oldColors =  tagsCount.getTextColors(); //save original colors
+
 
         //using section 6 (Choose a category)
         categories = getResources().getStringArray(R.array.category_array);
-         spinner = (Spinner) findViewById(R.id.section6_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_dropdown_item, categories);
+        spinner = (Spinner) findViewById(R.id.section6_spinner);
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(
+                this, android.R.layout.simple_spinner_dropdown_item, Arrays.asList(getResources().getStringArray(R.array.category_array)));
         spinner.setAdapter(adapter);
+
 
 
     }
@@ -264,7 +286,7 @@ i++;
         object.addProperty("itemid", id);
         object.addProperty("pic",pic);
         object.addProperty("image",im);
-        return     MainWebService.getMsg(object, "http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
+        return     MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
     }
     public SoapPrimitive sendtag(int id,String im)
     {
@@ -272,7 +294,7 @@ i++;
         object.addProperty("itemid", id);
 
         object.addProperty("tag",im);
-        return     MainWebService.getMsg(object, "http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
+        return     MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
     }
 
     public View.OnClickListener addTagButtonListener = new View.OnClickListener() {
@@ -288,7 +310,7 @@ i++;
                 cancelTag.setOnClickListener(tagCancelButtonListener);
 
                 //Tag Name
-                TextView tagName = (TextView) singleTagLayout.findViewById(R.id.tag_name);
+                CustomTextView tagName = (CustomTextView) singleTagLayout.findViewById(R.id.tag_name);
                 //tagName.setId(TAGS_COUNT);
                 tagName.setText(tagInput.getText().toString().trim());
                 tags.add(tagInput.getText().toString().trim());
@@ -297,6 +319,7 @@ i++;
                 tagInput.setText("");
                 TAGS_COUNT++;
                 tagFlowLayout.addView(singleTagLayout);
+                tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
                 Log.d("Child Added", "Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
             }
@@ -309,6 +332,7 @@ i++;
         public void onClick(View v) {
             tagFlowLayout.removeView((View) v.getParent());
             //tags.add(((TextView) v).getText().toString().trim());
+            tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
             Log.d("Child Removed", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
 
@@ -426,7 +450,7 @@ i++;
     private static final String SOAP_ACTION = "http://webser/AddItems/additemRequest";
     private static final String METHOD_NAME = "additem";
     private static final String NAMESPACE = "http://webser/";
-    private static final String URL ="http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl";
+    private static final String URL ="http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl";
     public SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
         SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -454,7 +478,7 @@ i++;
         }
 
 
-        return MainWebService.getMsg(object, "http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+        return MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
 

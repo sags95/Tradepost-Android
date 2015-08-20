@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/noti_swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/myDrawerBackground"
+    >
 
     <Model.EmptyRecyclerView
         android:id="@+id/noti_list"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
         android:layout_height="match_parent"
-        android:background="@color/myDrawerBackground"
         />
 
-    <LinearLayout
+
+    <ScrollView
         android:id="@+id/noti_emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,20 +33,21 @@
         android:paddingRight="16dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@color/myDrawerBackground"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="No New Notifications :("
+            android:text="@string/noti_empty"
             android:textSize="24sp"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             />
     </LinearLayout>
+    </ScrollView>
 
 
 
 </LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
