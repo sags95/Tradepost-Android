@@ -32,6 +32,8 @@ import java.util.ArrayList;
 
 import Model.OfferProcessAdapter;
 import Model.OfferProcessItem;
+import datamanager.userdata;
+import webservices.OfferWebService;
 
 /**
  * Created by HenryChiang on 15-07-18.
@@ -48,8 +50,10 @@ public class OfferProcessMainFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<OfferProcessItem> tempList;
     private String itemText;
+    public int item;
+    public String itemname;
     private TextView itemTitle;
-
+public ArrayList<Integer> ITEMID;
 
 
 
@@ -57,7 +61,7 @@ public class OfferProcessMainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+ITEMID=new ArrayList<>();
         dataPassingListener = (OfferProcessDataPassingListener)getActivity();
         fragmentManager = getActivity().getSupportFragmentManager();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Make An Offer");
@@ -119,7 +123,8 @@ public class OfferProcessMainFragment extends Fragment {
                 for(int i =0;i<offerProcessItems.size();i++){
                     if(offerProcessItems.get(i).isSelected()){
                         data = data + "\n" + offerProcessItems.get(i).getItemTitle();
-                        tempList.add(new OfferProcessItem(offerProcessItems.get(i).toString()));
+                        tempList.add(new OfferProcessItem(offerProcessItems.get(i).toString(),offerProcessItems.get(i).itemid));
+ITEMID.add(offerProcessItems.get(i).itemid);
                         itemTitle.setText(data);
                     }
                 }
@@ -179,6 +184,24 @@ public class OfferProcessMainFragment extends Fragment {
             }
         }
     }
+    public void submitOffer()
+    {
+        int cash;
+        int[] itemid=new int[ITEMID.size()];
+        int i=0;
+        for(int item: ITEMID)
+        {
+            itemid[i]=item;
+            i++;
+        }
+
+        if(addCashEdit.getVisibility()==View.VISIBLE)
+         cash =Integer.parseInt(addCashEdit.getText().toString());
+        else
+            cash=0;
+        OfferWebService of=new OfferWebService();
+        of.sendOffer(itemid, userdata.userid,OfferProcessActivity.userid,item,cash,null,itemname);
+    }
 
     public View.OnClickListener addCashBtnListener = new View.OnClickListener() {
         @Override
@@ -186,6 +209,7 @@ public class OfferProcessMainFragment extends Fragment {
 
             if(addCashEdit.getVisibility()==View.INVISIBLE) {
                 addCashEdit.setVisibility(View.VISIBLE);
+
                 addCashBtn.setText("REMOVE CASH");
             }else{
                 addCashEdit.setText("");

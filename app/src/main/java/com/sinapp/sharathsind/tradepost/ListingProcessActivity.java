@@ -123,8 +123,8 @@ public ArrayList<Bitmap>bits;
         addTags.setOnClickListener(addTagButtonListener);
 
         //using section 6 (Choose a category) plus button for testing
-        ImageView testingBtn = (ImageView) findViewById(R.id.section6_plus);
-        testingBtn.setOnClickListener(testingBtnListener);
+       // ImageView testingBtn = (ImageView) findViewById(R.id.section6_plus);
+    //    testingBtn.setOnClickListener(testingBtnListener);
         categories = getResources().getStringArray(R.array.category_array);
          spinner = (Spinner) findViewById(R.id.section6_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(

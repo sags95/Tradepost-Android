@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlaceStaggeredAdapter.ViewHolder> {
 
-    private List<MarketPlaceData> mData;
+   public static List<MarketPlaceData> mData;
     private View.OnClickListener mItemClick;
 
 

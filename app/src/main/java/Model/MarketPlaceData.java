@@ -81,7 +81,18 @@ for(int u1=1;u1<i1;u1++)
     ir.images[u1-1]=  result1.getProperty(u1).toString();
 
 }
+            obje=new SoapObject("http://webser/","searchbyint");
+            obje.addProperty("name", i);
+            result1= MainWebService.getMsg2(obje,"http://192.168.2.15:8084/TDserverWeb/NewWebService?wsdl"
+                    ,"http://webser/NewWebService/searchbyintRequest");
+            i1=result1.getPropertyCount();
+            ir.tags=new String[i1-1];
 
+            for(int u1=0;u1<i1;u1++)
+            {
+                ir.tags[u1]=  result1.getProperty(u1).toString();
+
+            }
             MarketPlaceData data = new MarketPlaceData();
             data.itemImage = "http://192.168.2.15:8084/TDserverWeb/images/items/"+ir.item.getItemid()+"/"+ir.images[0];
             data.proUsername = "User";

@@ -10,7 +10,7 @@ public class OfferProcessItem  implements Serializable {
     private String itemTitle;
 
     private boolean isSelected;
-int itemid;
+public int itemid;
     public OfferProcessItem (String itemTitle,int itemid){
         this.itemTitle = itemTitle;
     this.itemid=itemid;

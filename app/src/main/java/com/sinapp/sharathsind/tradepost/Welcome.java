@@ -2,10 +2,13 @@ package com.sinapp.sharathsind.tradepost;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -36,11 +39,14 @@ import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
+import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
 import Model.RegisterWebService;
 import Model.Variables;
+import datamanager.Item;
+import datamanager.ItemResult;
 import datamanager.MyLocationService;
 import datamanager.userdata;
 import webservices.MainWebService;
@@ -51,7 +57,7 @@ public class Welcome extends Activity implements OnClickListener {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
+Cursor c;
     private TextView title;
     InstanceID instanceID;
  public static    LocationManager locationManager;
@@ -71,19 +77,47 @@ service=new MyLocationService(this);
             try{
                 Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
 
-                Cursor c=Constants.db.rawQuery("select * from login",null);
+                 c=Constants.db.rawQuery("select * from login",null);
                 c.moveToFirst();
                Constants.userid=c.getInt(c.getColumnIndex("userid"));
                 Variables.email=c.getString(c.getColumnIndex("email"));
                 Variables.username=c.getString(c.getColumnIndex("username"));
+                userdata.name=Variables.username;
                 userdata.userid=Constants.userid;
                 Criteria criteria = new Criteria();
                 String provider = locationManager.getBestProvider(criteria, false);
                 Location location = locationManager.getLastKnownLocation(provider);
                 userdata.longitude=location.getLongitude();
                 userdata.latitude=location.getLatitude();
+                c=Constants.db.rawQuery("select * from gcm",null);
+                if(c.getCount()>0) {
+                c.moveToFirst();
+                    Constants.GCM_Key = c.getString(0);
+
+                }
                 new AsyncTask<String,String,String>()
                 {
+                    ProgressDialog pd;
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                        pd=new ProgressDialog(Welcome.this);
+                        pd.show();
+                    }
+
+                    @Override
+                    protected void onPostExecute(String s) {
+
+                        super.onPostExecute(s);
+                        if(c.getCount()>0)
+                        {
+                            startActivity(new Intent(Welcome.this, NavigationDrawer.class));
+                            finish();
+                            //  locationManager.removeUpdates(service);
+                        }
+                        pd.dismiss();
+
+                    }
 
                     @Override
                     protected String doInBackground(String... params) {
@@ -91,13 +125,51 @@ service=new MyLocationService(this);
                      //   SoapObject object = new SoapObject("http://webser/", "getuseritems");
                         object.addProperty("userid",  userdata.userid);
                   Vector object1=      MainWebService.getMsg1(object,"http://192.168.2.15:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
-    userdata.items=new HashSet<Integer>();
+    userdata.items=new ArrayList<Integer>();
                         for(Object i:object1)
                         {
-                            userdata.items.add(Integer.getInteger(((SoapPrimitive)i).getValue().toString()));
+                            userdata.items.add(Integer.parseInt(((SoapPrimitive)i).getValue().toString()));
                         }
-                        return null;
+   userdata.i=new ArrayList<ItemResult>();
+for(int i :userdata.items)
+{
+   SoapObject  obje=new SoapObject("http://webser/","getItembyId");
+    obje.addProperty("itemid", i);
+    KvmSerializable result1= MainWebService.getMsg2(obje,"http://192.168.2.15:8084/TDserverWeb/GetItems?wsdl"
+            ,"http://webser/GetItems/getItembyIdRequest");
 
+    ItemResult ir= new ItemResult();
+    ir.item=new Item();
+
+    SoapObject object12=(SoapObject)result1.getProperty(0);
+    //  for(int u=0;u<object.getPropertyCount())
+    ir.item.set(object12);
+    //  SoapObject o7=(SoapObject)result1;
+//     Object j=       o.getProperty("images");
+    int i1=result1.getPropertyCount();
+    ir.images=new String[i1-1];
+
+    for(int u1=1;u1<i1;u1++)
+    {
+        ir.tags[u1-1]=  result1.getProperty(u1).toString();
+
+    }
+      obje=new SoapObject("http://webser/","searchbyint");
+    obje.addProperty("name", i);
+    result1= MainWebService.getMsg2(obje,"http://192.168.2.15:8084/TDserverWeb/NewWebService?wsdl"
+            ,"http://webser/NewWebService/searchbyintRequest");
+     i1=result1.getPropertyCount();
+    ir.tags=new String[i1-1];
+
+    for(int u1=0;u1<i1;u1++)
+    {
+        ir.images[u1]=  result1.getProperty(u1).toString();
+
+    }
+userdata.i.add(ir);
+
+}
+                        return null;
 
 
 
@@ -107,12 +179,6 @@ service=new MyLocationService(this);
         //        Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
 //                Constants.username=c.getString(c.getColumnIndex("username"));
-if(c.getCount()>0)
-{
-    startActivity(new Intent(this, NavigationDrawer.class));
-    finish();
-    //  locationManager.removeUpdates(service);
-}
 
 
 
@@ -139,7 +205,40 @@ if(c.getCount()>0)
                             "  profilepicture varchar ," +
                             "  emailconfirm varchar ," +
                             "  userid int(10))");
+                    Constants.db.execSQL("Create table IF NOT EXISTS GCM (gcmkey varchar)");
 
+                    instanceID = InstanceID.getInstance(this);
+
+
+                    try {
+                        new AsyncTask<String,String,String>()
+                        {
+
+                            @Override
+                            protected String doInBackground(String... params) {
+                                try {
+                                    String token = instanceID.getToken("923650940708",
+                                            GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                                    Constants.GCM_Key = token;
+                                    ContentValues cv=new ContentValues();
+                                    cv.put("gcmkey",token);
+                                    Constants.db.insert("GCM",null,cv);
+                                }
+                                catch(Exception e)
+                                {
+                                    String s=e.toString();
+                                }
+                                return null;
+                            }
+                        }.execute(null,null,null);
+
+
+                    }
+                    catch(Exception e)
+                    {
+                        String s=e.toString();
+
+                    }
                 }
                 catch(Exception e)
                 {
@@ -163,35 +262,7 @@ String s=e.toString();
 
         }
 
-         instanceID = InstanceID.getInstance(this);
 
-
-        try {
-            new AsyncTask<String,String,String>()
-            {
-
-                @Override
-                protected String doInBackground(String... params) {
-                    try {
-                        String token = instanceID.getToken("923650940708",
-                                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-                        Constants.GCM_Key = token;
-                    }
-                    catch(Exception e)
-                    {
-                        String s=e.toString();
-                    }
-                    return null;
-                }
-            }.execute(null,null,null);
-
-
-        }
-        catch(Exception e)
-        {
-            String s=e.toString();
-
-        }
             Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
         TextView title = (TextView) findViewById(R.id.title);
         title.setTypeface(type);

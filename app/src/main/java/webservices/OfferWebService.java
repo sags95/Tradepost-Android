@@ -11,7 +11,7 @@ import datamanager.userdata;
 public class OfferWebService {
 
     //SoapObject s=new SoapObject("http://webser/","get");
-    public void sendOffer(int[]itemid,int userid,int ruserid,int foritemid,int cash,String[]Images,String itemname)
+    public void sendOffer(int[]itemid,int userid,int ruserid,int foritemid,int cash,String Images,String itemname)
     {
         SoapObject s=new SoapObject("http://webser/","sendOffer");
         s.addProperty("userid", userdata.userid);
@@ -30,17 +30,20 @@ int offerid=Integer.parseInt(soapPrimitive.getValue().toString());
 
 
 }
-for(int i=0;i<Images.length;i++)
-{
-    s=new SoapObject("http://webser/","addOferImage");
+if(Images!=null) {
+    s = new SoapObject("http://webser/", "addOferImage");
     s.addProperty("offerid", offerid);
-    s.addProperty("images",Images[i]);
-    s.addProperty("pic",i);
-    soapPrimitive = MainWebService.getretryMsg(s, "http://192.168.2.15:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addOferImageRequest",0);
-
-
+    s.addProperty("images", Images);
+    s.addProperty("pic", 0);
+    soapPrimitive = MainWebService.getretryMsg(s, "http://192.168.2.15:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addOferImageRequest", 0);
 }
-       int number=itemid.length+Images.length;
+
+
+       int number=itemid.length;
+if(Images!=null)
+{
+    number++;
+}
         String notification;
         if(number==1)
         {

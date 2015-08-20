@@ -113,7 +113,7 @@ public class MarketPlaceFragment  extends Fragment {
         };
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        mStaggeredAdapterTest = new StaggeredAdapterTest(getActivity(),MarketPlaceData.generateSampleDataTest(),listingItemClickListener,tempTags);
+        mStaggeredAdapterTest = new StaggeredAdapterTest(getActivity(),MarketPlaceData.generateSampleData(),listingItemClickListener,tempTags);
         mRecyclerView.setAdapter(mStaggeredAdapterTest);
         applyStaggeredGridLayoutManager();
 
@@ -126,6 +126,7 @@ public class MarketPlaceFragment  extends Fragment {
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
         */
+
 
 
         /*

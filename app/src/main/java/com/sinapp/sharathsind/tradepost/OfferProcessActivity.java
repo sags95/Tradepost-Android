@@ -31,7 +31,7 @@ public class OfferProcessActivity extends AppCompatActivity implements OfferProc
 
     private Bundle tempBundle;
 
-
+public static  int userid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,7 @@ public class OfferProcessActivity extends AppCompatActivity implements OfferProc
         switch (item.getTitle().toString()) {
             case "Submit Offer": {
                 Toast.makeText(getApplicationContext(), "Submit?", Toast.LENGTH_SHORT).show();
+                ((OfferProcessMainFragment)mainFragment).submitOffer();
                 break;
             }
         }

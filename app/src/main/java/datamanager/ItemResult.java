@@ -13,6 +13,7 @@ import java.util.Hashtable;
 public class ItemResult implements Serializable,KvmSerializable {
  public    Item item;
   public  String [] images;
+    public String []tags;
 
     @Override
     public String toString() {
