@@ -1,11 +1,15 @@
 package Model;
 
+import android.content.Context;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +23,17 @@ import java.util.List;
 public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHolder> {
 
     private List<ChatPageItem> mData;
+    private Context context;
+    private View.OnClickListener mItemClick;
 
-    public ChatPageAdapter(List<ChatPageItem> mData) {
+    public ChatPageAdapter(Context context,List<ChatPageItem> mData) {
         this.mData = mData;
+        this.context=context;
+    }
+
+    public ChatPageAdapter(List<ChatPageItem> mData, View.OnClickListener mItemClick) {
+        this.mData = mData;
+        this.mItemClick=mItemClick;
     }
 
     @Override
@@ -29,17 +41,17 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_item_chatpage, viewGroup, false);
         ChatPageAdapter.ViewHolder vh = new ViewHolder(v);
-        //v.setOnClickListener(mItemClick);
+        v.setOnClickListener(mItemClick);
         return vh;
 
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        final int currentPos = i;
         viewHolder.mTextViewItemName.setText(mData.get(i).getTitle());
         viewHolder.mTextViewItemDetail.setText(mData.get(i).getDetails());
         //viewHolder.mImageViewItemImg.setImageDrawable(mData.get(i).getDrawable());
+
     }
 
     @Override

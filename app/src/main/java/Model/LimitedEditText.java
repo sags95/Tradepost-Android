@@ -1,19 +1,24 @@
 package Model;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sinapp.sharathsind.tradepost.R;
 
 /**
  * EditText subclass created to enforce limit of the lines number in editable
  * text field
  */
 public class LimitedEditText extends EditText {
+
+    final private String TAG = "LimitedEditText";
 
     /**
      * Max lines to be present in editable text field
@@ -61,11 +66,15 @@ public class LimitedEditText extends EditText {
     public LimitedEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.context = context;
+        settingFont(context, attrs);
+
     }
 
     public LimitedEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        settingFont(context, attrs);
+
     }
 
     public LimitedEditText(Context context) {
@@ -121,6 +130,22 @@ public class LimitedEditText extends EditText {
         };
 
         this.addTextChangedListener(watcher);
+    }
+
+    private void settingFont(Context ctx, AttributeSet attrs) {
+        TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.LimitedEditText);
+        String customFont = a.getString(R.styleable.LimitedEditText_typefaceAsset);
+        Typeface tf = null;
+        try {
+            tf = FontManager.getTypeface(customFont, getContext());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            a.recycle();
+            return;
+        }
+
+        setTypeface(tf);
+        a.recycle();
     }
 
 }

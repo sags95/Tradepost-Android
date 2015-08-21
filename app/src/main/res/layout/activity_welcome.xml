@@ -8,23 +8,30 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.trade.tradepost.Welcome"
-    android:background="@color/background">
+    android:background="@color/ColorPrimary"
+    >
 
-    <TextView
+    <Model.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:id="@+id/title"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textColor="@color/white"
         android:textSize="60sp"
         android:maxLines="1"
-        android:text="@string/app_name"
+        android:text="Tradepost"
         android:layout_above="@+id/tag"
+        style="@style/OpenSansRegular"
         />
 
-    <TextView
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tradepost_banner_logo"
+        />
+
+    <Model.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -33,10 +40,11 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
+        style="@style/OpenSansRegular"
 
         />
 
-    <TextView
+    <Model.CustomTextView
         android:layout_above="@id/or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,9 +52,11 @@
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:text="Swipe to Get Started" />
+        android:text="Swipe to Get Started"
+        style="@style/OpenSansRegular"
+        />
 
-    <TextView
+    <Model.CustomTextView
         android:id="@+id/tour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,10 +65,11 @@
         android:layout_alignParentBottom="true"
         android:paddingBottom="20dp"
         android:textColor="@color/white"
+        style="@style/OpenSansRegular"
 
         />
 
-    <TextView
+    <Model.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -66,6 +77,7 @@
         android:layout_above="@id/tour"
         android:text="or"
         android:textColor="@color/white"
+        style="@style/OpenSansLight"
         />
 
 </RelativeLayout>

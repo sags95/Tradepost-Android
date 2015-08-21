@@ -68,7 +68,6 @@ public class ChatFragment extends Fragment {
         et = (EditText)rootView.findViewById(R.id.send_msg);
         send = (Button)rootView.findViewById(R.id.send_btn);
 
-
         //open or close attach bar
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override

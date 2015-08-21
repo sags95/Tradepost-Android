@@ -2,15 +2,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent" >
+    android:background="@android:color/transparent"
+    android:layout_centerVertical="true"
+    >
 
-    <TextView
-        android:id="@+id/title"
+    <Model.CustomTextView
+        android:id="@+id/toolbar_title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:maxLines="1"
+        android:text="Trade"
+        style="@style/OpenSansRegular"
+        android:textColor="@color/white"
+        />
+    <Model.CustomTextView
+        android:id="@+id/toolbar_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="post"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/toolbar_title1"
+        style="@style/OpenSansBold"
+        android:textColor="@color/white"
         android:ellipsize="end"
-        android:text="Text" />
+
+        />
 </RelativeLayout>

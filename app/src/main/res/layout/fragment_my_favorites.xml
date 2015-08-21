@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/darkwhite"
+        >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/myFav_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Model.EmptyRecyclerView
+            android:id="@+id/myFav_recyclerview"
+            android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:layout_height="match_parent"
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/myFav_emptyView"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                >
+
+                <Model.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/myFav_empty"
+                    android:textSize="24sp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    style="@style/OpenSansRegular"
+                    />
+
+                <Model.CustomButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/myFav_empty_btn"
+                    style="@style/OpenSansLight"
+                    />
+            </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="20dp"
+    android:background="@color/ColorPrimary"
+    android:gravity="center_vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
+    <Model.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREATE ACCOUNT"
+        style="@style/OpenSansRegular"
+        />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_account_username_til"
+        android:layout_marginTop="8dp"
+
+        >
+
+        <customWidgets.CustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/OpenSansLight"
+            android:maxLines="1"
+            android:hint="Username"
+            android:singleLine="true"
+            />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_account_email_til"
+        android:layout_marginTop="8dp"
+        >
+
+    <customWidgets.CustomEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/OpenSansLight"
+        android:hint="Email Address"
+        android:maxLines="1"
+        android:singleLine="true"
+        />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_account_pw_til"
+        android:layout_marginTop="8dp"
+        >
+
+    <customWidgets.CustomEditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_password"
+        android:imeActionId="@+id/login"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionUnspecified"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:singleLine="true"
+        style="@style/OpenSansLight"
+        />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_account_pw_confirm_til"
+        android:layout_marginTop="8dp"
+        >
+
+    <customWidgets.CustomEditText
+        android:id="@+id/password_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirm Password"
+        android:imeActionId="@+id/login"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionUnspecified"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:singleLine="true"
+        style="@style/OpenSansLight"
+
+        />
+    </android.support.design.widget.TextInputLayout>
+
+    <Model.CustomButton
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/OpenSansRegular"
+        android:text="Sign Up"
+
+        />
+
+
+
+
+</LinearLayout>

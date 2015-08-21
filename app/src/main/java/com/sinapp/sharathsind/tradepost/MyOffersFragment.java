@@ -33,11 +33,10 @@ public class MyOffersFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         LayoutInflater inflator = LayoutInflater.from(getActivity());
         View v = inflator.inflate(R.layout.toolbar_custom_title, null);
-        TextView title = (TextView) v.findViewById(R.id.title);
-        Typeface type = Typeface.createFromAsset(getResources().getAssets(), "fonts/black_jack.ttf");
-        title.setText("My Offers");
-        title.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
-        title.setTypeface(type);
+        TextView title1 = (TextView) v.findViewById(R.id.toolbar_title1);
+        TextView title2 = (TextView) v.findViewById(R.id.toolbar_title2);
+        title1.setText("My Offers");
+        title2.setVisibility(View.GONE);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setCustomView(v);
 
 
@@ -58,13 +57,14 @@ public class MyOffersFragment extends Fragment {
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout)rootView.findViewById(R.id.sliding_tabs);
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
-        tabs.setBackgroundColor(getResources().getColor(R.color.darkgrey));
+        tabs.setBackgroundColor(getResources().getColor(R.color.ColorPrimary));
+        tabs.setTextColorState(R.color.offers_slidingtab_title_color);
 
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.ColorPrimaryDark);
+                return getResources().getColor(R.color.grey);
             }
         });
 

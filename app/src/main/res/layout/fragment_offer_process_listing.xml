@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/offer_process_swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+
+
+    <Model.EmptyRecyclerView
         android:id="@+id/offer_process_list"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
         android:layout_height="match_parent"
-        android:background="@color/myDrawerBackground"
         />
+
+    <ScrollView
+        android:id="@+id/offer_process_emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        </ScrollView>
 
 
 </LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -5,7 +5,7 @@
     >
 
     <solid
-        android:color="@color/cokered_trans"
+        android:color="@color/grey"
         />
 
     <corners

@@ -3,7 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/darkwhite"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/category_recyclerview"

@@ -3,21 +3,18 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.ChatPageAdapter;
 import Model.ChatPageItem;
+import Model.CustomLinearLayoutManager;
 import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.NotificationAdapter;
@@ -31,10 +28,11 @@ public class NotificationFragment extends Fragment {
 
     private View rootView,emptyView;
     private EmptyRecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private CustomLinearLayoutManager mLayoutManager;
     private NotificationAdapter mNotificationAdapter;
     private Fragment chatFrag;
     private ChatPageItem item;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     @Override
@@ -45,14 +43,43 @@ public class NotificationFragment extends Fragment {
         emptyView = rootView.findViewById(R.id.noti_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.noti_list);
 
+        //SwipeToRefresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.noti_swipe_refresh_layout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.ColorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d("SwipeToRefresh", "Refreshing");
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
-        //final List<NotificationItem> notiItem = addItem("Longusername", 0);
-        final List<NotificationItem> notiItem = null;
+
+
+        final List<NotificationItem> notiItem = addItem("Longusername", 0);
+        //final List<NotificationItem> notiItem = null;
 
         mNotificationAdapter = new NotificationAdapter(notiItem);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(emptyView);
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (mRecyclerView == null || mRecyclerView.getChildCount() == 0) ?
+                                0 : mRecyclerView.getChildAt(0).getTop();
+                mSwipeRefreshLayout.setEnabled(mLayoutManager.findFirstVisibleItemPosition() == 0 && topRowVerticalPosition >= 0);
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
                     @Override
@@ -84,7 +111,7 @@ public class NotificationFragment extends Fragment {
         return items;
     }
     private void applyLinearLayoutManager(){
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new CustomLinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
+        >
+
+        <Model.CustomSwitchCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chat Notification"
+            android:id="@+id/switch1"
+            android:textSize="16sp"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:layout_gravity="center_horizontal"
+            app:showText="false"
+            style="@style/OpenSansRegular"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            />
+
+    </LinearLayout>
+
+    <Model.CustomSwitchCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        android:id="@+id/switch2"
+        android:textSize="16sp"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:layout_gravity="center_horizontal"
+        app:showText="false"
+        style="@style/OpenSansRegular"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
+        />
+
+    <Model.CustomSwitchCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        android:textSize="16sp"
+
+        android:id="@+id/switch3"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:layout_gravity="center_horizontal"
+        app:showText="false"
+        style="@style/OpenSansRegular"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
+        />
+
+    <Model.CustomSwitchCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        android:id="@+id/switch4"
+        android:textSize="16sp"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:layout_gravity="center_horizontal"
+        app:showText="false"
+        style="@style/OpenSansRegular"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
+        />
+
+
+
+
+    <Model.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Terms And Polices"
+        android:layout_marginBottom="16dp"
+        android:textSize="14sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        style="@style/OpenSansRegular"
+        />
+
+    <Model.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Out"
+        android:layout_marginBottom="16dp"
+        android:textSize="14sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        style="@style/OpenSansRegular"
+        />
+
+</LinearLayout>

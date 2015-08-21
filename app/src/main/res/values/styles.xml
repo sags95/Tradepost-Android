@@ -4,7 +4,7 @@
             <!-- Customize your theme here. -->
             <item name="colorPrimary">@color/ColorPrimary</item>
             <item name="colorPrimaryDark">@color/grey</item>
-            <item name="colorAccent">@color/myAccentColor</item>
+            <item name="colorAccent">@color/fab_primaryColor</item>
             <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
             <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
             <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
@@ -13,16 +13,18 @@
             <item name="android:windowAnimationStyle">@null</item>
             <item name="actionBarWidgetTheme">@style/ActionBarTheme</item>
             <item name="android:windowContentTransitions">true</item>
+            <item name="android:statusBarColor">@color/statusBar_color</item>
         </style>
 
         <style name="ActionBarTheme" parent="style/ThemeOverlay.AppCompat.Light">
         <!-- THIS is where you can color the arrow! -->
-            <item name="colorControlNormal">@android:color/darker_gray</item>
+            <item name="colorControlNormal">@color/white</item>
         </style>
 
         <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
             <item name="spinBars">true</item>
-            <item name="color">@android:color/darker_gray</item>
+            <!-- THIS is where you can color the hamburger icon! -->
+            <item name="color">@color/white</item>
         </style>
 
 
@@ -36,7 +38,7 @@
 
         <style name="AppCompatAlertDialogStyleFeedback" parent="Theme.AppCompat.Light.Dialog.Alert">
             <item name="colorAccent">@color/ColorPrimary</item>
-            <item name="android:textColorPrimary">@color/ColorPrimary</item>
+            <item name="android:textColorPrimary">@color/black</item>
             <item name="android:background">@color/white</item>
             <item name="android:radius">8dp</item>
         </style>
@@ -47,6 +49,8 @@
             <item name="colorPrimaryDark">@color/grey</item>
             <item name="android:windowAnimationStyle">@null</item>
             <item name="android:screenOrientation">portrait</item>
+            <item name="android:statusBarColor">@android:color/black</item>
+
 
         </style>
 

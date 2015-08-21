@@ -16,7 +16,7 @@
     <item android:right="1.5dp"  android:bottom="1.5dp">
         <shape
             android:shape="rectangle">
-            <solid android:color="@color/ColorPrimary"/>
+            <solid android:color="@color/fab_primaryColor"/>
             <corners
                 android:topLeftRadius="2dp"
                 android:topRightRadius="2dp"

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -49,6 +51,8 @@ public class SingleListingActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_listing_view);
+        View includeView = (View)findViewById(R.id.single_listing_main_layout);
+
 
         //single listing header
         singleListingHeader= (RelativeLayout)findViewById(R.id.single_listing_header);
@@ -60,7 +64,8 @@ public class SingleListingActivity extends AppCompatActivity {
         });
 
         //floating action button
-        offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
+        //offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
+        offerFab = (FloatingActionButton)includeView.findViewById(R.id.fab);
         offerFab.setOnClickListener(offerFabOnClickListener);
         Intent i = getIntent();
         ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
@@ -89,6 +94,7 @@ e.printStackTrace();
 
 
         }
+
 
 
         //image slider viewer
@@ -127,6 +133,12 @@ e.printStackTrace();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem item;
+
+        //put logic here
+        item = menu.add("Edit");
+        item.setIcon(R.drawable.ic_action_edit);
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -134,6 +146,9 @@ e.printStackTrace();
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        if (item.getTitle().toString().equals("Edit")){
+                Toast.makeText(getApplicationContext(), "Edit", Toast.LENGTH_SHORT).show();
+        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <PreferenceCategory android:title="Notifications" >
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="chat_noti"
+            android:title="Chat" >
+        </SwitchPreference>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="offer_noti"
+            android:title="Offer" >
+        </SwitchPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="General" >
+
+        <Preference android:title="Version"
+            android:summary="beta"
+            android:selectable="true"
+
+            />
+
+        <Preference android:title="Terms and Policies"
+            android:selectable="true"
+
+            />
+
+        <Preference android:title="Sign Out"
+            android:selectable="true"/>
+
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

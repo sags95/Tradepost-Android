@@ -79,7 +79,7 @@ public class RegisterWebService {
     private static final String SOAP_ACTION3 = "http://webser/Register/additemsRequest";
     private static final String METHOD_NAME3 = "additems";
    // private static final String NAMESPACE = "http://webser/";
-    //private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
+    //private static final String URL ="http://192.168.43.248:8084/TDserverWeb/AddItems?wsdl";
     public static  SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
         SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME3);

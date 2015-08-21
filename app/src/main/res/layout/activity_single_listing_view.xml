@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <include
@@ -35,20 +35,19 @@
         android:layout_below="@+id/single_listing_header"
         >
 
-        <RelativeLayout
+
+
+            <!--
+            <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-
             >
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/single_listing_img_layout"
                 >
-
-
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
@@ -68,8 +67,6 @@
                     android:paddingBottom="4dp"
 
                     />
-
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -81,17 +78,18 @@
                 android:paddingRight="16dp"
                 android:paddingLeft="16dp"
                 >
-                <TextView
+                <Model.CustomTextView
                     android:id="@+id/single_listing_item_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="20dp"
                     android:textSize="18sp"
+                    style="@style/TextViewRegular"
 
                     />
 
-                <TextView
+                <Model.CustomTextView
                     android:layout_below="@+id/single_listing_item_title"
                     android:id="@+id/single_listing_text"
                     android:layout_width="wrap_content"
@@ -100,6 +98,8 @@
                     android:layout_marginBottom="8dp"
                     android:textSize="12sp"
                     android:textStyle="bold"
+                    style="@style/TextViewRegular"
+
 
                     />
 
@@ -120,7 +120,7 @@
 
                 </LinearLayout>
 
-                <TextView
+                <Model.CustomTextView
                     android:id="@+id/single_listing_des_text"
                     android:layout_below="@+id/single_listing_tags"
                     android:layout_width="match_parent"
@@ -130,9 +130,11 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:textStyle="bold"
+                    style="@style/TextViewSemiBold"
+
                     />
 
-                <TextView
+                <Model.CustomTextView
                     android:id="@+id/single_listing_des_input"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -141,6 +143,8 @@
                     android:background="@color/white"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    style="@style/TextViewRegular"
+
                     />
 
                 <View
@@ -153,32 +157,53 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/offer_fab2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:src="@drawable/fab_plus_icon"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
-                android:layout_alignBottom="@+id/single_listing_img_layout"
                 app:backgroundTint="@color/ColorPrimary"
-                app:fabSize="normal"
                 app:borderWidth="0dp"
                 />
 
-            <TextView
+
+            <Model.CustomTextView
+                android:id="@+id/single_listing_itemCondition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="condition"
                 android:textColor="@color/white"
                 android:background="@drawable/tag_btn_shape"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="4dp"
+                android:layout_alignTop="@+id/single_listing_img_layout"
+                android:layout_toLeftOf="@+id/single_listing_itemDistance"
+                style="@style/TextViewLight"
+                />
+
+            <Model.CustomTextView
+                android:id="@+id/single_listing_itemDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2km"
+                android:textColor="@color/white"
+                android:background="@drawable/tag_btn_shape"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_alignRight="@+id/single_listing_img_layout"
                 android:layout_alignTop="@+id/single_listing_img_layout"
+                style="@style/TextViewLight"
+
 
                 />
 
         </RelativeLayout>
+        -->
 
+        <include
+            android:id="@+id/single_listing_main_layout"
+            layout="@layout/single_listing_main_layout">
+        </include>
 
     </ScrollView>
 

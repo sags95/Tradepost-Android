@@ -40,8 +40,8 @@ public class ProfileFeedbackFragment extends Fragment {
         emptyView = rootView.findViewById(R.id.profile_feedback_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.profile_feedback_recyclerview);
 
-        //final List<ProfileFeedbackItem> feedbackItems = addItem("Sample User Name","no Comment",3.5f);
-        final List<ProfileFeedbackItem> feedbackItems = null;
+        final List<ProfileFeedbackItem> feedbackItems = addItem("Sample User Name","no Comment",3.5f);
+        //final List<ProfileFeedbackItem> feedbackItems = null;
 
         mAdapter = new ProfileFeedbackAdapter(feedbackItems);
         mRecyclerView.setHasFixedSize(true);

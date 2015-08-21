@@ -9,7 +9,7 @@
     android:background="@color/background"
     >
 
-    <TextView
+    <Model.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -17,18 +17,21 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:textSize="40sp"
-        android:text="@string/hello_world" />
+        android:text="@string/hello_world"
+        style="@style/OpenSansLight"
+        />
 
-    <TextView
+    <Model.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
         android:id="@+id/title"
         android:layout_below="@id/welcome"
         android:textColor="@color/white"
         android:textSize="60sp"
-        android:text="@string/app_name" />
+        android:text="@string/app_name"
+        style="@style/OpenSansRegular"
+        />
 
     <com.facebook.login.widget.LoginButton
         android:layout_width="match_parent"
@@ -52,16 +55,18 @@
         android:paddingBottom="16dp"
         android:layout_below="@id/fb_sign_in_btn" />
 
-    <TextView
+    <Model.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:id="@+id/or"
         android:layout_below="@id/google_sign_in_btn"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="20sp"
-        android:text="or" />
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:text="OR"
+        style="@style/OpenSansRegular"
+        />
 
     <Button
         android:id="@+id/sign_in_button1"

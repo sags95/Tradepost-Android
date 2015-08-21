@@ -31,7 +31,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.CustomTextView;
 import Model.LimitedEditText;
 import Model.NavigationDrawerAdapter;
 import Model.NavigationDrawerCallbacks;
@@ -165,12 +165,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("Home", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new NavigationItem("Offers", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new NavigationItem("My Item", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new NavigationItem("My Favorites", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new NavigationItem("Categories", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new NavigationItem("Settings", getResources().getDrawable(R.drawable.ic_launcher)));
+        items.add(new NavigationItem("Home", getResources().getDrawable(R.drawable.ic_home)));
+        items.add(new NavigationItem("Offers", getResources().getDrawable(R.drawable.ic_offers)));
+        items.add(new NavigationItem("My Item", getResources().getDrawable(R.drawable.ic_my_items)));
+        items.add(new NavigationItem("My Favorites", getResources().getDrawable(R.drawable.ic_favorites)));
+        items.add(new NavigationItem("Categories", getResources().getDrawable(R.drawable.ic_categories)));
+        items.add(new NavigationItem("Settings", getResources().getDrawable(R.drawable.ic_settings)));
 
 
         return items;
@@ -188,7 +188,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerLayout = drawerLayout;
         mFragementContainerViewRight = fl;
 
-        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.ColorPrimaryDark));
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.ColorPrimary));
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.opendrawer, R.string.closedrawer) {
 
@@ -289,14 +289,14 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public void setUserData(String user, String email, Bitmap avatar) {
         CircleImageView avatarContainer = (CircleImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
-        ((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
-        ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
+        ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
+        ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
         avatarContainer.setImageBitmap(avatar);
         if(Variables.profilepic!=null)
         {
             avatarContainer = (CircleImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
-            ((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(Variables.email);
-            ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(Variables.username);
+            ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(Variables.email);
+            ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(Variables.username);
             avatarContainer.setImageBitmap(Variables.profilepic);
         }
     }

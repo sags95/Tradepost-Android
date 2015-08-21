@@ -31,7 +31,7 @@ public Item item;
 
 
     public static ArrayList<MarketPlaceData> generateSampleDataTest() {
-        String repeat = " repeat";
+        String repeat = " long";
         final ArrayList<MarketPlaceData> dataTest = new ArrayList<MarketPlaceData>();
         for (int i = 0; i < 10; i++) {
             MarketPlaceData data = new MarketPlaceData();
@@ -59,6 +59,7 @@ public Item item;
                 ,"http://webser/GetItems/getItemsRequest");
 
         final ArrayList<MarketPlaceData> datas = new ArrayList<MarketPlaceData>();
+            if(result!=null){
         for (Object i : result) {
            obje=new SoapObject("http://webser/","getItembyId");
             obje.addProperty("itemid", Integer.parseInt(((SoapPrimitive)i).getValue().toString()));
@@ -114,7 +115,7 @@ for(int u1=1;u1<i1;u1++)
 
             */
             datas.add(data);
-        }
+        }}
         return datas;
 
     }

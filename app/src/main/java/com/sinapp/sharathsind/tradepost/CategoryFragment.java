@@ -30,17 +30,17 @@ public class CategoryFragment extends Fragment {
     private String[] categories;
     int[] imgRes = {
             R.drawable.sample_img3,
-            R.drawable.sample_img2,
-            R.drawable.sample_img,
+            R.drawable.sample_img5,
+            R.drawable.sample_img6,
             R.drawable.sample_img3,
-            R.drawable.sample_img2,
-            R.drawable.sample_img,
+            R.drawable.sample_img5,
+            R.drawable.sample_img6,
             R.drawable.sample_img3,
-            R.drawable.sample_img2,
-            R.drawable.sample_img,
+            R.drawable.sample_img5,
+            R.drawable.sample_img6,
             R.drawable.sample_img3,
-            R.drawable.sample_img2,
-            R.drawable.sample_img
+            R.drawable.sample_img6,
+            R.drawable.sample_img5
     };
 
 
@@ -53,13 +53,11 @@ public class CategoryFragment extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         LayoutInflater inflator = LayoutInflater.from(getActivity());
         View v = inflator.inflate(R.layout.toolbar_custom_title, null);
-        TextView title = (TextView) v.findViewById(R.id.title);
-        Typeface type = Typeface.createFromAsset(getResources().getAssets(), "fonts/black_jack.ttf");
-        title.setText("Category");
-        title.setTextColor(getResources().getColor(R.color.ColorPrimaryDark));
-        title.setTypeface(type);
+        TextView title1 = (TextView) v.findViewById(R.id.toolbar_title1);
+        TextView title2 = (TextView) v.findViewById(R.id.toolbar_title2);
+        title1.setText("Categories");
+        title2.setVisibility(View.GONE);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setCustomView(v);
-
     }
 
     @Override

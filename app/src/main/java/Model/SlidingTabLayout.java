@@ -18,7 +18,6 @@ package Model;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -31,8 +30,6 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.sinapp.sharathsind.tradepost.R;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
@@ -63,6 +60,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
         int getIndicatorColor(int position);
 
     }
+
+    private int colorStateList;
 
     private static final int TITLE_OFFSET_DIPS = 24;
     private static final int TAB_VIEW_PADDING_DIPS = 16;
@@ -165,11 +164,11 @@ public class SlidingTabLayout extends HorizontalScrollView {
      * Create a default view to be used for tabs. This is called if a custom tab view is not set via
      * {@link #setCustomTabView(int, int)}.
      */
-    protected TextView createDefaultTabView(Context context) {
-        TextView textView = new TextView(context);
+    protected CustomTextView createDefaultTabView(Context context) {
+        CustomTextView textView = new CustomTextView(context);
         textView.setGravity(Gravity.CENTER);
+        textView.settingOpenSansLight();
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, TAB_VIEW_TEXT_SIZE_SP);
-        textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setTextColor(Color.WHITE);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -192,21 +191,22 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         for (int i = 0; i < adapter.getCount(); i++) {
             View tabView = null;
-            TextView tabTitleView = null;
+            CustomTextView tabTitleView = null;
 
             if (mTabViewLayoutId != 0) {
                 // If there is a custom tab view layout id set, try and inflate it
                 tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                         false);
-                tabTitleView = (TextView) tabView.findViewById(mTabViewTextViewId);
+                tabTitleView = (CustomTextView) tabView.findViewById(mTabViewTextViewId);
+
             }
 
             if (tabView == null) {
                 tabView = createDefaultTabView(getContext());
             }
 
-            if (tabTitleView == null && TextView.class.isInstance(tabView)) {
-                tabTitleView = (TextView) tabView;
+            if (tabTitleView == null && CustomTextView.class.isInstance(tabView)) {
+                tabTitleView = (CustomTextView) tabView;
             }
 
             if (mDistributeEvenly) {
@@ -216,7 +216,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
             }
 
             tabTitleView.setText(adapter.getPageTitle(i));
-            tabTitleView.setTextColor(getResources().getColorStateList(R.color.slidingtab_title_color));
+            tabTitleView.settingOpenSansRegular();
+            tabTitleView.setTextColor(getResources().getColorStateList(getTextColorState()));
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);
             if (desc != null) {
@@ -321,6 +322,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 }
             }
         }
+    }
+
+    public void setTextColorState(int resId){
+        this.colorStateList = resId;
+    }
+
+    public int getTextColorState(){
+        return colorStateList;
     }
 
 }

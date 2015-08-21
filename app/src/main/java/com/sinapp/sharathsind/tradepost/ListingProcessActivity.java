@@ -3,6 +3,7 @@ package com.sinapp.sharathsind.tradepost;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,13 +17,9 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,9 +40,15 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import Model.CustomSpinnerAdapter;
+import Model.CustomTextView;
+import Model.LimitedEditText;
 import Model.RegisterWebService;
 import Model.RoundImageHelper;
 import Model.Variables;
@@ -69,6 +72,11 @@ public class ListingProcessActivity extends AppCompatActivity {
     private int requestCodeGal = 1;
     private int currentImgPos = 0;
     private Toolbar toolbar;
+    private Uri mImageUri;
+    private TextView tagsCount;
+    private ColorStateList oldColors;
+
+
 
 
     public ArrayList<String> tags;
@@ -85,6 +93,7 @@ public ArrayList<Bitmap>bits;
         //toolbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitle("Post Your Item");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.ColorPrimary));
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,12 +107,31 @@ public ArrayList<Bitmap>bits;
 
         tags=new ArrayList<String>();
         bits=new ArrayList<Bitmap>();
+
+        //section 1
+        LimitedEditText itemName = (LimitedEditText) findViewById(R.id.section1_edit);
+        itemName.setMaxLines(1);
+        itemName.setMaxCharacters(70);
+        final TextView itemNameCharCount = (TextView)findViewById(R.id.section1_char_count);
+        itemName.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                itemNameCharCount.setText(String.valueOf(s.length()));
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         //section 2
         itemImg1 = (ImageView) findViewById(R.id.section2_item_img1);
         itemImg2 = (ImageView) findViewById(R.id.section2_item_img2);
         itemImg3 = (ImageView) findViewById(R.id.section2_item_img3);
         itemImg4 = (ImageView) findViewById(R.id.section2_item_img4);
-///spinner=(Spinner)findViewById(R.id.sp)
+        ///spinner=(Spinner)findViewById(R.id.sp)
         camera = (ImageView) findViewById(R.id.section2_img_camera);
         folder = (ImageView) findViewById(R.id.section2_img_folder);
         Bitmap roundProImg = RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
@@ -113,22 +141,63 @@ public ArrayList<Bitmap>bits;
         camera.setOnClickListener(camBtnListener);
         folder.setOnClickListener(galleryBtnListener);
 
-        //section 4
-        EditText desEditText = (EditText) findViewById(R.id.section4_edit);
+        //section 3
+        SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar1);
+        final LinearLayout seekBarLi = (LinearLayout)findViewById(R.id.seekBar_layout);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                for(int i=0;i<seekBarLi.getChildCount();i++){
+                    if(i!=progress){
+                        CustomTextView temp = (CustomTextView)seekBarLi.getChildAt(i);
+                        temp.setTextColor(oldColors);
+                    }
+                }
+                CustomTextView temp2 =(CustomTextView)seekBarLi.getChildAt(progress);
+                temp2.setTextColor(getResources().getColor(R.color.fab_primaryColor));
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        //section 4
+        LimitedEditText desEditText = (LimitedEditText) findViewById(R.id.section4_edit);
+        desEditText.setMaxLines(5);
+        desEditText.setMaxCharacters(250);
+        final TextView itemDesCharCount = (TextView)findViewById(R.id.section4_char_count);
+        desEditText.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //This sets a textview to the current length
+                itemDesCharCount.setText(String.valueOf(s.length()));
+            }
+
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         //section 5
         tagInput = (EditText) findViewById(R.id.section5_edit);
         ImageView addTags = (ImageView) findViewById(R.id.section5_plus);
         addTags.setOnClickListener(addTagButtonListener);
+        tagsCount = (TextView)findViewById(R.id.section5_tag_count);
+        oldColors =  tagsCount.getTextColors(); //save original colors
 
-        //using section 6 (Choose a category) plus button for testing
-       // ImageView testingBtn = (ImageView) findViewById(R.id.section6_plus);
-    //    testingBtn.setOnClickListener(testingBtnListener);
+        //using section 6 (Choose a category)
         categories = getResources().getStringArray(R.array.category_array);
-         spinner = (Spinner) findViewById(R.id.section6_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_dropdown_item, categories);
+        spinner = (Spinner) findViewById(R.id.section6_spinner);
+        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(
+                this, android.R.layout.simple_spinner_dropdown_item, Arrays.asList(getResources().getStringArray(R.array.category_array)));
         spinner.setAdapter(adapter);
 
 
@@ -140,7 +209,7 @@ public ArrayList<Bitmap>bits;
         MenuItem item;
 
         item = menu.add("POST");
-        item.setIcon(R.drawable.ic_toolbar_search);
+        item.setIcon(R.drawable.ic_send);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
@@ -242,7 +311,7 @@ i++;
                 cancelTag.setOnClickListener(tagCancelButtonListener);
 
                 //Tag Name
-                TextView tagName = (TextView) singleTagLayout.findViewById(R.id.tag_name);
+                CustomTextView tagName = (CustomTextView) singleTagLayout.findViewById(R.id.tag_name);
                 //tagName.setId(TAGS_COUNT);
                 tagName.setText(tagInput.getText().toString().trim());
                 tags.add(tagInput.getText().toString().trim());
@@ -251,6 +320,7 @@ i++;
                 tagInput.setText("");
                 TAGS_COUNT++;
                 tagFlowLayout.addView(singleTagLayout);
+                tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
                 Log.d("Child Added", "Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
             }
@@ -263,6 +333,7 @@ i++;
         public void onClick(View v) {
             tagFlowLayout.removeView((View) v.getParent());
             //tags.add(((TextView) v).getText().toString().trim());
+            tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
             Log.d("Child Removed", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
 
@@ -311,11 +382,55 @@ i++;
         @Override
         public void onClick(View v) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File photo=null;
+            try {
+                // place where to store camera taken picture
+                photo = createTemporaryFile("temp", ".jpg");
+                photo.delete();
+            } catch (Exception e) {
+                Log.v("camera", "Can't create file to take picture!");
+                Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT);
+            }
+            mImageUri = Uri.fromFile(photo);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+            //start camera intent
+
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, requestCodeCam);
             }
+
         }
     };
+
+    private File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= Environment.getExternalStorageDirectory();
+        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
+        if(!tempDir.exists())
+        {
+            tempDir.mkdir();
+        }
+        return File.createTempFile(part, ext, tempDir);
+    }
+
+    public Bitmap grabImage()
+    {
+        this.getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = this.getContentResolver();
+        Bitmap bitmap=null;
+        try
+        {
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+            Log.d("cam", "Failed to load", e);
+        }
+
+        return bitmap;
+    }
+
 
     public View.OnClickListener galleryBtnListener = new View.OnClickListener() {
         @Override
@@ -336,6 +451,7 @@ i++;
     private static final String SOAP_ACTION = "http://webser/AddItems/additemRequest";
     private static final String METHOD_NAME = "additem";
     private static final String NAMESPACE = "http://webser/";
+    private static final String URL ="http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl";
     private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
     public SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
@@ -375,9 +491,15 @@ i++;
         super.onActivityResult(requestCode,resultCode,data);
         if (resultCode == RESULT_OK) {
             if(requestCode ==0){
+               /*
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 setImage(imageBitmap);
+                bits.add(imageBitmap);
+                */
+                setImage(grabImage());
+                bits.add(grabImage());
+                //... some code to inflate/create/find appropriate ImageView to place grabbed image
 
             }else if(requestCode == 1){
                 Uri selectedImageUri = data.getData();
