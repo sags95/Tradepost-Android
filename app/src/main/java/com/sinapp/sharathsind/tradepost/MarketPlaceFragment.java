@@ -3,6 +3,7 @@ package com.sinapp.sharathsind.tradepost;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -24,9 +25,12 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.support.v7.app.AlertDialog;
+
+import com.etsy.android.grid.StaggeredGridView;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Model.MarketPlaceData;
 import Model.MarketPlaceStaggeredAdapter;
@@ -37,12 +41,14 @@ import Model.StaggeredAdapterTest;
  */
 public class MarketPlaceFragment  extends Fragment {
 
+    //private StaggeredGridView mRecyclerView;
     private RecyclerView mRecyclerView;
     private MarketPlaceStaggeredAdapter stagAdapter2;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private View rootView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout,mSwipeRefreshLayoutEmpty;
     private StaggeredAdapterTest mStaggeredAdapterTest;
+    private List<MarketPlaceData> mData;
 
     private String locationRad="25Km)";
     private int[] imageResources = {
@@ -64,6 +70,7 @@ public class MarketPlaceFragment  extends Fragment {
     private SeekBar seekBar;
     private TextView headerRadText,radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
     private LinearLayout seekBarLabel;
+    private List<MarketPlaceData> tempdata;
 
 
     public MarketPlaceFragment() {
@@ -97,11 +104,15 @@ public class MarketPlaceFragment  extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d("SwipeToRefresh","Refreshing");
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
+        //
+        mSwipeRefreshLayoutEmpty = (SwipeRefreshLayout)rootView.findViewById(R.id.activity_main_swipe_refresh_layout_empty);
+
+
+        /*
         //StaggeredGridViewTesting
         //For Testing Only
         String[] tempTags= {
@@ -112,20 +123,32 @@ public class MarketPlaceFragment  extends Fragment {
                 "whatever"
         };
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
-        mRecyclerView.setHasFixedSize(true);
         mStaggeredAdapterTest = new StaggeredAdapterTest(getActivity(),MarketPlaceData.generateSampleDataTest(),listingItemClickListener,tempTags);
         mRecyclerView.setAdapter(mStaggeredAdapterTest);
         applyStaggeredGridLayoutManager();
+        */
 
 
 
-        /*
+
+
+
+
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),MarketPlaceData.generateSampleData(),listingItemClickListener);
+        //stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),MarketPlaceData.generateSampleData(),listingItemClickListener);
         mRecyclerView.setAdapter(stagAdapter2);
         applyStaggeredGridLayoutManager();
-        */
+
+
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        AsyncTaskRunner runner = new AsyncTaskRunner();
+        runner.execute();
+
+
+
+
+
 
 
         /*
@@ -151,7 +174,9 @@ public class MarketPlaceFragment  extends Fragment {
         //Floating Action Button
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(fabOnClickListener);
+
         fab.attachToRecyclerView(mRecyclerView);
+        //fab.attachToListView(mRecyclerView);
 
         //Like Button
         ImageView likeBtn = (ImageView) rootView.findViewById(R.id.image_like_btn);
@@ -174,10 +199,12 @@ public class MarketPlaceFragment  extends Fragment {
     }
 
 
+
     private void applyStaggeredGridLayoutManager() {
         mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
     }
+
 
     public View.OnClickListener fabOnClickListener = new View.OnClickListener() {
         @Override
@@ -192,17 +219,29 @@ public class MarketPlaceFragment  extends Fragment {
         }
     };
 
+
     public View.OnClickListener listingItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Log.d("child position", String.valueOf(mRecyclerView.getChildPosition(v)));
+
+
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
+            List<MarketPlaceData> tempdata = mData;
+
             TextView itemTitle = (TextView) mRecyclerView.findViewHolderForPosition(mRecyclerView.getChildPosition(v)).itemView.findViewById(R.id.item_title);
             clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildPosition(v)));
             clickedItemDetails.add(1, itemTitle.getText().toString());
+            clickedItemDetails.add(2, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getItemid()));
+            clickedItemDetails.add(3, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getUserid()));
+            clickedItemDetails.add(4, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getCon()));
+            clickedItemDetails.add(5, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getDescription()));
+            clickedItemDetails.add(6, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getDateadded()));
+            clickedItemDetails.add(7, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).proUsername));
 
-          //  clickedItemDetails.add(2,);
+
+            //  clickedItemDetails.add(2,);
             //Log.d("item details", "item position: " + clickedItemDetails.get(0));
             //Log.d("item details", "item title: " + clickedItemDetails.get(1));
 
@@ -210,6 +249,11 @@ public class MarketPlaceFragment  extends Fragment {
             startActivity(i);
         }
     };
+
+
+
+
+
 
     public void customDialog(){
 
@@ -413,4 +457,54 @@ public class MarketPlaceFragment  extends Fragment {
                 break;
         }
     }
+
+
+    private class AsyncTaskRunner extends AsyncTask<List<MarketPlaceData>, String, List<MarketPlaceData>> {
+
+        @Override
+        protected List<MarketPlaceData> doInBackground(List<MarketPlaceData>... params) {
+
+            try {
+                mData = MarketPlaceData.generateSampleData();
+            }catch (Exception e){
+                e.toString();
+            }
+
+
+            return mData;
+        }
+
+        @Override
+        protected void onPostExecute(List<MarketPlaceData> result) {
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+            stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),result,listingItemClickListener);
+            mRecyclerView.setAdapter(stagAdapter2);
+            mSwipeRefreshLayoutEmpty.setRefreshing(false);
+            mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
+
+            //
+            tempdata = result;
+
+
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mSwipeRefreshLayoutEmpty.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayoutEmpty.setRefreshing(true);
+                }
+            });
+        }
+
+        @Override
+        protected void onProgressUpdate(String... text) {
+
+        }
+    }
+
+
 }
+

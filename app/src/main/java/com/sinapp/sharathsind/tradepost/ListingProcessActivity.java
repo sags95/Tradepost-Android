@@ -2,6 +2,7 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
@@ -12,10 +13,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -228,7 +232,7 @@ String result;
                 final String title=tv.getText().toString();
                 final String description=desc.getText().toString();
                 final String cat=spinner.getSelectedItem().toString();
-                pg=ProgressDialog.show(ListingProcessActivity.this,"pleasewait","adding",false,false);
+                pg=ProgressDialog.show(ListingProcessActivity.this,"Please Wait","adding",false,false);
                 pg.setCancelable(false);
                 pg.setMessage("please wait..");
 //pg.show();
@@ -250,7 +254,7 @@ String []tagarray=new String[tags.size()];
              tagarray[i]=tags.get(i);
          }
                //     int i=s.get;
-                    SoapPrimitive r= RegisterWebService. sendDataToServer(title,description,tagarray,bits.toArray(),i, userdata.userid,cat);
+                    SoapPrimitive r= RegisterWebService.sendDataToServer(title,description,tagarray,bits.toArray(),i, userdata.userid,cat);
                     result=r.getValue().toString();
                     int i=0;
  for(Bitmap b:bits)
@@ -287,7 +291,7 @@ i++;
         object.addProperty("itemid", id);
         object.addProperty("pic",pic);
         object.addProperty("image",im);
-        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
+        return     MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
     }
     public SoapPrimitive sendtag(int id,String im)
     {
@@ -295,7 +299,7 @@ i++;
         object.addProperty("itemid", id);
 
         object.addProperty("tag",im);
-        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
+        return     MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
     }
 
     public View.OnClickListener addTagButtonListener = new View.OnClickListener() {
@@ -452,7 +456,6 @@ i++;
     private static final String METHOD_NAME = "additem";
     private static final String NAMESPACE = "http://webser/";
     private static final String URL ="http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl";
-    private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
     public SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
         SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -480,7 +483,7 @@ i++;
         }
 
 
-        return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+        return MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
 

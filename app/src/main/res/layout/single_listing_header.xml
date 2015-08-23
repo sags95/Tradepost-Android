@@ -5,69 +5,145 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingBottom="8dp"
     android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:layout_centerVertical="true"
-    android:background="@android:color/darker_gray"
+    android:background="@color/color_background_gray"
     android:focusable="true"
     android:clickable="true"
     >
 
-    <LinearLayout
-        android:id="@+id/single_listing_header_user_layout"
-        android:layout_toLeftOf="@+id/single_listing_header_time"
-        android:orientation="horizontal"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/sample_img5"
+        app:border_color="@color/white"
+        app:border_width="1dp"
+        android:id="@+id/single_listing_header_userImg"
         android:layout_centerVertical="true"
+        />
+
+
+    <LinearLayout
+        android:paddingLeft="16dp"
+        android:layout_toRightOf="@+id/single_listing_header_userImg"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/single_listing_header_propic"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/sample_img"
-            app:border_width="2dp"
-            app:border_color="#FFFFFF" />
 
         <Model.CustomTextView
-            android:id="@+id/single_listing_header_username"
+            android:id="@+id/single_listing_header_itemTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Username"
-            android:layout_marginLeft="8dp"
-            android:layout_gravity="center_vertical"
-            android:textSize="18sp"
+            style="@style/OpenSansSemiBold"
+            android:textSize="16sp"
+            android:textColor="@color/ColorPrimary"
+            android:text="Sample long long long  long title"
+            android:maxLines="2"
+            android:minLines="1"
             android:ellipsize="end"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            style="@style/OpenSansRegular"
-
+            android:layout_marginBottom="4dp"
 
             />
+
+        <RelativeLayout
+            android:id="@+id/single_listing_header_user_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Model.CustomTextView
+                android:id="@+id/single_listing_header_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/OpenSansLight"
+                android:text="by"
+                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
+                />
+
+            <Model.CustomTextView
+                android:id="@+id/single_listing_header_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/OpenSansRegular"
+                android:textSize="14sp"
+                android:text="Username"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_centerVertical="true"
+                android:textColor="@color/text_color_dark"
+                android:layout_toRightOf="@+id/single_listing_header_by"
+                android:layout_toLeftOf="@+id/single_listing_header_time"
+                />
+
+            <Model.CustomTextView
+                style="@style/OpenSansLight"
+                android:id="@+id/single_listing_header_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 days"
+                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/single_listing_header_ago"
+                android:textStyle="italic"
+
+
+
+                />
+
+            <Model.CustomTextView
+                style="@style/OpenSansLight"
+                android:id="@+id/single_listing_header_ago"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" ago"
+                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/single_listing_header_slash"
+                android:textStyle="italic"
+
+
+
+
+                />
+
+            <Model.CustomTextView
+                style="@style/OpenSansLight"
+                android:id="@+id/single_listing_header_slash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" | "
+                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:layout_toLeftOf="@+id/single_listing_header_distance"
+                android:layout_alignBottom="@+id/single_listing_header_distance"
+
+
+                />
+
+            <Model.CustomTextView
+                style="@style/OpenSansLight"
+                android:id="@+id/single_listing_header_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2.6 km"
+                android:textSize="12sp"
+                android:textColor="@color/text_color"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+
+
+                />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 
 
-    <Model.CustomTextView
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:id="@+id/single_listing_header_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="two hours ago"
-        android:textSize="12sp"
-        android:textColor="@color/white"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:layout_alignTop="@+id/single_listing_header_user_layout"
-        android:layout_alignBottom="@+id/single_listing_header_user_layout"
-        style="@style/OpenSansLight"
-
-        />
-
-
-
-
-</RelativeLayout>
+    </RelativeLayout>

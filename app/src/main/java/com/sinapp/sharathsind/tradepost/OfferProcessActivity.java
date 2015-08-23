@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,11 @@ public static  int userid;
         setContentView(R.layout.activity_offer_process);
 
         tempBundle = new Bundle();
+
+        //get Intent;
+        Intent i= getIntent();
+        ArrayList<String> itemDetailsToOffer = i.getStringArrayListExtra("itemToOfferProcess");
+
 
 
         //

@@ -24,17 +24,33 @@
                 >
             </android.support.v4.view.ViewPager>
 
+
+            <RelativeLayout
+                android:layout_alignBottom="@+id/pager"
+                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/dots"
-                android:layout_alignBottom="@+id/pager"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:paddingBottom="4dp"
 
                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:background="@color/grey_trans"
+
+                />
+
+            </RelativeLayout>
+
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -42,67 +58,26 @@
             android:layout_height="match_parent"
             android:id="@+id/single_listing_other_layout"
             android:layout_below="@+id/single_listing_img_layout"
-            android:background="@color/lightgrey"
+            android:background="@color/color_background_gray"
             android:paddingRight="16dp"
             android:paddingLeft="16dp"
             >
 
             <Model.CustomTextView
-                android:id="@+id/single_listing_itemDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2km away"
-                android:textColor="@color/white"
-                android:background="@drawable/tag_btn_shape"
-                android:layout_toRightOf="@+id/single_listing_itemCondition"
-                android:layout_marginTop="8dp"
-                style="@style/OpenSansLight"
 
-
-                />
-
-            <Model.CustomTextView
-                android:id="@+id/single_listing_itemCondition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="condition"
-                android:textColor="@color/white"
-                android:background="@drawable/tag_btn_shape"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_alignParentLeft="true"
-                style="@style/OpenSansLight"
-                />
-
-            <Model.CustomTextView
-                android:id="@+id/single_listing_item_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="20dp"
-                android:textSize="18sp"
-                style="@style/OpenSansRegular"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/single_listing_itemCondition"
-
-                />
-
-            <Model.CustomTextView
-                android:layout_below="@+id/single_listing_item_title"
                 android:id="@+id/single_listing_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOOKING FOR"
-                android:layout_marginBottom="8dp"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:text="I am looking for"
+                android:layout_marginTop="16dp"
+                android:textSize="14sp"
+                android:textColor="@color/text_color_dark"
                 style="@style/OpenSansRegular"
 
 
                 />
 
-            <LinearLayout
+            <org.apmem.tools.layouts.FlowLayout
                 android:id="@+id/single_listing_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -112,47 +87,75 @@
 
                 >
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tag1"/>
 
-            </LinearLayout>
+
+
+
+            </org.apmem.tools.layouts.FlowLayout>
 
             <Model.CustomTextView
                 android:id="@+id/single_listing_des_text"
                 android:layout_below="@+id/single_listing_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description"
-                android:background="@color/white"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:textStyle="bold"
-                style="@style/OpenSansSemiBold"
-
+                android:text="Item description"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:textSize="14sp"
+                android:textColor="@color/text_color_dark"
+                style="@style/OpenSansRegular"
                 />
 
             <Model.CustomTextView
                 android:id="@+id/single_listing_des_input"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:text="Sample Description"
+                android:layout_height="wrap_content"
+                android:text="@string/chatpage_empty_detail"
                 android:layout_below="@+id/single_listing_des_text"
-                android:background="@color/white"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:background="@drawable/round_white_background"
+                android:padding="16dp"
                 style="@style/OpenSansRegular"
 
                 />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="16dp"
+                android:background="@color/color_background_gray"
                 android:layout_below="@+id/single_listing_des_input"
                 />
 
         </RelativeLayout>
+
+        <Model.CustomTextView
+            android:id="@+id/single_listing_item_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONDITION"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:background="@drawable/condition_background"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentTop="true"
+            style="@style/OpenSansRegular"
+            android:layout_toLeftOf="@+id/single_listing_fav_btn"
+            />
+
+        <ImageView
+            android:id="@+id/single_listing_fav_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favorite_select"
+            android:background="@drawable/circle_background"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+
+            />
+
+
 
 
 
@@ -169,5 +172,7 @@
         app:backgroundTint="@color/fab_primaryColor"
         app:layout_anchor="@id/single_listing_img_layout"
         app:layout_anchorGravity="bottom|right|end"/>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

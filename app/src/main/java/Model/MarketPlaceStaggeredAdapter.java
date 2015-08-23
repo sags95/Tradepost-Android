@@ -4,37 +4,42 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
 
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 import java.util.List;
+
+import datamanager.MyVolleySingleton;
 
 /**
  * Created by HenryChiang on 15-06-10.
  */
 public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlaceStaggeredAdapter.ViewHolder> {
 
-    private List<MarketPlaceData> mData;
+    public static List<MarketPlaceData> mData;
     private View.OnClickListener mItemClick;
     private ViewGroup viewGroup;
     private String[] tags;
     private Context context;
+    private int currentPos=0;
+    private ViewHolder viewHolder;
+    private URL url1;
+    private ImageLoader im;
 
 
 
@@ -62,41 +67,45 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        final int currentPos = i;
-        viewHolder.mTextViewItemTitle.setText(mData.get(i).itemTitle);
+    public void onBindViewHolder(ViewHolder viewHolder,final int i) {
+
+        viewHolder.mTextViewItemTitle.setText(mData.get(i).item.item.getItemname());
+
+
 
         if(viewHolder.mTagFlowLayout.getChildCount()==0) {
-            for(int j=0;j<tags.length;j++){
+            if(mData.get(i).item.tags!=null) {
+                for (String tag : mData.get(i).item.tags) {
 
-                viewHolder.mTagFlowLayout.addView(addTags(j));
+                    viewHolder.mTagFlowLayout.addView(addTags(tag));
 
+                }
             }
         }
 
+
         try {
-            URL url=new URL(mData.get(i).itemImage);
-           URLConnection  con=url.openConnection();
-          InputStream is=  con.getInputStream();
+            URL url;
+            URLConnection  con;
+            InputStream is;
+            ImageLoader im= MyVolleySingleton.getInstance(context).getImageLoader();
 
 
-          Bitmap b= BitmapFactory.decodeStream(is);
+            String url1="http://104.199.135.162:8084/TDserverWeb/images/items/"+mData.get(i).item.item.getItemid()+"/0.png";
+            viewHolder.mImageViewItemImg.setImageUrl(url1,im);
+           // viewHolder.mImageViewItemImg.setImageBitmap(mData.get(i).itemImgs[0]);
 
-           viewHolder.mImageViewItemImg.setImageBitmap(b);
 
-is.close();
-           url=new URL("http://192.168.2.15:8084/TDserverWeb/images/"+mData.get(i).userid+"/profile.png");
-              con=url.openConnection();
-             is=  con.getInputStream();
-             b= BitmapFactory.decodeStream(is);
+            url=new URL("http://104.199.135.162:8084/TDserverWeb/images/"+mData.get(i).userid+"/profile.png");
+            con=url.openConnection();
+            is=  con.getInputStream();
+            Bitmap b= BitmapFactory.decodeStream(is);
             viewHolder.mImageViewProPic.setImageBitmap(b);
-is.close();
+            is.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
 
         viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +115,7 @@ is.close();
 
             }
         });
+
     }
 
     @Override
@@ -117,8 +127,8 @@ is.close();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextViewItemTitle;
-        public ImageView mImageViewItemImg;
+        public CustomTextView mTextViewItemTitle,mItemDateAdded;
+        public NetworkImageView mImageViewItemImg;
         public ImageView mImageViewProPic;
         public FlowLayout mTagFlowLayout;
 
@@ -127,27 +137,28 @@ is.close();
         public ViewHolder(View itemView) {
             super(itemView);
             mImageViewProPic = (ImageView)itemView.findViewById(R.id.pro_img);
-            mTextViewItemTitle = (TextView) itemView.findViewById(R.id.item_title);
-            mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
+            mTextViewItemTitle = (CustomTextView) itemView.findViewById(R.id.item_title);
+            mItemDateAdded = (CustomTextView)itemView.findViewById(R.id.pro_post_time);
+            mImageViewItemImg = (NetworkImageView) itemView.findViewById(R.id.item_image);
             mTagFlowLayout = (FlowLayout)itemView.findViewById(R.id.marketplace_tags_layout);
 
 
         }
     }
 
-    public TextView addTags(int pos){
+    public CustomTextView addTags(String tag) {
 
-
-        TextView newTag = new TextView(viewGroup.getContext());
-        newTag.setText(tags[pos].toUpperCase());
+        CustomTextView newTag = new CustomTextView(viewGroup.getContext());
+        newTag.setText(tag.toUpperCase());
         newTag.setTextColor(viewGroup.getResources().getColor(R.color.white));
-        newTag.setTextSize(12);
-        newTag.setTypeface(Typeface.DEFAULT_BOLD);
+        newTag.setTextSize(10);
         newTag.setClickable(true);
+        newTag.settingOpenSansLight();
         newTag.setBackgroundResource(R.drawable.tag_btn_shape);
-        newTag.setPadding(6, 6, 6, 6);
+        newTag.setPadding(DpToPx(4), DpToPx(4), DpToPx(4), DpToPx(4));
         FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,0,15,20);
+        lp.setMargins(0,0,DpToPx(4), DpToPx(8));
+
         newTag.setLayoutParams(lp);
 
 
@@ -157,6 +168,23 @@ is.close();
     }
 
 
+    public int DpToPx(int requireDp ){
+        int dpValue = requireDp; // margin in dips
+        float d = context.getResources().getDisplayMetrics().density;
+        int margin = (int)(dpValue * d); // margin in pixels
+        return margin; // margin in pixels
 
+    }
+
+    public String dateComparison(Date date){
+        Date currentDate = new Date();
+        int offset = currentDate.compareTo(date);
+
+        if(offset ==0){
+            return "Today";
+        }else{
+            return offset + " days ago";
+        }
+    }
 
 }

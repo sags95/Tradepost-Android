@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.CustomLinearLayoutManager;
+import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyItems;
 import Model.MyItemsAdapter;
@@ -80,7 +81,7 @@ public class MyItemsFragment extends Fragment {
                 int topRowVerticalPosition =
                         (mRecyclerView == null || mRecyclerView.getChildCount() == 0) ?
                                 0 : mRecyclerView.getChildAt(0).getTop();
-                mSwipeRefreshLayout.setEnabled(mLayoutManager.findFirstVisibleItemPosition()==0&&topRowVerticalPosition >= 0);
+                mSwipeRefreshLayout.setEnabled(mLayoutManager.findFirstVisibleItemPosition() == 0 && topRowVerticalPosition >= 0);
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
@@ -88,7 +89,7 @@ public class MyItemsFragment extends Fragment {
 
 
         myItemsAdapter = new MyItemsAdapter(myItems);
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.addOnItemTouchListener(

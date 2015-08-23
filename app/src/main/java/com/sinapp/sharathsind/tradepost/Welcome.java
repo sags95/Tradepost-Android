@@ -57,47 +57,56 @@ public class Welcome extends Activity implements OnClickListener {
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-Cursor c;
+    Cursor c;
     private TextView title;
     InstanceID instanceID;
- public static    LocationManager locationManager;
-  public static   MyLocationService service;
+    public static LocationManager locationManager;
+    public static MyLocationService service;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
         StrictMode.setThreadPolicy(policy);
-service=new MyLocationService(this);
+        service=new MyLocationService(this);
+
         boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "tradepostdb.db");
+
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, service);
-        if (b) {
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, service);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        if(location!=null) {
+            userdata.longitude = location.getLongitude();
+            userdata.latitude = location.getLatitude();
+        }
+
+        if(b) {
             try{
                 Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
-
-                 c=Constants.db.rawQuery("select * from login",null);
+                c=Constants.db.rawQuery("select * from login",null);
                 c.moveToFirst();
-               Constants.userid=c.getInt(c.getColumnIndex("userid"));
+                Constants.userid=c.getInt(c.getColumnIndex("userid"));
                 Variables.email=c.getString(c.getColumnIndex("email"));
                 Variables.username=c.getString(c.getColumnIndex("username"));
                 userdata.name=Variables.username;
                 userdata.userid=Constants.userid;
-                Criteria criteria = new Criteria();
-                String provider = locationManager.getBestProvider(criteria, false);
-                Location location = locationManager.getLastKnownLocation(provider);
-                userdata.longitude=location.getLongitude();
-                userdata.latitude=location.getLatitude();
+
                 c=Constants.db.rawQuery("select * from gcm",null);
+
                 if(c.getCount()>0) {
-                c.moveToFirst();
+                    c.moveToFirst();
                     Constants.GCM_Key = c.getString(0);
 
                 }
-                new AsyncTask<String,String,String>()
-                {
+
+                new AsyncTask<String,String,String>() {
                     ProgressDialog pd;
+
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
@@ -122,151 +131,134 @@ service=new MyLocationService(this);
                     @Override
                     protected String doInBackground(String... params) {
                         SoapObject object = new SoapObject("http://webser/", "getuseritems");
-                     //   SoapObject object = new SoapObject("http://webser/", "getuseritems");
+                        //SoapObject object = new SoapObject("http://webser/", "getuseritems");
                         object.addProperty("userid",  userdata.userid);
-                  Vector object1=      MainWebService.getMsg1(object,"http://192.168.2.15:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
-    userdata.items=new ArrayList<Integer>();
-                        for(Object i:object1)
-                        {
-                            userdata.items.add(Integer.parseInt(((SoapPrimitive)i).getValue().toString()));
+                        Vector object1 = MainWebService.getMsg1(object,"http://104.199.135.162:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
+                        userdata.items=new ArrayList<Integer>();
+
+                        if(object1!=null) {
+                            for (Object i : object1) {
+                                userdata.items.add(Integer.parseInt(((SoapPrimitive) i).getValue().toString()));
+                            }
                         }
-   userdata.i=new ArrayList<ItemResult>();
-for(int i :userdata.items)
-{
-   SoapObject  obje=new SoapObject("http://webser/","getItembyId");
-    obje.addProperty("itemid", i);
-    KvmSerializable result1= MainWebService.getMsg2(obje,"http://192.168.2.15:8084/TDserverWeb/GetItems?wsdl"
-            ,"http://webser/GetItems/getItembyIdRequest");
+                    userdata.i=new ArrayList<ItemResult>();
 
-    ItemResult ir= new ItemResult();
-    ir.item=new Item();
+                    for(int i :userdata.items) {
 
-    SoapObject object12=(SoapObject)result1.getProperty(0);
-    //  for(int u=0;u<object.getPropertyCount())
-    ir.item.set(object12);
-    //  SoapObject o7=(SoapObject)result1;
-//     Object j=       o.getProperty("images");
-    int i1=result1.getPropertyCount();
-    ir.images=new String[i1-1];
+                       SoapObject  obje=new SoapObject("http://webser/","getItembyId");
+                        obje.addProperty("itemid", i);
+                        KvmSerializable result1= MainWebService.getMsg2(obje,"http://104.199.135.162:8084/TDserverWeb/GetItems?wsdl"
+                                ,"http://webser/GetItems/getItembyIdRequest");
 
-    for(int u1=1;u1<i1;u1++)
-    {
-        ir.tags[u1-1]=  result1.getProperty(u1).toString();
+                        ItemResult ir= new ItemResult();
+                        ir.item=new Item();
 
-    }
-      obje=new SoapObject("http://webser/","searchbyint");
-    obje.addProperty("name", i);
-    result1= MainWebService.getMsg2(obje,"http://192.168.2.15:8084/TDserverWeb/NewWebService?wsdl"
-            ,"http://webser/NewWebService/searchbyintRequest");
-     i1=result1.getPropertyCount();
-    ir.tags=new String[i1-1];
+                        SoapObject object12=(SoapObject)result1.getProperty(0);
+                        //for(int u=0;u<object.getPropertyCount())
+                        ir.item.set(object12);
+                        //SoapObject o7=(SoapObject)result1;
+                        //Object j=       o.getProperty("images");
+                        int i1=result1.getPropertyCount();
+                        ir.images=new String[i1-1];
 
-    for(int u1=0;u1<i1;u1++)
-    {
-        ir.images[u1]=  result1.getProperty(u1).toString();
+                        for(int u1=1;u1<i1;u1++) {
+                            ir.images[u1-1]=  result1.getProperty(u1).toString();
 
-    }
-userdata.i.add(ir);
+                        }
+                        obje=new SoapObject("http://webser/","searchbyint");
+                        obje.addProperty("name", i);
+                        Vector result2= MainWebService.getMsg1(obje, "http://104.199.135.162:8084/TDserverWeb/NewWebService?wsdl"
+                                , "http://webser/NewWebService/searchbyintRequest");
+                        if(result2!=null) {
 
-}
+                            int index=0;
+                            ir.tags=new String[result2.size()];
+
+                            for (Object o:result2 ) {
+                                ir.tags[index] = ((SoapPrimitive)o).getValue().toString();
+                                index++;
+
+                            }
+                        }
+
+                        userdata.i.add(ir);
+
+                        }
                         return null;
-
-
-
                     }
                 }.execute(null,null,null);
-      //          URL url = new URL("http://192.168.2.15:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
-        //        Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-//                Constants.username=c.getString(c.getColumnIndex("username"));
+                //URL url = new URL("http://104.199.135.162:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
+                //Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                //Constants.username=c.getString(c.getColumnIndex("username"));
 
 
-
-            }catch(Exception e)
-            {
+            } catch(Exception e) {
                 String s=e.toString();
             }
 
-        }
-        else
-        {
-        try{
-           Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
-            try {
 
-
+        }else{
+            try{
+                Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
                 try {
-
-                    Constants.db.execSQL("Create table IF NOT EXISTS login (" +
-                            "  username varchar ," +
-                            "  password varchar ," +
-                            "  email varchar," +
-                            "  itype varchar  ," +
-                            "  profilepicture varchar ," +
-                            "  emailconfirm varchar ," +
-                            "  userid int(10))");
-                    Constants.db.execSQL("Create table IF NOT EXISTS GCM (gcmkey varchar)");
-
-                    instanceID = InstanceID.getInstance(this);
-
-
                     try {
-                        new AsyncTask<String,String,String>()
-                        {
+                        Constants.db.execSQL("Create table IF NOT EXISTS login (" +
+                                "  username varchar ," +
+                                "  password varchar ," +
+                                "  email varchar," +
+                                "  itype varchar  ," +
+                                "  profilepicture varchar ," +
+                                "  emailconfirm varchar ," +
+                                "  userid int(10))");
+                        Constants.db.execSQL("Create table IF NOT EXISTS GCM (gcmkey varchar)");
 
-                            @Override
-                            protected String doInBackground(String... params) {
-                                try {
-                                    String token = instanceID.getToken("923650940708",
-                                            GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-                                    Constants.GCM_Key = token;
-                                    ContentValues cv=new ContentValues();
-                                    cv.put("gcmkey",token);
-                                    Constants.db.insert("GCM",null,cv);
+                        Constants.db.execSQL("Create table IF NOT EXISTS marketplacelisting (" +
+                                "  itemid varchar primary key ," +
+                                "  itemtitle varchar ," +
+                                "  itemdescription varchar," +
+                                "  itemcondition varchar  ," +
+                                "  itemcategory varchar ," +
+                                "  itemtags varchar ," +
+                                "  itembitmaps blob)");
+
+                        instanceID = InstanceID.getInstance(this);
+
+                        try {
+                            new AsyncTask<String,String,String>()
+                            {
+                                @Override
+                                protected String doInBackground(String... params) {
+                                    try {
+                                        String token = instanceID.getToken("923650940708",
+                                                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                                        Constants.GCM_Key = token;
+                                        ContentValues cv=new ContentValues();
+                                        cv.put("gcmkey",token);
+                                        Constants.db.insert("GCM",null,cv);
+
+                                    } catch(Exception e) {
+                                        String s=e.toString();
+                                    }
+                                        return null;
                                 }
-                                catch(Exception e)
-                                {
-                                    String s=e.toString();
-                                }
-                                return null;
-                            }
-                        }.execute(null,null,null);
+                            }.execute(null,null,null);
 
-
-                    }
-                    catch(Exception e)
-                    {
+                        } catch(Exception e) {
+                            String s=e.toString();
+                        }
+                    } catch(Exception e) {
                         String s=e.toString();
-
                     }
-                }
-                catch(Exception e)
-                {
+                } catch(Exception e) {
                     String s=e.toString();
-
                 }
 
-
-            }
-            catch(Exception e)
-            {
+            } catch(Exception e) {
                 String s=e.toString();
-
             }
 
-
-        }catch(Exception e)
-        {
-String s=e.toString();
         }
-
-        }
-
-
-            Typeface type = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setTypeface(type);
-
 
 
         RelativeLayout r = (RelativeLayout) findViewById(R.id.screen);
@@ -279,25 +271,6 @@ String s=e.toString();
         r.setOnTouchListener(gestureListener);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.welcome, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     class MyGestureDetector extends SimpleOnGestureListener {
         @Override

@@ -168,7 +168,7 @@ public class FbFragment extends Fragment {
                                       @Override
                                       protected void onPostExecute(String s) {
                                           super.onPostExecute(s);
-                              long l=            Constants.db.insert("login",null,cv);
+                                          long l= Constants.db.insert("login",null,cv);
                                           f.start();
 
                                       }
@@ -213,6 +213,7 @@ public class FbFragment extends Fragment {
 
             }
         });
+
         SignInButton google = (SignInButton) view.findViewById(R.id.google_sign_in_btn);
         google.setOnClickListener(f);
         Button email = (Button) view.findViewById(R.id.sign_in_button1);

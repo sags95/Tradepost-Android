@@ -8,41 +8,64 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.trade.tradepost.Welcome"
-    android:background="@color/ColorPrimary"
+    android:background="@drawable/welcome_background"
     >
 
-    <Model.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textColor="@color/white"
-        android:textSize="60sp"
-        android:maxLines="1"
-        android:text="Tradepost"
-        android:layout_above="@+id/tag"
-        style="@style/OpenSansRegular"
-        />
-
-    <ImageView
+    <LinearLayout
+        android:id="@+id/welcome_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/tradepost_banner_logo"
-        />
+        android:layout_above="@+id/tag"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="36dp"
+        >
+
+
+        <Model.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Trade"
+            style="@style/OpenSansLight"
+            />
+
+        <Model.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="post"
+            android:textSize="60sp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:singleLine="true"
+            style="@style/OpenSansSemiBold"
+
+            />
+
+
+
+    </LinearLayout>
+
 
     <Model.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="Tagline goes here..."
-        android:id="@+id/tag"
-        android:layout_centerVertical="true"
+        android:id="@+id/welcome_tag"
         android:layout_centerHorizontal="true"
+        android:layout_below="@+id/welcome_title"
         android:textColor="@color/white"
         style="@style/OpenSansRegular"
 
         />
+
+
 
     <Model.CustomTextView
         android:layout_above="@id/or"

@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -35,44 +36,48 @@ public class Item implements Serializable ,KvmSerializable {
     private String category;
     private int con;
 
+    //test
+    private String username;
+
     public Item() {
     }
 public void set(SoapObject o)
 {
 
 
-            setItemid( Integer.parseInt(o.getPrimitivePropertyAsString("itemid")));
+            setItemid(Integer.parseInt(o.getPrimitivePropertyAsString("itemid")));
 
 
-            setItemname( o.getPrimitivePropertyAsString("itemname"));
+            setItemname(o.getPrimitivePropertyAsString("itemname"));
 
 
             setLatitude(new BigDecimal(
                     o.getPrimitivePropertyAsString("latitude")));
 
-            setLongtitude(new BigDecimal( o.getPrimitivePropertyAsString("longtitude")));
+            setLongtitude(new BigDecimal(o.getPrimitivePropertyAsString("longtitude")));
 
-            setDescription( o.getPrimitivePropertyAsString("description"));
+            setDescription(o.getPrimitivePropertyAsString("description"));
 
 
-            setCategory( o.getPrimitivePropertyAsString("category"));
+            setCategory(o.getPrimitivePropertyAsString("category"));
 
-            setCon ( Integer.parseInt(o.getPrimitivePropertyAsString("con")));
-setUserid(Integer.parseInt(o.getPrimitivePropertyAsString("userid")));
+            setCon(Integer.parseInt(o.getPrimitivePropertyAsString("con")));
+            setUserid(Integer.parseInt(o.getPrimitivePropertyAsString("userid")));
 
             setDir( o.getPrimitivePropertyAsString("dir"));
- String date =  o.getPrimitivePropertyAsString("dateadded");
+    String date =  o.getPrimitivePropertyAsString("dateadded");
     date=date.split("T")[0];
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     try {
-   dateadded=     dateFormat.parse(date.trim());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateadded = dateFormat.parse(date.trim());
     } catch (ParseException e) {
         e.printStackTrace();
     }
- //   setDateadded(new Date(date.split("T")[0]));
 
+    //setDateadded(new Date(date.split("T")[0]));
 
     }
+
 
 
 
@@ -88,6 +93,14 @@ setUserid(Integer.parseInt(o.getPrimitivePropertyAsString("userid")));
         this.userid = userid;
         this.category = category;
         this.con = con;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getItemid() {
@@ -118,6 +131,7 @@ setUserid(Integer.parseInt(o.getPrimitivePropertyAsString("userid")));
     public void setDateadded(Date dateadded) {
         this.dateadded = dateadded;
     }
+
     public BigDecimal getLatitude() {
         return this.latitude;
     }
@@ -241,7 +255,7 @@ switch (i)
                  setDir((String) o);
                 break;
             default:
-               setDateadded(new Date(o.toString()));
+                setDateadded(new Date(o.toString()));
                 break;
 
         }

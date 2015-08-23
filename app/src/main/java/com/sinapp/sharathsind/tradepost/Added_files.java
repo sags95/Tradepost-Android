@@ -50,7 +50,7 @@ ProgressDialog progress;
                object.addProperty("itemid", id);
                object.addProperty("pic",pic);
                object.addProperty("image",im);
-               return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
+               return     MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
            }
 
            @Override

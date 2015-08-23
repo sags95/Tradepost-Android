@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.CustomLinearLayoutManager;
+import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyFavoriteAdapter;
 import Model.MyFavoriteItem;
@@ -68,7 +69,7 @@ public class ProFileItemForTradeFragment extends Fragment {
                 int topRowVerticalPosition =
                         (mRecyclerView == null || mRecyclerView.getChildCount() == 0) ?
                                 0 : mRecyclerView.getChildAt(0).getTop();
-                mSwipeRefreshLayout.setEnabled(mLayoutManager.findFirstVisibleItemPosition()==0&&topRowVerticalPosition >= 0);
+                mSwipeRefreshLayout.setEnabled(mLayoutManager.findFirstVisibleItemPosition() == 0 && topRowVerticalPosition >= 0);
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
@@ -76,7 +77,7 @@ public class ProFileItemForTradeFragment extends Fragment {
 
 
         itemForTradeAdapter = new MyFavoriteAdapter(myItems);
-        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.addOnItemTouchListener(

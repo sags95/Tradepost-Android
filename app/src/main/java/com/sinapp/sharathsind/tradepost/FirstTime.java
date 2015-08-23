@@ -61,10 +61,8 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
         super.onCreate(savedInstanceState);
 
 
-        /*
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new MyLocationService(this));
-        */
 
         FbFragment mainFragment;
         FbFragment.f = this;
@@ -107,24 +105,6 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.first_time, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void start() {
         startActivity(new Intent(FirstTime.this, NavigationDrawer.class));

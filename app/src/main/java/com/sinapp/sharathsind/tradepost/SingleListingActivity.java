@@ -12,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apmem.tools.layouts.FlowLayout;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -29,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.CustomPagerAdapter;
+import Model.CustomTextView;
 import Model.MarketPlaceData;
 import Model.MarketPlaceStaggeredAdapter;
 
@@ -44,8 +49,18 @@ public class SingleListingActivity extends AppCompatActivity {
     private FloatingActionButton offerFab;
     private TextView itemTitle;
     private RelativeLayout singleListingHeader;
+    MarketPlaceData m;
 
     private Bitmap[] imageResources;
+
+    /*
+    private int[] imageResources={
+            R.drawable.sample_img5,
+            R.drawable.sample_img2,
+            R.drawable.sample_img3,
+            R.drawable.sample_img6
+    };
+    */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +84,7 @@ public class SingleListingActivity extends AppCompatActivity {
         offerFab.setOnClickListener(offerFabOnClickListener);
         Intent i = getIntent();
         ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
-        MarketPlaceData m= MarketPlaceStaggeredAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
+        m= MarketPlaceStaggeredAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
         imageResources =new Bitmap[m.image.length];
         int id=0;
         for(String s : m.image)
@@ -106,17 +121,70 @@ e.printStackTrace();
         //get the passed data
 
 
+        /*
         Log.d("item details","item title: " + itemDetails.get(1));
+        Log.d("item details","itemId: " + itemDetails.get(2));
+        Log.d("item details","itemUserId: " + itemDetails.get(3));
+        Log.d("item details","itemCondition: " + itemDetails.get(4));
+        Log.d("item details","itemDescription: " + itemDetails.get(5));
+        Log.d("item details","itemDatedAdded: " + itemDetails.get(6));
+        */
+
+        Log.d("item details","item title: " + m.item.item.getItemname());
+        Log.d("item details","itemId: " + m.item.item.getItemid());
+        Log.d("item details","itemUserId: " + m.item.item.getUserid());
+        Log.d("item details","itemCondition: " + m.item.item.getCon());
+        Log.d("item details","itemDescription: " + m.item.item.getDescription());
+        Log.d("item details","itemDatedAdded: " + m.item.item.getDateadded());
+        Log.d("item details","itemDatedAdded: " + m.proUsername);
+
+
+
+
+
 
         //item title
-        itemTitle = (TextView)findViewById(R.id.single_listing_item_title);
+        itemTitle = (TextView)singleListingHeader.findViewById(R.id.single_listing_header_itemTitle);
         itemTitle.setText(itemDetails.get(1));
+
+        //item description
+        CustomTextView itemDescription = (CustomTextView)includeView.findViewById(R.id.single_listing_des_input);
+        itemDescription.setText(m.item.item.getDescription());
+
+        //item condition
+        CustomTextView itemCondition = (CustomTextView)includeView.findViewById(R.id.single_listing_item_condition);
+        itemCondition.setText(setCondition(m.item.item.getCon()));
+
+        //item dateAdded
+        CustomTextView itemDateAdded = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_time);
+        itemDateAdded.setText(String.valueOf(m.item.item.getDateadded()));
+
+        //item tags
+        FlowLayout tagsLayout = (FlowLayout)includeView.findViewById(R.id.single_listing_tags);
+        for(String tempTag : m.item.tags){
+            tagsLayout.addView(addTagsSingleListing(tempTag));
+        }
+
+
+        //item usernamePic
+
 
         //setup actionbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.ColorPrimary));
-        toolbar.setTitle("Listing");
+        //toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        //toolbar.setTitle("Listing");
+
+
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.toolbar_custom_title, null);
+        TextView title1 = (TextView) v.findViewById(R.id.toolbar_title1);
+        TextView title2 = (TextView) v.findViewById(R.id.toolbar_title2);
+        title1.setText("Item Details");
+        title2.setVisibility(View.GONE);
+        getSupportActionBar().setCustomView(v);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -204,9 +272,66 @@ e.printStackTrace();
     public View.OnClickListener offerFabOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getApplicationContext(),OfferProcessActivity.class));
+            Intent intent = new Intent(getApplicationContext(), OfferProcessActivity.class);
+            Intent i = getIntent();
+            ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
+            intent.putStringArrayListExtra("itemToOfferProcess", itemDetails);
+            startActivity(intent);
+
         }
     };
+
+
+    public String setCondition(int condition){
+        String temp ="";
+        switch (condition){
+            case 0:
+                temp = "POOR";
+                break;
+            case 1:
+                temp = "FAIR";
+                break;
+            case 2:
+                temp = "GREAT";
+                break;
+            case 3:
+                temp = "MINT";
+                break;
+            case 4:
+                temp = "NEW";
+                break;
+        }
+
+        return temp;
+    }
+
+    public CustomTextView addTagsSingleListing(String tag) {
+
+        CustomTextView newTag = new CustomTextView(getApplicationContext());
+        newTag.setText(tag.toUpperCase());
+        newTag.setTextColor(getResources().getColor(R.color.white));
+        newTag.setClickable(true);
+        newTag.settingOpenSansLight();
+        newTag.setBackgroundResource(R.drawable.tag_btn_shape);
+        FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0,DpToPx(8), DpToPx(8),0);
+
+        newTag.setLayoutParams(lp);
+
+
+
+        return newTag;
+
+    }
+
+
+    public int DpToPx(int requireDp ){
+        int dpValue = requireDp; // margin in dips
+        float d = getResources().getDisplayMetrics().density;
+        int margin = (int)(dpValue * d); // margin in pixels
+        return margin; // margin in pixels
+
+    }
 
 
 }

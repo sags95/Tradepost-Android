@@ -2,6 +2,7 @@ package webservices;
 
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.SoapFault;
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.MarshalBase64;
 import org.ksoap2.serialization.MarshalFloat;
@@ -108,7 +109,18 @@ public class MainWebService {
            Vector<Integer> response = (Vector<Integer>) envelope.getResponse();
             //  String res = response.ge().toString();
             return response;
-        } catch (Exception e) {
+        }
+        catch (ClassCastException ex)
+        {
+            Vector<SoapPrimitive> b=new Vector<>();
+            try {
+                b.add((SoapPrimitive)envelope.getResponse());
+            } catch (SoapFault soapFault) {
+                soapFault.printStackTrace();
+            }
+            return b;
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 

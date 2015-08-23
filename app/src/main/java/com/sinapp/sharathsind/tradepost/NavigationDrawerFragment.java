@@ -86,7 +86,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-    private RelativeLayout mHeaderLayout;
+    private LinearLayout mHeaderLayout;
 
     //feedback
     private LinearLayout feedbackLayout;
@@ -115,7 +115,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         li = getActivity().getLayoutInflater();
-        mHeaderLayout = (RelativeLayout)view.findViewById(R.id.navigationHeader);
+        mHeaderLayout = (LinearLayout)view.findViewById(R.id.navigationHeader);
         mHeaderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,7 +309,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         feedbackEdit.setMaxLines(7);
         feedbackEdit.setMaxCharacters(250);
 
-        final TextView feedbackCharCount = (TextView)dialogView.findViewById(R.id.feedback_char_count);
+        final CustomTextView feedbackCharCount = (CustomTextView)dialogView.findViewById(R.id.feedback_char_count);
         feedbackEdit.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }

@@ -20,46 +20,57 @@
         android:maxLines="7"
         android:hint="Any Comments..."
         android:gravity="left|top"
-        android:padding="4dp"
-        android:textColor="@color/ColorPrimary"
-        android:textColorHint="@color/ColorPrimary"
+        android:padding="16dp"
+        android:imeOptions="actionDone"
+        android:textColor="@color/text_color_dark"
+        android:textColorHint="@color/text_color"
+        style="@style/OpenSansLight"
+        android:layout_below="@+id/feedback_count"
         />
 
     <RelativeLayout
+        android:id="@+id/feedback_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:layout_below="@+id/feedback_edit"
+        android:layout_marginBottom="4dp"
 
         >
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/feedback_char_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
-            android:textColor="@color/ColorPrimaryDark"
+            android:textColor="@color/ColorPrimary"
             android:layout_gravity="center_vertical"
+            style="@style/OpenSansRegular"
+
             />
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/feedback_char_count_slash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="/"
             android:layout_gravity="center_vertical"
             android:layout_toRightOf="@+id/feedback_char_count"
-            android:textColor="@color/ColorPrimaryDark"
+            android:textColor="@color/ColorPrimary"
+            style="@style/OpenSansRegular"
+
 
             />
 
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/feedback_char_count_max"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="250"
+
             android:layout_gravity="center_vertical"
             android:layout_toRightOf="@+id/feedback_char_count_slash"
-            android:textColor="@color/ColorPrimaryDark"
+            android:textColor="@color/ColorPrimary"
+            style="@style/OpenSansRegular"
+
             />
     </RelativeLayout>
 

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="1dp"
+    card_view:cardUseCompatPadding="false"
+    card_view:cardElevation="0dp"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="4dp"
@@ -19,9 +21,6 @@
             android:background="?android:attr/selectableItemBackground"
             >
 
-
-
-
             <com.android.volley.toolbox.NetworkImageView
 
                 android:id="@+id/item_image"
@@ -33,6 +32,7 @@
                 android:layout_centerHorizontal="true"
                 android:adjustViewBounds="true"
             />
+
 
             <ImageButton
                 android:id="@+id/image_like_btn"
@@ -83,13 +83,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:textSize="10sp"
-                android:text="4 hours"
                 android:maxLines="1"
                 android:gravity="right"
                 style="@style/OpenSansLight"
 
                 />
 
+            <!--
             <Model.CustomTextView
                 android:id="@+id/pro_ago_text"
                 android:layout_width="wrap_content"
@@ -102,13 +102,14 @@
                 android:ellipsize="end"
                 style="@style/OpenSansLight"
                 />
+                -->
     </LinearLayout>
 
             <Model.CustomTextView
                 android:id="@+id/item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:paddingBottom="12dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:textSize="18sp"
@@ -119,6 +120,7 @@
                 android:layout_below="@+id/pro_bar"
                 android:ellipsize="end"
                 style="@style/OpenSansRegular"
+
 
                 />
 
