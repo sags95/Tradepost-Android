@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.sinapp.sharathsind.tradepost.R;
 
 /**

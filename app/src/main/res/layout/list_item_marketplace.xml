@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/marketplace_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardCornerRadius="1dp"
+    card_view:cardUseCompatPadding="false"
+    card_view:cardElevation="0dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:focusable="true"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image_parentlayout"
+        android:background="?android:attr/selectableItemBackground"
+        >
+
+        <com.android.volley.toolbox.NetworkImageView
+
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/sample_img3"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            />
+
+
+        <ImageButton
+            android:id="@+id/image_like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favorite_effect"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:background="@null"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/pro_img"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/sample_img"
+            android:layout_alignBottom="@+id/item_image"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="-24dp"
+            android:layout_marginLeft="8dp"
+            app:border_width="2dp"
+            app:border_color="#FFFFFF" />
+
+        <LinearLayout
+            android:id="@+id/pro_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/item_image"
+            android:layout_toRightOf="@+id/pro_img"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:gravity="center_vertical|right"
+
+
+            >
+
+
+            <Model.CustomTextView
+                android:id="@+id/pro_post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textSize="10sp"
+                android:maxLines="1"
+                android:gravity="right"
+                style="@style/OpenSansLight"
+
+                />
+
+            <!--
+            <Model.CustomTextView
+                android:id="@+id/pro_ago_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:textSize="10sp"
+                android:text=" ago"
+                android:maxLines="1"
+                android:gravity="right"
+                android:ellipsize="end"
+                style="@style/OpenSansLight"
+                />
+                -->
+        </LinearLayout>
+
+        <Model.CustomTextView
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Title Line 1\nTitle Line 2"
+            android:lineSpacingMultiplier="0.8"
+            android:maxLines="2"
+            android:layout_below="@+id/pro_bar"
+            android:ellipsize="end"
+            style="@style/OpenSansRegular"
+
+            />
+
+
+        <Model.CustomTextView
+            android:id="@+id/looking_for"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOOKING FOR"
+            android:textSize="10sp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_below="@+id/item_title"
+            style="@style/OpenSansRegular"
+            />
+
+
+
+        <org.apmem.tools.layouts.FlowLayout
+            xmlns:f="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/marketplace_tags_layout"
+            android:orientation="horizontal"
+            f:layoutDirection="ltr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/looking_for"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            >
+
+        </org.apmem.tools.layouts.FlowLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
+

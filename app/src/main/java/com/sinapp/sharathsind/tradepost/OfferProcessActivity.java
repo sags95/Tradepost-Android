@@ -32,7 +32,8 @@ public class OfferProcessActivity extends AppCompatActivity implements OfferProc
 
     private Bundle tempBundle;
 
-public static  int userid;
+public static  int userid,itemid;
+    public  static String iteamname;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,10 @@ public static  int userid;
         //get Intent;
         Intent i= getIntent();
         ArrayList<String> itemDetailsToOffer = i.getStringArrayListExtra("itemToOfferProcess");
+userid=Integer.parseInt(itemDetailsToOffer.get(2));
 
-
+itemid=Integer.parseInt(itemDetailsToOffer.get(0));
+        iteamname=itemDetailsToOffer.get(1);
 
         //
         fragmentManager = getSupportFragmentManager();
@@ -171,6 +174,10 @@ public static  int userid;
             Log.d("pass selected titles", "delete previous bundle");
 
 
+        }
+        for(OfferProcessItem o:offerProcessItemArrayList)
+        {
+            OfferProcessMainFragment.ITEMID.add(o.itemid);
         }
 
         tempBundle.putSerializable("title selected",offerProcessItemArrayList);

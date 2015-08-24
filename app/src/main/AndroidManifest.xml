@@ -169,6 +169,11 @@
             </intent-filter>
         </service>
 
+        <!-- Declaring Service in Manifest -->
+        <service
+            android:name="services.MarketPlaceIntentService"
+            android:exported="false" />
+
         <activity
             android:name=".PictureMsg"
             android:label="@string/title_activity_picture_msg" >

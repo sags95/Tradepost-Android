@@ -67,54 +67,53 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder,final int i) {
-
-        viewHolder.mTextViewItemTitle.setText(mData.get(i).item.item.getItemname());
+    public void onBindViewHolder(ViewHolder viewHolder,int i) {
 
 
 
-        if(viewHolder.mTagFlowLayout.getChildCount()==0) {
-            if(mData.get(i).item.tags!=null) {
-                for (String tag : mData.get(i).item.tags) {
+            viewHolder.mTextViewItemTitle.setText(mData.get(i).item.item.getItemname());
+            if(viewHolder.mTagFlowLayout.getChildCount()==0) {
+                if(mData.get(i).item.tags!=null) {
+                    for (String tag : mData.get(i).item.tags) {
 
-                    viewHolder.mTagFlowLayout.addView(addTags(tag));
+                        viewHolder.mTagFlowLayout.addView(addTags(tag));
 
+                    }
                 }
             }
-        }
+            try {
+                URL url;
+                URLConnection  con;
+                InputStream is;
+                ImageLoader im= MyVolleySingleton.getInstance(context).getImageLoader();
 
 
-        try {
-            URL url;
-            URLConnection  con;
-            InputStream is;
-            ImageLoader im= MyVolleySingleton.getInstance(context).getImageLoader();
+                String url1="http://104.199.135.162:8084/TDserverWeb/images/items/"+mData.get(i).item.item.getItemid()+"/0.png";
+                viewHolder.mImageViewItemImg.setImageUrl(url1,im);
+                // viewHolder.mImageViewItemImg.setImageBitmap(mData.get(i).itemImgs[0]);
 
 
-            String url1="http://104.199.135.162:8084/TDserverWeb/images/items/"+mData.get(i).item.item.getItemid()+"/0.png";
-            viewHolder.mImageViewItemImg.setImageUrl(url1,im);
-           // viewHolder.mImageViewItemImg.setImageBitmap(mData.get(i).itemImgs[0]);
+                url=new URL("http://104.199.135.162:8084/TDserverWeb/images/"+mData.get(i).userid+"/profile.png");
+                con=url.openConnection();
+                is=  con.getInputStream();
+                Bitmap b= BitmapFactory.decodeStream(is);
+                viewHolder.mImageViewProPic.setImageBitmap(b);
+                is.close();
 
-
-            url=new URL("http://104.199.135.162:8084/TDserverWeb/images/"+mData.get(i).userid+"/profile.png");
-            con=url.openConnection();
-            is=  con.getInputStream();
-            Bitmap b= BitmapFactory.decodeStream(is);
-            viewHolder.mImageViewProPic.setImageBitmap(b);
-            is.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+
+
+            viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
+
+                }
+            });
+
+
 
     }
 

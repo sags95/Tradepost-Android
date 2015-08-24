@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
@@ -43,12 +45,14 @@ import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
+import Model.MarketPlaceData;
 import Model.RegisterWebService;
 import Model.Variables;
 import datamanager.Item;
 import datamanager.ItemResult;
 import datamanager.MyLocationService;
 import datamanager.userdata;
+import services.MarketPlaceIntentService;
 import webservices.MainWebService;
 
 
@@ -64,10 +68,12 @@ public class Welcome extends Activity implements OnClickListener {
     public static MyLocationService service;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         service=new MyLocationService(this);
@@ -135,6 +141,7 @@ public class Welcome extends Activity implements OnClickListener {
                         object.addProperty("userid",  userdata.userid);
                         Vector object1 = MainWebService.getMsg1(object,"http://104.199.135.162:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
                         userdata.items=new ArrayList<Integer>();
+
 
                         if(object1!=null) {
                             for (Object i : object1) {

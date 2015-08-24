@@ -35,7 +35,9 @@ import java.util.List;
 import Model.CustomPagerAdapter;
 import Model.CustomTextView;
 import Model.MarketPlaceData;
+import Model.MarketPlaceListAdapter;
 import Model.MarketPlaceStaggeredAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by HenryChiang on 15-06-06.
@@ -48,6 +50,7 @@ public class SingleListingActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton offerFab;
     private TextView itemTitle;
+    private CircleImageView proPic;
     private RelativeLayout singleListingHeader;
     MarketPlaceData m;
 
@@ -84,32 +87,48 @@ public class SingleListingActivity extends AppCompatActivity {
         offerFab.setOnClickListener(offerFabOnClickListener);
         Intent i = getIntent();
         ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
-        m= MarketPlaceStaggeredAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
+        m= MarketPlaceListAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
+        Bitmap proPicReceived = i.getParcelableExtra("profilePic");
         imageResources =new Bitmap[m.image.length];
-        int id=0;
-        for(String s : m.image)
-        {
-try {
-    URL url = new URL(s);
-    URLConnection con = url.openConnection();
-    con.setRequestProperty("connection","close");
 
-    InputStream is = con.getInputStream();
+        for(int j=0;j<m.image.length;j++){
+            try {
+                String s= m.image[j];
+                URL url = new URL(s);
+                URLConnection con = url.openConnection();
+                con.setRequestProperty("connection","close");
+                InputStream is = con.getInputStream();
+                imageResources[j] = BitmapFactory.decodeStream(is);
+                is.close();
+                ((HttpURLConnection)con).disconnect();
+            }catch (Exception e){
 
-
-  imageResources[id] = BitmapFactory.decodeStream(is);
-    is.close();
-    (  (HttpURLConnection)con).disconnect();
-id++;
-}
-catch (Exception e)
-{
-e.printStackTrace();
-}
+            }
 
 
         }
+        /*
+        int id=0;
+        for(String s : m.image)
+        {
+        try {
+            URL url = new URL(s);
+            URLConnection con = url.openConnection();
+            con.setRequestProperty("connection","close");
+            InputStream is = con.getInputStream();
+            imageResources[id] = BitmapFactory.decodeStream(is);
+            is.close();
+            ((HttpURLConnection)con).disconnect();
+            id++;
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        }
+    */
 
 
         //image slider viewer
@@ -140,12 +159,14 @@ e.printStackTrace();
 
 
 
-
+        //item userPic
+        proPic = (CircleImageView)singleListingHeader.findViewById(R.id.single_listing_header_userImg);
+        proPic.setImageBitmap(proPicReceived);
 
 
         //item title
         itemTitle = (TextView)singleListingHeader.findViewById(R.id.single_listing_header_itemTitle);
-        itemTitle.setText(itemDetails.get(1));
+        itemTitle.setText(m.item.item.getItemname());
 
         //item description
         CustomTextView itemDescription = (CustomTextView)includeView.findViewById(R.id.single_listing_des_input);
@@ -166,7 +187,6 @@ e.printStackTrace();
         }
 
 
-        //item usernamePic
 
 
         //setup actionbar
@@ -275,7 +295,11 @@ e.printStackTrace();
             Intent intent = new Intent(getApplicationContext(), OfferProcessActivity.class);
             Intent i = getIntent();
             ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
-            intent.putStringArrayListExtra("itemToOfferProcess", itemDetails);
+            ArrayList<String> items = new ArrayList<String>();
+            items.add(0,String.valueOf(m.item.item.getItemid()));
+            items.add(1,String.valueOf(m.item.item.getItemname()));
+            items.add(2,String.valueOf(m.item.item.getUserid()));
+            intent.putStringArrayListExtra("itemToOfferProcess", items);
             startActivity(intent);
 
         }

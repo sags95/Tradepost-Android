@@ -53,7 +53,7 @@ public class OfferProcessMainFragment extends Fragment {
     public int item;
     public String itemname;
     private TextView itemTitle;
-public ArrayList<Integer> ITEMID;
+public static ArrayList<Integer> ITEMID;
 
 
 
@@ -200,7 +200,7 @@ ITEMID.add(offerProcessItems.get(i).itemid);
         else
             cash=0;
         OfferWebService of=new OfferWebService();
-        of.sendOffer(itemid, userdata.userid,OfferProcessActivity.userid,item,cash,null,itemname);
+        of.sendOffer(itemid, userdata.userid,OfferProcessActivity.userid,OfferProcessActivity.itemid,cash,null,OfferProcessActivity.iteamname);
     }
 
     public View.OnClickListener addCashBtnListener = new View.OnClickListener() {

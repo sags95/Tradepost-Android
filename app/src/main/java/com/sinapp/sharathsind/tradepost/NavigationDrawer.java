@@ -4,6 +4,8 @@ package com.sinapp.sharathsind.tradepost;
  * Created by HenryChiang on 15-06-25.
  */
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
@@ -47,12 +49,14 @@ public class NavigationDrawer extends AppCompatActivity
     private FragmentManager fm;
 
 
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         //mToolbar.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+
 
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

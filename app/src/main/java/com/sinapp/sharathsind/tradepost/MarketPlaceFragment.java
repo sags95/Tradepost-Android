@@ -1,8 +1,13 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -17,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.MarketPlaceData;
+import Model.MarketPlaceListAdapter;
 import Model.MarketPlaceStaggeredAdapter;
 import Model.StaggeredAdapterTest;
 
@@ -41,14 +48,14 @@ import Model.StaggeredAdapterTest;
  */
 public class MarketPlaceFragment  extends Fragment {
 
-    //private StaggeredGridView mRecyclerView;
+    private StaggeredGridView mGridView;
     private RecyclerView mRecyclerView;
     private MarketPlaceStaggeredAdapter stagAdapter2;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private View rootView;
     private SwipeRefreshLayout mSwipeRefreshLayout,mSwipeRefreshLayoutEmpty;
     private StaggeredAdapterTest mStaggeredAdapterTest;
-    private List<MarketPlaceData> mData;
+    private ArrayList<MarketPlaceData> mData;
 
     private String locationRad="25Km)";
     private int[] imageResources = {
@@ -70,7 +77,8 @@ public class MarketPlaceFragment  extends Fragment {
     private SeekBar seekBar;
     private TextView headerRadText,radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
     private LinearLayout seekBarLabel;
-    private List<MarketPlaceData> tempdata;
+    private ArrayList<MarketPlaceData> tempdata;
+    private ArrayList<MarketPlaceData> receiveData;
 
 
     public MarketPlaceFragment() {
@@ -130,10 +138,7 @@ public class MarketPlaceFragment  extends Fragment {
 
 
 
-
-
-
-
+        /*
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
         //stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),MarketPlaceData.generateSampleData(),listingItemClickListener);
@@ -141,9 +146,16 @@ public class MarketPlaceFragment  extends Fragment {
         applyStaggeredGridLayoutManager();
 
 
+
+        */
+
+        mGridView = (StaggeredGridView)rootView.findViewById(R.id.recylcer_view);
+        //MarketPlaceListAdapter adapter = new MarketPlaceListAdapter(getActivity(),R.layout.list_item_marketplace,R.id.looking_for,mData);
+        //mGridView.setAdapter(adapter);
         mSwipeRefreshLayout.setVisibility(View.GONE);
         AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute();
+
 
 
 
@@ -175,8 +187,8 @@ public class MarketPlaceFragment  extends Fragment {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(fabOnClickListener);
 
-        fab.attachToRecyclerView(mRecyclerView);
-        //fab.attachToListView(mRecyclerView);
+        //fab.attachToRecyclerView(mRecyclerView);
+        fab.attachToListView(mGridView);
 
         //Like Button
         ImageView likeBtn = (ImageView) rootView.findViewById(R.id.image_like_btn);
@@ -220,30 +232,30 @@ public class MarketPlaceFragment  extends Fragment {
     };
 
 
+
+
     public View.OnClickListener listingItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d("child position", String.valueOf(mRecyclerView.getChildPosition(v)));
+            Log.d("child position", String.valueOf(mGridView.getPositionForView(v)));
 
 
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
             List<MarketPlaceData> tempdata = mData;
 
-            TextView itemTitle = (TextView) mRecyclerView.findViewHolderForPosition(mRecyclerView.getChildPosition(v)).itemView.findViewById(R.id.item_title);
-            clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildPosition(v)));
-            clickedItemDetails.add(1, itemTitle.getText().toString());
-            clickedItemDetails.add(2, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getItemid()));
-            clickedItemDetails.add(3, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getUserid()));
-            clickedItemDetails.add(4, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getCon()));
-            clickedItemDetails.add(5, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getDescription()));
-            clickedItemDetails.add(6, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).item.item.getDateadded()));
-            clickedItemDetails.add(7, String.valueOf(tempdata.get(mRecyclerView.getChildLayoutPosition(v)).proUsername));
 
+            //TextView itemTitle = (TextView) mRecyclerView.findViewHolderForPosition(mRecyclerView.getChildPosition(v)).itemView.findViewById(R.id.item_title);
 
-            //  clickedItemDetails.add(2,);
-            //Log.d("item details", "item position: " + clickedItemDetails.get(0));
-            //Log.d("item details", "item title: " + clickedItemDetails.get(1));
+            clickedItemDetails.add(0, String.valueOf(mGridView.getPositionForView(v)));
+
+            //profile picture
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)((ImageView) v.findViewById(R.id.pro_img)).getDrawable();
+            Bitmap b =bitmapDrawable.getBitmap();
+            i.putExtra("profilePic",b);
+
+            //item's first image
+
 
             i.putStringArrayListExtra("itemClicked", clickedItemDetails);
             startActivity(i);
@@ -459,13 +471,13 @@ public class MarketPlaceFragment  extends Fragment {
     }
 
 
-    private class AsyncTaskRunner extends AsyncTask<List<MarketPlaceData>, String, List<MarketPlaceData>> {
+    private class AsyncTaskRunner extends AsyncTask<ArrayList<MarketPlaceData>, String, ArrayList<MarketPlaceData>> {
 
         @Override
-        protected List<MarketPlaceData> doInBackground(List<MarketPlaceData>... params) {
-
+        protected ArrayList<MarketPlaceData> doInBackground(ArrayList<MarketPlaceData>... params) {
+                    mData=MarketPlaceData.generateSampleData();
             try {
-                mData = MarketPlaceData.generateSampleData();
+
             }catch (Exception e){
                 e.toString();
             }
@@ -475,14 +487,27 @@ public class MarketPlaceFragment  extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<MarketPlaceData> result) {
+        protected void onPostExecute(ArrayList<MarketPlaceData> result) {
+
+
+            MarketPlaceListAdapter adapter = new MarketPlaceListAdapter(getActivity(),R.layout.list_item_marketplace,R.id.looking_for,result,listingItemClickListener);
+            mGridView.setAdapter(adapter);
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+            mSwipeRefreshLayoutEmpty.setRefreshing(false);
+            mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
+
+
+
+
+            //old
+            /*
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
             stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),result,listingItemClickListener);
             mRecyclerView.setAdapter(stagAdapter2);
             mSwipeRefreshLayoutEmpty.setRefreshing(false);
             mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
+            */
 
-            //
             tempdata = result;
 
 
