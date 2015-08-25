@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
@@ -22,6 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -87,12 +91,16 @@ public class SingleListingActivity extends AppCompatActivity {
         offerFab.setOnClickListener(offerFabOnClickListener);
         Intent i = getIntent();
         ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
-        m= MarketPlaceListAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
+        m=MarketPlaceStaggeredAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
         Bitmap proPicReceived = i.getParcelableExtra("profilePic");
         imageResources =new Bitmap[m.image.length];
 
+
         for(int j=0;j<m.image.length;j++){
+
+
             try {
+
                 String s= m.image[j];
                 URL url = new URL(s);
                 URLConnection con = url.openConnection();
@@ -101,6 +109,7 @@ public class SingleListingActivity extends AppCompatActivity {
                 imageResources[j] = BitmapFactory.decodeStream(is);
                 is.close();
                 ((HttpURLConnection)con).disconnect();
+
             }catch (Exception e){
 
             }
@@ -136,19 +145,6 @@ public class SingleListingActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mCustomPagerAdapter);
 
-        //pass the item details
-        //get the passed data
-
-
-        /*
-        Log.d("item details","item title: " + itemDetails.get(1));
-        Log.d("item details","itemId: " + itemDetails.get(2));
-        Log.d("item details","itemUserId: " + itemDetails.get(3));
-        Log.d("item details","itemCondition: " + itemDetails.get(4));
-        Log.d("item details","itemDescription: " + itemDetails.get(5));
-        Log.d("item details","itemDatedAdded: " + itemDetails.get(6));
-        */
-
         Log.d("item details","item title: " + m.item.item.getItemname());
         Log.d("item details","itemId: " + m.item.item.getItemid());
         Log.d("item details","itemUserId: " + m.item.item.getUserid());
@@ -178,7 +174,7 @@ public class SingleListingActivity extends AppCompatActivity {
 
         //item dateAdded
         CustomTextView itemDateAdded = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_time);
-        itemDateAdded.setText(String.valueOf(m.item.item.getDateadded()));
+        itemDateAdded.setText(MarketPlaceStaggeredAdapter.daysBetween(m.item.item.getDateadded()));
 
         //item tags
         FlowLayout tagsLayout = (FlowLayout)includeView.findViewById(R.id.single_listing_tags);

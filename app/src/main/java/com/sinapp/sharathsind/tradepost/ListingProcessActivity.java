@@ -138,10 +138,7 @@ public ArrayList<Bitmap>bits;
         ///spinner=(Spinner)findViewById(R.id.sp)
         camera = (ImageView) findViewById(R.id.section2_img_camera);
         folder = (ImageView) findViewById(R.id.section2_img_folder);
-        Bitmap roundProImg = RoundImageHelper.getRoundedCornerBitmap(BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_section2_camera));
-        camera.setImageBitmap(roundProImg);
-        folder.setImageBitmap(roundProImg);
+
         camera.setOnClickListener(camBtnListener);
         folder.setOnClickListener(galleryBtnListener);
 

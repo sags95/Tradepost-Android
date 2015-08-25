@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.etsy.android.grid.util.DynamicHeightTextView;
 import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
 import com.sinapp.sharathsind.tradepost.SingleListingActivity;
+import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -47,19 +49,19 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
     private static final String TAG = "MarketPlaceListAdapter";
 
     static class ViewHolder {
-        DynamicHeightImageView dynamicImg;
         CustomTextView itemDateAdded,itemTitle;
         ImageView itemProPic;
-        NetworkImageView itemImg;
-        FlowLayout fl;
+        ImageView itemImg;
+        com.wefika.flowlayout.FlowLayout fl;
         CardView cv;
+        CustomTextView[] textViews = new CustomTextView[5];
+        boolean isTagsSet=false;
     }
 
     private final LayoutInflater mLayoutInflater;
     private final Random mRandom;
     public static ArrayList<MarketPlaceData> mData;
     private View.OnClickListener mItemClick;
-    private Bitmap itemImg;
 
 
 
@@ -68,7 +70,7 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
 
 
     public MarketPlaceListAdapter(final Context context, int layoutResId,int textViewId, ArrayList<MarketPlaceData> mData,View.OnClickListener mItemClick) {
-        super(context,layoutResId,textViewId ,mData);
+        super(context, layoutResId, textViewId, mData);
         mLayoutInflater = LayoutInflater.from(context);
         mRandom = new Random();
         this.mData=mData;
@@ -88,9 +90,16 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
             vh.cv = (CardView)convertView.findViewById(R.id.marketplace_card_view);
             vh.itemTitle = (CustomTextView) convertView.findViewById(R.id.item_title);
             vh.itemDateAdded = (CustomTextView) convertView.findViewById(R.id.pro_post_time);
-            vh.itemImg = (NetworkImageView)convertView.findViewById(R.id.item_image);
-            vh.fl = (FlowLayout)convertView.findViewById(R.id.marketplace_tags_layout);
+            vh.itemImg = (ImageView)convertView.findViewById(R.id.item_image);
+            vh.fl = (com.wefika.flowlayout.FlowLayout)convertView.findViewById(R.id.marketplace_tags_layout);
             vh.itemProPic = (CircleImageView)convertView.findViewById(R.id.pro_img);
+            vh.textViews[0] = (CustomTextView)convertView.findViewById(R.id.marketplace_tag1);
+            vh.textViews[1] = (CustomTextView)convertView.findViewById(R.id.marketplace_tag2);
+            vh.textViews[2] = (CustomTextView)convertView.findViewById(R.id.marketplace_tag3);
+            vh.textViews[3] = (CustomTextView)convertView.findViewById(R.id.marketplace_tag4);
+            vh.textViews[4] = (CustomTextView)convertView.findViewById(R.id.marketplace_tag5);
+
+
 
             convertView.setTag(vh);
         }
@@ -99,6 +108,7 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
         }
 
         //
+
         vh.itemTitle.setText(mData.get(position).item.item.getItemname());
         vh.itemDateAdded.setText(String.valueOf(mData.get(position).item.item.getDateadded()));
 
@@ -106,19 +116,18 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
         vh.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        Log.d("child position", String.valueOf(position));
-
-                        Intent i = new Intent(getContext().getApplicationContext(), SingleListingActivity.class);
-                        ArrayList<String> clickedItemDetails = new ArrayList<>();
-                        clickedItemDetails.add(0, String.valueOf(position));
+                Log.d("child position", String.valueOf(position));
+                Intent i = new Intent(getContext().getApplicationContext(), SingleListingActivity.class);
+                ArrayList<String> clickedItemDetails = new ArrayList<>();
+                clickedItemDetails.add(0, String.valueOf(position));
 
                         //profile picture
-                        BitmapDrawable bitmapDrawable = (BitmapDrawable)((ImageView) v.findViewById(R.id.pro_img)).getDrawable();
-                        Bitmap b =bitmapDrawable.getBitmap();
-                        i.putExtra("profilePic",b);
+                BitmapDrawable bitmapDrawable = (BitmapDrawable)((ImageView) v.findViewById(R.id.pro_img)).getDrawable();
+                Bitmap b =bitmapDrawable.getBitmap();
+                i.putExtra("profilePic",b);
 
-                        i.putStringArrayListExtra("itemClicked", clickedItemDetails);
-                        getContext().startActivity(i);
+                i.putStringArrayListExtra("itemClicked", clickedItemDetails);
+                getContext().startActivity(i);
 
             }
         });
@@ -135,39 +144,105 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
         //Images
         try {
 
-            //vh.cv.setOnClickListener(mItemClick);
-
-            ImageLoader im= MyVolleySingleton.getInstance(getContext()).getImageLoader();
-            String url1="http://104.199.135.162:8084/TDserverWeb/images/items/"+mData.get(position).item.item.getItemid()+"/0.png";
-            vh.itemImg.setImageUrl(url1, im);
-
-
-            //vh.itemImg.setImageBitmap(mData.get(position).itemImgs[0]);
+            Uri url1 = Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/items/" + mData.get(position).item.item.getItemid() + "/0.png");
+            Picasso.with(getContext())
+                    .load(url1)
+                    .placeholder(R.drawable.sample_img3)
+                    .into(vh.itemImg);
 
 
-            URL url;
-            URLConnection con;
-            InputStream is;
-            url=new URL("http://104.199.135.162:8084/TDserverWeb/images/"+mData.get(position).userid+"/profile.png");
-            con=url.openConnection();
-            is=  con.getInputStream();
-            Bitmap b= BitmapFactory.decodeStream(is);
-            vh.itemProPic.setImageBitmap(b);
-            is.close();
+            Uri url=Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/" + mData.get(position).userid + "/profile.png");
+            Picasso.with(getContext())
+                    .load(url)
+                    .placeholder(R.drawable.sample_img)
+                    .into(vh.itemProPic);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+
         //Tags
+        /*
         if(vh.fl.getChildCount()==0) {
-            if(mData.get(position).item.tags!=null) {
+            if (mData.get(position).item.tags != null) {
                 for (String tag : mData.get(position).item.tags) {
                     vh.fl.addView(addTags(tag));
 
                 }
             }
         }
+        */
+
+        Log.e("tags count", "Position: " + position + " ,Tagscount: " + String.valueOf(mData.get(position).item.tags.length));
+        /*
+            switch (mData.get(position).item.tags.length) {
+                case 1:
+                    vh.textViews[0] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag1);
+                    vh.textViews[0].setText(mData.get(position).item.tags[0].toUpperCase());
+                    vh.textViews[0].setVisibility(View.VISIBLE);
+                    break;
+                case 2:
+                    vh.textViews[0] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag1);
+                    vh.textViews[1] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag2);
+                    vh.textViews[0].setText(mData.get(position).item.tags[0].toUpperCase());
+                    vh.textViews[1].setText(mData.get(position).item.tags[1].toUpperCase());
+                    vh.textViews[0].setVisibility(View.VISIBLE);
+                    vh.textViews[1].setVisibility(View.VISIBLE);
+                    break;
+                case 3:
+                    vh.textViews[0] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag1);
+                    vh.textViews[1] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag2);
+                    vh.textViews[2] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag3);
+                    vh.textViews[0].setText(mData.get(position).item.tags[0].toUpperCase());
+                    vh.textViews[1].setText(mData.get(position).item.tags[1].toUpperCase());
+                    vh.textViews[2].setText(mData.get(position).item.tags[2].toUpperCase());
+                    vh.textViews[0].setVisibility(View.VISIBLE);
+                    vh.textViews[1].setVisibility(View.VISIBLE);
+                    vh.textViews[2].setVisibility(View.VISIBLE);
+
+                    break;
+                case 4:
+                    vh.textViews[0] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag1);
+                    vh.textViews[1] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag2);
+                    vh.textViews[2] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag3);
+                    vh.textViews[3] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag4);
+                    vh.textViews[0].setText(mData.get(position).item.tags[0].toUpperCase());
+                    vh.textViews[1].setText(mData.get(position).item.tags[1].toUpperCase());
+                    vh.textViews[2].setText(mData.get(position).item.tags[2].toUpperCase());
+                    vh.textViews[3].setText(mData.get(position).item.tags[3].toUpperCase());
+
+                    vh.textViews[0].setVisibility(View.VISIBLE);
+                    vh.textViews[1].setVisibility(View.VISIBLE);
+                    vh.textViews[2].setVisibility(View.VISIBLE);
+                    vh.textViews[3].setVisibility(View.VISIBLE);
+
+                    break;
+                case 5:
+                    vh.textViews[0] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag1);
+                    vh.textViews[1] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag2);
+                    vh.textViews[2] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag3);
+                    vh.textViews[3] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag4);
+                    vh.textViews[4] = (CustomTextView) convertView.findViewById(R.id.marketplace_tag5);
+                    vh.textViews[0].setText(mData.get(position).item.tags[0].toUpperCase());
+                    vh.textViews[1].setText(mData.get(position).item.tags[1].toUpperCase());
+                    vh.textViews[2].setText(mData.get(position).item.tags[2].toUpperCase());
+                    vh.textViews[3].setText(mData.get(position).item.tags[3].toUpperCase());
+                    vh.textViews[4].setText(mData.get(position).item.tags[4].toUpperCase());
+
+                    vh.textViews[0].setVisibility(View.VISIBLE);
+                    vh.textViews[1].setVisibility(View.VISIBLE);
+                    vh.textViews[2].setVisibility(View.VISIBLE);
+                    vh.textViews[3].setVisibility(View.VISIBLE);
+                    vh.textViews[4].setVisibility(View.VISIBLE);
+
+                    break;
+            }
+        */
+
+
+
+
 
 
         return convertView;
@@ -202,7 +277,7 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
         newTag.settingOpenSansLight();
         newTag.setBackgroundResource(R.drawable.tag_btn_shape);
         newTag.setPadding(DpToPx(4), DpToPx(4), DpToPx(4), DpToPx(4));
-        FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        com.wefika.flowlayout.FlowLayout.LayoutParams lp = new com.wefika.flowlayout.FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0,0,DpToPx(4), DpToPx(8));
 
         newTag.setLayoutParams(lp);
@@ -222,11 +297,6 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
 
     }
 
-    public View.OnClickListener listingItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-        }
-    };
 
 }
 

@@ -38,6 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
@@ -77,6 +78,8 @@ public class Welcome extends Activity implements OnClickListener {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         service=new MyLocationService(this);
+
+        Fresco.initialize(getApplicationContext());
 
         boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "tradepostdb.db");
 

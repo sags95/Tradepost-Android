@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +15,20 @@ import android.widget.LinearLayout;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
+import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import datamanager.MyVolleySingleton;
 
@@ -33,14 +39,7 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
     public static List<MarketPlaceData> mData;
     private View.OnClickListener mItemClick;
-    private ViewGroup viewGroup;
-    private String[] tags;
-    private Context context;
-    private int currentPos=0;
-    private ViewHolder viewHolder;
-    private URL url1;
-    private ImageLoader im;
-
+    private static Context context;
 
 
     public MarketPlaceStaggeredAdapter(Context context,List<MarketPlaceData> mData, View.OnClickListener mItemClick) {
@@ -54,67 +53,60 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
         this.mData = mData;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return mData.get(position).item.tags.length;
+    }
+
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        this.viewGroup = viewGroup;
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_item_staggered, viewGroup, false);
-        ViewHolder vh = new ViewHolder(v);
-        v.setOnClickListener(mItemClick);
-        return vh;
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View v;
+        ViewHolder vh=null;
+        switch (viewType) {
+            case 1: //This would be the header view in my Recycler
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_staggered_one_tag, viewGroup, false);
+                vh = new ViewHolder(v, viewType);
+                v.setOnClickListener(mItemClick);
+                break;
+            case 2: //This would be the header view in my Recycler
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_staggered_two_tags, viewGroup, false);
+                vh = new ViewHolder(v, viewType);
+                v.setOnClickListener(mItemClick);
 
+                break;
+            case 3: //This would be the header view in my Recycler
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_staggered_three_tags, viewGroup, false);
+                vh = new ViewHolder(v, viewType);
+                v.setOnClickListener(mItemClick);
+
+                break;
+            case 4: //This would be the header view in my Recycler
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_staggered_four_tags, viewGroup, false);
+                vh = new ViewHolder(v, viewType);
+                v.setOnClickListener(mItemClick);
+
+                break;
+            case 5: //This would be the header view in my Recycler
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_staggered_five_tags, viewGroup, false);
+                vh = new ViewHolder(v, viewType);
+                v.setOnClickListener(mItemClick);
+
+        }
+        return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder,int i) {
 
-
-
-            viewHolder.mTextViewItemTitle.setText(mData.get(i).item.item.getItemname());
-            if(viewHolder.mTagFlowLayout.getChildCount()==0) {
-                if(mData.get(i).item.tags!=null) {
-                    for (String tag : mData.get(i).item.tags) {
-
-                        viewHolder.mTagFlowLayout.addView(addTags(tag));
-
-                    }
-                }
-            }
-            try {
-                URL url;
-                URLConnection  con;
-                InputStream is;
-                ImageLoader im= MyVolleySingleton.getInstance(context).getImageLoader();
-
-
-                String url1="http://104.199.135.162:8084/TDserverWeb/images/items/"+mData.get(i).item.item.getItemid()+"/0.png";
-                viewHolder.mImageViewItemImg.setImageUrl(url1,im);
-                // viewHolder.mImageViewItemImg.setImageBitmap(mData.get(i).itemImgs[0]);
-
-
-                url=new URL("http://104.199.135.162:8084/TDserverWeb/images/"+mData.get(i).userid+"/profile.png");
-                con=url.openConnection();
-                is=  con.getInputStream();
-                Bitmap b= BitmapFactory.decodeStream(is);
-                viewHolder.mImageViewProPic.setImageBitmap(b);
-                is.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-            viewHolder.mImageViewProPic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
-
-                }
-            });
-
-
-
+        final MarketPlaceData marketPlaceData = mData.get(i);
+        final int viewType=getItemViewType(i);
+        viewHolder.bind(marketPlaceData, viewType, daysBetween(mData.get(i).item.item.getDateadded()));
     }
 
     @Override
@@ -126,64 +118,173 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public CustomTextView mTextViewItemTitle,mItemDateAdded;
-        public NetworkImageView mImageViewItemImg;
+        public CustomTextView mTextViewItemTitle, mItemDateAdded;
+        public ImageView mImageViewItemImg;
         public ImageView mImageViewProPic;
         public FlowLayout mTagFlowLayout;
+        public CustomTextView tag1,tag2,tag3,tag4,tag5;
+        public int viewType;
 
 
-
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, int viewType) {
             super(itemView);
-            mImageViewProPic = (ImageView)itemView.findViewById(R.id.pro_img);
-            mTextViewItemTitle = (CustomTextView) itemView.findViewById(R.id.item_title);
-            mItemDateAdded = (CustomTextView)itemView.findViewById(R.id.pro_post_time);
-            mImageViewItemImg = (NetworkImageView) itemView.findViewById(R.id.item_image);
-            mTagFlowLayout = (FlowLayout)itemView.findViewById(R.id.marketplace_tags_layout);
+            switch (viewType){
+                case 1:
+                    mImageViewProPic = (ImageView) itemView.findViewById(R.id.pro_img);
+                    mTextViewItemTitle = (CustomTextView) itemView.findViewById(R.id.item_title);
+                    mItemDateAdded = (CustomTextView) itemView.findViewById(R.id.pro_post_time);
+                    mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
+                    mTagFlowLayout = (FlowLayout) itemView.findViewById(R.id.marketplace_tags_layout);
+                    tag1 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag1);
+                    this.viewType=viewType;
+                    break;
+                case 2:
+                    mImageViewProPic = (ImageView) itemView.findViewById(R.id.pro_img);
+                    mTextViewItemTitle = (CustomTextView) itemView.findViewById(R.id.item_title);
+                    mItemDateAdded = (CustomTextView) itemView.findViewById(R.id.pro_post_time);
+                    mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
+                    mTagFlowLayout = (FlowLayout) itemView.findViewById(R.id.marketplace_tags_layout);
+                    tag1 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag1);
+                    tag2 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag2);
+                    this.viewType=viewType;
+                    break;
+                case 3:
+                    mImageViewProPic = (ImageView) itemView.findViewById(R.id.pro_img);
+                    mTextViewItemTitle = (CustomTextView) itemView.findViewById(R.id.item_title);
+                    mItemDateAdded = (CustomTextView) itemView.findViewById(R.id.pro_post_time);
+                    mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
+                    mTagFlowLayout = (FlowLayout) itemView.findViewById(R.id.marketplace_tags_layout);
+                    tag1 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag1);
+                    tag2 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag2);
+                    tag3 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag3);
+                    this.viewType=viewType;
+                    break;
+                case 4:
+                    mImageViewProPic = (ImageView) itemView.findViewById(R.id.pro_img);
+                    mTextViewItemTitle = (CustomTextView) itemView.findViewById(R.id.item_title);
+                    mItemDateAdded = (CustomTextView) itemView.findViewById(R.id.pro_post_time);
+                    mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
+                    mTagFlowLayout = (FlowLayout) itemView.findViewById(R.id.marketplace_tags_layout);
+                    tag1 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag1);
+                    tag2 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag2);
+                    tag3 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag3);
+                    tag4 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag4);
+                    this.viewType=viewType;
+                    break;
+                case 5:
+                    mImageViewProPic = (ImageView) itemView.findViewById(R.id.pro_img);
+                    mTextViewItemTitle = (CustomTextView) itemView.findViewById(R.id.item_title);
+                    mItemDateAdded = (CustomTextView) itemView.findViewById(R.id.pro_post_time);
+                    mImageViewItemImg = (ImageView) itemView.findViewById(R.id.item_image);
+                    mTagFlowLayout = (FlowLayout) itemView.findViewById(R.id.marketplace_tags_layout);
+                    tag1 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag1);
+                    tag2 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag2);
+                    tag3 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag3);
+                    tag4 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag4);
+                    tag5 = (CustomTextView)itemView.findViewById(R.id.marketplace_tag5);
+                    this.viewType=viewType;
+                    break;
 
+            }
+
+
+
+        }
+
+        public void bind(MarketPlaceData data, int viewType, String daysOffset) {
+
+
+            //item images
+            Uri url1 = Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/items/" + data.item.item.getItemid() + "/0.png");
+            Picasso.with(context)
+                    .load(url1)
+                    .placeholder(R.drawable.sample_img3)
+                    .into(mImageViewItemImg);
+
+            //date
+            mItemDateAdded.setText(daysOffset);
+
+            //item title
+            mTextViewItemTitle.setText(data.item.item.getItemname());
+
+            //profile picture
+            Uri url=Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/" + data.userid + "/profile.png");
+            Picasso.with(context)
+                    .load(url)
+                    .placeholder(R.drawable.sample_img)
+                    .into(mImageViewProPic);
+            mImageViewProPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
+                }
+            });
+
+            //tags
+            switch (viewType) {
+                case 1:
+                    tag1.setText(data.item.tags[0].toUpperCase());
+                    break;
+                case 2:
+                    tag1.setText(data.item.tags[0].toUpperCase());
+                    tag2.setText(data.item.tags[1].toUpperCase());
+                    break;
+                case 3:
+                    tag1.setText(data.item.tags[0].toUpperCase());
+                    tag2.setText(data.item.tags[1].toUpperCase());
+                    tag3.setText(data.item.tags[2].toUpperCase());
+                    break;
+                case 4:
+                    tag1.setText(data.item.tags[0].toUpperCase());
+                    tag2.setText(data.item.tags[1].toUpperCase());
+                    tag3.setText(data.item.tags[2].toUpperCase());
+                    tag4.setText(data.item.tags[3].toUpperCase());
+
+                    break;
+                case 5:
+                    tag1.setText(data.item.tags[0].toUpperCase());
+                    tag2.setText(data.item.tags[1].toUpperCase());
+                    tag3.setText(data.item.tags[2].toUpperCase());
+                    tag4.setText(data.item.tags[3].toUpperCase());
+                    tag5.setText(data.item.tags[4].toUpperCase());
+                    break;
+            }
 
         }
     }
 
-    public CustomTextView addTags(String tag) {
+    public static Calendar getDatePart(Date date){
+        Calendar cal = Calendar.getInstance();       // get calendar instance
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        cal.set(Calendar.MINUTE, 0);                 // set minute in hour
+        cal.set(Calendar.SECOND, 0);                 // set second in minute
+        cal.set(Calendar.MILLISECOND, 0);            // set millisecond in second
 
-        CustomTextView newTag = new CustomTextView(viewGroup.getContext());
-        newTag.setText(tag.toUpperCase());
-        newTag.setTextColor(viewGroup.getResources().getColor(R.color.white));
-        newTag.setTextSize(10);
-        newTag.setClickable(true);
-        newTag.settingOpenSansLight();
-        newTag.setBackgroundResource(R.drawable.tag_btn_shape);
-        newTag.setPadding(DpToPx(4), DpToPx(4), DpToPx(4), DpToPx(4));
-        FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,0,DpToPx(4), DpToPx(8));
-
-        newTag.setLayoutParams(lp);
-
-
-
-        return newTag;
-
+        return cal;                                  // return the date part
     }
 
+    public static String daysBetween(Date startDate) {
+        Calendar sDate = getDatePart(startDate);
+        Calendar eDate = getDatePart(new Date());
 
-    public int DpToPx(int requireDp ){
-        int dpValue = requireDp; // margin in dips
-        float d = context.getResources().getDisplayMetrics().density;
-        int margin = (int)(dpValue * d); // margin in pixels
-        return margin; // margin in pixels
+        long daysBetween = 0;
+        while (sDate.before(eDate)) {
+            sDate.add(Calendar.DAY_OF_MONTH, 1);
+            daysBetween++;
+        }
 
-    }
+        String daysOffset;
+        if((int)daysBetween==0){
+            daysOffset = "Today";
 
-    public String dateComparison(Date date){
-        Date currentDate = new Date();
-        int offset = currentDate.compareTo(date);
+        }else if((int)daysBetween==1){
+            daysOffset = (int)daysBetween + " day ago";
 
-        if(offset ==0){
-            return "Today";
         }else{
-            return offset + " days ago";
-        }
-    }
+            daysOffset = (int)daysBetween + " days ago";
 
+        }
+        return daysOffset;
+    }
 }

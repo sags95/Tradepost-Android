@@ -138,7 +138,8 @@ public class MarketPlaceFragment  extends Fragment {
 
 
 
-        /*
+
+
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
         //stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),MarketPlaceData.generateSampleData(),listingItemClickListener);
@@ -147,14 +148,19 @@ public class MarketPlaceFragment  extends Fragment {
 
 
 
-        */
 
+        /*
         mGridView = (StaggeredGridView)rootView.findViewById(R.id.recylcer_view);
         //MarketPlaceListAdapter adapter = new MarketPlaceListAdapter(getActivity(),R.layout.list_item_marketplace,R.id.looking_for,mData);
         //mGridView.setAdapter(adapter);
         mSwipeRefreshLayout.setVisibility(View.GONE);
+        */
+
+
+
         AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute();
+
 
 
 
@@ -187,8 +193,8 @@ public class MarketPlaceFragment  extends Fragment {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(fabOnClickListener);
 
-        //fab.attachToRecyclerView(mRecyclerView);
-        fab.attachToListView(mGridView);
+        fab.attachToRecyclerView(mRecyclerView);
+        //fab.attachToListView(mGridView);
 
         //Like Button
         ImageView likeBtn = (ImageView) rootView.findViewById(R.id.image_like_btn);
@@ -237,7 +243,7 @@ public class MarketPlaceFragment  extends Fragment {
     public View.OnClickListener listingItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d("child position", String.valueOf(mGridView.getPositionForView(v)));
+            Log.d("child position", String.valueOf(mRecyclerView.getChildLayoutPosition(v)));
 
 
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
@@ -247,7 +253,7 @@ public class MarketPlaceFragment  extends Fragment {
 
             //TextView itemTitle = (TextView) mRecyclerView.findViewHolderForPosition(mRecyclerView.getChildPosition(v)).itemView.findViewById(R.id.item_title);
 
-            clickedItemDetails.add(0, String.valueOf(mGridView.getPositionForView(v)));
+            clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildLayoutPosition(v)));
 
             //profile picture
             BitmapDrawable bitmapDrawable = (BitmapDrawable)((ImageView) v.findViewById(R.id.pro_img)).getDrawable();
@@ -490,23 +496,25 @@ public class MarketPlaceFragment  extends Fragment {
         protected void onPostExecute(ArrayList<MarketPlaceData> result) {
 
 
+            /*
             MarketPlaceListAdapter adapter = new MarketPlaceListAdapter(getActivity(),R.layout.list_item_marketplace,R.id.looking_for,result,listingItemClickListener);
             mGridView.setAdapter(adapter);
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
             mSwipeRefreshLayoutEmpty.setRefreshing(false);
             mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
+            */
 
 
 
 
             //old
-            /*
+
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
             stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),result,listingItemClickListener);
             mRecyclerView.setAdapter(stagAdapter2);
             mSwipeRefreshLayoutEmpty.setRefreshing(false);
             mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
-            */
+
 
             tempdata = result;
 

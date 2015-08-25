@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/marketplace_card_view"
+    xmlns:fresco="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     card_view:cardCornerRadius="1dp"
     card_view:cardUseCompatPadding="false"
     card_view:cardElevation="0dp"
@@ -16,22 +16,20 @@
     android:clickable="true">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/image_parentlayout"
         android:background="?android:attr/selectableItemBackground"
         >
 
         <ImageView
-
             android:id="@+id/item_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_alignParentTop="true"
-            android:src="@drawable/sample_img3"
-            android:layout_centerHorizontal="true"
             android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"
             />
 
 
@@ -122,6 +120,7 @@
             android:ellipsize="end"
             style="@style/OpenSansRegular"
 
+
             />
 
 
@@ -139,9 +138,12 @@
             />
 
 
-        <com.wefika.flowlayout.FlowLayout
+
+        <org.apmem.tools.layouts.FlowLayout
+            xmlns:f="http://schemas.android.com/apk/res-auto"
             android:id="@+id/marketplace_tags_layout"
             android:orientation="horizontal"
+            f:layoutDirection="ltr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/looking_for"
@@ -161,7 +163,6 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="8dp"
                 style="@style/OpenSansLight"
-                android:visibility="gone"
                 />
 
             <Model.CustomTextView
@@ -176,7 +177,6 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="8dp"
                 style="@style/OpenSansLight"
-                android:visibility="gone"
 
                 />
 
@@ -192,7 +192,6 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="8dp"
                 style="@style/OpenSansLight"
-                android:visibility="gone"
 
                 />
 
@@ -208,28 +207,11 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="8dp"
                 style="@style/OpenSansLight"
-                android:visibility="gone"
-
-                />
-
-            <Model.CustomTextView
-                android:id="@+id/marketplace_tag5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@color/white"
-                android:clickable="true"
-                android:padding="4dp"
-                android:background="@drawable/tag_btn_shape"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="8dp"
-                style="@style/OpenSansLight"
-                android:visibility="gone"
 
                 />
 
 
-        </com.wefika.flowlayout.FlowLayout>
+        </org.apmem.tools.layouts.FlowLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

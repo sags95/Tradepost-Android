@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listing_proecss_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightgrey"
+    android:background="@color/color_background_gray"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    >
+    android:focusableInTouchMode="true">
 
     <include
         android:id="@+id/tool_bar"
@@ -41,11 +40,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/section1"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
+                android:paddingBottom="30dp"
+                android:paddingTop="24dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:background="@color/lightgrey"
+                android:background="@color/color_background_gray"
                 >
 
                 <LinearLayout
@@ -55,12 +54,17 @@
                     android:orientation="horizontal"
                     android:layout_marginBottom="8dp"
                     >
-                    <ImageView
+                    <Model.CustomTextView
                         android:id="@+id/section1_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_section1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="1"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
 
                         />
                     <Model.CustomTextView
@@ -125,10 +129,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/section2"
-                android:paddingBottom="16dp"
+                android:paddingBottom="30dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:background="@color/lightgrey"
+                android:background="@color/color_background_gray"
 
                 >
 
@@ -137,15 +141,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     >
 
-                    <ImageView
+                    <Model.CustomTextView
                         android:id="@+id/section2_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_section2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="2"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
                         />
 
                     <Model.CustomTextView
@@ -164,7 +173,7 @@
                     android:id="@+id/section2_scroll_top_div"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/lightgrey"
+                    android:background="@color/color_background_gray"
                     android:layout_below="@id/section2_title"
                     />
 
@@ -190,7 +199,7 @@
                     <View
                         android:layout_width="3dp"
                         android:layout_height="match_parent"
-                        android:background="@color/lightgrey"
+                        android:background="@color/color_background_gray"
                         />
 
                     <ImageView
@@ -207,7 +216,7 @@
                     <View
                         android:layout_width="3dp"
                         android:layout_height="match_parent"
-                        android:background="@color/lightgrey"
+                        android:background="@color/color_background_gray"
                         />
 
                     <ImageView
@@ -224,7 +233,7 @@
                     <View
                         android:layout_width="3dp"
                         android:layout_height="match_parent"
-                        android:background="@color/lightgrey"
+                        android:background="@color/color_background_gray"
                         />
 
                     <ImageView
@@ -245,7 +254,7 @@
                     android:id="@+id/section2_scroll_bottom_div"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/lightgrey"
+                    android:background="@color/color_background_gray"
                     android:layout_below="@+id/section2_imgs_container"
                     android:layout_marginBottom="8dp"
                     />
@@ -270,14 +279,16 @@
 
                         >
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/section2_img_camera"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
                             android:clickable="true"
-                            android:src="@drawable/ic_section2_camera"
-                            android:background="@color/white"
+                            android:background="@drawable/circle_white"
                             android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_camera"
+
+
 
                             />
 
@@ -288,6 +299,7 @@
                             android:text="@string/section2_text_camera"
                             android:gravity="center"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
                             style="@style/OpenSansLight"
                             />
 
@@ -313,14 +325,15 @@
                         android:layout_weight="1"
                         >
 
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/section2_img_folder"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
                             android:clickable="true"
+                            android:background="@drawable/circle_white"
                             android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_section2_camera"
-                            android:background="@color/white"
+                            android:src="@drawable/ic_folder"
+
 
                             />
 
@@ -331,6 +344,8 @@
                             android:text="@string/section2_text_folder"
                             android:gravity="center"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+
                             style="@style/OpenSansLight"
 
                             />
@@ -350,10 +365,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/section3"
                 android:paddingBottom="16dp"
-                android:paddingTop="16dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:background="@color/white"
+                android:background="@color/color_background_gray"
                 >
 
                 <LinearLayout
@@ -361,15 +375,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
+
                     >
 
-                    <ImageView
+                    <Model.CustomTextView
                         android:id="@+id/section3_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_section2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="3"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
                         />
 
                     <Model.CustomTextView
@@ -384,87 +404,101 @@
 
                 </LinearLayout>
 
-                <SeekBar
-
-                    android:id="@+id/seekBar1"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:id="@+id/section3_seekBar_layout"
                     android:layout_below="@id/section3_title"
-                    android:max="4"
+                    android:background="@drawable/round_white_background"
+                    android:padding="8dp"
 
-                    />
+                    >
 
-                <LinearLayout
-                    android:id="@+id/seekBar_layout"
-                    android:layout_below="@+id/seekBar1"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    <SeekBar
 
-
-                    <Model.CustomTextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/seekBar1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/OpenSansRegular"
-                        android:text="Poor"
-                        android:layout_weight="1"
-                        android:gravity="left"
-                        android:textSize="12sp"
-
-                        />
-
-                    <Model.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fair"
-                        style="@style/OpenSansRegular"
-                        android:layout_weight="3"
-                        android:gravity="center_horizontal"
-                        android:textSize="12sp"
+                        android:max="4"
 
 
 
                         />
 
-                    <Model.CustomTextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/seekBar_layout"
+                        android:layout_below="@+id/seekBar1"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        style="@style/OpenSansRegular"
-                        android:text="Great"
-                        android:layout_weight="2"
-                        android:gravity="center_horizontal"
-                        android:textSize="12sp"
+                        >
+
+
+                        <Model.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/OpenSansRegular"
+                            android:text="Poor"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:textSize="12sp"
+
+                            />
+
+                        <Model.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Fair"
+                            style="@style/OpenSansRegular"
+                            android:layout_weight="3"
+                            android:gravity="center_horizontal"
+                            android:textSize="12sp"
 
 
 
-                        />
-                    <Model.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/OpenSansRegular"
-                        android:text="Mint"
-                        android:layout_weight="3"
-                        android:gravity="center_horizontal"
-                        android:textSize="12sp"
+                            />
 
-
-                        />
-
-                    <Model.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/OpenSansRegular"
-                        android:text="New"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:textSize="12sp"
-                        />
+                        <Model.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/OpenSansRegular"
+                            android:text="Great"
+                            android:layout_weight="2"
+                            android:gravity="center_horizontal"
+                            android:textSize="12sp"
 
 
 
+                            />
+                        <Model.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/OpenSansRegular"
+                            android:text="Mint"
+                            android:layout_weight="3"
+                            android:gravity="center_horizontal"
+                            android:textSize="12sp"
 
-                </LinearLayout>
+
+                            />
+
+                        <Model.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/OpenSansRegular"
+                            android:text="New"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:textSize="12sp"
+                            />
+
+
+
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
 
 
             </RelativeLayout>
@@ -477,7 +511,7 @@
                 android:paddingTop="16dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:background="@color/lightgrey"
+                android:background="@color/color_background_gray"
                 >
 
                 <LinearLayout
@@ -485,15 +519,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     >
 
-                    <ImageView
+                    <Model.CustomTextView
                         android:id="@+id/section4_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_section2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="4"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
                         />
 
                     <Model.CustomTextView
@@ -515,11 +554,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/section4_title"
-                    android:background="#FFFFFF"
+                    android:background="@drawable/round_white_background"
                     android:lines="5"
                     android:maxLines="5"
                     android:gravity="left|top"
                     style="@style/OpenSansLight"
+                    android:padding="8dp"
                     />
 
                 <RelativeLayout
@@ -569,7 +609,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:id="@+id/section5"
-                android:background="@color/white"
+                android:background="@color/color_background_gray"
                 >
 
                 <LinearLayout
@@ -577,16 +617,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     >
 
-                    <ImageView
+                    <Model.CustomTextView
                         android:id="@+id/section5_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_section2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="5"
+                        android:gravity="center"
 
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
                         />
 
                     <Model.CustomTextView
@@ -684,22 +728,28 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:id="@+id/section6"
-                android:background="@color/lightgrey">
+                android:background="@color/color_background_gray"
+                >
 
                 <LinearLayout
                     android:id="@+id/section6_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     >
 
-                    <ImageView
+                    <Model.CustomTextView
                         android:id="@+id/section6_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_section2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="6"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
                         />
 
                     <Model.CustomTextView

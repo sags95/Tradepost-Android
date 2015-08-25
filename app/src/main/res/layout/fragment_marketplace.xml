@@ -13,28 +13,30 @@
             android:layout_height="match_parent">
 
 
-
-            <com.etsy.android.grid.StaggeredGridView
-                android:id="@+id/recylcer_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                app:column_count="2"
-                app:item_margin="8dp"
-                />
-
             <!--
+
+                        <com.etsy.android.grid.StaggeredGridView
+                            android:id="@+id/recylcer_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbars="vertical"
+                            app:column_count="2"
+                            app:item_margin="8dp"
+                            />
+
+-->
+
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recylcer_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
+                                        android:id="@+id/recylcer_view"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scrollbars="vertical"
+                                        android:paddingLeft="4dp"
+                                        android:paddingRight="4dp"
 
 
-            />
-            -->
+                                    />
+
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
