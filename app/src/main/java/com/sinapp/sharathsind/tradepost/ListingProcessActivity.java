@@ -54,7 +54,6 @@ import Model.CustomSpinnerAdapter;
 import Model.CustomTextView;
 import Model.LimitedEditText;
 import Model.RegisterWebService;
-import Model.RoundImageHelper;
 import Model.Variables;
 import data.StringVector;
 import datamanager.FileManager;

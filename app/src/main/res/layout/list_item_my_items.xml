@@ -9,7 +9,10 @@
     card_view:cardCornerRadius="0dp"
     card_view:cardUseCompatPadding="false"
     card_view:cardElevation="0dp"
+    android:focusable="true"
+    android:clickable="true"
     >
+
 
     <LinearLayout
         android:paddingLeft="16dp"
@@ -18,8 +21,6 @@
         android:paddingBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
         >
 

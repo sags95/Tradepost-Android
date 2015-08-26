@@ -79,7 +79,6 @@ public class Welcome extends Activity implements OnClickListener {
         StrictMode.setThreadPolicy(policy);
         service=new MyLocationService(this);
 
-        Fresco.initialize(getApplicationContext());
 
         boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "tradepostdb.db");
 
@@ -120,7 +119,10 @@ public class Welcome extends Activity implements OnClickListener {
                     protected void onPreExecute() {
                         super.onPreExecute();
                         pd=new ProgressDialog(Welcome.this);
+                        pd.setMessage("Loading...");
+                        pd.setCancelable(false);
                         pd.show();
+
                     }
 
                     @Override

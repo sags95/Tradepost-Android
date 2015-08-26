@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listing_proecss_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="20dp"
-    android:background="@color/ColorPrimary"
-    android:gravity="center_vertical"
+    android:padding="16dp"
+    android:background="@color/color_background_gray"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
@@ -16,104 +14,314 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CREATE ACCOUNT"
-        style="@style/OpenSansRegular"
+        style="@style/OpenSansLight"
+        android:id="@+id/create_account_title"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
         />
 
-    <android.support.design.widget.TextInputLayout
+
+
+    <RelativeLayout
+        android:layout_below="@+id/create_account_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/create_account_username_til"
-        android:layout_marginTop="8dp"
+        android:id="@+id/create_account_username_layout"
+        android:background="@color/color_background_gray"
+        android:layout_marginBottom="16dp"
+
+                >
+
+        <LinearLayout
+                    android:id="@+id/username_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <Model.CustomTextView
+                        android:id="@+id/section1_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="1"
+                        android:textSize="16sp"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
+
+                        />
+                    <Model.CustomTextView
+                        android:id="@+id/section1_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="YOUR NAME"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        style="@style/OpenSansRegular"
+                        android:textSize="14sp"
+
+                        />
+                </LinearLayout>
+
+        <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/username_title"
+                    android:layout_alignTop="@+id/username_title"
+                    android:gravity="center"
+                    android:layout_centerVertical="true"
+
+                    >
+                    <Model.CustomTextView
+                        android:id="@+id/section1_char_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:layout_gravity="center_vertical"
+                        style="@style/OpenSansLight"
+                        />
+                    <Model.CustomTextView
+                        android:id="@+id/section1_char_count_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section1_char_count"
+                        style="@style/OpenSansLight"
+
+                        />
+
+                    <Model.CustomTextView
+                        android:id="@+id/section1_char_count_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:layout_gravity="center_vertical"
+                        android:layout_toRightOf="@+id/section1_char_count_slash"
+                        style="@style/OpenSansLight"
+
+                        />
+                </RelativeLayout>
+
+        <Model.LimitedEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            style="@style/OpenSansLight"
+            android:layout_below="@+id/username_title"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:singleLine="true"
+
+            />
+
+
+            </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_account_email_layout"
+        android:background="@color/color_background_gray"
+        android:layout_below="@+id/create_account_username_layout"
+        android:layout_marginBottom="16dp"
 
         >
 
-        <customWidgets.CustomEditText
+                <LinearLayout
+                    android:id="@+id/email_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <Model.CustomTextView
+                        android:id="@+id/section2_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="2"
+                        android:textSize="16sp"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
+                        />
+
+                    <Model.CustomTextView
+                        android:id="@+id/section2_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMAIL ADDRESS"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:textSize="14sp"
+
+                        style="@style/OpenSansRegular"
+
+                        />
+                </LinearLayout>
+
+
+        <Model.LimitedEditText
+            android:layout_below="@+id/email_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Email"
             style="@style/OpenSansLight"
             android:maxLines="1"
-            android:hint="Username"
+            android:layout_marginTop="4dp"
+
             android:singleLine="true"
             />
 
 
-    </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
-
-    <android.support.design.widget.TextInputLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/create_account_email_til"
-        android:layout_marginTop="8dp"
+        android:id="@+id/create_account_pw_layout"
+        android:background="@color/color_background_gray"
+        android:layout_below="@+id/create_account_email_layout"
+        android:layout_marginBottom="16dp"
+
         >
 
-    <customWidgets.CustomEditText
+                <LinearLayout
+                    android:id="@+id/pw_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <Model.CustomTextView
+                        android:id="@+id/section3_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="3"
+                        android:textSize="16sp"
+                        android:gravity="center"
+
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
+                        />
+
+                    <Model.CustomTextView
+                        android:id="@+id/section3_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PASSWORD"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:textSize="14sp"
+
+                        style="@style/OpenSansRegular"
+                        />
+
+                </LinearLayout>
+
+        <Model.LimitedEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:layout_marginTop="4dp"
+
+            android:singleLine="true"
+            style="@style/OpenSansLight"
+            android:layout_below="@+id/pw_title"
+            />
+
+            </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/OpenSansLight"
-        android:hint="Email Address"
-        android:maxLines="1"
-        android:singleLine="true"
-        />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_account_pw_til"
-        android:layout_marginTop="8dp"
+        android:id="@+id/create_account_pw_confirm_layout"
+        android:background="@color/color_background_gray"
+        android:layout_below="@+id/create_account_pw_layout"
+        android:layout_marginBottom="16dp"
         >
 
-    <customWidgets.CustomEditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/prompt_password"
-        android:imeActionId="@+id/login"
-        android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionUnspecified"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:singleLine="true"
-        style="@style/OpenSansLight"
-        />
+                <LinearLayout
+                    android:id="@+id/pw_confirm_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
 
-    </android.support.design.widget.TextInputLayout>
+                    <Model.CustomTextView
+                        android:id="@+id/section4_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle"
+                        android:text="4"
+                        android:textSize="16sp"
+                        android:gravity="center"
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_account_pw_confirm_til"
-        android:layout_marginTop="8dp"
-        >
+                        style="@style/OpenSansLight"
+                        android:textColor="@color/white"
+                        />
 
-    <customWidgets.CustomEditText
-        android:id="@+id/password_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        android:imeActionId="@+id/login"
-        android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionUnspecified"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:singleLine="true"
-        style="@style/OpenSansLight"
+                    <Model.CustomTextView
+                        android:id="@+id/section4_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CONFIRM PASSWORD"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:textSize="14sp"
 
-        />
-    </android.support.design.widget.TextInputLayout>
+                        style="@style/OpenSansRegular"
+                        />
+
+                </LinearLayout>
+
+        <Model.LimitedEditText
+            android:id="@+id/password_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password Again"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_marginTop="4dp"
+
+            style="@style/OpenSansLight"
+            android:layout_below="@+id/pw_confirm_title"
+
+            />
+
+            </RelativeLayout>
 
     <Model.CustomButton
+        android:id="@+id/create_account_next_btn"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/OpenSansRegular"
-        android:text="Sign Up"
-
+        android:text="NEXT"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/feedback_btn_click_effect"
         />
 
 
-
-
-</LinearLayout>
+</RelativeLayout>

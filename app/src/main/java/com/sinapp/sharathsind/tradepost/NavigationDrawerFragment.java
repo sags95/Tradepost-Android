@@ -19,7 +19,9 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,10 +37,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +101,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private AlertDialog dialog;
     int feedback_layout = R.layout.feedback_dialog;
 
+    //Header
+    CustomTextView mUsername, mEmail;
+    CircleImageView avatarContainer;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,8 +129,17 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mHeaderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("click on Header", "You clicked on header");
-                startActivity(new Intent(getActivity().getApplicationContext(),ProfileActivity.class));
+                Intent i = new Intent(getActivity().getApplicationContext(), ProfileActivity.class);
+                ArrayList<String> profileDetails = new ArrayList<String>();
+                profileDetails.add(0,String.valueOf(Constants.userid));
+                profileDetails.add(1,mUsername.getText().toString());
+                profileDetails.add(2,mEmail.getText().toString());
+
+                i.putStringArrayListExtra("profileDetails",profileDetails);
+                i.putExtra("caller", "NavigationDrawer");
+                i.putExtra("profilePic", ((BitmapDrawable) avatarContainer.getDrawable()).getBitmap());
+
+                startActivity(i);
             }
         });
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
@@ -288,16 +307,20 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public void setUserData(String user, String email, Bitmap avatar) {
-        CircleImageView avatarContainer = (CircleImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
-        ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
-        ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
-        avatarContainer.setImageBitmap(avatar);
-        if(Variables.profilepic!=null)
+        avatarContainer = (CircleImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
+        mUsername = (CustomTextView)mFragmentContainerView.findViewById(R.id.txtUsername);
+        mEmail = (CustomTextView)mFragmentContainerView.findViewById(R.id.txtUserEmail);
+        mUsername.setText(user);
+        mEmail.setText(email);
+        Uri url = Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
+        Picasso.with(getActivity().getApplicationContext()).load(url).into(avatarContainer);
+
+        if(Variables.username!=null)
         {
-            avatarContainer = (CircleImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
-            ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(Variables.email);
-            ((CustomTextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(Variables.username);
-            avatarContainer.setImageBitmap(Variables.profilepic);
+            mUsername.setText(Variables.username);
+            mEmail.setText(Variables.email);
+            Uri url1 = Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
+            Picasso.with(getActivity().getApplicationContext()).load(url1).into(avatarContainer);
         }
     }
 

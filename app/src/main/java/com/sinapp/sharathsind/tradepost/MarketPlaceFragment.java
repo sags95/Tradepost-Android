@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,7 +56,6 @@ public class MarketPlaceFragment  extends Fragment {
     private View rootView;
     private SwipeRefreshLayout mSwipeRefreshLayout,mSwipeRefreshLayoutEmpty;
     private StaggeredAdapterTest mStaggeredAdapterTest;
-    private ArrayList<MarketPlaceData> mData;
 
     private String locationRad="25Km)";
     private int[] imageResources = {
@@ -77,8 +77,7 @@ public class MarketPlaceFragment  extends Fragment {
     private SeekBar seekBar;
     private TextView headerRadText,radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
     private LinearLayout seekBarLabel;
-    private ArrayList<MarketPlaceData> tempdata;
-    private ArrayList<MarketPlaceData> receiveData;
+    TempMarketPlaceDataCallBack mCallback;
 
 
     public MarketPlaceFragment() {
@@ -112,7 +111,9 @@ public class MarketPlaceFragment  extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mSwipeRefreshLayout.setRefreshing(false);
+                AsyncTaskRunnerSRL runner = new AsyncTaskRunnerSRL();
+                runner.execute();
+
             }
         });
 
@@ -157,9 +158,13 @@ public class MarketPlaceFragment  extends Fragment {
         */
 
 
+        mSwipeRefreshLayout.setVisibility(View.GONE);
 
         AsyncTaskRunner runner = new AsyncTaskRunner();
         runner.execute();
+
+
+
 
 
 
@@ -248,22 +253,17 @@ public class MarketPlaceFragment  extends Fragment {
 
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
-            List<MarketPlaceData> tempdata = mData;
 
-
-            //TextView itemTitle = (TextView) mRecyclerView.findViewHolderForPosition(mRecyclerView.getChildPosition(v)).itemView.findViewById(R.id.item_title);
+            i.putExtra("caller","MarketPlace");
 
             clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildLayoutPosition(v)));
+            i.putStringArrayListExtra("itemClicked", clickedItemDetails);
 
             //profile picture
             BitmapDrawable bitmapDrawable = (BitmapDrawable)((ImageView) v.findViewById(R.id.pro_img)).getDrawable();
             Bitmap b =bitmapDrawable.getBitmap();
             i.putExtra("profilePic",b);
 
-            //item's first image
-
-
-            i.putStringArrayListExtra("itemClicked", clickedItemDetails);
             startActivity(i);
         }
     };
@@ -481,11 +481,15 @@ public class MarketPlaceFragment  extends Fragment {
 
         @Override
         protected ArrayList<MarketPlaceData> doInBackground(ArrayList<MarketPlaceData>... params) {
-                    mData=MarketPlaceData.generateSampleData();
-            try {
 
-            }catch (Exception e){
-                e.toString();
+            ArrayList<MarketPlaceData> mData;
+
+            if(!mCallback.hasTempData()) {
+                mData = MarketPlaceData.generateSampleData();
+                mCallback.setTempDataStatus(true);
+            }else{
+                mData=mCallback.getTempData();
+
             }
 
 
@@ -509,14 +513,16 @@ public class MarketPlaceFragment  extends Fragment {
 
             //old
 
+
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
             stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),result,listingItemClickListener);
             mRecyclerView.setAdapter(stagAdapter2);
             mSwipeRefreshLayoutEmpty.setRefreshing(false);
             mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
 
+            mCallback.storeTempMarketPlaceData(result);
 
-            tempdata = result;
+
 
 
 
@@ -539,5 +545,68 @@ public class MarketPlaceFragment  extends Fragment {
     }
 
 
+    private class AsyncTaskRunnerSRL extends AsyncTask<ArrayList<MarketPlaceData>, String, ArrayList<MarketPlaceData>> {
+
+        @Override
+        protected ArrayList<MarketPlaceData> doInBackground(ArrayList<MarketPlaceData>... params) {
+            ArrayList<MarketPlaceData> mData;
+            mData = MarketPlaceData.generateSampleData();
+            mCallback.setTempDataStatus(true);
+            return mData;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<MarketPlaceData> result) {
+
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+            MarketPlaceStaggeredAdapter m = new MarketPlaceStaggeredAdapter();
+            m.updateList(result);
+            //mRecyclerView.setAdapter(stagAdapter2);
+            mSwipeRefreshLayoutEmpty.setRefreshing(false);
+            mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
+
+            mCallback.storeTempMarketPlaceData(result);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setVisibility(View.GONE);
+            mSwipeRefreshLayoutEmpty.setVisibility(View.VISIBLE);
+
+            mSwipeRefreshLayoutEmpty.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayoutEmpty.setRefreshing(true);
+                }
+            });
+        }
+        @Override
+        protected void onProgressUpdate(String... text) {
+        }
+    }
+
+    public interface TempMarketPlaceDataCallBack {
+
+        void storeTempMarketPlaceData(ArrayList<MarketPlaceData> tempData);
+        void setTempDataStatus(boolean status);
+        boolean hasTempData();
+        ArrayList<MarketPlaceData> getTempData();
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (TempMarketPlaceDataCallBack) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement TempMarketPlaceDataCallBack");
+        }
+    }
 }
 

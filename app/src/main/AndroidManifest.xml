@@ -85,13 +85,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:name=".LoginActivity1"
             android:label="@string/title_activity_login_activity1"
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"
@@ -177,6 +170,20 @@
         <activity
             android:name=".PictureMsg"
             android:label="@string/title_activity_picture_msg" >
+        </activity>
+
+        <activity
+            android:name=".CreateAccountActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
+        <activity
+            android:name=".CreateAccountPicActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            >
         </activity>
     </application>
 

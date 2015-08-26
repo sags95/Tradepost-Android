@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
+import com.sinapp.sharathsind.tradepost.SingleListingActivity;
 import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -25,6 +27,7 @@ import org.apmem.tools.layouts.FlowLayout;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +45,9 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
     private static Context context;
 
 
+    public MarketPlaceStaggeredAdapter(){
+
+    }
     public MarketPlaceStaggeredAdapter(Context context,List<MarketPlaceData> mData, View.OnClickListener mItemClick) {
         this.mData = mData;
         this.mItemClick=mItemClick;
@@ -61,43 +67,37 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v;
-        ViewHolder vh=null;
+        View v=null;
+        ViewHolder vh;
         switch (viewType) {
-            case 1: //This would be the header view in my Recycler
+            case 1:
                 v = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.list_item_staggered_one_tag, viewGroup, false);
-                vh = new ViewHolder(v, viewType);
                 v.setOnClickListener(mItemClick);
                 break;
-            case 2: //This would be the header view in my Recycler
+            case 2:
                 v = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.list_item_staggered_two_tags, viewGroup, false);
-                vh = new ViewHolder(v, viewType);
                 v.setOnClickListener(mItemClick);
-
                 break;
-            case 3: //This would be the header view in my Recycler
+            case 3:
                 v = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.list_item_staggered_three_tags, viewGroup, false);
-                vh = new ViewHolder(v, viewType);
                 v.setOnClickListener(mItemClick);
-
                 break;
-            case 4: //This would be the header view in my Recycler
+            case 4:
                 v = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.list_item_staggered_four_tags, viewGroup, false);
-                vh = new ViewHolder(v, viewType);
                 v.setOnClickListener(mItemClick);
-
                 break;
-            case 5: //This would be the header view in my Recycler
+            case 5:
                 v = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.list_item_staggered_five_tags, viewGroup, false);
-                vh = new ViewHolder(v, viewType);
                 v.setOnClickListener(mItemClick);
-
+                break;
         }
+
+        vh = new ViewHolder(v, viewType);
         return vh;
     }
 
@@ -191,7 +191,7 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
         }
 
-        public void bind(MarketPlaceData data, int viewType, String daysOffset) {
+        public void bind(final MarketPlaceData data, int viewType, String daysOffset) {
 
 
             //item images
@@ -216,7 +216,19 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
             mImageViewProPic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
+                    Intent i = new Intent(context.getApplicationContext(), ProfileActivity.class);
+                    ArrayList<String> itemProfileClicked = new ArrayList<>();
+                    itemProfileClicked.add(0, String.valueOf(data.userid));
+                    itemProfileClicked.add(1, data.proUsername);
+                    i.putStringArrayListExtra("itemProfileClicked", itemProfileClicked);
+
+                    //
+                    i.putExtra("caller","MarketPlace");
+                    BitmapDrawable bitmapDrawable = (BitmapDrawable)mImageViewProPic.getDrawable();
+                    Bitmap b = bitmapDrawable.getBitmap();
+                    i.putExtra("profilePic", b);
+
+                    context.startActivity(i);
                 }
             });
 
@@ -286,5 +298,11 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
         }
         return daysOffset;
+
+    }
+
+    public void updateList(ArrayList<MarketPlaceData> data) {
+        mData = data;
+        notifyDataSetChanged();
     }
 }

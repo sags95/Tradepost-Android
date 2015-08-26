@@ -17,8 +17,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_userImg_placeholder"
-            android:layout_width="81dp"
-            android:layout_height="81dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/sample_img"
             app:border_width="5dp"
             app:border_color="@color/darkgrey"
@@ -26,21 +26,23 @@
 
             />
 
-        <TextView
-            android:id="@+id/profile_uername_placeholder"
+        <Model.CustomTextView
+            android:id="@+id/profile_username_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Username"
             android:textSize="20sp"
+            style="@style/OpenSansRegular"
             />
 
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/profile_user_join_time_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="user since 2015"
             android:textSize="12sp"
             android:layout_marginBottom="16dp"
+            style="@style/OpenSansLight"
             />
 
         <RatingBar

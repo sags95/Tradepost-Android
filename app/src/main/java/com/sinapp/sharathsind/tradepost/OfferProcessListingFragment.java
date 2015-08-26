@@ -76,7 +76,7 @@ public class OfferProcessListingFragment extends Fragment {
         ArrayList<OfferProcessItem> itemsArrayList = new ArrayList<OfferProcessItem>();
 
         for (int i = 0; i < userdata.i.size(); i++) {
-            OfferProcessItem offerProcessItem = new OfferProcessItem("Item Title" + userdata.i.get(i).item.getItemname(),userdata.i.get(i).item.getItemid());
+            OfferProcessItem offerProcessItem = new OfferProcessItem(userdata.i.get(i).item.getItemname(),userdata.i.get(i).item.getItemid());
 
             itemsArrayList.add(offerProcessItem);
         }

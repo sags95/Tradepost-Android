@@ -1,12 +1,9 @@
 package com.sinapp.sharathsind.tradepost;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -16,15 +13,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.SignInButton;
-
-import com.google.android.gms.plus.model.people.Person;
 
 import Model.RegisterWebService;
 import Model.Variables;
@@ -34,19 +23,16 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -220,7 +206,7 @@ public class FbFragment extends Fragment {
         email.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                f.startActivity(new Intent(f, LoginActivity1.class));
+                f.startActivity(new Intent(f, LoginActivity.class));
                 f.finish();
             }
         });

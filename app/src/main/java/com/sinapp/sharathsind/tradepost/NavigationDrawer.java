@@ -7,6 +7,7 @@ package com.sinapp.sharathsind.tradepost;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,14 +29,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import Model.MarketPlaceData;
 import Model.NavigationDrawerCallbacks;
 
 
 public class NavigationDrawer extends AppCompatActivity
-        implements NavigationDrawerCallbacks {
+        implements NavigationDrawerCallbacks, MarketPlaceFragment.TempMarketPlaceDataCallBack{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -47,6 +54,8 @@ public class NavigationDrawer extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private Fragment chatPageFrag, notiFrag;
     private FragmentManager fm;
+    private ArrayList<MarketPlaceData> tempData;
+    private boolean tempDataStatus=false;
 
 
 
@@ -56,12 +65,12 @@ public class NavigationDrawer extends AppCompatActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         //mToolbar.setBackgroundColor(getResources().getColor(R.color.lightgrey));
-
+        //tempDataStatus=false;
 
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        LayoutInflater inflator = LayoutInflater.from(this);
-        View v = inflator.inflate(R.layout.toolbar_custom_title, null);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.toolbar_custom_title, null);
         getSupportActionBar().setCustomView(v);
 
 
@@ -84,6 +93,8 @@ public class NavigationDrawer extends AppCompatActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, mDrawerLayout, mToolbar, mFrameLayoutRight);
+
+
         mNavigationDrawerFragment.setUserData("User", "sample@tradepost.com", BitmapFactory.decodeResource(getResources(), R.drawable.sample_img));
 
 
@@ -221,10 +232,9 @@ public class NavigationDrawer extends AppCompatActivity
                 }
                 */
 
-                if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                     mNavigationDrawerFragment.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
-
-                }else{
+                } else {
                     mNavigationDrawerFragment.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
 
                 }
@@ -308,5 +318,24 @@ public class NavigationDrawer extends AppCompatActivity
                 openNotificationFragment();
             }
         }
+    }
+    @Override
+    public void storeTempMarketPlaceData(ArrayList<MarketPlaceData> tempData){
+            this.tempData=tempData;
+    }
+
+    @Override
+    public boolean hasTempData() {
+        return tempDataStatus;
+    }
+
+    @Override
+    public void setTempDataStatus(boolean status) {
+            this.tempDataStatus=status;
+    }
+
+    @Override
+    public ArrayList<MarketPlaceData> getTempData() {
+        return tempData;
     }
 }

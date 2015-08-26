@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,7 @@ import Model.CustomTextView;
 import Model.MarketPlaceData;
 import Model.MarketPlaceListAdapter;
 import Model.MarketPlaceStaggeredAdapter;
+import Model.Variables;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -52,22 +55,19 @@ public class SingleListingActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private List<ImageView> dots;
     private Toolbar toolbar;
+
+
     private FloatingActionButton offerFab;
-    private TextView itemTitle;
+    private CustomTextView itemTitle,itemDescription,itemCondition,itemDateAdded;
+    private FlowLayout tagsLayout;
     private CircleImageView proPic;
+
     private RelativeLayout singleListingHeader;
     MarketPlaceData m;
 
-    private Bitmap[] imageResources;
+    private boolean isSelfItem = false;
 
-    /*
-    private int[] imageResources={
-            R.drawable.sample_img5,
-            R.drawable.sample_img2,
-            R.drawable.sample_img3,
-            R.drawable.sample_img6
-    };
-    */
+    private String[] imageResources;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,26 +81,114 @@ public class SingleListingActivity extends AppCompatActivity {
         singleListingHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                ArrayList<String> itemProfileClicked = new ArrayList<>();
+                itemProfileClicked.add(0, String.valueOf(m.item.item.getUserid()));
+                itemProfileClicked.add(1, m.proUsername);
+                i.putStringArrayListExtra("itemProfileClicked", itemProfileClicked);
+
+                //
+                i.putExtra("caller","SingleListingActivity");
+                Bitmap b = ((BitmapDrawable)proPic.getDrawable()).getBitmap();
+                i.putExtra("profilePic", b);
+
+                startActivity(i);
             }
         });
+
+        //item information
+        proPic = (CircleImageView)singleListingHeader.findViewById(R.id.single_listing_header_userImg);
+        itemTitle = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_itemTitle);
+        itemCondition = (CustomTextView)includeView.findViewById(R.id.single_listing_item_condition);
+        itemDescription = (CustomTextView)includeView.findViewById(R.id.single_listing_des_input);
+        itemDateAdded = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_time);
+        tagsLayout = (FlowLayout)includeView.findViewById(R.id.single_listing_tags);
+
 
         //floating action button
         //offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
         offerFab = (FloatingActionButton)includeView.findViewById(R.id.fab);
         offerFab.setOnClickListener(offerFabOnClickListener);
+
+
         Intent i = getIntent();
-        ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
-        m=MarketPlaceStaggeredAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
-        Bitmap proPicReceived = i.getParcelableExtra("profilePic");
+
+        if(getIntent().getStringExtra("caller").equals("MyItem")){
+            ArrayList<String> itemInfo = getIntent().getStringArrayListExtra("myItemClicked");
+            Bitmap proPicReceived = i.getParcelableExtra("profilePic");
+            //item userPic
+            proPic.setImageBitmap(proPicReceived);
+            //item title
+            itemTitle.setText(itemInfo.get(1));
+            //item description
+            itemDescription.setText(itemInfo.get(3));
+            //item condition
+            itemCondition.setText(setCondition(Integer.parseInt(itemInfo.get(5))));
+            //item dateAdded
+            itemDateAdded.setText(itemInfo.get(4));
+
+            String[] itemImages = getIntent().getStringArrayExtra("itemImages");
+            String[] images = new String[itemImages.length];
+
+            for(int j=0;j<itemImages.length;j++){
+                images[j]="http://104.199.135.162:8084/TDserverWeb/images/items/" + itemInfo.get(0) +"/"+ itemImages[j];
+
+            }
+            String[] itemTags = getIntent().getStringArrayExtra("itemTags");
+
+            imageResources = new String[itemImages.length];
+            mCustomPagerAdapter = new CustomPagerAdapter(this,images);
+            mViewPager = (ViewPager) findViewById(R.id.pager);
+            mViewPager.setAdapter(mCustomPagerAdapter);
+
+            for (String tempTag : itemTags) {
+                tagsLayout.addView(addTagsSingleListing(tempTag));
+            }
+            offerFab.setVisibility(View.GONE);
+            isSelfItem=true;
+
+
+
+        }else {
+            ArrayList<String> itemDetails = i.getStringArrayListExtra("itemClicked");
+            m = MarketPlaceStaggeredAdapter.mData.get(Integer.parseInt(itemDetails.get(0)));
+            Bitmap proPicReceived = i.getParcelableExtra("profilePic");
+            //item userPic
+            proPic.setImageBitmap(proPicReceived);
+            //item title
+            itemTitle.setText(m.item.item.getItemname());
+            //item description
+            itemDescription.setText(m.item.item.getDescription());
+            //item condition
+            itemCondition.setText(setCondition(m.item.item.getCon()));
+            //item dateAdded
+            itemDateAdded.setText(MarketPlaceStaggeredAdapter.daysBetween(m.item.item.getDateadded()));
+            //item tags
+            for (String tempTag : m.item.tags) {
+                tagsLayout.addView(addTagsSingleListing(tempTag));
+            }
+
+            if(m.item.item.getUserid()==Constants.userid){
+                offerFab.setVisibility(View.GONE);
+                isSelfItem=true;
+            }else{
+                offerFab.setVisibility(View.VISIBLE);
+                isSelfItem=false;
+            }
+
+            imageResources = new String[m.image.length];
+            mCustomPagerAdapter = new CustomPagerAdapter(this,m.image);
+            mViewPager = (ViewPager) findViewById(R.id.pager);
+            mViewPager.setAdapter(mCustomPagerAdapter);
+
+        }
+
+
+
+        /*
         imageResources =new Bitmap[m.image.length];
-
-
         for(int j=0;j<m.image.length;j++){
-
-
             try {
-
                 String s= m.image[j];
                 URL url = new URL(s);
                 URLConnection con = url.openConnection();
@@ -111,87 +199,15 @@ public class SingleListingActivity extends AppCompatActivity {
                 ((HttpURLConnection)con).disconnect();
 
             }catch (Exception e){
-
             }
-
-
         }
-        /*
-        int id=0;
-        for(String s : m.image)
-        {
-        try {
-            URL url = new URL(s);
-            URLConnection con = url.openConnection();
-            con.setRequestProperty("connection","close");
-            InputStream is = con.getInputStream();
-            imageResources[id] = BitmapFactory.decodeStream(is);
-            is.close();
-            ((HttpURLConnection)con).disconnect();
-            id++;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-        }
-    */
-
-
+        */
         //image slider viewer
-        mCustomPagerAdapter = new CustomPagerAdapter(this,imageResources);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mCustomPagerAdapter);
-
-        Log.d("item details","item title: " + m.item.item.getItemname());
-        Log.d("item details","itemId: " + m.item.item.getItemid());
-        Log.d("item details","itemUserId: " + m.item.item.getUserid());
-        Log.d("item details","itemCondition: " + m.item.item.getCon());
-        Log.d("item details","itemDescription: " + m.item.item.getDescription());
-        Log.d("item details","itemDatedAdded: " + m.item.item.getDateadded());
-        Log.d("item details","itemDatedAdded: " + m.proUsername);
-
-
-
-        //item userPic
-        proPic = (CircleImageView)singleListingHeader.findViewById(R.id.single_listing_header_userImg);
-        proPic.setImageBitmap(proPicReceived);
-
-
-        //item title
-        itemTitle = (TextView)singleListingHeader.findViewById(R.id.single_listing_header_itemTitle);
-        itemTitle.setText(m.item.item.getItemname());
-
-        //item description
-        CustomTextView itemDescription = (CustomTextView)includeView.findViewById(R.id.single_listing_des_input);
-        itemDescription.setText(m.item.item.getDescription());
-
-        //item condition
-        CustomTextView itemCondition = (CustomTextView)includeView.findViewById(R.id.single_listing_item_condition);
-        itemCondition.setText(setCondition(m.item.item.getCon()));
-
-        //item dateAdded
-        CustomTextView itemDateAdded = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_time);
-        itemDateAdded.setText(MarketPlaceStaggeredAdapter.daysBetween(m.item.item.getDateadded()));
-
-        //item tags
-        FlowLayout tagsLayout = (FlowLayout)includeView.findViewById(R.id.single_listing_tags);
-        for(String tempTag : m.item.tags){
-            tagsLayout.addView(addTagsSingleListing(tempTag));
-        }
-
-
-
+        //mCustomPagerAdapter = new CustomPagerAdapter(this,m.image);
 
         //setup actionbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        //toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        //toolbar.setTitle("Listing");
-
-
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -201,7 +217,6 @@ public class SingleListingActivity extends AppCompatActivity {
         title1.setText("Item Details");
         title2.setVisibility(View.GONE);
         getSupportActionBar().setCustomView(v);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -220,9 +235,12 @@ public class SingleListingActivity extends AppCompatActivity {
         MenuItem item;
 
         //put logic here
-        item = menu.add("Edit");
-        item.setIcon(R.drawable.ic_action_edit);
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        if(isSelfItem){
+            item = menu.add("Edit");
+            item.setIcon(R.drawable.ic_action_edit);
+            MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        }
+
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -352,6 +370,7 @@ public class SingleListingActivity extends AppCompatActivity {
         return margin; // margin in pixels
 
     }
+
 
 
 }

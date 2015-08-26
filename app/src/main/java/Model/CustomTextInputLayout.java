@@ -32,34 +32,24 @@ public class CustomTextInputLayout extends TextInputLayout {
     private void settingFont(Context ctx, AttributeSet attrs) {
         TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.CustomTextInputLayout);
         String customFont = a.getString(R.styleable.CustomTextInputLayout_typefaceAsset);
-        Typeface tf = null;
+        Typeface tf = FontManager.getTypeface(customFont, getContext());
+
+
         try {
-            tf = FontManager.getTypeface(customFont, getContext());
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            a.recycle();
-            return;
-        }
-
-        getEditText().setTypeface(tf);
-
-        try{
             // Retrieve the CollapsingTextHelper Field
-            final Field cthf = getClass().getDeclaredField("mCollapsingTextHelper");
+            final Field cthf = this.getClass().getDeclaredField("mCollapsingTextHelper");
             cthf.setAccessible(true);
 
-            // Retrieve an instance of CollapsingTextHelper and its TextPaint
-            final Object cth = cthf.get(getClass());
+            final Object cth = cthf.get(this);
             final Field tpf = cth.getClass().getDeclaredField("mTextPaint");
             tpf.setAccessible(true);
-
-            // Apply your Typeface to the CollapsingTextHelper TextPaint
             ((TextPaint) tpf.get(cth)).setTypeface(tf);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            a.recycle();
+
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+            a.recycle();
+
         }
-        a.recycle();
     }
 }

@@ -5,14 +5,15 @@
     <item android:state_focused="true" android:drawable="@color/ColorPrimary" />
     <!-- focused -->
 
+
     <item>
         <shape android:shape="rectangle" android:padding="10dp">
             <solid android:color="#0000" />
 
-            <gradient android:startColor="#3300FF" android:endColor="#3300FF" android:angle="270" />
-
-            <stroke android:width="4px" android:color="#80FFFFFF" />
+            <stroke android:width="2dp" android:color="#80FFFFFF" />
 
         </shape>
     </item>
+
+
 </selector>

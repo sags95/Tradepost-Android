@@ -1,5 +1,7 @@
 package Model;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -13,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sinapp.sharathsind.tradepost.R;
+import com.sinapp.sharathsind.tradepost.SingleListingActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +25,14 @@ import java.util.List;
  */
 public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHolder> {
 
-    private List<MyItems> mData;
+    private ArrayList<MyItems> mData;
+    private Context context;
+    private View.OnClickListener itemClicked;
 
-    public MyItemsAdapter(List<MyItems> mData) {
+    public MyItemsAdapter(Context context,ArrayList<MyItems> mData, View.OnClickListener itemClicked) {
         this.mData = mData;
+        this.context=context;
+        this.itemClicked=itemClicked;
     }
 
     @Override
@@ -33,6 +41,7 @@ public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHold
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_item_my_items, viewGroup, false);
         MyItemsAdapter.ViewHolder vh = new ViewHolder(v);
+        v.setOnClickListener(itemClicked);
 
         return vh;
 

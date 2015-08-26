@@ -2,6 +2,7 @@ package Model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.sinapp.sharathsind.tradepost.R;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by HenryChiang on 15-06-12.
@@ -23,6 +25,7 @@ public class CustomPagerAdapter extends PagerAdapter {
 
 
    Bitmap[] mResources;
+    String[] imagesArray;
 
 
     public CustomPagerAdapter(Context context, Bitmap[] imageResources) {
@@ -31,9 +34,19 @@ public class CustomPagerAdapter extends PagerAdapter {
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public CustomPagerAdapter(Context context, String[] imagesArray) {
+        mContext = context;
+        this.imagesArray=imagesArray;
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
     @Override
     public int getCount() {
-        return mResources.length;
+        if(mResources!=null){
+            return mResources.length;
+        }else {
+            return imagesArray.length;
+        }
     }
 
     @Override
@@ -46,9 +59,15 @@ public class CustomPagerAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.pager_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        imageView.setImageBitmap(mResources[position]);
+        if(imagesArray!=null){
+                Picasso.with(mContext).load(Uri.parse(imagesArray[position])).into(imageView);
+                container.addView(itemView);
 
-        container.addView(itemView);
+        }else{
+            imageView.setImageBitmap(mResources[position]);
+            container.addView(itemView);
+        }
+
 
         return itemView;
     }

@@ -1,5 +1,8 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,9 +21,13 @@ import java.util.List;
 import Model.CustomLinearLayoutManager;
 import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
+import Model.MarketPlaceStaggeredAdapter;
 import Model.MyItems;
 import Model.MyItemsAdapter;
+import Model.OfferProcessItem;
 import Model.RecyclerViewOnClickListener;
+import Model.Variables;
+import datamanager.userdata;
 
 /**
  * Created by HenryChiang on 15-08-10.
@@ -31,6 +39,7 @@ public class MyItemsFragment extends Fragment {
     private MyItemsAdapter myItemsAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private CustomLinearLayoutManager mLayoutManager;
+    private ArrayList<MyItems>  myItems  = new ArrayList<MyItems>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +66,12 @@ public class MyItemsFragment extends Fragment {
         emptyView = rootView.findViewById(R.id.myItems_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.myItems_recyclerview);
 
-        final List<MyItems> myItems  = addItem("hello");
+
+        for (int i = 0; i < userdata.i.size(); i++) {
+            MyItems myItem = new MyItems(userdata.i.get(i).item.getItemname(),userdata.i.get(i).item.getItemid(),userdata.userid);
+
+            myItems.add(myItem);
+        }
 
         //SwipeToRefresh
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.myItems_swipe_refresh_layout);
@@ -88,7 +102,7 @@ public class MyItemsFragment extends Fragment {
 
 
 
-        myItemsAdapter = new MyItemsAdapter(myItems);
+        myItemsAdapter = new MyItemsAdapter(getActivity().getApplicationContext(),myItems,myItemClickListener);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(emptyView);
@@ -108,30 +122,39 @@ public class MyItemsFragment extends Fragment {
         return rootView;
     }
 
-    public List<MyItems> addItem(String title) {
-        List<MyItems> items = new ArrayList<MyItems>();
-        items.add(new MyItems(title));
-        items.add(new MyItems("User"));
-        items.add(new MyItems("Long Long title"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Super Long Item Title"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyItems("Very Very Very Long Item Title is Created By Henry"));
-
-
-
-        return items;
-    }
     private void applyLinearLayoutManager(){
         mLayoutManager = new CustomLinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
+
+    public View.OnClickListener myItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.d("child position", String.valueOf(mRecyclerView.getChildLayoutPosition(v)));
+
+
+            Intent i = new Intent(getActivity(), SingleListingActivity.class);
+            ArrayList<String> clickedItemDetails = new ArrayList<String>();
+
+            i.putExtra("caller", "MyItem");
+
+            clickedItemDetails.add(0, String.valueOf(userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getItemid()));
+            clickedItemDetails.add(1, userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getItemname());
+            clickedItemDetails.add(2, userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getUsername());
+            clickedItemDetails.add(3, userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getDescription());
+            clickedItemDetails.add(4, MarketPlaceStaggeredAdapter.daysBetween(userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getDateadded()));
+            clickedItemDetails.add(5, String.valueOf(userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getCon()));
+
+            i.putStringArrayListExtra("myItemClicked", clickedItemDetails);
+
+            i.putExtra("itemImages", userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).images);
+            i.putExtra("itemTags",userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).tags);
+
+            //profile picture
+            Bitmap b = Variables.getProfilepic();
+            i.putExtra("profilePic",b);
+
+            startActivity(i);
+        }
+    };
 }
