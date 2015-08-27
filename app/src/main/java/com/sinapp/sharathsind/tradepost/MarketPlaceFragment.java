@@ -558,23 +558,15 @@ public class MarketPlaceFragment  extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<MarketPlaceData> result) {
 
-            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
             MarketPlaceStaggeredAdapter m = new MarketPlaceStaggeredAdapter();
             m.updateList(result);
-            //mRecyclerView.setAdapter(stagAdapter2);
-            mSwipeRefreshLayoutEmpty.setRefreshing(false);
-            mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
-
             mCallback.storeTempMarketPlaceData(result);
+            mSwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
         protected void onPreExecute() {
-            mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setVisibility(View.GONE);
-            mSwipeRefreshLayoutEmpty.setVisibility(View.VISIBLE);
-
-            mSwipeRefreshLayoutEmpty.post(new Runnable() {
+            mSwipeRefreshLayout.post(new Runnable() {
                 @Override
                 public void run() {
                     mSwipeRefreshLayoutEmpty.setRefreshing(true);

@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
 import com.sinapp.sharathsind.tradepost.SingleListingActivity;
@@ -304,5 +303,6 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
     public void updateList(ArrayList<MarketPlaceData> data) {
         mData = data;
         notifyDataSetChanged();
+
     }
 }

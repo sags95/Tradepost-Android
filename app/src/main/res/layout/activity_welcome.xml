@@ -15,7 +15,6 @@
         android:id="@+id/welcome_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tag"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:layout_alignParentTop="true"
@@ -33,6 +32,7 @@
             android:singleLine="true"
             android:text="Trade"
             style="@style/OpenSansLight"
+
             />
 
         <Model.CustomTextView

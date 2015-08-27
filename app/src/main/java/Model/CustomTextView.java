@@ -23,13 +23,12 @@ public class CustomTextView extends TextView {
 
     public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setTypeface(FontManager.settingFont(context, attrs, R.styleable.CustomTextView, R.styleable.CustomTextView_typefaceAsset));
-
+        settingFont(context,attrs);
     }
 
     public CustomTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setTypeface(FontManager.settingFont(context, attrs, R.styleable.CustomTextView, R.styleable.CustomTextView_typefaceAsset));
+        settingFont(context,attrs);
     }
 
 
