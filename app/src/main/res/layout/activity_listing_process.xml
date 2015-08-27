@@ -183,6 +183,7 @@
                     android:layout_height="100dp"
                     android:layout_below="@+id/section2_scroll_top_div"
                     android:orientation="horizontal"
+                    android:layout_marginBottom="16dp"
                     >
 
                     <ImageView
@@ -250,21 +251,12 @@
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/section2_scroll_bottom_div"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/color_background_gray"
-                    android:layout_below="@+id/section2_imgs_container"
-                    android:layout_marginBottom="8dp"
-                    />
-
                 <LinearLayout
                     android:id="@+id/section2_selection_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_below="@+id/section2_scroll_bottom_div"
+                    android:layout_below="@+id/section2_imgs_container"
                     android:weightSum="2"
                     >
 

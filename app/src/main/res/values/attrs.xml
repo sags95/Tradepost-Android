@@ -39,6 +39,11 @@
         <attr name="typefaceAsset" />
     </declare-styleable>
 
+    <!-- Custom LimitedEditText -->
+    <declare-styleable name="CustomCheckBox">
+        <attr name="typefaceAsset" />
+    </declare-styleable>
+
 
     <style name="OpenSansLight">
         <item name="typefaceAsset">fonts/OpenSansLight.ttf</item>

@@ -22,13 +22,12 @@ public class CustomEditText extends EditText {
 
     public CustomEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setTypeface(FontManager.settingFont(context, attrs, R.styleable.CustomEditText, R.styleable.CustomEditText_typefaceAsset));
-
+        settingFont(context, attrs);
     }
 
     public CustomEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setTypeface(FontManager.settingFont(context, attrs, R.styleable.CustomEditText, R.styleable.CustomEditText_typefaceAsset));
+        settingFont(context, attrs);
 
     }
 
