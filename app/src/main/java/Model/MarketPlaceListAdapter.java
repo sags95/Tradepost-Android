@@ -144,14 +144,14 @@ public class MarketPlaceListAdapter extends ArrayAdapter<MarketPlaceData> {
         //Images
         try {
 
-            Uri url1 = Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/items/" + mData.get(position).item.item.getItemid() + "/0.png");
+            Uri url1 = Uri.parse("http://192.168.2.15:8084/TDserverWeb/images/items/" + mData.get(position).item.item.getItemid() + "/0.png");
             Picasso.with(getContext())
                     .load(url1)
                     .placeholder(R.drawable.sample_img3)
                     .into(vh.itemImg);
 
 
-            Uri url=Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/" + mData.get(position).userid + "/profile.png");
+            Uri url=Uri.parse("http://192.168.2.15:8084/TDserverWeb/images/" + mData.get(position).userid + "/profile.png");
             Picasso.with(getContext())
                     .load(url)
                     .placeholder(R.drawable.sample_img)

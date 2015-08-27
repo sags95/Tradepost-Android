@@ -18,7 +18,7 @@ public class OfferWebService {
     s.addProperty("ruserid",ruserid);
         s.addProperty("fori",foritemid);
          s.addProperty("cash",cash);
-        SoapPrimitive soapPrimitive = MainWebService.getretryMsg(s, "http://104.199.135.162:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferRequest",0);
+        SoapPrimitive soapPrimitive = MainWebService.getretryMsg(s, "http://192.168.2.15:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferRequest",0);
 int offerid=Integer.parseInt(soapPrimitive.getValue().toString());
         for(int i=0;i<itemid.length;i++)
 {
@@ -26,7 +26,7 @@ int offerid=Integer.parseInt(soapPrimitive.getValue().toString());
     s.addProperty("offerid", offerid);
     s.addProperty("itemid",itemid[i]);
 
- soapPrimitive = MainWebService.getretryMsg(s, "http://104.199.135.162:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addofferItemRequest",0);
+ soapPrimitive = MainWebService.getretryMsg(s, "http://192.168.2.15:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addofferItemRequest",0);
 
 
 }
@@ -35,7 +35,7 @@ if(Images!=null) {
     s.addProperty("offerid", offerid);
     s.addProperty("images", Images);
     s.addProperty("pic", 0);
-    soapPrimitive = MainWebService.getretryMsg(s, "http://104.199.135.162:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addOferImageRequest", 0);
+    soapPrimitive = MainWebService.getretryMsg(s, "http://192.168.2.15:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addOferImageRequest", 0);
 }
 
 
@@ -58,8 +58,16 @@ if(Images!=null)
         s.addProperty("offerid", offerid);
         s.addProperty("userid",ruserid);
         s.addProperty("msg",notification);
-        soapPrimitive = MainWebService.getretryMsg(s, "http://104.199.135.162:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferNotRequest",0);
+        soapPrimitive = MainWebService.getretryMsg(s, "http://192.168.2.15:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferNotRequest",0);
 
+    }
+    public void acceptOffer(int offerid)
+    {
+
+    }
+    public void declineOffer(int offerid)
+    {
+        
     }
 
 }

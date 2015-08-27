@@ -49,6 +49,7 @@
         android:largeHeap="true"
         android:screenOrientation="portrait"
 
+
         >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -140,7 +141,7 @@
         </receiver>
 
         <service
-            android:name="services.GCMService"
+            android:name="com.sinapp.sharathsind.tradepost.GCMService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />

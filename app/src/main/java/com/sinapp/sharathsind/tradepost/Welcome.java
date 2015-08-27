@@ -81,7 +81,7 @@ public class Welcome extends Activity implements OnClickListener {
         boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "tradepostdb.db");
 
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, service);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, service);
         Criteria criteria = new Criteria();
         String provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
@@ -142,7 +142,7 @@ public class Welcome extends Activity implements OnClickListener {
                         SoapObject object = new SoapObject("http://webser/", "getuseritems");
                         //SoapObject object = new SoapObject("http://webser/", "getuseritems");
                         object.addProperty("userid",  userdata.userid);
-                        Vector object1 = MainWebService.getMsg1(object,"http://104.199.135.162:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
+                        Vector object1 = MainWebService.getMsg1(object,"http://192.168.2.15:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
                         userdata.items=new ArrayList<Integer>();
 
 
@@ -157,7 +157,7 @@ public class Welcome extends Activity implements OnClickListener {
 
                        SoapObject  obje=new SoapObject("http://webser/","getItembyId");
                         obje.addProperty("itemid", i);
-                        KvmSerializable result1= MainWebService.getMsg2(obje,"http://104.199.135.162:8084/TDserverWeb/GetItems?wsdl"
+                        KvmSerializable result1= MainWebService.getMsg2(obje,"http://192.168.2.15:8084/TDserverWeb/GetItems?wsdl"
                                 ,"http://webser/GetItems/getItembyIdRequest");
 
                         ItemResult ir= new ItemResult();
@@ -177,7 +177,7 @@ public class Welcome extends Activity implements OnClickListener {
                         }
                         obje=new SoapObject("http://webser/","searchbyint");
                         obje.addProperty("name", i);
-                        Vector result2= MainWebService.getMsg1(obje, "http://104.199.135.162:8084/TDserverWeb/NewWebService?wsdl"
+                        Vector result2= MainWebService.getMsg1(obje, "http://192.168.2.15:8084/TDserverWeb/NewWebService?wsdl"
                                 , "http://webser/NewWebService/searchbyintRequest");
                         if(result2!=null) {
 
@@ -198,7 +198,7 @@ public class Welcome extends Activity implements OnClickListener {
                     }
                 }.execute(null,null,null);
 
-                //URL url = new URL("http://104.199.135.162:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
+                //URL url = new URL("http://192.168.2.15:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
                 //Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                 //Constants.username=c.getString(c.getColumnIndex("username"));
 
@@ -241,7 +241,7 @@ public class Welcome extends Activity implements OnClickListener {
                                 protected String doInBackground(String... params) {
                                     try {
                                         String token = instanceID.getToken("923650940708",
-                                                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                                                GoogleCloudMessaging.INSTANCE_ID_SCOPE);
                                         Constants.GCM_Key = token;
                                         ContentValues cv=new ContentValues();
                                         cv.put("gcmkey",token);

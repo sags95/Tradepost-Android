@@ -194,7 +194,7 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
 
             //item images
-            Uri url1 = Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/items/" + data.item.item.getItemid() + "/0.png");
+            Uri url1 = Uri.parse("http://192.168.2.15:8084/TDserverWeb/images/items/" + data.item.item.getItemid() + "/0.png");
             Picasso.with(context)
                     .load(url1)
                     .placeholder(R.drawable.sample_img3)
@@ -207,7 +207,7 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
             mTextViewItemTitle.setText(data.item.item.getItemname());
 
             //profile picture
-            Uri url=Uri.parse("http://104.199.135.162:8084/TDserverWeb/images/" + data.userid + "/profile.png");
+            Uri url=Uri.parse("http://192.168.2.15:8084/TDserverWeb/images/" + data.userid + "/profile.png");
             Picasso.with(context)
                     .load(url)
                     .placeholder(R.drawable.sample_img)

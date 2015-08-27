@@ -32,8 +32,9 @@ public class RegisterWebService {
     private static final String SOAP_ACTION = "http://webser/Register/operationRequest";
     private static final String METHOD_NAME = "operation";
     private static final String NAMESPACE = "http://webser/";
-    private static final String URL ="http://104.199.135.162:8084/TDserverWeb/Register?wsdl";
-
+    private static final String URL ="http://192.168.2.15:8084/TDserverWeb/Register?wsdl";
+private  static final String mname="gcmwebservice";
+    private static final String SOAP_ACTION1 = "http://webser/Register/gcmwebserviceRequest";
     public static ContentValues signUp(String username, String email, String s, String fb, Bitmap profilepic, boolean b,SQLiteDatabase db) {
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
             request.addProperty("username",username);
@@ -66,9 +67,14 @@ public class RegisterWebService {
     cv.put("itype",fb);
     cv.put("userid",res);
     cv.put("password",s);
-    cv.put("profilepicture","lib/profile.png");
-
-    //   long l=   db.insert("login",null,cv);
+    cv.put("profilepicture", "lib/profile.png");
+            request=new SoapObject(NAMESPACE,mname);
+            request.addProperty("os", "android");
+            request.addProperty("userid", Integer.parseInt(res));
+            request.addProperty("apikey",Constants.GCM_Key);
+            SoapPrimitive s1=MainWebService.getMsg(request,URL,SOAP_ACTION1);
+      String sj="h";
+    //  long l=   db.insert("login",null,cv);
 //long k=l;
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,12 +122,13 @@ public class RegisterWebService {
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
             //  String res = response.ge().toString();
             return response;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        return MainWebService.getMsg(object, "http://104.199.135.162:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+        return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
 

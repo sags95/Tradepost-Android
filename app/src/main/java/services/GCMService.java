@@ -23,14 +23,13 @@ public class GCMService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
 
-        String type = data.getString("type");
-        if(type.equals("offer"))
-        {
+        String type = data.getString("message");
+
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
                             .setSmallIcon(R.drawable.notification_icon)
                             .setContentTitle("Trade Post")
-                            .setContentText(data.getString("msg"));
+                            .setContentText(data.getString("message"));
 
             Intent notificationIntent = new Intent(this, OfferProcessActivity.class);
             // set intent so it does not start a new activity
@@ -46,7 +45,7 @@ mBuilder.setContentIntent(intent);
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 // Builds the notification and issues it.
             mNotifyMgr.notify(mNotificationId, mBuilder.build());
-        }
+
     }
 
 

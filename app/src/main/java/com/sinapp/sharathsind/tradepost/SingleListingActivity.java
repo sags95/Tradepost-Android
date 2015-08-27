@@ -131,7 +131,7 @@ public class SingleListingActivity extends AppCompatActivity {
             String[] images = new String[itemImages.length];
 
             for(int j=0;j<itemImages.length;j++){
-                images[j]="http://104.199.135.162:8084/TDserverWeb/images/items/" + itemInfo.get(0) +"/"+ itemImages[j];
+                images[j]="http://192.168.2.15:8084/TDserverWeb/images/items/" + itemInfo.get(0) +"/"+ itemImages[j];
 
             }
             String[] itemTags = getIntent().getStringArrayExtra("itemTags");
