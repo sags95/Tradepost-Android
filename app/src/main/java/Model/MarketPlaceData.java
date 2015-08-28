@@ -111,7 +111,10 @@ public class MarketPlaceData implements Serializable {
 
                         }
                     }
-                    MarketPlaceData data = new MarketPlaceData();
+                obje=new SoapObject("http://webser/","getusername");
+                obje.addProperty("name",ir.item.getUserid());
+                SoapPrimitive soapPrimitive=MainWebService.getretryMsg(obje,"http://73.37.238.238:8084/TDserverWeb/getUserName?wsdl","http://webser/getUserName/getusernameRequest",0)  ;                  MarketPlaceData data = new MarketPlaceData();
+                   ir.username=soapPrimitive.getValue().toString();
                     data.itemImage = "http://73.37.238.238:8084/TDserverWeb/images/items/"+ir.item.getItemid()+"/"+ir.images[0];
                     data.proUsername = "User";
                     data.itemTitle = ir.item.getItemname();

@@ -14,7 +14,7 @@ public class ItemResult implements Serializable,KvmSerializable {
  public    Item item;
   public  String [] images;
     public String []tags;
-
+public  String username;
     @Override
     public String toString() {
         return "ItemResult{" +
