@@ -80,6 +80,7 @@ public class ProFileItemForTradeFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(emptyView);
+        mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
                     @Override

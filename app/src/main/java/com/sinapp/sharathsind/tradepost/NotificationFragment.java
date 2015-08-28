@@ -62,6 +62,7 @@ public class NotificationFragment extends Fragment {
         mNotificationAdapter = new NotificationAdapter(notiItem);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.setEmptyView(emptyView);
 
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {

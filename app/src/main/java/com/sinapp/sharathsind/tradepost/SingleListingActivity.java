@@ -44,6 +44,7 @@ import Model.MarketPlaceData;
 import Model.MarketPlaceListAdapter;
 import Model.MarketPlaceStaggeredAdapter;
 import Model.Variables;
+import datamanager.userdata;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -116,8 +117,10 @@ public class SingleListingActivity extends AppCompatActivity {
         if(getIntent().getStringExtra("caller").equals("MyItem")){
             ArrayList<String> itemInfo = getIntent().getStringArrayListExtra("myItemClicked");
             Bitmap proPicReceived = i.getParcelableExtra("profilePic");
+
             //item userPic
-            proPic.setImageBitmap(proPicReceived);
+            Picasso.with(this).load(Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + userdata.userid + "/profile.png")).into(proPic);
+            //proPic.setImageBitmap(proPicReceived);
             //item title
             itemTitle.setText(itemInfo.get(1));
             //item description
@@ -131,7 +134,7 @@ public class SingleListingActivity extends AppCompatActivity {
             String[] images = new String[itemImages.length];
 
             for(int j=0;j<itemImages.length;j++){
-                images[j]="http://192.168.2.15:8084/TDserverWeb/images/items/" + itemInfo.get(0) +"/"+ itemImages[j];
+                images[j]="http://73.37.238.238:8084/TDserverWeb/images/items/" + itemInfo.get(0) +"/"+ itemImages[j];
 
             }
             String[] itemTags = getIntent().getStringArrayExtra("itemTags");

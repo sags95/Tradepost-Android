@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class ProfileFeedbackFragment extends Fragment {
     private EmptyRecyclerView mRecyclerView;
     private ProfileFeedbackAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     @Override
@@ -39,6 +41,7 @@ public class ProfileFeedbackFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_profile_feedback, container, false);
         emptyView = rootView.findViewById(R.id.profile_feedback_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.profile_feedback_recyclerview);
+        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.profile_feedback_swipe_refresh_layout);
 
         final List<ProfileFeedbackItem> feedbackItems = addItem("Sample User Name","no Comment",3.5f);
         //final List<ProfileFeedbackItem> feedbackItems = null;
@@ -46,6 +49,7 @@ public class ProfileFeedbackFragment extends Fragment {
         mAdapter = new ProfileFeedbackAdapter(feedbackItems);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(emptyView);
+        mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.setAdapter(mAdapter);
         applyLinearLayoutManager();
 

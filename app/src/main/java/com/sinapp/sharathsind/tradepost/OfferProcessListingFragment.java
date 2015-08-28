@@ -100,6 +100,7 @@ public class OfferProcessListingFragment extends Fragment {
         });
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setEmptyView(emptyView);
+        mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.setAdapter(mOfferProcessAdapter);
         applyLinearLayoutManager();
 

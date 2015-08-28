@@ -68,7 +68,7 @@ public class MarketPlaceData implements Serializable {
         obje.addProperty("lat", userdata.latitude);
         obje.addProperty("longi",userdata.longitude);
         obje.addProperty("rad",25);
-        result= MainWebService.getMsg1(obje,"http://192.168.2.15:8084/TDserverWeb/GetItems?wsdl"
+        result= MainWebService.getMsg1(obje,"http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
                 ,"http://webser/GetItems/getItemsRequest");
 
         //doAsync();
@@ -79,7 +79,7 @@ public class MarketPlaceData implements Serializable {
             for (Object i : result) {
                 obje=new SoapObject("http://webser/","getItembyId");
                 obje.addProperty("itemid", Integer.parseInt(((SoapPrimitive)i).getValue().toString()));
-                    KvmSerializable result1= MainWebService.getMsg2(obje, "http://192.168.2.15:8084/TDserverWeb/GetItems?wsdl"
+                    KvmSerializable result1= MainWebService.getMsg2(obje, "http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
                             , "http://webser/GetItems/getItembyIdRequest");
 
                     ItemResult ir= new ItemResult();
@@ -99,7 +99,7 @@ public class MarketPlaceData implements Serializable {
                     }
                     obje=new SoapObject("http://webser/","searchbyint");
                     obje.addProperty("name", i);
-                    Vector result2= MainWebService.getMsg1(obje, "http://192.168.2.15:8084/TDserverWeb/NewWebService?wsdl"
+                    Vector result2= MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/NewWebService?wsdl"
                             , "http://webser/NewWebService/searchbyintRequest");
                     if(result2!=null) {
 
@@ -112,7 +112,7 @@ public class MarketPlaceData implements Serializable {
                         }
                     }
                     MarketPlaceData data = new MarketPlaceData();
-                    data.itemImage = "http://192.168.2.15:8084/TDserverWeb/images/items/"+ir.item.getItemid()+"/"+ir.images[0];
+                    data.itemImage = "http://73.37.238.238:8084/TDserverWeb/images/items/"+ir.item.getItemid()+"/"+ir.images[0];
                     data.proUsername = "User";
                     data.itemTitle = ir.item.getItemname();
                     data.userid=ir.item.getUserid();
@@ -130,7 +130,7 @@ public class MarketPlaceData implements Serializable {
                     int ij=0;
                     for(String s:ir.images)
                     {
-                        data.image[ij]="http://192.168.2.15:8084/TDserverWeb/images/items/"+ir.item.getItemid()+"/"+s;
+                        data.image[ij]="http://73.37.238.238:8084/TDserverWeb/images/items/"+ir.item.getItemid()+"/"+s;
 
                         ij++;
                     }

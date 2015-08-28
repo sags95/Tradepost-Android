@@ -1,31 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    android:id="@+id/offer_process_swipe_refresh_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+
 
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
-    <Model.EmptyRecyclerView
-        android:id="@+id/offer_process_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/offer_process_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:scrollbars="vertical"
         android:layout_height="match_parent"
-        />
 
-    <ScrollView
+        >
+
+        <Model.EmptyRecyclerView
+            android:id="@+id/offer_process_list"
+            android:layout_width="match_parent"
+            android:scrollbars="vertical"
+            android:layout_height="match_parent"
+            />
+
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+    <LinearLayout
         android:id="@+id/offer_process_emptyView"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
 
-        </ScrollView>
+        <Model.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/myItems_empty"
+            android:textSize="24sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            style="@style/OpenSansRegular"
+            />
+
+    </LinearLayout>
 
 
 </LinearLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

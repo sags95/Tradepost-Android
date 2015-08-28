@@ -186,6 +186,13 @@
             android:screenOrientation="portrait"
             >
         </activity>
+
+        <activity
+            android:name=".ListingProcessDoneActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            >
+        </activity>
     </application>
 
 </manifest>

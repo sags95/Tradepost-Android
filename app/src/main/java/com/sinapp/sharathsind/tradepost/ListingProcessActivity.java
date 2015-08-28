@@ -239,12 +239,23 @@ String result;
                    protected void onPostExecute(String s) {
                        super.onPostExecute(s);
                        pg.dismiss();
+                       Intent i = new Intent(getApplicationContext(),ListingProcessDoneActivity.class);
+                       if(s.equals("success")){
+                           i.putExtra("isSuccess", true);
+                           startActivity(i);
+                           finish();
+
+                       }else{
+                           i.putExtra("isSuccess", false);
+                           startActivity(i);
+                       }
+
                    }
 
                    @Override
                     protected String doInBackground(String... voids) {
                 try {
-String []tagarray=new String[tags.size()];
+                    String []tagarray=new String[tags.size()];
          for(int i=0;i<tags.size();i++)
          {
              tagarray[i]=tags.get(i);
@@ -263,17 +274,18 @@ i++;
       for(String t:tags)
           sendtag(Integer.parseInt(result),t);
 //
+                    return "success";
 
                 } catch (Exception e) {
                    result=e.toString();
                     e.printStackTrace();
+                    return "failed";
+
                 }
-                return "";
-                    }
+
+                   }
                 }.execute(null,null);
         //        a.execute(" ","","");
-
-     //           Toast.makeText(getApplicationContext(), "POST?", Toast.LENGTH_SHORT).show();
        //         break;
             }
         }
@@ -287,7 +299,7 @@ i++;
         object.addProperty("itemid", id);
         object.addProperty("pic",pic);
         object.addProperty("image",im);
-        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
+        return     MainWebService.getMsg(object, "http://73.37.238.238:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addimageRequest");
     }
     public SoapPrimitive sendtag(int id,String im)
     {
@@ -295,7 +307,7 @@ i++;
         object.addProperty("itemid", id);
 
         object.addProperty("tag",im);
-        return     MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
+        return     MainWebService.getMsg(object, "http://73.37.238.238:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
     }
 
     public View.OnClickListener addTagButtonListener = new View.OnClickListener() {
@@ -334,6 +346,7 @@ i++;
             tagFlowLayout.removeView((View) v.getParent());
             //tags.add(((TextView) v).getText().toString().trim());
             tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
+
             Log.d("Child Removed", "Remove 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
 
 
@@ -451,7 +464,7 @@ i++;
     private static final String SOAP_ACTION = "http://webser/AddItems/additemRequest";
     private static final String METHOD_NAME = "additem";
     private static final String NAMESPACE = "http://webser/";
-    private static final String URL ="http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl";
+    private static final String URL ="http://73.37.238.238:8084/TDserverWeb/AddItems?wsdl";
     public SoapPrimitive sendDataToServer(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category) {
 
         SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -479,7 +492,7 @@ i++;
         }
 
 
-        return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+        return MainWebService.getMsg(object, "http://73.37.238.238:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
 

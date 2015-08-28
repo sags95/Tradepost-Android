@@ -137,7 +137,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
                 i.putStringArrayListExtra("profileDetails",profileDetails);
                 i.putExtra("caller", "NavigationDrawer");
-                i.putExtra("profilePic", ((BitmapDrawable) avatarContainer.getDrawable()).getBitmap());
+                if(avatarContainer.getDrawable()!=null) {
+                    i.putExtra("profilePic", ((BitmapDrawable) avatarContainer.getDrawable()).getBitmap());
+                }
 
                 startActivity(i);
             }
@@ -312,14 +314,14 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mEmail = (CustomTextView)mFragmentContainerView.findViewById(R.id.txtUserEmail);
         mUsername.setText(user);
         mEmail.setText(email);
-        Uri url = Uri.parse("http://192.168.2.15:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
+        Uri url = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
         Picasso.with(getActivity().getApplicationContext()).load(url).into(avatarContainer);
 
         if(Variables.username!=null)
         {
             mUsername.setText(Variables.username);
             mEmail.setText(Variables.email);
-            Uri url1 = Uri.parse("http://192.168.2.15:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
+            Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
             Picasso.with(getActivity().getApplicationContext()).load(url1).into(avatarContainer);
         }
     }

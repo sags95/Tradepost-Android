@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background_gray"
+    android:padding="16dp"
+    android:gravity="center_vertical">
+
+    <RelativeLayout
+        android:id="@+id/listing_process_success_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        >
+
+        <Model.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listing"
+            style="@style/OpenSansLight"
+            android:textSize="28sp"
+            android:id="@+id/listing_process_done"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+
+
+            />
+
+        <Model.CustomTextView
+            android:id="@+id/listing_process_done_posted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="POSTED"
+            style="@style/OpenSansSemiBold"
+            android:textSize="32sp"
+            android:textColor="@color/ColorPrimary"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@+id/listing_process_done"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+
+
+            />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_check"
+            app:border_width="4dp"
+            app:border_color="@color/ColorPrimary"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/listing_process_done_posted"
+            android:id="@+id/listing_process_done_pic"
+            android:layout_marginBottom="16dp"
+
+            />
+
+
+        <Model.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Happy Trading :)"
+            android:layout_below="@+id/listing_process_done_pic"
+            style="@style/OpenSansLight"
+            android:gravity="center_horizontal"
+
+
+            />
+
+    </RelativeLayout>
+
+    <Model.CustomButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View My Post"
+        style="@style/OpenSansLight"
+        android:textColor="@color/white"
+        android:background="@drawable/listing_process_success"
+        android:layout_alignParentBottom="true"
+    />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/listing_process_failed_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+
+            <Model.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Listing"
+                style="@style/OpenSansLight"
+                android:textSize="28sp"
+                android:id="@+id/listing_process_done_failed"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+
+
+                />
+
+            <Model.CustomTextView
+                android:id="@+id/listing_process_failed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FAILED"
+                style="@style/OpenSansSemiBold"
+                android:textSize="32sp"
+                android:textColor="@color/fab_primaryColor"
+                android:layout_marginBottom="8dp"
+                android:layout_below="@+id/listing_process_done_failed"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+
+
+                />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_close"
+                app:border_width="4dp"
+                app:border_color="@color/fab_primaryColor"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/listing_process_failed"
+                android:id="@+id/listing_process_failed_pic"
+                android:layout_marginBottom="16dp"
+
+                />
+
+
+            <Model.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Oops..."
+                android:layout_below="@+id/listing_process_failed_pic"
+                style="@style/OpenSansLight"
+                android:gravity="center_horizontal"
+
+
+                />
+
+        </RelativeLayout>
+
+        <Model.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go Back"
+            style="@style/OpenSansLight"
+            android:textColor="@color/white"
+            android:background="@drawable/listing_process_failed"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

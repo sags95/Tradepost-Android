@@ -32,7 +32,7 @@ public class RegisterWebService {
     private static final String SOAP_ACTION = "http://webser/Register/operationRequest";
     private static final String METHOD_NAME = "operation";
     private static final String NAMESPACE = "http://webser/";
-    private static final String URL ="http://192.168.2.15:8084/TDserverWeb/Register?wsdl";
+    private static final String URL ="http://73.37.238.238:8084/TDserverWeb/Register?wsdl";
 private  static final String mname="gcmwebservice";
     private static final String SOAP_ACTION1 = "http://webser/Register/gcmwebserviceRequest";
     public static ContentValues signUp(String username, String email, String s, String fb, Bitmap profilepic, boolean b,SQLiteDatabase db) {
@@ -128,7 +128,7 @@ private  static final String mname="gcmwebservice";
         }
 
 
-        return MainWebService.getMsg(object, "http://192.168.2.15:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+        return MainWebService.getMsg(object, "http://73.37.238.238:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
 
     }
 

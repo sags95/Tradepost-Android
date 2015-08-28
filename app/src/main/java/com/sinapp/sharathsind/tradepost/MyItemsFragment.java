@@ -27,6 +27,7 @@ import Model.MyItemsAdapter;
 import Model.OfferProcessItem;
 import Model.RecyclerViewOnClickListener;
 import Model.Variables;
+import datamanager.ItemResult;
 import datamanager.userdata;
 
 /**
@@ -65,12 +66,13 @@ public class MyItemsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_my_items, container, false);
         emptyView = rootView.findViewById(R.id.myItems_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.myItems_recyclerview);
-
-
-        for (int i = 0; i < userdata.i.size(); i++) {
-            MyItems myItem = new MyItems(userdata.i.get(i).item.getItemname(),userdata.i.get(i).item.getItemid(),userdata.userid);
-
-            myItems.add(myItem);
+        if(userdata.i!=null) {
+            for (int i = 0; i < userdata.i.size(); i++) {
+                MyItems myItem = new MyItems(userdata.i.get(i).item.getItemname(), userdata.i.get(i).item.getItemid(), userdata.userid);
+                myItems.add(myItem);
+            }
+        }else{
+            myItems = null;
         }
 
         //SwipeToRefresh
@@ -105,6 +107,7 @@ public class MyItemsFragment extends Fragment {
         myItemsAdapter = new MyItemsAdapter(getActivity().getApplicationContext(),myItems,myItemClickListener);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.setEmptyView(emptyView);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Handler;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -48,6 +49,7 @@ public class NavigationDrawer extends AppCompatActivity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
 
+    boolean doubleBackToExitPressedOnce = false;
     FrameLayout mFrameLayoutContainer, mFrameLayoutRight;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
@@ -56,6 +58,7 @@ public class NavigationDrawer extends AppCompatActivity
     private FragmentManager fm;
     private ArrayList<MarketPlaceData> tempData;
     private boolean tempDataStatus=false;
+
 
 
 
@@ -194,7 +197,21 @@ public class NavigationDrawer extends AppCompatActivity
             mDrawerLayout.closeDrawer(Gravity.RIGHT);
             mDrawerLayout.closeDrawer(Gravity.LEFT);
         }else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
         }
     }
 
