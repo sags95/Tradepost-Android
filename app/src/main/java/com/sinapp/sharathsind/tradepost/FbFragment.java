@@ -14,6 +14,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
+import com.squareup.picasso.Picasso;
 
 import Model.RegisterWebService;
 import Model.Variables;
@@ -24,6 +25,7 @@ import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;

@@ -17,11 +17,13 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -34,11 +36,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.squareup.picasso.Picasso;
 
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
@@ -199,7 +203,8 @@ public class Welcome extends Activity implements OnClickListener {
                 }.execute(null,null,null);
 
                 //URL url = new URL("http://73.37.238.238:8084/TDserverWeb/images/"+Constants.userid+"/profile.png");
-                //Variables.profilepic = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+                //Variables.profilepic = Picasso.with(this).load(Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+Constants.userid+"/profile.png")).get();
                 //Constants.username=c.getString(c.getColumnIndex("username"));
 
 

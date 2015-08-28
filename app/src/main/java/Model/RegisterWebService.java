@@ -66,6 +66,7 @@ private  static final String mname="gcmwebservice";
     cv.put("emailconfirm",String.valueOf(b));
     cv.put("itype",fb);
     cv.put("userid",res);
+            Constants.userid =Integer.parseInt(res);
     cv.put("password",s);
     cv.put("profilepicture", "lib/profile.png");
             request=new SoapObject(NAMESPACE,mname);

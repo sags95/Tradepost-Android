@@ -255,6 +255,7 @@ String result;
                    @Override
                     protected String doInBackground(String... voids) {
                 try {
+                    tags=getAllTagNames(tagFlowLayout);
                     String []tagarray=new String[tags.size()];
          for(int i=0;i<tags.size();i++)
          {
@@ -326,7 +327,7 @@ i++;
                 CustomTextView tagName = (CustomTextView) singleTagLayout.findViewById(R.id.tag_name);
                 //tagName.setId(TAGS_COUNT);
                 tagName.setText(tagInput.getText().toString().trim());
-                tags.add(tagInput.getText().toString().trim());
+                //tags.add(tagInput.getText().toString().trim());
                 tagName.setTag(tagInput.getText().toString());
 
                 tagInput.setText("");
@@ -355,31 +356,16 @@ i++;
     };
 
     public ArrayList<String> getAllTagNames(FlowLayout fl) {
-        ArrayList<String> tagNamesArrayList = new ArrayList<>();
-
+        ArrayList<String> tagNames = new ArrayList<>();
 
         for (int i = 0; i < fl.getChildCount(); i++) {
             View child = fl.getChildAt(i);
-
             TextView getTagName = (TextView) (child.findViewById(R.id.tag_name));
-            tagNamesArrayList.add(getTagName.getText().toString());
+            tagNames.add(getTagName.getText().toString().trim());
         }
-        return tagNamesArrayList;
+        return tagNames;
 
     }
-
-    public View.OnClickListener testingBtnListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            List<String> TagNames = getAllTagNames(tagFlowLayout);
-
-            for (int i = 0; i < TagNames.size(); i++) {
-                Log.d("Tag Name", ": " + TagNames.get(i));
-            }
-        }
-
-
-    };
 
     public View.OnClickListener testingBtnListener2 = new View.OnClickListener() {
         @Override
