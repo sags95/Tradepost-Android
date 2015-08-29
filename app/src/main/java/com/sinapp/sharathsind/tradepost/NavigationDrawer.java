@@ -4,6 +4,8 @@ package com.sinapp.sharathsind.tradepost;
  * Created by HenryChiang on 15-06-25.
  */
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
@@ -18,6 +20,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -25,6 +28,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,11 +151,21 @@ public class NavigationDrawer extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item;
 
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        MenuItemCompat.setShowAsAction(searchItem,MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        /*
         item = menu.add("Search");
         item.setIcon(R.drawable.ic_action_search);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        */
+
+        MenuItem item;
 
         item = menu.add("Chat");
         item.setIcon(R.drawable.ic_action_chat);
@@ -160,6 +174,7 @@ public class NavigationDrawer extends AppCompatActivity
         item = menu.add("Notification");
         item.setIcon(R.drawable.ic_action_notification);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+
 
 
 

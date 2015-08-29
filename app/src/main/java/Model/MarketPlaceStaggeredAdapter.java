@@ -309,4 +309,12 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
         notifyDataSetChanged();
 
     }
+
+    public View.OnClickListener itemOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+
+        }
+    };
 }

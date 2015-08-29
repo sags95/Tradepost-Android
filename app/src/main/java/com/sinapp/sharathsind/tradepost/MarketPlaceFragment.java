@@ -251,6 +251,7 @@ public class MarketPlaceFragment  extends Fragment {
             Log.d("child position", String.valueOf(mRecyclerView.getChildLayoutPosition(v)));
 
 
+
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
 

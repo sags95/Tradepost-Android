@@ -59,7 +59,7 @@ public class SingleListingActivity extends AppCompatActivity {
 
 
     private FloatingActionButton offerFab;
-    private CustomTextView itemTitle,itemDescription,itemCondition,itemDateAdded;
+    private CustomTextView itemTitle,itemDescription,itemCondition,itemDateAdded,itemUsername,itemDistance;
     private FlowLayout tagsLayout;
     private CircleImageView proPic;
 
@@ -104,7 +104,8 @@ public class SingleListingActivity extends AppCompatActivity {
         itemDescription = (CustomTextView)includeView.findViewById(R.id.single_listing_des_input);
         itemDateAdded = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_time);
         tagsLayout = (FlowLayout)includeView.findViewById(R.id.single_listing_tags);
-
+        itemUsername = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_username);
+        itemDistance = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_distance);
 
         //floating action button
         //offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
@@ -129,6 +130,10 @@ public class SingleListingActivity extends AppCompatActivity {
             itemCondition.setText(setCondition(Integer.parseInt(itemInfo.get(5))));
             //item dateAdded
             itemDateAdded.setText(itemInfo.get(4));
+            //item username
+            itemUsername.setText(Variables.username);
+            //item distance
+            itemDistance.setText(String.valueOf(distance(userdata.latitude, userdata.longitude, userdata.latitude, userdata.longitude, 'K')));
 
             String[] itemImages = getIntent().getStringArrayExtra("itemImages");
             String[] images = new String[itemImages.length];
@@ -166,15 +171,26 @@ public class SingleListingActivity extends AppCompatActivity {
             itemCondition.setText(setCondition(m.item.item.getCon()));
             //item dateAdded
             itemDateAdded.setText(MarketPlaceStaggeredAdapter.daysBetween(m.item.item.getDateadded()));
+            //item username
+            itemUsername.setText(m.item.username);
+
             //item tags
             for (String tempTag : m.item.tags) {
                 tagsLayout.addView(addTagsSingleListing(tempTag));
             }
 
             if(m.item.item.getUserid()==Constants.userid){
+
+                //item distance
+                itemDistance.setText(String.valueOf(distance(userdata.latitude, userdata.longitude, userdata.latitude, userdata.longitude, 'K')));
+
                 offerFab.setVisibility(View.GONE);
                 isSelfItem=true;
             }else{
+
+                //item distance
+                itemDistance.setText(String.valueOf(distance(m.item.item.getLatitude().doubleValue(), m.item.item.getLongtitude().doubleValue(), userdata.latitude, userdata.longitude, 'K')));
+
                 offerFab.setVisibility(View.VISIBLE);
                 isSelfItem=false;
             }
@@ -399,15 +415,11 @@ public class SingleListingActivity extends AppCompatActivity {
 
     }
 
-
-
     private double deg2rad(double deg) {
 
         return (deg * Math.PI / 180.0);
 
     }
-
-
 
     private double rad2deg(double rad) {
 

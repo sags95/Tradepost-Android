@@ -41,6 +41,9 @@
     <string name="myoffers_received_empty">You Have Not Received Offer Yet</string>
     <string name="myoffers_sent_empty">You Have Not Sent Offer Yet</string>
     <string name="feedback_empty">No Feedback Yet :(</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search</string>
+    <string name="search_settings">Search</string>
 
 
 

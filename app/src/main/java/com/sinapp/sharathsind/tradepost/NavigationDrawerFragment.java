@@ -329,6 +329,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             }else {
                 Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
                 Picasso.with(getActivity().getApplicationContext()).load(url1).into(avatarContainer);
+                //Variables.setProfilepic(((BitmapDrawable)avatarContainer.getDrawable()).getBitmap());
             }
         }
     }
