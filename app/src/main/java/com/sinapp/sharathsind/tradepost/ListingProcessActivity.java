@@ -256,11 +256,13 @@ String result;
                     protected String doInBackground(String... voids) {
                 try {
                     tags=getAllTagNames(tagFlowLayout);
-                    String []tagarray=new String[tags.size()];
-         for(int i=0;i<tags.size();i++)
-         {
-             tagarray[i]=tags.get(i);
-         }
+                    String[] tagarray = new String[tags.size()];
+
+                for(int i=0;i<tags.size();i++)
+                    {
+                    tagarray[i]=tags.get(i);
+                    }
+
                //     int i=s.get;
                     SoapPrimitive r= RegisterWebService.sendDataToServer(title,description,tagarray,bits.toArray(),i, userdata.userid,cat);
                     result=r.getValue().toString();
@@ -367,6 +369,17 @@ i++;
 
     }
 
+    public String[] getAllTags() {
+        String[] tagNames = new String[tagFlowLayout.getChildCount()];
+
+        for (int i = 0; i < tagFlowLayout.getChildCount(); i++) {
+            View child = tagFlowLayout.getChildAt(i);
+            TextView getTagName = (TextView) (child.findViewById(R.id.tag_name));
+            tagNames[i] = getTagName.getText().toString().trim();
+        }
+        return tagNames;
+
+    }
     public View.OnClickListener testingBtnListener2 = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
