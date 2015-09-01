@@ -78,13 +78,12 @@
 
                     />
 
-                <Button
+                <Model.CustomButton
                     android:id="@+id/email_sign_in_button"
-                    style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-
+                    style="@style/OpenSansRegular"
                     android:text="@string/action_sign_in"
                     android:textStyle="bold"
 
@@ -98,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:id="@+id/login_signUp_layou"
+        android:id="@+id/login_signUp_layout"
         />
 
 

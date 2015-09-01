@@ -30,6 +30,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.CustomButton;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -75,8 +77,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     }
                 });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        Button mEmailSignUpButton = (Button) ((View)findViewById(R.id.login_signUp_layou)).findViewById(R.id.email_sign_up_button);
+        CustomButton mEmailSignInButton = (CustomButton) findViewById(R.id.email_sign_in_button);
+        CustomButton mEmailSignUpButton = (CustomButton)((View)findViewById(R.id.login_signUp_layout)).findViewById(R.id.email_sign_up_button);
         mEmailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

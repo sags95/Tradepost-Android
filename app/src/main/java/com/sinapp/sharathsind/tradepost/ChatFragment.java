@@ -27,6 +27,8 @@ import android.widget.Toast;
 import java.util.List;
 
 import Controllers.SendController;
+import Model.CustomButton;
+import Model.CustomEditText;
 
 /**
  * Created by HenryChiang on 15-05-26.
@@ -39,8 +41,8 @@ public class ChatFragment extends Fragment {
     ImageView attachBtn;
     RelativeLayout sendBar, attachBar;
     Button cam, gallery;
-    EditText et;
-    Button send;
+    CustomEditText et;
+    CustomButton send;
     private Toolbar toolbar;
 
     @Override
@@ -97,8 +99,8 @@ public class ChatFragment extends Fragment {
             }
         });
 
-        et = (EditText)rootView.findViewById(R.id.send_msg);
-        send = (Button)rootView.findViewById(R.id.send_btn);
+        et = (CustomEditText)rootView.findViewById(R.id.send_msg);
+        send = (CustomButton)rootView.findViewById(R.id.send_btn);
 
 
         /*

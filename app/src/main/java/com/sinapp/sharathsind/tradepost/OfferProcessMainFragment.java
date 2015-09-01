@@ -30,6 +30,9 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import Model.CustomButton;
+import Model.CustomEditText;
+import Model.CustomTextView;
 import Model.OfferProcessAdapter;
 import Model.OfferProcessItem;
 import datamanager.userdata;
@@ -41,9 +44,9 @@ import webservices.OfferWebService;
 public class OfferProcessMainFragment extends Fragment {
 
     private View rootView;
-    private Button addCashBtn, addItemBtn;
+    private CustomButton addCashBtn, addItemBtn;
     private ImageButton camBtn, galBtn;
-    private EditText addCashEdit;
+    private CustomEditText addCashEdit;
     private FragmentManager fragmentManager;
     private ImageView newItemImg;
     private OfferProcessDataPassingListener dataPassingListener;
@@ -52,7 +55,7 @@ public class OfferProcessMainFragment extends Fragment {
     private String itemText;
     public int item;
     public String itemname;
-    private TextView itemTitle;
+    private CustomTextView itemTitle;
 public static ArrayList<Integer> ITEMID;
 
 
@@ -77,12 +80,12 @@ ITEMID=new ArrayList<>();
         rootView = inflater.inflate(R.layout.fragment_offer_process_main, container, false);
 
         //
-        addCashBtn = (Button)rootView.findViewById(R.id.offer_addcash);
+        addCashBtn = (CustomButton)rootView.findViewById(R.id.offer_addcash);
         addCashBtn.setOnClickListener(addCashBtnListener);
-        addCashEdit = (EditText)rootView.findViewById(R.id.offer_addcash_edit);
+        addCashEdit = (CustomEditText)rootView.findViewById(R.id.offer_addcash_edit);
 
         //
-        addItemBtn = (Button)rootView.findViewById(R.id.offer_process_addItem_btn);
+        addItemBtn = (CustomButton)rootView.findViewById(R.id.offer_process_addItem_btn);
         addItemBtn.setOnClickListener(addItemOnClickListener);
 
         //
@@ -93,7 +96,7 @@ ITEMID=new ArrayList<>();
         newItemImg = (ImageView)rootView.findViewById(R.id.offer_process_new_img);
 
         //
-        itemTitle = (TextView)rootView.findViewById(R.id.offer_process_list_main);
+        itemTitle = (CustomTextView)rootView.findViewById(R.id.offer_process_list_main);
 
         /*
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.offer_process_list_main);

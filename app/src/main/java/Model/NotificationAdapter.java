@@ -58,13 +58,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // each data item is just a string in this case
-        public TextView mTextViewMsg;
+        public CustomTextView mTextViewMsg;
         public ImageView mImageViewImg;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTextViewMsg = (TextView) itemView.findViewById(R.id.noti_user_placeholder);
+            mTextViewMsg = (CustomTextView) itemView.findViewById(R.id.noti_user_placeholder);
             mImageViewImg = (ImageView) itemView.findViewById(R.id.noti_img_placeholder);
 
         }

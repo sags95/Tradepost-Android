@@ -62,13 +62,13 @@ public class OfferProcessAdapter extends RecyclerView.Adapter<OfferProcessAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView listingItemTitle;
+        public CustomTextView listingItemTitle;
         public CheckBox listingCheckBox;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            listingItemTitle = (TextView) itemView.findViewById(R.id.listing_item_title);
+            listingItemTitle = (CustomTextView) itemView.findViewById(R.id.listing_item_title);
             listingCheckBox = (CheckBox) itemView.findViewById(R.id.listing_checkbox);
 
         }

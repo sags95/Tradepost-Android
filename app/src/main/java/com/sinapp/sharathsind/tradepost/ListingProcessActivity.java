@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Model.CustomEditText;
 import Model.CustomSpinnerAdapter;
 import Model.CustomTextView;
 import Model.LimitedEditText;
@@ -76,7 +77,7 @@ public class ListingProcessActivity extends AppCompatActivity {
     private int currentImgPos = 0;
     private Toolbar toolbar;
     private Uri mImageUri;
-    private TextView tagsCount;
+    private CustomTextView tagsCount;
     private ColorStateList oldColors;
 
 
@@ -84,7 +85,7 @@ public class ListingProcessActivity extends AppCompatActivity {
 
     public ArrayList<String> tags;
 public ArrayList<Bitmap>bits;
-    private EditText tagInput;
+    private CustomEditText tagInput;
     Spinner spinner;
 
     @Override
@@ -115,7 +116,7 @@ public ArrayList<Bitmap>bits;
         LimitedEditText itemName = (LimitedEditText) findViewById(R.id.section1_edit);
         itemName.setMaxLines(1);
         itemName.setMaxCharacters(70);
-        final TextView itemNameCharCount = (TextView)findViewById(R.id.section1_char_count);
+        final CustomTextView itemNameCharCount = (CustomTextView)findViewById(R.id.section1_char_count);
         itemName.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -172,7 +173,7 @@ public ArrayList<Bitmap>bits;
         LimitedEditText desEditText = (LimitedEditText) findViewById(R.id.section4_edit);
         desEditText.setMaxLines(5);
         desEditText.setMaxCharacters(250);
-        final TextView itemDesCharCount = (TextView)findViewById(R.id.section4_char_count);
+        final CustomTextView itemDesCharCount = (CustomTextView)findViewById(R.id.section4_char_count);
         desEditText.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -187,10 +188,10 @@ public ArrayList<Bitmap>bits;
         });
 
         //section 5
-        tagInput = (EditText) findViewById(R.id.section5_edit);
+        tagInput = (CustomEditText) findViewById(R.id.section5_edit);
         ImageView addTags = (ImageView) findViewById(R.id.section5_plus);
         addTags.setOnClickListener(addTagButtonListener);
-        tagsCount = (TextView)findViewById(R.id.section5_tag_count);
+        tagsCount = (CustomTextView)findViewById(R.id.section5_tag_count);
         oldColors =  tagsCount.getTextColors(); //save original colors
 
         //using section 6 (Choose a category)
@@ -362,7 +363,7 @@ i++;
 
         for (int i = 0; i < fl.getChildCount(); i++) {
             View child = fl.getChildAt(i);
-            TextView getTagName = (TextView) (child.findViewById(R.id.tag_name));
+            CustomTextView getTagName = (CustomTextView) (child.findViewById(R.id.tag_name));
             tagNames.add(getTagName.getText().toString().trim());
         }
         return tagNames;
@@ -374,7 +375,7 @@ i++;
 
         for (int i = 0; i < tagFlowLayout.getChildCount(); i++) {
             View child = tagFlowLayout.getChildAt(i);
-            TextView getTagName = (TextView) (child.findViewById(R.id.tag_name));
+            CustomTextView getTagName = (CustomTextView) (child.findViewById(R.id.tag_name));
             tagNames[i] = getTagName.getText().toString().trim();
         }
         return tagNames;

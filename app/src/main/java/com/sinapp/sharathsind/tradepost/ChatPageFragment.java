@@ -67,6 +67,7 @@ public class ChatPageFragment extends Fragment {
         mChatPageAdapter = new ChatPageAdapter(chatItem,ItemClickListener);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.setEmptyView(emptyView);
         applyLinearLayoutManager();
 

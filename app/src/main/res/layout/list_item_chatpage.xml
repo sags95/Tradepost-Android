@@ -14,19 +14,19 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/sample_img"
         android:id="@+id/chat_item_img"
         android:layout_centerVertical="true"
         app:border_width="2dp"
-        app:border_color="@color/grey"
+        app:border_color="@color/text_color"
         android:padding="8dp"
         />
 
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -34,41 +34,110 @@
         android:paddingRight="16dp"
         android:layout_toRightOf="@+id/chat_item_img"
         android:layout_toLeftOf="@+id/chat_right_icon"
-        android:layout_centerVertical="true"
 
 
         >
 
-        <TextView
-            android:id="@+id/chat_item_name"
+        <Model.CustomTextView
+            android:id="@+id/chat_username_placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Username"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_weight="1"
-
-
-
+            style="@style/OpenSansRegular"
+            android:textSize="18sp"
+            android:text="User"
+            android:layout_alignParentTop="true"
+            android:paddingTop="6dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             />
 
-        <TextView
-            android:id="@+id/chat_item_detail"
+        <LinearLayout
+            android:id="@+id/chat_date_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Secondary line Item"
-            android:textSize="14sp"
-            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_below="@+id/chat_username_placeholder"
+
+            >
+
+            <Model.CustomTextView
+                android:id="@+id/chat_date_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/OpenSansLight"
+                android:textSize="10sp"
+                android:text="AUG 23, 2015"
+
+                />
+
+            <Model.CustomTextView
+                android:id="@+id/chat_date_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" at "
+                android:textSize="10sp"
+                style="@style/OpenSansLight"
+                />
+
+            <Model.CustomTextView
+                android:id="@+id/chat_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/OpenSansLight"
+                android:textSize="10sp"
+                android:text="16:00"
+
+                />
+        </LinearLayout>
 
 
-            />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/chat_item_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="6dp"
+            >
+
+            <Model.CustomTextView
+                android:id="@+id/chat_item_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/OpenSansRegular"
+                android:textSize="12sp"
+                android:text="ITEM: "
+                />
+
+            <Model.CustomTextView
+                android:id="@+id/chat_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/OpenSansRegular"
+                android:textSize="12sp"
+                android:text="Sample Item"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:maxLines="1"
+
+                />
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+
 
         <ImageView
             android:id="@+id/chat_right_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_fab_primary"
+            android:src="@drawable/ic_navigation_right"
             android:paddingRight="16dp"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"

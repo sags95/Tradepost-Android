@@ -25,11 +25,11 @@
 
     >
 
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/listing_item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="fsdfdsf"
+            android:text=""
             android:textSize="16sp"
             android:paddingTop="16dp"
             android:paddingBottom="20dp"
@@ -37,6 +37,8 @@
             android:layout_centerVertical="true"
             android:gravity="left"
             android:layout_toLeftOf="@+id/listing_checkbox"
+            style="@style/OpenSansRegular"
+
 
             />
 

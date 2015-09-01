@@ -16,6 +16,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.squareup.picasso.Picasso;
 
+import Model.CustomButton;
 import Model.RegisterWebService;
 import Model.Variables;
 
@@ -204,7 +205,7 @@ public class FbFragment extends Fragment {
 
         SignInButton google = (SignInButton) view.findViewById(R.id.google_sign_in_btn);
         google.setOnClickListener(f);
-        Button email = (Button) view.findViewById(R.id.sign_in_button1);
+        CustomButton email = (CustomButton) view.findViewById(R.id.sign_in_button1);
         email.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

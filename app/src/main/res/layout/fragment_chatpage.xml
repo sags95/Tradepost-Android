@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/chatpage_swipe_refresh_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/myDrawerBackground"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/chatpage_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
 
     <Model.EmptyRecyclerView
@@ -23,12 +23,11 @@
 
         />
 
-    <ScrollView
-        android:id="@+id/chatpage_emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <LinearLayout
+        android:id="@+id/chatpage_emptyView"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,7 +37,7 @@
         android:gravity="center"
         >
 
-        <TextView
+        <Model.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -46,9 +45,12 @@
             android:textSize="24sp"
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
+            style="@style/OpenSansRegular"
             />
 
-        <TextView
+        <Model.CustomTextView
+            style="@style/OpenSansLight"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/chatpage_empty_detail"
@@ -58,8 +60,6 @@
 
             />
     </LinearLayout>
-    </ScrollView>
 
 
 </LinearLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

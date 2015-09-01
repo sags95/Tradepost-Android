@@ -35,5 +35,7 @@
     <color name="favorite_background">#69645e</color>
     <drawable name="pressed_gray">#0c000000</drawable>
     <drawable name="selected_gray">#2c000000</drawable>
+    <color name="eight_f">#8f8f8f</color>
+    <color name="eight_d">#8d8d8d</color>
 
 </resources>

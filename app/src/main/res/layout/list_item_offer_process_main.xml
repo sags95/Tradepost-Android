@@ -14,15 +14,16 @@
 
         >
 
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/listing_item_title_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="fsdfdsf"
+            android:text=""
             android:textSize="16sp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:gravity="left"
+            style="@style/OpenSansRegular"
 
             />
 

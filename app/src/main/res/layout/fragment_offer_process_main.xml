@@ -34,7 +34,8 @@
             android:paddingBottom="16dp"
             >
 
-        <TextView
+        <Model.CustomTextView
+            style="@style/OpenSansRegular"
             android:id="@+id/offer_listview_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,19 +46,21 @@
             android:layout_alignParentTop="true"
             />
 
-            <TextView
+            <Model.CustomTextView
                 android:id="@+id/offer_process_list_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/offer_listview_title"
                 android:textSize="16sp"
                 android:layout_marginBottom="16dp"
+                style="@style/OpenSansLight"
+                android:lineSpacingExtra="1.5dp"
                 />
 
 
 
-            <EditText
-
+            <Model.CustomEditText
+                style="@style/OpenSansLight"
                 android:id="@+id/offer_addcash_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,19 +79,21 @@
                 android:layout_centerHorizontal="true"
                 >
 
-                <Button
+                <Model.CustomButton
                     android:id="@+id/offer_process_addItem_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ADD ITEM"
+                    style="@style/OpenSansRegular"
                     />
 
-                <Button
+                <Model.CustomButton
                     android:id="@+id/offer_addcash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ADD CASH"
                     android:layout_toRightOf="@+id/offer_process_addItem_btn"
+                    style="@style/OpenSansRegular"
 
                     />
 
@@ -97,7 +102,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <Model.CustomTextView
             android:id="@+id/offer_newitem_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,6 +113,7 @@
             android:textStyle="bold"
             android:layout_below="@+id/offer_details"
             android:layout_marginBottom="16dp"
+            style="@style/OpenSansRegular"
             />
 
         <RelativeLayout
@@ -130,7 +136,7 @@
                 android:scaleType="centerCrop"
                 />
 
-            <EditText
+            <Model.CustomEditText
                 android:id="@+id/offer_process_new_img_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -141,6 +147,7 @@
                 android:hint="New Item Title"
                 android:windowSoftInputMode="stateHidden"
                 android:singleLine="true"
+                style="@style/OpenSansLight"
                 />
 
 
@@ -166,35 +173,38 @@
 
                     <ImageButton
                         android:id="@+id/offer_process_cam_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
                         android:clickable="true"
-                        android:src="@drawable/ic_section2_camera"
-                        android:background="@color/white"
+                        android:background="@drawable/circle_white"
                         android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_camera"
+
 
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/offer_text_camera"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section2_text_camera"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
+                        style="@style/OpenSansRegular"
 
                         />
 
 
                 </LinearLayout>
 
-                <TextView
+                <Model.CustomTextView
                     android:id="@+id/offer_or"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="OR"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    style="@style/OpenSansLight"
                     />
 
                 <LinearLayout
@@ -208,22 +218,23 @@
 
                     <ImageButton
                         android:id="@+id/offer_process_gallery_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
                         android:clickable="true"
+                        android:background="@drawable/circle_white"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_section2_camera"
-                        android:background="@color/white"
+                        android:src="@drawable/ic_folder"
 
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/offer_text_gallery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section2_text_folder"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
+                        style="@style/OpenSansRegular"
 
                         />
 

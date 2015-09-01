@@ -46,12 +46,12 @@ public class OfferProcessMainAdapter extends RecyclerView.Adapter<OfferProcessMa
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView listingItemTitle;
+        public CustomTextView listingItemTitle;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            listingItemTitle = (TextView) itemView.findViewById(R.id.listing_item_title_main);
+            listingItemTitle = (CustomTextView) itemView.findViewById(R.id.listing_item_title_main);
 
         }
     }

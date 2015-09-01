@@ -25,7 +25,7 @@
         android:layout_gravity="center_vertical"
         />
 
-    <TextView
+    <Model.CustomTextView
         android:id="@+id/noti_user_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,6 +34,7 @@
         android:textSize="16sp"
         android:layout_gravity="center_vertical"
         android:paddingLeft="16dp"
+        style="@style/OpenSansRegular"
         />
 </LinearLayout>
 

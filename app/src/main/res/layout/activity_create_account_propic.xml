@@ -44,7 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/section2_scroll_bottom_div"
         android:weightSum="2"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
@@ -85,7 +84,7 @@
 
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                style="@style/OpenSansLight"
+                style="@style/OpenSansRegular"
                 />
 
 
@@ -100,7 +99,7 @@
             android:gravity="center"
             android:textColor="@color/white"
 
-            style="@style/OpenSansRegular"
+            style="@style/OpenSansLight"
             />
 
         <LinearLayout
@@ -133,7 +132,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/white"
-                style="@style/OpenSansLight"
+                style="@style/OpenSansRegular"
 
                 />
 

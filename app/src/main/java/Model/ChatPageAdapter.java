@@ -49,7 +49,6 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.mTextViewItemName.setText(mData.get(i).getTitle());
-        viewHolder.mTextViewItemDetail.setText(mData.get(i).getDetails());
         //viewHolder.mImageViewItemImg.setImageDrawable(mData.get(i).getDrawable());
 
     }
@@ -62,14 +61,12 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // each data item is just a string in this case
         public TextView mTextViewItemName;
-        public TextView mTextViewItemDetail;
         public ImageView mImageViewItemImg;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTextViewItemName = (TextView) itemView.findViewById(R.id.chat_item_name);
-            mTextViewItemDetail = (TextView) itemView.findViewById(R.id.chat_item_detail);
+            mTextViewItemName = (TextView) itemView.findViewById(R.id.chat_item_title);
             mImageViewItemImg = (ImageView) itemView.findViewById(R.id.chat_item_img);
 
         }

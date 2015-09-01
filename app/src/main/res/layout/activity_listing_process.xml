@@ -97,29 +97,32 @@
                     android:gravity="center"
 
                     >
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section1_char_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:layout_gravity="center_vertical"
+                        style="@style/OpenSansLight"
                         />
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section1_char_count_slash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="/"
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@+id/section1_char_count"
+                        style="@style/OpenSansLight"
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section1_char_count_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="70"
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@+id/section1_char_count_slash"
+                        style="@style/OpenSansLight"
                         />
                 </RelativeLayout>
 
@@ -563,29 +566,32 @@
                     android:gravity="center"
 
                     >
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section4_char_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:layout_gravity="center_vertical"
+                        style="@style/OpenSansLight"
                         />
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section4_char_count_slash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="/"
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@+id/section4_char_count"
+                        style="@style/OpenSansLight"
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section4_char_count_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="250"
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@+id/section4_char_count_slash"
+                        style="@style/OpenSansLight"
                         />
                 </RelativeLayout>
 
@@ -647,29 +653,32 @@
                     android:gravity="center"
 
                     >
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section5_tag_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:layout_gravity="center_vertical"
+                        style="@style/OpenSansLight"
                         />
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section5_tag_count_slash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="/"
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@+id/section5_tag_count"
+                        style="@style/OpenSansLight"
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/section5_tag_count_max"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="5"
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@+id/section5_tag_count_slash"
+                        style="@style/OpenSansLight"
                         />
                 </RelativeLayout>
 

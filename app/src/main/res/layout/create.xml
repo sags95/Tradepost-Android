@@ -6,16 +6,17 @@
     android:background="@android:color/darker_gray"
     android:orientation="vertical">
 
-    <TextView
+    <Model.CustomTextView
+        style="@style/OpenSansRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="create an account here"
         android:gravity="center"
         android:layout_weight="1"/>
 
-    <Button
+    <Model.CustomButton
         android:id="@+id/email_sign_up_button"
-        style="?android:textAppearanceSmall"
+        style="@style/OpenSansLight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/action_create"

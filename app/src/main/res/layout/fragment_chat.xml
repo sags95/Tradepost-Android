@@ -52,7 +52,7 @@
             android:clickable="true"
             />
 
-        <EditText
+        <Model.CustomEditText
             android:id="@+id/send_msg"
             android:layout_toRightOf="@+id/attach_btn"
             android:layout_toLeftOf="@+id/send_btn"
@@ -64,15 +64,17 @@
             android:singleLine="false"
             android:inputType="textShortMessage"
             android:imeOptions="actionSend"
+            style="@style/OpenSansRegular"
             />
 
-        <Button
+        <Model.CustomButton
             android:id="@+id/send_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send"
             android:layout_alignParentRight="true"
             android:layout_alignBottom="@id/send_msg"
+            style="@style/OpenSansRegular"
             />
     </RelativeLayout>
 
