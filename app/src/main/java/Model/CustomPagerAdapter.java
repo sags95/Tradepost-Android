@@ -25,7 +25,7 @@ public class CustomPagerAdapter extends PagerAdapter {
 
 
    Bitmap[] mResources;
-    String[] imagesArray;
+    public String[] imagesArray;
 
 
     public CustomPagerAdapter(Context context, Bitmap[] imageResources) {

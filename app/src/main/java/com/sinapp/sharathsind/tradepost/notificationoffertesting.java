@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -25,7 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by HenryChiang on 15-07-22.
  */
-public class notificationoffertesting extends Fragment {
+public class notificationoffertesting extends Activity {
 
 
     private View rootView;
@@ -46,37 +47,34 @@ public class notificationoffertesting extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+     setContentView(R.layout.notification_offer);
 
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.notification_offer, container, false);
+       // rootView = inflater.inflate(R.layout.notification_offer, container, false);
 
         //
-        myItemPlaceholder = (TextView)rootView.findViewById(R.id.noti_offer_myItem_placeholder);
+        myItemPlaceholder = (TextView)findViewById(R.id.noti_offer_myItem_placeholder);
 
         //
-        userImgPlaceholder = (CircleImageView)rootView.findViewById(R.id.noti_offer_userImg_placeholder);
-        usernamePlaceholder = (TextView)rootView.findViewById(R.id.noti_offer_userName_placeholder);
-        itemOfferPlaceholder =(TextView)rootView.findViewById(R.id.noti_offer_itemOffer_placeholder);
-        extraCashPlaceholder = (TextView)rootView.findViewById(R.id.noti_offer_extraCash_Placeholder);
+        userImgPlaceholder = (CircleImageView)findViewById(R.id.noti_offer_userImg_placeholder);
+        usernamePlaceholder = (TextView)findViewById(R.id.noti_offer_userName_placeholder);
+        itemOfferPlaceholder =(TextView)findViewById(R.id.noti_offer_itemOffer_placeholder);
+        extraCashPlaceholder = (TextView)findViewById(R.id.noti_offer_extraCash_Placeholder);
 
         //image slider viewer
-        mCustomPagerAdapter = new CustomPagerAdapter(getActivity(),imageResources);
-        mViewPager = (ViewPager)rootView.findViewById(R.id.noti_offer_viewPager_placeholder);
+        mCustomPagerAdapter = new CustomPagerAdapter(this,imageResources);
+        mCustomPagerAdapter.imagesArray=new String[0];
+        mViewPager = (ViewPager)findViewById(R.id.noti_offer_viewPager_placeholder);
         mViewPager.setAdapter(mCustomPagerAdapter);
 
-        dotsLayout = (LinearLayout)rootView.findViewById(R.id.dots);
+        dotsLayout = (LinearLayout)findViewById(R.id.dots);
         addDots();
 
         //getting data from server.
         setMyItemPlaceholder("Test Item");
 
 
-        return rootView;
+
     }
 
 
@@ -102,7 +100,7 @@ public class notificationoffertesting extends Fragment {
         dots = new ArrayList<>();
 
         for(int i = 0; i < imageResources.length; i++) {
-            ImageView dot = new ImageView(getActivity());
+            ImageView dot = new ImageView(this);
             if(i==0){
                 dot.setImageDrawable(getResources().getDrawable(R.drawable.pager_dot_selected));
             }else {

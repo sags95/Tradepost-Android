@@ -1,7 +1,13 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -11,6 +17,7 @@ import Model.CustomButton;
 import Model.CustomCheckBox;
 import Model.CustomTextView;
 import Model.LimitedEditText;
+import Model.RegisterWebService;
 
 /**
  * Created by HenryChiang on 15-08-25.
@@ -20,8 +27,9 @@ public class CreateAccountActivity extends AppCompatActivity {
     private CustomButton nextButton;
     private LimitedEditText username,email,pw,pwConfirm;
     private CustomCheckBox showPw;
-
+public String user,pwd,em;
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
@@ -31,7 +39,32 @@ public class CreateAccountActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),CreateAccountPicActivity.class));
+                user =username.getText().toString();
+                em =email.getText().toString();
+                pwd =pw.getText().toString();
+
+
+
+                new AsyncTask<String,String,String>(){
+                    ContentValues cv;
+                    @Override
+                    protected void onPostExecute(String s) {
+                        super.onPostExecute(s);
+
+                        long l= Constants.db.insert("login",null,cv);
+                        startActivity(new Intent(getApplicationContext(), CreateAccountPicActivity.class));
+                    }
+
+                    @Override
+                    protected String doInBackground(String... params) {
+Bitmap b= BitmapFactory.decodeResource(getResources(),
+        R.drawable.sample_img);
+
+                      cv= RegisterWebService.signUp(user, em, pwd, "email", b, false, Constants.db);
+                        return null;
+                    }
+                }.execute(null,null,null);
+
             }
         });
 

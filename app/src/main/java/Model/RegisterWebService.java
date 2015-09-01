@@ -9,6 +9,7 @@ import com.sinapp.sharathsind.tradepost.Constants;
 
 import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.MarshalBase64;
 import org.ksoap2.serialization.MarshalFloat;
 import org.ksoap2.serialization.PropertyInfo;
@@ -18,9 +19,13 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import data.StringVector;
+import datamanager.Item;
+import datamanager.ItemResult;
 import datamanager.userdata;
 import webservices.MainWebService;
 import webservices.SoapStringVector;
@@ -74,16 +79,84 @@ private  static final String mname="gcmwebservice";
             request.addProperty("os", "android");
             request.addProperty("userid", Integer.parseInt(res));
             request.addProperty("apikey",Constants.GCM_Key);
-            SoapPrimitive s1=MainWebService.getMsg(request,URL,SOAP_ACTION1);
+            SoapPrimitive s1=MainWebService.getretryMsg(request,URL,SOAP_ACTION1,0);
             String sj="h";
+            getItems();
     //  long l=   db.insert("login",null,cv);
 //long k=l;
-        } catch (Exception e) {
+        }
+catch (EOFException e)
+{
+signUp(username, email, s, fb, profilepic, b, db);
+}
+        catch (Exception e) {
             e.printStackTrace();
         }
 
         return cv;
     }
+   public  static void getItems()
+   {
+       SoapObject object = new SoapObject("http://webser/", "getuseritems");
+       //SoapObject object = new SoapObject("http://webser/", "getuseritems");
+       object.addProperty("userid",  userdata.userid);
+       Vector object1 = MainWebService.getMsg1(object,"http://73.37.238.238:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
+       userdata.items=new ArrayList<Integer>();
+
+
+       if(object1!=null) {
+           for (Object i : object1) {
+               userdata.items.add(Integer.parseInt(((SoapPrimitive) i).getValue().toString()));
+           }
+       }
+       userdata.i=new ArrayList<ItemResult>();
+
+       for(int i :userdata.items) {
+
+           SoapObject  obje=new SoapObject("http://webser/","getItembyId");
+           obje.addProperty("itemid", i);
+           KvmSerializable result1= MainWebService.getMsg2(obje,"http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
+                   ,"http://webser/GetItems/getItembyIdRequest");
+
+           ItemResult ir= new ItemResult();
+           ir.item=new Item();
+
+           SoapObject object12=(SoapObject)result1.getProperty(0);
+           //for(int u=0;u<object.getPropertyCount())
+           ir.item.set(object12);
+           //SoapObject o7=(SoapObject)result1;
+           //Object j=       o.getProperty("images");
+           int i1=result1.getPropertyCount();
+           ir.images=new String[i1-1];
+
+           for(int u1=1;u1<i1;u1++) {
+               ir.images[u1-1]=  result1.getProperty(u1).toString();
+
+           }
+           obje=new SoapObject("http://webser/","searchbyint");
+           obje.addProperty("name", i);
+           Vector result2= MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/NewWebService?wsdl"
+                   , "http://webser/NewWebService/searchbyintRequest");
+           if(result2!=null) {
+
+               int index=0;
+               ir.tags=new String[result2.size()];
+
+               for (Object o:result2 ) {
+                   ir.tags[index] = ((SoapPrimitive)o).getValue().toString();
+                   index++;
+
+               }
+           }
+
+           userdata.i.add(ir);
+
+       }
+
+
+   }
+
+
     private static final String SOAP_ACTION3 = "http://webser/Register/additemsRequest";
     private static final String METHOD_NAME3 = "additems";
    // private static final String NAMESPACE = "http://webser/";
@@ -130,7 +203,7 @@ private  static final String mname="gcmwebservice";
         }
 
 
-        return MainWebService.getMsg(object, "http://73.37.238.238:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/additemRequest");
+        return null;
 
     }
 

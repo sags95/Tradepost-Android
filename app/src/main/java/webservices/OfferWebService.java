@@ -47,11 +47,11 @@ if(Images!=null)
         String notification;
         if(number==1)
         {
-            notification=userdata.name+"has sent item for "+itemname;
+            notification=userdata.name+" has sent item for  your item "+itemname;
 
         }
         else{
-            notification=userdata.name+"has sent multi-items for "+itemname;
+            notification=userdata.name+" has sent multi-items for your item "+itemname;
         }
 
         s=new SoapObject("http://webser/","sendOfferNot");

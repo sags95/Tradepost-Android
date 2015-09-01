@@ -16,30 +16,33 @@ public class GCMService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
+if(data.getString("type").equals("offer")) {
+    String type = data.getString("message");
 
-        String type = data.getString("message");
+    NotificationCompat.Builder mBuilder =
+            new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.sample_img)
+                    .setContentTitle("TradePost")
+                    .setContentText(type);
 
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.notification_icon)
-                            .setContentTitle("Trade Post")
-                            .setContentText(data.getString("message"));
+    Intent notificationIntent = new Intent(this, notificationoffertesting.class);
+    Bundle b=new Bundle();
+    String images[]=new String[5];
+    notificationIntent.putExtra("im",images);
+    // set intent so it does not start a new activity
+    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+            Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    PendingIntent intent =
+            PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-            Intent notificationIntent = new Intent(this, OfferProcessActivity.class);
-            // set intent so it does not start a new activity
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent intent =
-                    PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-mBuilder.setContentIntent(intent);
-            int mNotificationId = 001;
+    mBuilder.setContentIntent(intent);
+    int mNotificationId = 001;
 // Gets an instance of the NotificationManager service
-            NotificationManager mNotifyMgr =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    NotificationManager mNotifyMgr =
+            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 // Builds the notification and issues it.
-            mNotifyMgr.notify(mNotificationId, mBuilder.build());
-
+    mNotifyMgr.notify(mNotificationId, mBuilder.build());
+}
     }
 
 
