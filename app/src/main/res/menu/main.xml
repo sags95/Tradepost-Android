@@ -1,10 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:myapp="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/tools">
 
 
     <item android:id="@+id/action_search"
         android:title="@string/action_search"
         android:icon="@drawable/ic_action_search"
-        myapp:showAsAction="always"
-        myapp:actionViewClass="android.support.v7.widget.SearchView" />
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/action_chat"
+        android:title="Chat"
+        android:icon="@drawable/ic_menu_chat"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/action_notification"
+        android:title="Notification"
+        android:icon="@drawable/ic_menu_notification"
+        app:showAsAction="always"/>
+
 </menu>

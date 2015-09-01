@@ -128,8 +128,10 @@
             >
 
         </activity>
-<activity android:name=".notificationoffertesting"
-    android:screenOrientation="portrait"/>
+        <activity
+            android:name=".notificationoffertesting"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"

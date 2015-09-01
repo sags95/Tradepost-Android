@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,13 +37,17 @@ import android.support.v7.app.AlertDialog;
 import com.etsy.android.grid.StaggeredGridView;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import Model.MarketPlaceData;
 import Model.MarketPlaceListAdapter;
 import Model.MarketPlaceStaggeredAdapter;
 import Model.StaggeredAdapterTest;
+import datamanager.Item;
+import datamanager.ItemResult;
 
 /**
  * Created by HenryChiang on 15-06-25.
@@ -486,7 +491,7 @@ public class MarketPlaceFragment  extends Fragment {
             ArrayList<MarketPlaceData> mData;
 
             if(!mCallback.hasTempData()) {
-                mData = MarketPlaceData.generateSampleData();
+                mData = MarketPlaceData.generateSampleData(getActivity().getApplicationContext());
                 mCallback.setTempDataStatus(true);
             }else{
                 mData=mCallback.getTempData();
@@ -551,7 +556,7 @@ public class MarketPlaceFragment  extends Fragment {
         @Override
         protected ArrayList<MarketPlaceData> doInBackground(ArrayList<MarketPlaceData>... params) {
             ArrayList<MarketPlaceData> mData;
-            mData = MarketPlaceData.generateSampleData();
+            mData = MarketPlaceData.generateSampleData(getActivity().getApplicationContext());
             mCallback.setTempDataStatus(true);
             return mData;
         }

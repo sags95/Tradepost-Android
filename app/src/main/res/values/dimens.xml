@@ -32,4 +32,8 @@
     <dimen name="customEntry">18sp</dimen>
     <dimen name="sample_button_spacing">2dp</dimen>
 
+
+    //toolbar badge text size
+    <dimen name="badge_text_size">10sp</dimen>
+
 </resources>

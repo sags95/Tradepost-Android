@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/item_photo_camera"
+        android:showAsAction="ifRoom|withText"
+        android:title="Take Photo"
+
+        android:visible="true"/>
+    <item
+        android:id="@+id/item_photo_gallery"
+        android:showAsAction="ifRoom|withText"
+        android:title="Pick Photo"
+        android:visible="true"/>
+
+    <item
+        android:id="@+id/item_cancel"
+        android:showAsAction="ifRoom|withText"
+        android:title="Cancel Deal"
+        android:visible="true"/>
+
+</menu>

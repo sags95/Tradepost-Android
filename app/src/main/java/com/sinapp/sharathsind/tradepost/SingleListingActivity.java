@@ -134,7 +134,7 @@ public class SingleListingActivity extends AppCompatActivity {
             //item username
             itemUsername.setText(Variables.username);
             //item distance
-            itemDistance.setText(String.valueOf(roundedDistance(distance(userdata.latitude, userdata.longitude, userdata.latitude, userdata.longitude, 'K'))));
+            itemDistance.setText(String.valueOf(roundedDistance(distance(userdata.latitude,userdata.longitude, userdata.latitude, userdata.longitude, 'K'))));
 
             String[] itemImages = getIntent().getStringArrayExtra("itemImages");
             String[] images = new String[itemImages.length];
@@ -174,6 +174,8 @@ public class SingleListingActivity extends AppCompatActivity {
             itemDateAdded.setText(MarketPlaceStaggeredAdapter.daysBetween(m.item.item.getDateadded()));
             //item username
             itemUsername.setText(m.item.username);
+            //item distance
+            itemDistance.setText(String.valueOf(roundedDistance(distance(m.item.item.getLatitude().doubleValue(), m.item.item.getLongtitude().doubleValue(), userdata.latitude, userdata.longitude, 'K'))));
 
             //item tags
             for (String tempTag : m.item.tags) {
@@ -183,15 +185,11 @@ public class SingleListingActivity extends AppCompatActivity {
             if(m.item.item.getUserid()==Constants.userid){
 
                 //item distance
-                itemDistance.setText(String.valueOf(roundedDistance(distance(userdata.latitude, userdata.longitude, userdata.latitude, userdata.longitude, 'K'))));
-
                 offerFab.setVisibility(View.GONE);
                 isSelfItem=true;
             }else{
 
                 //item distance
-                itemDistance.setText(String.valueOf(roundedDistance(distance(m.item.item.getLatitude().doubleValue(), m.item.item.getLongtitude().doubleValue(), userdata.latitude, userdata.longitude, 'K'))));
-
                 offerFab.setVisibility(View.VISIBLE);
                 isSelfItem=false;
             }

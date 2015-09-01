@@ -69,6 +69,8 @@ public class Welcome extends Activity implements OnClickListener {
     InstanceID instanceID;
     public static LocationManager locationManager;
     public static MyLocationService service;
+    public static boolean isDatabaseExist= false;
+    public static Context context;
 
 
 
@@ -76,6 +78,8 @@ public class Welcome extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        context=Welcome.this;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -96,6 +100,7 @@ public class Welcome extends Activity implements OnClickListener {
         }
 
         if(b) {
+            isDatabaseExist=true;
             try{
                 Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
                 c=Constants.db.rawQuery("select * from login",null);
@@ -214,6 +219,7 @@ public class Welcome extends Activity implements OnClickListener {
 
 
         }else{
+            isDatabaseExist=false;
             try{
                 Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
                 try {
@@ -235,8 +241,12 @@ public class Welcome extends Activity implements OnClickListener {
                                 "  itemcondition varchar  ," +
                                 "  itemcategory varchar ," +
                                 "  itemtags varchar ," +
-                                "  itemdate date ," +
-                                " userid int(10)" +
+                                "  itemdate varchar ," +
+                                "  itemlatitude double ," +
+                                "  itemlongitude double ," +
+                                "  itemusername varchar ," +
+                                "  itemimages varchar ," +
+                                "  userid int(10)" +
                                 "  )");
 
                         instanceID = InstanceID.getInstance(this);
@@ -251,8 +261,8 @@ public class Welcome extends Activity implements OnClickListener {
                                                 GoogleCloudMessaging.INSTANCE_ID_SCOPE);
                                         Constants.GCM_Key = token;
                                         ContentValues cv=new ContentValues();
-                                        cv.put("gcmkey",token);
-                                        Constants.db.insert("GCM",null,cv);
+                                        cv.put("gcmkey", token);
+                                        Constants.db.insert("GCM", null, cv);
 
                                     } catch(Exception e) {
                                         String s=e.toString();
@@ -298,6 +308,7 @@ public class Welcome extends Activity implements OnClickListener {
                 // right to left swipe
                 if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                     startActivity(new Intent(Welcome.this, FirstTime.class));
+                    finish();
                 } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 
                 }
@@ -315,8 +326,6 @@ public class Welcome extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -325,7 +334,7 @@ public class Welcome extends Activity implements OnClickListener {
 
     }
 
-    private static boolean doesDatabaseExist(ContextWrapper context, String dbName) {
+    public static boolean doesDatabaseExist(ContextWrapper context, String dbName) {
         File dbFile = context.getDatabasePath(dbName);
         return dbFile.exists();
     }

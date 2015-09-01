@@ -150,6 +150,9 @@ public class MyItemsFragment extends Fragment {
 
             i.putStringArrayListExtra("myItemClicked", clickedItemDetails);
 
+            i.putExtra("latitude", userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getLatitude());
+            i.putExtra("longitude",userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getLongtitude());
+
             i.putExtra("itemImages", userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).images);
             i.putExtra("itemTags",userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).tags);
 

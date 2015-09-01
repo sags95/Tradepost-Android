@@ -10,9 +10,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -29,6 +32,7 @@ import Controllers.SendController;
  * Created by HenryChiang on 15-05-26.
  */
 public class ChatFragment extends Fragment {
+
 
     public static boolean isAlive;
     private View rootView;
@@ -65,9 +69,39 @@ public class ChatFragment extends Fragment {
         sendBar = (RelativeLayout)rootView.findViewById(R.id.send_bar);
         attachBar = (RelativeLayout)rootView.findViewById(R.id.attach_bar);
 
+        attachBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getActivity().getApplicationContext(), v);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.item_photo_camera:
+                                Toast.makeText(getActivity().getApplicationContext(), "Take photo Clicked", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.item_photo_gallery:
+                                Toast.makeText(getActivity().getApplicationContext(), "choose photo Clicked", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.item_cancel:
+                                Toast.makeText(getActivity().getApplicationContext(), "cancel Clicked", Toast.LENGTH_SHORT).show();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.inflate(R.menu.chat_popup_menu);
+
+                popupMenu.show();
+
+            }
+        });
+
         et = (EditText)rootView.findViewById(R.id.send_msg);
         send = (Button)rootView.findViewById(R.id.send_btn);
 
+
+        /*
         //open or close attach bar
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +119,7 @@ public class ChatFragment extends Fragment {
                 }
             }
         });
+        */
 
         //send
         SendController sendController = new SendController(this, et);

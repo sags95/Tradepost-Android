@@ -8,6 +8,7 @@ import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by HenryChiang on 15-07-22.
  */
-public class notificationoffertesting extends Activity {
+public class notificationoffertesting extends AppCompatActivity {
 
 
     private View rootView;

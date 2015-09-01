@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
@@ -35,13 +37,17 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
+import Model.BadgeUtils;
 import Model.MarketPlaceData;
 import Model.NavigationDrawerCallbacks;
 
@@ -62,6 +68,10 @@ public class NavigationDrawer extends AppCompatActivity
     private FragmentManager fm;
     private ArrayList<MarketPlaceData> tempData;
     private boolean tempDataStatus=false;
+
+    private int mChatCount = 0;
+    private int mNotificationsCount = 0;
+
 
 
 
@@ -108,6 +118,8 @@ public class NavigationDrawer extends AppCompatActivity
         isAnyDrawerOpen(this.findViewById(android.R.id.content));
         setUpRightDrawerWidth();
         setUpLeftDrawerWidth();
+
+
     }
 
     @Override
@@ -152,28 +164,45 @@ public class NavigationDrawer extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        MenuItemCompat.setShowAsAction(searchItem,MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         /*
+        MenuItem item;
         item = menu.add("Search");
         item.setIcon(R.drawable.ic_action_search);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        */
-
-        MenuItem item;
-
         item = menu.add("Chat");
         item.setIcon(R.drawable.ic_action_chat);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-
         item = menu.add("Notification");
         item.setIcon(R.drawable.ic_action_notification);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+        */
+
+        getMenuInflater().inflate(R.menu.main, menu);
+
+
+        //search
+        MenuItem itemSearch = menu.findItem(R.id.action_search);
+        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        // Get the notifications MenuItem and
+        // its LayerDrawable (layer-list)
+        //chat
+        MenuItem itemChat = menu.findItem(R.id.action_chat);
+        itemChat.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        LayerDrawable chatIcon = (LayerDrawable) itemChat.getIcon();
+
+        // Update LayerDrawable's BadgeDrawable
+        BadgeUtils.setBadgeCount(this, chatIcon, mChatCount);
+
+
+        //notification
+        MenuItem itemNotification = menu.findItem(R.id.action_notification);
+        itemNotification.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        LayerDrawable notifiactionIcon = (LayerDrawable) itemNotification.getIcon();
+
+        // Update LayerDrawable's BadgeDrawable
+        BadgeUtils.setBadgeCount(this, notifiactionIcon, mNotificationsCount);
 
 
 
@@ -199,6 +228,7 @@ public class NavigationDrawer extends AppCompatActivity
             }
             case "Search":{
                 Toast.makeText(getApplicationContext(), "Search?", Toast.LENGTH_SHORT).show();
+                new FetchCountTask().execute();
                 break;
             }
 
@@ -253,7 +283,7 @@ public class NavigationDrawer extends AppCompatActivity
     }
 
 
-    public void isAnyDrawerOpen(View v){
+    public void isAnyDrawerOpen(View v) {
         v.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -313,7 +343,7 @@ public class NavigationDrawer extends AppCompatActivity
 
     }
 
-    public void chatPageFragmentHandling(){
+    public void chatPageFragmentHandling() {
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             openChatPageFragment();
@@ -351,6 +381,39 @@ public class NavigationDrawer extends AppCompatActivity
             }
         }
     }
+
+    class FetchCountTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            // example count. This is where you'd
+            // query your data store for the actual count.
+            return 5;
+        }
+
+        @Override
+        public void onPostExecute(Integer count) {
+            updateNotificationsBadge(count);
+            updateChatBadge(count+4);
+        }
+    }
+
+    private void updateChatBadge(int count) {
+        mChatCount = count;
+
+        // force the ActionBar to relayout its MenuItems.
+        // onCreateOptionsMenu(Menu) will be called again.
+        invalidateOptionsMenu();
+    }
+
+    private void updateNotificationsBadge(int count) {
+        mNotificationsCount = count;
+
+        // force the ActionBar to relayout its MenuItems.
+        // onCreateOptionsMenu(Menu) will be called again.
+        invalidateOptionsMenu();
+    }
+
     @Override
     public void storeTempMarketPlaceData(ArrayList<MarketPlaceData> tempData){
             this.tempData=tempData;

@@ -10,6 +10,7 @@
             <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
             <item name="android:screenOrientation">portrait</item>
             <item name="android:windowBackground">@color/white</item>
+            <item name="android:popupMenuStyle">@style/PopupMenu</item>
             <item name="android:windowAnimationStyle">@null</item>
             <item name="actionBarWidgetTheme">@style/ActionBarTheme</item>
             <item name="android:windowContentTransitions">true</item>
@@ -25,6 +26,11 @@
             <item name="spinBars">true</item>
             <!-- THIS is where you can color the hamburger icon! -->
             <item name="color">@color/white</item>
+        </style>
+
+
+        <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+            <item name="android:popupBackground">@color/ColorPrimary</item>
         </style>
 
 
