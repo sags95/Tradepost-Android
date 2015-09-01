@@ -171,8 +171,9 @@ signUp(username, email, s, fb, profilepic, b, db);
         propertyInfo.setValue(userdata.latitude);
         propertyInfo.setName("latitude");
         StringVector tag=new StringVector();
-        for(String h: tags)
-        tag.add(h);
+        for(int i = 0;i<tags.length;i++){
+            tag.add(tags[i]);
+        }
         object.addProperty("tags",tag);
         object.addProperty("longi", String.format("%.2f",userdata.longitude));
         object.addProperty("userid", userdata.userid);

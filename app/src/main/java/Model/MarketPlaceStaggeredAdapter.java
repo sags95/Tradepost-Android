@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -239,21 +241,32 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
             switch (viewType) {
                 case 1:
                     tag1.setText(data.item.tags[0].toUpperCase());
+                    tag1.setOnClickListener(tagOnClickListener);
                     break;
                 case 2:
                     tag1.setText(data.item.tags[0].toUpperCase());
                     tag2.setText(data.item.tags[1].toUpperCase());
+                    tag1.setOnClickListener(tagOnClickListener);
+                    tag2.setOnClickListener(tagOnClickListener);
                     break;
                 case 3:
                     tag1.setText(data.item.tags[0].toUpperCase());
                     tag2.setText(data.item.tags[1].toUpperCase());
                     tag3.setText(data.item.tags[2].toUpperCase());
+                    tag1.setOnClickListener(tagOnClickListener);
+                    tag2.setOnClickListener(tagOnClickListener);
+                    tag3.setOnClickListener(tagOnClickListener);
                     break;
                 case 4:
                     tag1.setText(data.item.tags[0].toUpperCase());
                     tag2.setText(data.item.tags[1].toUpperCase());
                     tag3.setText(data.item.tags[2].toUpperCase());
                     tag4.setText(data.item.tags[3].toUpperCase());
+                    tag1.setOnClickListener(tagOnClickListener);
+                    tag2.setOnClickListener(tagOnClickListener);
+                    tag3.setOnClickListener(tagOnClickListener);
+                    tag4.setOnClickListener(tagOnClickListener);
+
 
                     break;
                 case 5:
@@ -262,6 +275,12 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
                     tag3.setText(data.item.tags[2].toUpperCase());
                     tag4.setText(data.item.tags[3].toUpperCase());
                     tag5.setText(data.item.tags[4].toUpperCase());
+                    tag1.setOnClickListener(tagOnClickListener);
+                    tag2.setOnClickListener(tagOnClickListener);
+                    tag3.setOnClickListener(tagOnClickListener);
+                    tag4.setOnClickListener(tagOnClickListener);
+                    tag5.setOnClickListener(tagOnClickListener);
+
                     break;
             }
 
@@ -310,11 +329,11 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
     }
 
-    public View.OnClickListener itemOnClickListener = new View.OnClickListener() {
+    public static View.OnClickListener tagOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-
+            TextView temp = (TextView)v;
+            Toast.makeText(context, temp.getText().toString(), Toast.LENGTH_SHORT).show();
         }
     };
 }
