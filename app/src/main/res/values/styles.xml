@@ -10,7 +10,6 @@
             <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle</item>
             <item name="android:screenOrientation">portrait</item>
             <item name="android:windowBackground">@color/white</item>
-            <item name="android:popupMenuStyle">@style/PopupMenu</item>
             <item name="android:windowAnimationStyle">@null</item>
             <item name="actionBarWidgetTheme">@style/ActionBarTheme</item>
             <item name="android:windowContentTransitions">true</item>
@@ -30,7 +29,9 @@
 
 
         <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
-            <item name="android:popupBackground">@color/ColorPrimary</item>
+            <item name="android:popupBackground">@color/color_background_gray</item>
+            <item name="android:textColor">@color/text_color_dark</item>
+
         </style>
 
 

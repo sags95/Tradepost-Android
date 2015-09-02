@@ -1,6 +1,9 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,7 +12,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextThemeWrapper;
+import android.widget.CompoundButton;
 import android.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,11 +29,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import Controllers.SendController;
 import Model.CustomButton;
+import Model.CustomCheckBox;
 import Model.CustomEditText;
+import Model.CustomTextView;
 
 /**
  * Created by HenryChiang on 15-05-26.
@@ -45,6 +53,13 @@ public class ChatFragment extends Fragment {
     CustomButton send;
     private Toolbar toolbar;
 
+    //for dialog
+    int cancel_deal_dialog_layout = R.layout.dialog_cancel_deal;
+    LayoutInflater li;
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+    private CustomCheckBox blockUser;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +72,7 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+        li=getActivity().getLayoutInflater();
 
         //toolbar
         //toolbar = (Toolbar)rootView.findViewById(R.id.tool_bar);
@@ -74,7 +90,34 @@ public class ChatFragment extends Fragment {
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(getActivity().getApplicationContext(), v);
+                Context wrapper = new ContextThemeWrapper(getActivity(), R.style.PopupMenu);
+                PopupMenu popupMenu = new PopupMenu(wrapper, v);
+                popupMenu.inflate(R.menu.chat_popup_menu);
+
+                // Force icons to show
+                Object menuHelper;
+                Class[] argTypes;
+                try {
+                    Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+                    fMenuHelper.setAccessible(true);
+                    menuHelper = fMenuHelper.get(popupMenu);
+                    argTypes = new Class[] { boolean.class };
+                    menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+                } catch (Exception e) {
+                    // Possible exceptions are NoSuchMethodError and NoSuchFieldError
+                    //
+                    // In either case, an exception indicates something is wrong with the reflection code, or the
+                    // structure of the PopupMenu class or its dependencies has changed.
+                    //
+                    // These exceptions should never happen since we're shipping the AppCompat library in our own apk,
+                    // but in the case that they do, we simply can't force icons to display, so log the error and
+                    // show the menu normally.
+
+                    Log.w("ERROR", "error forcing menu icons to show", e);
+                    popupMenu.show();
+                    return;
+                }
+
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -86,15 +129,15 @@ public class ChatFragment extends Fragment {
                                 Toast.makeText(getActivity().getApplicationContext(), "choose photo Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_cancel:
+                                showCancelDealDialog();
                                 Toast.makeText(getActivity().getApplicationContext(), "cancel Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                         }
                         return false;
                     }
                 });
-                popupMenu.inflate(R.menu.chat_popup_menu);
-
                 popupMenu.show();
+
 
             }
         });
@@ -213,6 +256,48 @@ public class ChatFragment extends Fragment {
 
 
         }
+
+
+    private void showCancelDealDialog(){
+        final View dialogView = li.inflate(cancel_deal_dialog_layout, null,false);
+        builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Want to Cancel The Deal?");
+        blockUser = (CustomCheckBox)dialogView.findViewById(R.id.dialog_cancel_deal_checkBox);
+        blockUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
+        builder.setNegativeButton("No", dismissListener);
+        builder.setPositiveButton("Yes", blockUserOnClickListener);
+        //set custom view.
+        builder.setView(dialogView);
+
+        //showing custom dialog.
+        dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
+
+    private DialogInterface.OnClickListener blockUserOnClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            Log.d("BLOCK", blockUser.isChecked() ? "yes":"no");
+
+        }
+
+    };
+
+    private DialogInterface.OnClickListener dismissListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+    };
+
+
 
     @Override
     public void onStart() {
