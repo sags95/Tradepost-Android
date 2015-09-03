@@ -145,7 +145,11 @@
         </receiver>
 
         <service
+<<<<<<< Updated upstream
             android:name="com.sinapp.sharathsind.tradepost.GCMService"
+=======
+            android:name=".GCMService"
+>>>>>>> Stashed changes
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -159,7 +163,7 @@
         </receiver>
 
         <service
-            android:name="services.IDService"
+            android:name=".IDService"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>

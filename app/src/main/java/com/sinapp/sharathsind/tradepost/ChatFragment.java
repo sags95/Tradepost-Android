@@ -41,11 +41,11 @@ import Model.CustomTextView;
 /**
  * Created by HenryChiang on 15-05-26.
  */
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Activity {
 
 
     public static boolean isAlive;
-    private View rootView;
+   // private View rootView;
     ImageView attachBtn;
     RelativeLayout sendBar, attachBar;
     Button cam, gallery;
@@ -64,7 +64,9 @@ public class ChatFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+setContentView(R.layout.fragment_chat);
 
+<<<<<<< Updated upstream
     }
 
     @Override
@@ -73,6 +75,9 @@ public class ChatFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         li=getActivity().getLayoutInflater();
+=======
+       // rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+>>>>>>> Stashed changes
 
         //toolbar
         //toolbar = (Toolbar)rootView.findViewById(R.id.tool_bar);
@@ -81,12 +86,13 @@ public class ChatFragment extends Fragment {
 
 
         //buttons
-        attachBtn = (ImageView)rootView.findViewById(R.id.attach_btn);
-        cam = (Button)rootView.findViewById(R.id.attachment_cam);
-        gallery = (Button)rootView.findViewById(R.id.attachment_folder);
-        sendBar = (RelativeLayout)rootView.findViewById(R.id.send_bar);
-        attachBar = (RelativeLayout)rootView.findViewById(R.id.attach_bar);
+        attachBtn = (ImageView)findViewById(R.id.attach_btn);
+        cam = (Button)findViewById(R.id.attachment_cam);
+        gallery = (Button)findViewById(R.id.attachment_folder);
+        sendBar = (RelativeLayout)findViewById(R.id.send_bar);
+        attachBar = (RelativeLayout)findViewById(R.id.attach_bar);
 
+<<<<<<< Updated upstream
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +144,10 @@ public class ChatFragment extends Fragment {
                 });
                 popupMenu.show();
 
+=======
+        et = (EditText)findViewById(R.id.send_msg);
+        send = (Button)findViewById(R.id.send_btn);
+>>>>>>> Stashed changes
 
             }
         });
@@ -169,7 +179,7 @@ public class ChatFragment extends Fragment {
         //send
         SendController sendController = new SendController(this, et);
         send.setOnClickListener(sendController);
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        this.findViewById(android.R.id.content). getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (et.getText().toString().length()==0) {
@@ -213,7 +223,7 @@ public class ChatFragment extends Fragment {
 
         //
 
-        return rootView;
+
 
     }
 
@@ -224,14 +234,14 @@ public class ChatFragment extends Fragment {
             if (requestCode == 0) {
 
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                Intent intent = new Intent(getActivity(), PictureMsg.class);
+                Intent intent = new Intent(this, PictureMsg.class);
                 intent.putExtra("BitmapImage", thumbnail);
 
             }
         }else{
                 Uri selectedImageUri = data.getData();
                 String[] projection = { MediaStore.MediaColumns.DATA };
-            Cursor cursor = getActivity().getContentResolver().query(selectedImageUri, projection, null, null, null);
+            Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                 cursor.moveToFirst();
 
@@ -249,7 +259,7 @@ public class ChatFragment extends Fragment {
                 options.inSampleSize = scale;
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
-            Intent intent = new Intent(getActivity(), PictureMsg.class);
+            Intent intent = new Intent(this, PictureMsg.class);
             intent.putExtra("BitmapImage", bm);
 
             }
