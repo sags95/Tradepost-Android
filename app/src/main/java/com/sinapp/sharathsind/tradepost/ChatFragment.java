@@ -13,7 +13,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
-import android.view.ContextThemeWrapper;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.internal.view.ContextThemeWrapper;
 import android.widget.CompoundButton;
 import android.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
@@ -41,7 +42,7 @@ import Model.CustomTextView;
 /**
  * Created by HenryChiang on 15-05-26.
  */
-public class ChatFragment extends Activity {
+public class ChatFragment extends AppCompatActivity {
 
 
     public static boolean isAlive;
@@ -64,20 +65,18 @@ public class ChatFragment extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-setContentView(R.layout.fragment_chat);
+        setContentView(R.layout.fragment_chat);
 
-<<<<<<< Updated upstream
-    }
 
+
+    /*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        */
 
-        rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-        li=getActivity().getLayoutInflater();
-=======
-       // rootView = inflater.inflate(R.layout.fragment_chat, container, false);
->>>>>>> Stashed changes
+        //rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+        //li=getActivity().getLayoutInflater();
 
         //toolbar
         //toolbar = (Toolbar)rootView.findViewById(R.id.tool_bar);
@@ -92,11 +91,10 @@ setContentView(R.layout.fragment_chat);
         sendBar = (RelativeLayout)findViewById(R.id.send_bar);
         attachBar = (RelativeLayout)findViewById(R.id.attach_bar);
 
-<<<<<<< Updated upstream
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context wrapper = new ContextThemeWrapper(getActivity(), R.style.PopupMenu);
+                Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
                 PopupMenu popupMenu = new PopupMenu(wrapper, v);
                 popupMenu.inflate(R.menu.chat_popup_menu);
 
@@ -129,14 +127,14 @@ setContentView(R.layout.fragment_chat);
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.item_photo_camera:
-                                Toast.makeText(getActivity().getApplicationContext(), "Take photo Clicked", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Take photo Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_photo_gallery:
-                                Toast.makeText(getActivity().getApplicationContext(), "choose photo Clicked", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "choose photo Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_cancel:
                                 showCancelDealDialog();
-                                Toast.makeText(getActivity().getApplicationContext(), "cancel Clicked", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "cancel Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                         }
                         return false;
@@ -144,16 +142,11 @@ setContentView(R.layout.fragment_chat);
                 });
                 popupMenu.show();
 
-=======
-        et = (EditText)findViewById(R.id.send_msg);
-        send = (Button)findViewById(R.id.send_btn);
->>>>>>> Stashed changes
-
             }
         });
 
-        et = (CustomEditText)rootView.findViewById(R.id.send_msg);
-        send = (CustomButton)rootView.findViewById(R.id.send_btn);
+        et = (CustomEditText)findViewById(R.id.send_msg);
+        send = (CustomButton)findViewById(R.id.send_btn);
 
 
         /*
@@ -269,8 +262,8 @@ setContentView(R.layout.fragment_chat);
 
 
     private void showCancelDealDialog(){
-        final View dialogView = li.inflate(cancel_deal_dialog_layout, null,false);
-        builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+        final View dialogView = getLayoutInflater().inflate(cancel_deal_dialog_layout, null,false);
+        builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Want to Cancel The Deal?");
         blockUser = (CustomCheckBox)dialogView.findViewById(R.id.dialog_cancel_deal_checkBox);
         blockUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

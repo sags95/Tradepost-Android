@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -46,7 +47,7 @@ public class ChatPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_chatpage, container, false);
         emptyView = rootView.findViewById(R.id.chatpage_emptyView);
-        chatFrag = new ChatFragment();
+        //chatFrag = new ChatFragment();
 
         //SwipeToRefresh
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.chatpage_swipe_refresh_layout);
@@ -174,9 +175,14 @@ public class ChatPageFragment extends Fragment {
     public View.OnClickListener ItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            startActivity(new Intent(getActivity().getApplicationContext(),ChatFragment.class));
+
+            /*
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.container_right, chatFrag);
             transaction.commit();
+            */
 
         }
     };

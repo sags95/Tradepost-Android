@@ -145,11 +145,7 @@
         </receiver>
 
         <service
-<<<<<<< Updated upstream
-            android:name="com.sinapp.sharathsind.tradepost.GCMService"
-=======
             android:name=".GCMService"
->>>>>>> Stashed changes
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -198,6 +194,12 @@
         <activity
             android:name=".ListingProcessDoneActivity"
             android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+        <activity
+            android:name=".ChatFragment"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             >
         </activity>
