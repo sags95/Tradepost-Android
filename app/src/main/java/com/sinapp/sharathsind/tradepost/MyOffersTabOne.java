@@ -72,15 +72,14 @@ public class MyOffersTabOne extends Fragment {
         options.inJustDecodeBounds =true;
         BitmapFactory.decodeResource(getResources(),R.drawable.sample_img,options);
 
-        /*
+
         final List<MyOffersItem> myOffersItems =
                 addItem("Item Title",
                         BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img),
                         BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img),
                         0, 0);
-         */
 
-        final List<MyOffersItem> myOffersItems = null;
+
 
         mMyOffersAdapter = new MyOffersAdapter(myOffersItems, getActivity().getApplicationContext());
         mRecyclerView.setHasFixedSize(true);

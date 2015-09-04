@@ -29,18 +29,18 @@ public class CategoryFragment extends Fragment {
     private GridLayoutManager mGridLayoutManager;
     private String[] categories;
     int[] imgRes = {
-            R.drawable.sample_img3,
-            R.drawable.sample_img5,
-            R.drawable.sample_img6,
-            R.drawable.sample_img3,
-            R.drawable.sample_img5,
-            R.drawable.sample_img6,
-            R.drawable.sample_img3,
-            R.drawable.sample_img5,
-            R.drawable.sample_img6,
-            R.drawable.sample_img3,
-            R.drawable.sample_img6,
-            R.drawable.sample_img5
+            R.drawable.art,
+            R.drawable.clothing,
+            R.drawable.computers,
+            R.drawable.electronics,
+            R.drawable.furniture,
+            R.drawable.instruments,
+            R.drawable.phones,
+            R.drawable.sports,
+            R.drawable.tickets,
+            R.drawable.vehicles,
+            R.drawable.video_games,
+            R.drawable.sample_img
     };
 
 

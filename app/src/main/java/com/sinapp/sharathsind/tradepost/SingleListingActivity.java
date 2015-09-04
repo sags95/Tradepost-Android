@@ -70,6 +70,7 @@ public class SingleListingActivity extends AppCompatActivity {
     private boolean isSelfItem = false;
 
     private String[] imageResources;
+    private String itemId="";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,8 @@ public class SingleListingActivity extends AppCompatActivity {
             ArrayList<String> itemInfo = getIntent().getStringArrayListExtra("myItemClicked");
             Bitmap proPicReceived = i.getParcelableExtra("profilePic");
 
+            //item id
+            itemId=itemInfo.get(0).toString();
             //item userPic
             Picasso.with(this).load(Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + userdata.userid + "/profile.png")).into(proPic);
             //proPic.setImageBitmap(proPicReceived);
@@ -183,6 +186,7 @@ public class SingleListingActivity extends AppCompatActivity {
             }
 
             if(m.item.item.getUserid()==Constants.userid){
+
 
                 //item distance
                 offerFab.setVisibility(View.GONE);
@@ -268,6 +272,14 @@ public class SingleListingActivity extends AppCompatActivity {
 
         if (item.getTitle().toString().equals("Edit")){
                 Toast.makeText(getApplicationContext(), "Edit", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(getApplicationContext(),EditListingActivity.class);
+            ArrayList<String> editListing = new ArrayList<>();
+            editListing.add(0,itemId);
+            editListing.add(1,itemTitle.getText().toString());
+            editListing.add(2,itemDescription.getText().toString());
+            editListing.add(3,itemCondition.getText().toString());
+            //editListing.add(4,item)
+
         }
 
         return super.onOptionsItemSelected(item);

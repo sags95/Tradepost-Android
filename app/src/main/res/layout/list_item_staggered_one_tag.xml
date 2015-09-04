@@ -51,7 +51,6 @@
             android:id="@+id/pro_img"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/sample_img"
             android:layout_alignBottom="@+id/item_image"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="-24dp"

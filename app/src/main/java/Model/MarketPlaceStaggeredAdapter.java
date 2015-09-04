@@ -203,7 +203,7 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
             Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/items/" + data.item.item.getItemid() + "/0.png");
             Picasso.with(context)
                     .load(url1)
-                    .placeholder(R.drawable.sample_img3)
+                    .placeholder(R.drawable.ic_image_placeholder)
                     .into(mImageViewItemImg);
 
             //date
@@ -216,9 +216,9 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
             Uri url=Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + data.userid + "/profile.png");
             Picasso.with(context)
                     .load(url)
-                    .placeholder(R.drawable.sample_img)
+                    .placeholder(R.drawable.ic_profile_placeholder)
                     .into(mImageViewProPic);
-            mImageViewProPic.setOnClickListener(new View.OnClickListener() {
+                    mImageViewProPic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context.getApplicationContext(), ProfileActivity.class);
