@@ -54,6 +54,19 @@ public class EditListingActivity extends AppCompatActivity {
     private CustomTextView tagsCount;
     private ColorStateList oldColors;
 
+    //section1
+    private LimitedEditText itemName;
+    //section2
+
+    //section3
+    private SeekBar seekBar;
+    //section4
+    private LimitedEditText desEditText;
+    //section5
+
+    //section6
+    private CustomSpinnerAdapter spinnerAdapter;
+
     public ArrayList<String> tags;
     public ArrayList<Bitmap>bits;
     private CustomEditText tagInput;
@@ -85,7 +98,7 @@ public class EditListingActivity extends AppCompatActivity {
         bits=new ArrayList<Bitmap>();
 
         //section 1
-        LimitedEditText itemName = (LimitedEditText) findViewById(R.id.section1_edit);
+        itemName = (LimitedEditText) findViewById(R.id.section1_edit);
         itemName.setMaxLines(1);
         itemName.setMaxCharacters(70);
         final CustomTextView itemNameCharCount = (CustomTextView)findViewById(R.id.section1_char_count);
@@ -116,7 +129,7 @@ public class EditListingActivity extends AppCompatActivity {
         folder.setOnClickListener(galleryBtnListener);
 
         //section 3
-        SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar1);
+        seekBar = (SeekBar)findViewById(R.id.seekBar1);
         final LinearLayout seekBarLi = (LinearLayout)findViewById(R.id.seekBar_layout);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -139,7 +152,7 @@ public class EditListingActivity extends AppCompatActivity {
 
 
         //section 4
-        LimitedEditText desEditText = (LimitedEditText) findViewById(R.id.section4_edit);
+        desEditText = (LimitedEditText) findViewById(R.id.section4_edit);
         desEditText.setMaxLines(5);
         desEditText.setMaxCharacters(250);
         final CustomTextView itemDesCharCount = (CustomTextView)findViewById(R.id.section4_char_count);
@@ -166,9 +179,14 @@ public class EditListingActivity extends AppCompatActivity {
         //using section 6 (Choose a category)
         categories = getResources().getStringArray(R.array.category_array);
         spinner = (Spinner) findViewById(R.id.section6_spinner);
-        CustomSpinnerAdapter adapter = new CustomSpinnerAdapter(
+        spinnerAdapter = new CustomSpinnerAdapter(
                 this, android.R.layout.simple_spinner_dropdown_item, Arrays.asList(getResources().getStringArray(R.array.category_array)));
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(spinnerAdapter);
+
+
+        //Filling item information for editing
+        setItemInfoForEdit();
+
 
     }
 
@@ -201,6 +219,51 @@ public class EditListingActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    private void setItemInfoForEdit(){
+        ArrayList<String> itemInfoForEdit = getIntent().getStringArrayListExtra("itemToEdit");
+
+        //section1
+        itemName.setText(itemInfoForEdit.get(1));
+        //section2
+
+        //section3
+        seekBar.setProgress(convertCon(itemInfoForEdit.get(3)));
+        //section4
+        desEditText.setText(itemInfoForEdit.get(2));
+        //section5
+        String[] tagsToEdit = getIntent().getStringArrayExtra("tagsToEdit");
+        for(String tag : tagsToEdit){
+            addTagsEditListing(tag);
+        }
+        //section6
+        spinner.setSelection(spinnerAdapter.getPosition(itemInfoForEdit.get(4)));
+
+
+    }
+
+    public int convertCon(String condition){
+        int con=0;
+        switch (condition){
+            case "POOR":
+                con=0;
+                break;
+            case "FAIR":
+                con=1;
+                break;
+            case "GREAT":
+                con=2;
+                break;
+            case "MINT":
+                con=3;
+                break;
+            case "NEW":
+                con=4;
+                break;
+        }
+
+        return con;
     }
 
     public View.OnClickListener addTagButtonListener = new View.OnClickListener() {
@@ -275,11 +338,8 @@ public class EditListingActivity extends AppCompatActivity {
         tagName.setText(tag.trim());
         //tags.add(tagInput.getText().toString().trim());
         tagName.setTag(tag);
-
         tagFlowLayout.addView(singleTag);
-
-
-
+        tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
 
 
     }

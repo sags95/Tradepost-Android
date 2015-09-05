@@ -16,7 +16,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.internal.view.ContextThemeWrapper;
 import android.widget.CompoundButton;
-import android.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -97,6 +97,7 @@ public class ChatFragment extends AppCompatActivity {
                 Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
                 PopupMenu popupMenu = new PopupMenu(wrapper, v);
                 popupMenu.inflate(R.menu.chat_popup_menu);
+
 
                 // Force icons to show
                 Object menuHelper;

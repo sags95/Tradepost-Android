@@ -68,7 +68,8 @@ public class SingleListingActivity extends AppCompatActivity {
     MarketPlaceData m;
 
     private boolean isSelfItem = false;
-
+    private String[] itemTagsToEdit=null;
+    private String itemCatToEdit = "";
     private String[] imageResources;
     private String itemId="";
 
@@ -122,7 +123,7 @@ public class SingleListingActivity extends AppCompatActivity {
             Bitmap proPicReceived = i.getParcelableExtra("profilePic");
 
             //item id
-            itemId=itemInfo.get(0).toString();
+            itemId=itemInfo.get(0);
             //item userPic
             Picasso.with(this).load(Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + userdata.userid + "/profile.png")).into(proPic);
             //proPic.setImageBitmap(proPicReceived);
@@ -135,7 +136,7 @@ public class SingleListingActivity extends AppCompatActivity {
             //item dateAdded
             itemDateAdded.setText(itemInfo.get(4));
             //item username
-            itemUsername.setText(Variables.username);
+            itemUsername.setText(itemInfo.get(2));
             //item distance
             itemDistance.setText(String.valueOf(roundedDistance(distance(userdata.latitude,userdata.longitude, userdata.latitude, userdata.longitude, 'K'))));
 
@@ -147,6 +148,11 @@ public class SingleListingActivity extends AppCompatActivity {
 
             }
             String[] itemTags = getIntent().getStringArrayExtra("itemTags");
+
+            //For EditActivity
+            itemTagsToEdit = new String[itemTags.length];
+            itemTagsToEdit=itemTags;
+            itemCatToEdit = itemInfo.get(6);
 
             imageResources = new String[itemImages.length];
             mCustomPagerAdapter = new CustomPagerAdapter(this,images);
@@ -183,6 +189,7 @@ public class SingleListingActivity extends AppCompatActivity {
             //item tags
             for (String tempTag : m.item.tags) {
                 tagsLayout.addView(addTagsSingleListing(tempTag));
+
             }
 
             if(m.item.item.getUserid()==Constants.userid){
@@ -191,6 +198,11 @@ public class SingleListingActivity extends AppCompatActivity {
                 //item distance
                 offerFab.setVisibility(View.GONE);
                 isSelfItem=true;
+
+                //For EditActivity
+                itemTagsToEdit = new String[m.item.tags.length];
+                itemTagsToEdit=m.item.tags;
+                itemCatToEdit = m.item.item.getCategory();
             }else{
 
                 //item distance
@@ -271,14 +283,25 @@ public class SingleListingActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getTitle().toString().equals("Edit")){
-                Toast.makeText(getApplicationContext(), "Edit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Edit", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(getApplicationContext(),EditListingActivity.class);
+
+            //General Information
             ArrayList<String> editListing = new ArrayList<>();
             editListing.add(0,itemId);
             editListing.add(1,itemTitle.getText().toString());
             editListing.add(2,itemDescription.getText().toString());
             editListing.add(3,itemCondition.getText().toString());
-            //editListing.add(4,item)
+            editListing.add(4,itemCatToEdit);
+
+            i.putStringArrayListExtra("itemToEdit", editListing);
+
+            //Tags
+            i.putExtra("tagsToEdit", itemTagsToEdit);
+            startActivity(i);
+            finish();
+
+
 
         }
 

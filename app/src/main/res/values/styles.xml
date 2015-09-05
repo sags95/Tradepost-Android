@@ -19,6 +19,7 @@
         <style name="ActionBarTheme" parent="style/ThemeOverlay.AppCompat.Light">
         <!-- THIS is where you can color the arrow! -->
             <item name="colorControlNormal">@color/white</item>
+            <item name="android:textColorPrimary">@color/white</item>
         </style>
 
         <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

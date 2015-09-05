@@ -147,6 +147,7 @@ public class MyItemsFragment extends Fragment {
             clickedItemDetails.add(3, userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getDescription());
             clickedItemDetails.add(4, MarketPlaceStaggeredAdapter.daysBetween(userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getDateadded()));
             clickedItemDetails.add(5, String.valueOf(userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getCon()));
+            clickedItemDetails.add(6,userdata.i.get(mRecyclerView.getChildLayoutPosition(v)).item.getCategory());
 
             i.putStringArrayListExtra("myItemClicked", clickedItemDetails);
 
