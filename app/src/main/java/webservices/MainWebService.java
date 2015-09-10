@@ -12,6 +12,7 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.kxml2.io.KXmlSerializer;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -120,6 +121,11 @@ public class MainWebService {
             }
             return b;
         }
+        catch (EOFException e)
+        {
+            return getMsg1(request, URL, SOAP_ACTION);
+
+        }
         catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,9 +157,14 @@ public class MainWebService {
             ht.call(SOAP_ACTION, envelope,headerPropertyArrayList);
             ht.getServiceConnection().setRequestProperty("connection","close");
             KvmSerializable response = (KvmSerializable) envelope.getResponse();
-            //  String res = response.ge().toString();
+            //  String res = n
             return response;
-        } catch (Exception e) {
+        }
+        catch (EOFException e)
+        {
+            return getMsg2(request,URL,SOAP_ACTION);
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 

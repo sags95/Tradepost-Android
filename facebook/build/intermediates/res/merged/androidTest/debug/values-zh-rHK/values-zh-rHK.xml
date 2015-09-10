@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/sharathsind/Desktop/tradepost/Tradepost-Android/facebook/build/intermediates/bundles/debug/res/values-zh-rHK/values-zh-rHK.xml -->
+    <!-- From: file:/C:/tradepost/Tradepost-Android/facebook/build/intermediates/bundles/debug/res/values-zh-rHK/values-zh-rHK.xml -->
     <eat-comment/>
     <string name="messenger_send_button_text">傳送</string>
 </resources>

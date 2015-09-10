@@ -1,5 +1,6 @@
 package Model;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.MarshalBase64;
+import org.ksoap2.serialization.MarshalDate;
 import org.ksoap2.serialization.MarshalFloat;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -20,13 +22,18 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
+import data.MessageClass;
 import data.StringVector;
+import datamanager.FileManager;
 import datamanager.Item;
 import datamanager.ItemResult;
 import datamanager.userdata;
+import webobjects.Message;
 import webservices.MainWebService;
 import webservices.SoapStringVector;
 
@@ -208,40 +215,96 @@ signUp(username, email, s, fb, profilepic, b, db);
 
     }
 
-    public static String sendMsg(String msg,Bitmap picture,int userid)
+    public static MessageClass sendMsg(String msg,Bitmap picture,int userid,int offerid,Activity activity)
     {
-        SoapObject request = new SoapObject(NAMESPACE, "hello");
-        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
-        picture.compress(Bitmap.CompressFormat.PNG,100, baos);
-
-
-
-        byte [] b1=baos.toByteArray();
-        ContentValues cv=new ContentValues();
-        String temp= Base64.encodeToString(b1, Base64.DEFAULT);
-        request.addProperty("attachment", temp);
-        request.addProperty("userid",Constants.userid);
-        request.addProperty("uname",Constants.username);
-        request.addProperty("filetype","png");
-        request.addProperty("recuserid",userid);
-        request.addProperty("msg",msg);
-
-
-
-
-
+        SoapObject request=null;
+        String soapaction,URL;
+        URL="http://73.37.238.238:8084/TDserverWeb/MessageWebService?wsdl";
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        if(picture !=null)
+        {
+            request= new SoapObject(NAMESPACE, "sendpic");
 
-        envelope.setOutputSoapObject(request);
+            request.addProperty("userid",Constants.userid);
+            request.addProperty("picmsg", FileManager.encode(picture));
+            request.addProperty("key",Constants.GCM_Key);
+            request.addProperty("offerid",offerid);
+            request.addProperty("name",msg);
+            envelope.setOutputSoapObject(request);
 
-        HttpTransportSE ht = new HttpTransportSE(URL);
-        try {
-            ht.call("http://webser/Register/helloRequest", envelope);
-            SoapPrimitive response = (SoapPrimitive)envelope.getResponse();
-            String res=response.getAttribute("return").toString();
+            HttpTransportSE ht = new HttpTransportSE(URL);
+            try {
+                ht.call("http://webser/MessageWebService/sendpicRequest", envelope);
+                SoapObject response = (SoapObject) envelope.getResponse();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+
+
+            }
+
+            catch (EOFException e)
+            {
+             return   sendMsg(msg,picture,userid,offerid,activity);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+
+
+
+        }
+        else{
+
+
+            request= new SoapObject(NAMESPACE, "send");
+
+            request.addProperty("userid",Constants.userid);
+         //   request.addProperty("uname",Constants.username);
+            request.addProperty("key",Constants.GCM_Key);
+            request.addProperty("offerid",offerid);
+            request.addProperty("name",msg);
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE ht = new HttpTransportSE(URL);
+            try {
+                ht.call("http://webser/MessageWebService/sendRequest", envelope);
+                SoapObject response = (SoapObject) envelope.getResponse();
+                SoapObject result= (SoapObject) response.getProperty("m");
+                MessageClass m=new MessageClass();
+                ContentValues cv=new ContentValues();
+             //   ContentValues cv = new ContentValues();
+                SQLiteDatabase db=  Constants.db=activity.openOrCreateDatabase("tradepostdb.db", activity.MODE_PRIVATE, null);
+                cv.put("msgid",result.getProperty("messageid").toString());
+                cv.put("msg",msg);
+                cv.put("ruserid",result.getProperty("ruserid").toString());
+                cv.put("userid",result.getProperty("userid").toString());
+                cv.put("sent",result.getProperty("sent").toString());
+                cv.put("msgpath",result.getProperty("messagepath").toString());
+                db.insert("m" + offerid, "seen", cv);
+                db.close();
+                m.setUserid(Integer.parseInt(result.getProperty("userid").toString()));
+                m.setMsg(msg);
+
+              Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                        .parse(result.getProperty("sent").toString());
+                m.setSent(date);
+                return m;
+
+            }
+
+            catch (EOFException e)
+            {
+        return        sendMsg(msg,picture,userid,offerid,activity);
+            }
+            catch (Exception e)
+            {
+e.printStackTrace();
+            }
+
+
+
         }
 
 
