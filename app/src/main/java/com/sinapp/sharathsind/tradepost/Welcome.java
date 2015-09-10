@@ -232,6 +232,33 @@ public class Welcome extends Activity implements OnClickListener {
                                 "  profilepicture varchar ," +
                                 "  emailconfirm varchar ," +
                                 "  userid int(10))");
+                        Constants.db.execSQL("CREATE TABLE offeritems (\n" +
+                                "  offerid int(10) ,\n" +
+                                "  itemid int(10) \n" +
+                                ")");
+                        Constants.db.execSQL("CREATE TABLE notifications (\n" +
+                                "  offerid int(10) ,\n" +
+                                "  notificationid int(10),msg varchar,type int(10),status int(10) \n" +
+                                ")");
+
+
+                        Constants.db.execSQL("CREATE TABLE offers (\n" +
+                                "  Offerid int(10) ,\n" +
+                                "  userid  varchar,\n" +
+                                "  recieveduserid varchar,\n" +
+                                "  status int(10),\n" +
+                                "  cash int(10) ,\n" +
+                                "  Itemid int(10) ,\n" +
+                                "  Dir varchar " +
+
+                                ") ");
+                        Constants.db.execSQL("CREATE TABLE offeradditionalitems (\n" +
+                                "  OfferId int(11), \n" +
+                                "  ItemName varchar(45) \n" +
+                                ") ");
+
+
+
                         Constants.db.execSQL("Create table IF NOT EXISTS GCM (gcmkey varchar)");
 
                         Constants.db.execSQL("Create table IF NOT EXISTS marketplacelisting (" +

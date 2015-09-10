@@ -21,9 +21,9 @@ import data.MessageClass;
  * Created by sharathsind on 2015-06-06.
  */
 public class MessageAdapter extends BaseAdapter{
-    ArrayList<MessageClass>m;
+  public   ArrayList<MessageClass>m;
     Activity b;
-    MessageAdapter(Activity a,ArrayList<MessageClass>mes)
+    public MessageAdapter(Activity a,ArrayList<MessageClass>mes)
     {
         b=a;
         m=mes;
@@ -47,7 +47,7 @@ public class MessageAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MessageClass m1=m.get(0);
+        MessageClass m1=m.get(position);
         LayoutInflater inflater=b.getLayoutInflater();
         int userid=m1.getUserid();
         View v;
@@ -57,8 +57,8 @@ public class MessageAdapter extends BaseAdapter{
         {
             v = inflater.inflate(R.layout.left_message_view, parent, false);
             v2= (TextView) v.findViewById(R.id.Left_msg);
-            v1=(ImageView)v.findViewById(R.id.pictureleft);
-            if(m1.getPicmsg()==null)
+            v1=(ImageView)v.findViewById(R.id.image_msg);
+            if(m1.getPicmsg()!=null)
             {
 
           v1.setImageBitmap(m1.getPicmsg());
@@ -73,8 +73,8 @@ public class MessageAdapter extends BaseAdapter{
         else{
             v = inflater.inflate(R.layout.right_message_view, parent, false);
             v2= (TextView) v.findViewById(R.id.Right_msg);
-            v1=(ImageView)v.findViewById(R.id.pictureright);
-            if(m1.getPicmsg()==null)
+           v1=(ImageView)v.findViewById(R.id.pictureright);
+            if(m1.getPicmsg()!=null)
             {
 
                 v1.setImageBitmap(m1.getPicmsg());

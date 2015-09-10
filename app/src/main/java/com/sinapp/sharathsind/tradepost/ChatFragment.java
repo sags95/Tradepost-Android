@@ -2,8 +2,11 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,9 +16,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.internal.view.ContextThemeWrapper;
+import android.view.ContextThemeWrapper;
 import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,11 +30,12 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import Controllers.SendController;
@@ -38,13 +43,21 @@ import Model.CustomButton;
 import Model.CustomCheckBox;
 import Model.CustomEditText;
 import Model.CustomTextView;
+import Model.MessageAdapter;
+import data.MessageClass;
+import datamanager.userdata;
 
 /**
  * Created by HenryChiang on 15-05-26.
  */
-public class ChatFragment extends AppCompatActivity {
+public class ChatFragment extends Activity {
 
+public void updatemsg(MessageClass m)
+{
+    this.m.m.add(m);
+   this.m.notifyDataSetChanged();
 
+}
     public static boolean isAlive;
    // private View rootView;
     ImageView attachBtn;
@@ -60,23 +73,24 @@ public class ChatFragment extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private CustomCheckBox blockUser;
+ListView lv;
+    public int offerid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.fragment_chat);
+setContentView(R.layout.fragment_chat);
+
+Intent i=getIntent();
+          offerid=i.getIntExtra("offerid",0);
+setadapter();
+IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
+        this.registerReceiver(cv,f);
 
 
-
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        */
-
-        //rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-        //li=getActivity().getLayoutInflater();
+       // rootView = inflater.inflate(R.layout.fragment_chat, container, false);
+        li=getLayoutInflater();
 
         //toolbar
         //toolbar = (Toolbar)rootView.findViewById(R.id.tool_bar);
@@ -91,13 +105,13 @@ public class ChatFragment extends AppCompatActivity {
         sendBar = (RelativeLayout)findViewById(R.id.send_bar);
         attachBar = (RelativeLayout)findViewById(R.id.attach_bar);
 
+
         attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
+                Context wrapper = new ContextThemeWrapper(ChatFragment.this, R.style.PopupMenu);
                 PopupMenu popupMenu = new PopupMenu(wrapper, v);
                 popupMenu.inflate(R.menu.chat_popup_menu);
-
 
                 // Force icons to show
                 Object menuHelper;
@@ -128,20 +142,32 @@ public class ChatFragment extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.item_photo_camera:
-                                Toast.makeText(getApplicationContext(), "Take photo Clicked", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(intent, 0);
+                                //  Toast.makeText(getActivity().getApplicationContext(), "Take photo Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_photo_gallery:
-                                Toast.makeText(getApplicationContext(), "choose photo Clicked", Toast.LENGTH_SHORT).show();
+                                 intent = new Intent(
+                                        Intent.ACTION_PICK,
+                                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                intent.setType("image/*");
+                                startActivityForResult(Intent.createChooser(intent, "Select File"), 1);
+                                // Toast.makeText(getActivity().getApplicationContext(), "choose photo Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_cancel:
                                 showCancelDealDialog();
-                                Toast.makeText(getApplicationContext(), "cancel Clicked", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(getActivity().getApplicationContext(), "cancel Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                         }
                         return false;
                     }
                 });
                 popupMenu.show();
+
+
+        et = (CustomEditText)findViewById(R.id.send_msg);
+        send = (CustomButton)findViewById(R.id.send_btn);
+
 
             }
         });
@@ -157,7 +183,7 @@ public class ChatFragment extends AppCompatActivity {
             public void onClick(View v) {
                 if (attachBar.getVisibility() != View.VISIBLE) {
                     RelativeLayout.LayoutParams sendBarparams = (RelativeLayout.LayoutParams) sendBar.getLayoutParams();
-                    sendBarparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0);
+                    sendBarparams.addRule(Rel31+ativeLayout.ALIGN_PARENT_BOTTOM, 0);
                     sendBar.setLayoutParams(sendBarparams);
                     attachBar.setVisibility(View.VISIBLE);
                 } else {
@@ -220,7 +246,38 @@ public class ChatFragment extends AppCompatActivity {
 
 
     }
+ //   int offerid;
+    BroadcastReceiver cv=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+setadapter();
+        }
+    };
+    MessageAdapter m;
+public void setadapter()
+{
+    lv= (ListView) findViewById(R.id.listview_chat);
+    ArrayList<MessageClass> c=new ArrayList<>();
+    SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
+    // rootView = inflater.inflate(R.layout.notification_offer, container, false);
+    Cursor c1=db.rawQuery("select * from m"+offerid,null);
+    c1.moveToFirst();
+    while(!c1.isAfterLast()) {
+        MessageClass m1 = new MessageClass();
 
+        m1.setMsg(c1.getString(c1.getColumnIndex("msg")));
+        m1.setSeen(new Date(c1.getString(c1.getColumnIndex("seen"))));
+        m1.setSent(new Date(c1.getString(c1.getColumnIndex("sent"))));
+        m1.setUserid(userdata.userid);
+  c.add(m1);
+        c1.moveToNext();
+
+    }
+    c1.close();
+    db.close();
+     m=new MessageAdapter(this,c);
+lv.setAdapter(m);
+}
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -263,7 +320,7 @@ public class ChatFragment extends AppCompatActivity {
 
 
     private void showCancelDealDialog(){
-        final View dialogView = getLayoutInflater().inflate(cancel_deal_dialog_layout, null,false);
+        final View dialogView = li.inflate(cancel_deal_dialog_layout, null,false);
         builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Want to Cancel The Deal?");
         blockUser = (CustomCheckBox)dialogView.findViewById(R.id.dialog_cancel_deal_checkBox);

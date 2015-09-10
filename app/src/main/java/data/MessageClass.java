@@ -10,7 +10,9 @@ import java.util.Date;
 public class MessageClass {
     String msg;
     Date sent;
+
     int userid;
+    int ruserid;
 
     public String getMsg() {
         return msg;
@@ -36,25 +38,30 @@ public class MessageClass {
         this.userid = userid;
     }
 
-    public boolean isSeen() {
+    public Date isSeen() {
         return seen;
     }
 
-    public void setSeen(boolean seen) {
+    public void setSeen(Date seen) {
         this.seen = seen;
+
     }
 
-    public Bitmap getPicmsg() {
+    public Bitmap getPicmsg()
+    {
         return picmsg;
     }
 
     public void setPicmsg(Bitmap picmsg) {
+
         this.picmsg = picmsg;
     }
-
-    boolean seen;
+    Date seen;
 
     Bitmap picmsg;
+    public MessageClass()
+    {}
+
     public MessageClass(String msg, Bitmap picmsg,int userid) {
         this.msg = msg;
         this.picmsg = picmsg;

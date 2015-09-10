@@ -1,6 +1,12 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +34,8 @@ import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.SimpleSectionedRecyclerViewAdapter;
 import Model.SwipeableRecyclerViewTouchListener;
+import datamanager.userdata;
+import webservices.MainWebService;
 
 /**
  * Created by HenryChiang on 15-07-03.
@@ -47,7 +62,7 @@ public class ChatPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_chatpage, container, false);
         emptyView = rootView.findViewById(R.id.chatpage_emptyView);
-        //chatFrag = new ChatFragment();
+      //  chatFrag = new ChatFragment();
 
         //SwipeToRefresh
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.chatpage_swipe_refresh_layout);
@@ -55,7 +70,7 @@ public class ChatPageFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d("SwipeToRefresh", "Refreshing");
+                 Log.d("SwipeToRefresh", "Refreshing");
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -75,9 +90,8 @@ public class ChatPageFragment extends Fragment {
 
         List<SimpleSectionedRecyclerViewAdapter.Section> sections =
                 new ArrayList<SimpleSectionedRecyclerViewAdapter.Section>();
-        //Sections
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0,"New Message"));
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(1,"Old Message"));
+
+
 
         //Add your adapter to the sectionAdapter
         SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
@@ -150,21 +164,44 @@ public class ChatPageFragment extends Fragment {
 
         return rootView;
     }
-
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
     public List<ChatPageItem> addItem() {
         List<ChatPageItem> items = new ArrayList<ChatPageItem>();
-        items.add(new ChatPageItem("Main Title1", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title2", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title3","Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title4", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title5", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title6", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title7", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title8", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title9", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title10", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-        items.add(new ChatPageItem("Main Title11", "Secondary Title", getResources().getDrawable(R.drawable.ic_launcher)));
-
+        SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
+        Cursor cv=db.rawQuery("select * from offers where status=1",null);
+        if(cv.getCount()>0){
+        cv.moveToFirst();
+        while(!cv.isAfterLast()) {
+            int userid = cv.getInt(cv.getColumnIndex("recieveduserid"));
+            int ruserid = cv.getInt(cv.getColumnIndex("userid"));
+            int itemid = cv.getInt(cv.getColumnIndex("Itemid"));
+            int getuser = userdata.userid != userid ? userid : ruserid;
+            SoapObject o = new SoapObject("http://webser/", "getItemnameU");
+            o.addProperty("userid",userid);
+            o.addProperty("itemid",itemid);
+            SoapPrimitive s = MainWebService.getretryMsg(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest", 0);
+            String username = s.getValue().toString().split("/,")[0].replace("username:", " ");
+            String itemname = s.getValue().toString().split(",")[1].replace("itemname:", " ");
+            Drawable d = new BitmapDrawable(getResources(), getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png"));
+            items.add(new ChatPageItem(username, itemname, d));
+ cv.moveToNext();
+        }
+        }
+        cv.close();
+        db.close();
         return items;
     }
     private void applyLinearLayoutManager(){
@@ -175,14 +212,9 @@ public class ChatPageFragment extends Fragment {
     public View.OnClickListener ItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            startActivity(new Intent(getActivity().getApplicationContext(),ChatFragment.class));
-
-            /*
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.container_right, chatFrag);
-            transaction.commit();
-            */
+            Intent i=new Intent(getActivity(),ChatFragment.class);
+//            i.putExtra("offerid",offerid);
+            startActivity(i);
 
         }
     };

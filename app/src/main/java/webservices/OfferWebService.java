@@ -1,5 +1,10 @@
 package webservices;
 
+import android.content.ContentValues;
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.sinapp.sharathsind.tradepost.Constants;
+
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
@@ -18,8 +23,17 @@ public class OfferWebService {
     s.addProperty("ruserid",ruserid);
         s.addProperty("fori",foritemid);
          s.addProperty("cash",cash);
-        SoapPrimitive soapPrimitive = MainWebService.getretryMsg(s, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferRequest",0);
+        SoapPrimitive soapPrimitive = MainWebService.getretryMsg(s, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferRequest", 0);
 int offerid=Integer.parseInt(soapPrimitive.getValue().toString());
+        ContentValues cv=new ContentValues();
+        cv.put("offerid",offerid);
+        cv.put("userid", userid);
+        cv.put("itemid", foritemid);
+        cv.put("cash", cash);
+        cv.put("recieveduserid", ruserid);
+        cv.put("status", 0);
+        cv.put("dir", " ");
+        Constants.db.insert("offers",null,cv);
         for(int i=0;i<itemid.length;i++)
 {
  s=new SoapObject("http://webser/","addofferItem");
@@ -27,6 +41,11 @@ int offerid=Integer.parseInt(soapPrimitive.getValue().toString());
     s.addProperty("itemid",itemid[i]);
 
  soapPrimitive = MainWebService.getretryMsg(s, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addofferItemRequest",0);
+    cv=new ContentValues();
+    cv.put("offerid", offerid);
+    cv.put("itemid", String.valueOf(itemid));
+    Constants.db.insert("offeritems", null, cv);
+
 
 
 }
@@ -36,6 +55,12 @@ if(Images!=null) {
     s.addProperty("images", Images);
     s.addProperty("pic", 0);
     soapPrimitive = MainWebService.getretryMsg(s, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addOferImageRequest", 0);
+
+    cv=new ContentValues();
+    cv.put("offerid", offerid);
+    cv.put("itemname", s.getPropertyAsString("itemid"));
+    Constants.db.insert("offeradditionalitems", null, cv);
+
 }
 
 
@@ -58,7 +83,14 @@ if(Images!=null)
         s.addProperty("offerid", offerid);
         s.addProperty("userid",ruserid);
         s.addProperty("msg",notification);
+        s.addProperty("username","useless");
         soapPrimitive = MainWebService.getretryMsg(s, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferNotRequest",0);
+
+
+
+
+
+
 
     }
     public void acceptOffer(int offerid)
