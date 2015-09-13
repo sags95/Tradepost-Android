@@ -58,7 +58,7 @@ notifyOffer(offerid,msg);
         msg =data.getString("message");
         dOffer(offerid,msg);
         break;
-    case "message":
+    case "mesage":
         offerid=Integer.parseInt(data.getString("offerid"));
         msg =data.getString("message");
 
@@ -80,12 +80,12 @@ notifyOffer(offerid,msg);
 
     private void message(int offerid, String msg,String p,Bundle data) {
         int mesgid=Integer.parseInt(data.getString("messageid"));
-        SQLiteDatabase db=  Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
-        Cursor cursor=db.rawQuery("select * from m"+offerid+"where msgid="+mesgid,null);
+        SQLiteDatabase db=  openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
+        Cursor cursor=db.rawQuery("select * from m"+offerid+" where msgid = "+mesgid,null);
 
         if(cursor.getCount()>0)
         {
-db.close();
+            db.close();
             cursor.close();
             return;
         }
@@ -102,10 +102,8 @@ db.close();
             db.close();
             if(ChatFragment.isAlive)
             {
-                IntentFilter i=new IntentFilter("com.sinapp.sharathsind.tradepost.chat."+offerid);
-                Intent i1=new Intent();
-                i1.setAction(i.getAction(0));
-                sendBroadcast(i1);
+
+                sendBroadcast(new Intent("com.sinapp.sharathsind.chat."+offerid));
             }
 else{
                 Intent i=new Intent(this,ChatFragment.class);

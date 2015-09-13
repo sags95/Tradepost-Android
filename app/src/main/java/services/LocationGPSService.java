@@ -96,8 +96,7 @@ return location;
                 l.city=address.getLocality();
                 l.latitude=address.getLatitude();
                 l.Longitude=address.getLongitude();
-                return
-                        ew++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++l;
+                return l;
                 //return new Location(address.getLatitude(), address.getLongitude());
               //  Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             } else {

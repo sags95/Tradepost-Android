@@ -74,7 +74,8 @@ public void updatemsg(MessageClass m)
     private AlertDialog dialog;
     private CustomCheckBox blockUser;
 ListView lv;
-    public int offerid;
+    public static int offerid;
+    public  static Intent intent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,10 +84,12 @@ ListView lv;
 setContentView(R.layout.fragment_chat);
 
 Intent i=getIntent();
-          offerid=i.getIntExtra("offerid",0);
+        intent=i;
+        offerid=i.getIntExtra("offerid",0);
 setadapter(false);
 IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
-        this.registerReceiver(cv,f);
+        MessageReceiver m=new MessageReceiver();
+        this.registerReceiver(m,f);
 
 
        // rootView = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -266,7 +269,7 @@ public void setadapter(Boolean b)
         MessageClass m1 = new MessageClass();
 
         m1.setMsg(c1.getString(c1.getColumnIndex("msg")));
-        m1.setSeen(new Date(c1.getString(c1.getColumnIndex("seen"))));
+        //m1.setSeen());
         m1.setSent(new Date(c1.getString(c1.getColumnIndex("sent"))));
         m1.setUserid(userdata.userid);
   c.add(m1);

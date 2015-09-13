@@ -70,6 +70,8 @@ public class SettingsFragment extends Fragment {
 
                         LoginManager l = LoginManager.getInstance();
                         l.logOut();
+
+
                     }
                     else if(c.getString(c.getColumnIndex("itype")).equals("g+")){
 FirstTime.mGoogleApiClient.disconnect();
@@ -86,6 +88,7 @@ FirstTime.mGoogleApiClient.disconnect();
                     getActivity().startActivity(new Intent(getActivity(),Welcome.class));
 
 
+                    getActivity().finish();
                     return false;
                 }
             });

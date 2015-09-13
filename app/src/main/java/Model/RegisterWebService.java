@@ -296,11 +296,11 @@ signUp(username, email, s, fb, profilepic, b, db);
 
             catch (EOFException e)
             {
-        return        sendMsg(msg,picture,userid,offerid,activity);
+                return        sendMsg(msg,picture,userid,offerid,activity);
             }
             catch (Exception e)
             {
-e.printStackTrace();
+                e.printStackTrace();
             }
 
 

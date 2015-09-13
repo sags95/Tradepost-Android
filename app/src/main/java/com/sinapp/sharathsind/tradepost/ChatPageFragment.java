@@ -88,6 +88,8 @@ public class ChatPageFragment extends Fragment {
         applyLinearLayoutManager();
 
 
+
+        /*
         List<SimpleSectionedRecyclerViewAdapter.Section> sections =
                 new ArrayList<SimpleSectionedRecyclerViewAdapter.Section>();
 
@@ -98,7 +100,10 @@ public class ChatPageFragment extends Fragment {
         final SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new
                 SimpleSectionedRecyclerViewAdapter(getActivity().getApplicationContext(),R.layout.chat_section,R.id.section_text,mChatPageAdapter);
         mSectionedAdapter.setSections(sections.toArray(dummy));
+        */
 
+
+        mRecyclerView.setAdapter(mChatPageAdapter);
 
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -129,10 +134,40 @@ public class ChatPageFragment extends Fragment {
                 })
         );
         */
+        //mRecyclerView.setAdapter(mSectionedAdapter);
 
-        mRecyclerView.setAdapter(mSectionedAdapter);
+
+        /*
+        SwipeableRecyclerViewTouchListener swipeTouchListener =
+                new SwipeableRecyclerViewTouchListener(mRecyclerView,
+                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    chatItem.remove(position);
+                                    mChatPageAdapter.notifyItemRemoved(position);
+                                }
+                                mChatPageAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    chatItem.remove(position);
+                                    mChatPageAdapter.notifyItemRemoved(position);
+                                }
+                                mChatPageAdapter.notifyDataSetChanged();
+                            }
+                        });
 
 
+        mRecyclerView.addOnItemTouchListener(swipeTouchListener);
+        */
 
         return rootView;
     }
