@@ -1,6 +1,8 @@
 package services;
 
 import android.app.Activity;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,6 +18,7 @@ import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Created by sharathsind on 2015-07-10.
@@ -27,7 +30,6 @@ public class LocationGPSService implements LocationListener {
 double lat=location.getLatitude();
 double longi=location.getLongitude();
 this.location=location;
-
     }
 
     @Override
@@ -57,7 +59,6 @@ return location;
     public String getLocation(String code)
     {
       String  url="http://maps.googleapis.com/maps/api/geocode/json?address="+code+"&sensor=true";
-
         HttpClient httpClient = new DefaultHttpClient();
         HttpContext localContext = new BasicHttpContext();
         HttpGet httpGet = new HttpGet(url);
@@ -78,6 +79,36 @@ return location;
 
 
         return text;
+    }
+    public Mylocation getfromAdress(Activity a,String zipCode)
+    {
+        final Geocoder geocoder = new Geocoder(a);
+        final String zip = "90210";
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(zipCode, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Use the address as needed
+                String message = String.format("Latitude: %f, Longitude: %f",
+                        address.getLatitude(), address.getLongitude());
+
+                Mylocation l=new Mylocation();
+                l.city=address.getLocality();
+                l.latitude=address.getLatitude();
+                l.Longitude=address.getLongitude();
+                return
+                        ew++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++l;
+                //return new Location(address.getLatitude(), address.getLongitude());
+              //  Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            } else {
+                // Display appropriate message when Geocoder services are not available
+                return null;
+                //Toast.makeToast(this, "Unable to geocode zipcode", Toast.LENGTH_LONG).show();
+            }
+        } catch (IOException e) {
+            // handle exception
+        }
+return null;
     }
     protected String getASCIIContentFromEntity(HttpEntity entity) throws IllegalStateException, IOException {
         InputStream in = entity.getContent();

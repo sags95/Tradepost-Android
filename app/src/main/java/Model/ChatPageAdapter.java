@@ -40,6 +40,7 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
     public ChatPageAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_item_chatpage, viewGroup, false);
+        v.setTag(mData.get(i));
         ChatPageAdapter.ViewHolder vh = new ViewHolder(v);
         v.setOnClickListener(mItemClick);
         return vh;

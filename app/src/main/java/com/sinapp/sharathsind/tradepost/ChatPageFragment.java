@@ -132,35 +132,7 @@ public class ChatPageFragment extends Fragment {
 
         mRecyclerView.setAdapter(mSectionedAdapter);
 
-        SwipeableRecyclerViewTouchListener swipeTouchListener =
-                new SwipeableRecyclerViewTouchListener(mRecyclerView,
-                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
-                            @Override
-                            public boolean canSwipe(int position) {
-                                return true;
-                            }
 
-                            @Override
-                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    chatItem.remove(position);
-                                    mChatPageAdapter.notifyItemRemoved(position);
-                                }
-                                mChatPageAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    chatItem.remove(position);
-                                    mChatPageAdapter.notifyItemRemoved(position);
-                                }
-                                mChatPageAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-
-        mRecyclerView.addOnItemTouchListener(swipeTouchListener);
 
         return rootView;
     }
@@ -194,7 +166,7 @@ public class ChatPageFragment extends Fragment {
             o.addProperty("itemid",itemid);
             SoapPrimitive s = MainWebService.getretryMsg(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest", 0);
             String username = s.getValue().toString().split("/,")[0].replace("username:", " ");
-            String itemname = s.getValue().toString().split(",")[1].replace("itemname:", " ");
+            String itemname = s.getValue().toString().split("/,")[1].replace("itemname:", " ");
             Drawable d = new BitmapDrawable(getResources(), getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png"));
             items.add(new ChatPageItem(username, itemname, d));
  cv.moveToNext();
@@ -212,8 +184,11 @@ public class ChatPageFragment extends Fragment {
     public View.OnClickListener ItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+int offerid=Integer.parseInt(v.getTag().toString());
+
+
             Intent i=new Intent(getActivity(),ChatFragment.class);
-//            i.putExtra("offerid",offerid);
+            i.putExtra("offerid",offerid);
             startActivity(i);
 
         }

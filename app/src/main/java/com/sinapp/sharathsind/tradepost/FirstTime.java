@@ -116,7 +116,7 @@ public class FirstTime extends FragmentActivity implements OnClickListener,
 
 
     // Google client to interact with Google API
-    private GoogleApiClient mGoogleApiClient;
+    public static GoogleApiClient mGoogleApiClient;
 
 
     /**

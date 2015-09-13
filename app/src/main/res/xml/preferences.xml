@@ -30,6 +30,7 @@
             />
 
         <Preference android:title="Sign Out"
+            android:key="Sign Out"
             android:selectable="true"/>
 
 

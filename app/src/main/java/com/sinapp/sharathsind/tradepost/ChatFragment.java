@@ -84,7 +84,7 @@ setContentView(R.layout.fragment_chat);
 
 Intent i=getIntent();
           offerid=i.getIntExtra("offerid",0);
-setadapter();
+setadapter(false);
 IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
         this.registerReceiver(cv,f);
 
@@ -250,11 +250,11 @@ IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
     BroadcastReceiver cv=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-setadapter();
+setadapter(true);
         }
     };
     MessageAdapter m;
-public void setadapter()
+public void setadapter(Boolean b)
 {
     lv= (ListView) findViewById(R.id.listview_chat);
     ArrayList<MessageClass> c=new ArrayList<>();
@@ -275,8 +275,20 @@ public void setadapter()
     }
     c1.close();
     db.close();
-     m=new MessageAdapter(this,c);
-lv.setAdapter(m);
+
+    if(b) {
+
+        m.m=c;
+        m.notifyDataSetChanged();
+
+
+    }
+    else
+    {
+        m=new MessageAdapter(this,c);
+        lv.setAdapter(m);
+    }
+
 }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
