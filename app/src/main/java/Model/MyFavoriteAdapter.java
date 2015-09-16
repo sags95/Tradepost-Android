@@ -53,15 +53,15 @@ public class MyFavoriteAdapter extends RecyclerView.Adapter<MyFavoriteAdapter.Vi
             viewHolder.mItemImg.setImageResource(R.drawable.sample_img2);
         }
 
-        if(tagsTest.length!=0) {
+
             if (viewHolder.mTagFlowLayout.getChildCount() == 0) {
                 for (int j = 0; j < tagsTest.length; j++) {
 
-                    viewHolder.mTagFlowLayout.addView(addTags(j));
+                    viewHolder.mTagFlowLayout.addView(addTags(j,i));
 
                 }
             }
-        }
+
 
 
     }
@@ -90,10 +90,10 @@ public class MyFavoriteAdapter extends RecyclerView.Adapter<MyFavoriteAdapter.Vi
         }
     }
 
-    public CustomTextView addTags(int pos) {
+    public CustomTextView addTags(int pos,int i) {
 
         CustomTextView newTag = new CustomTextView(viewGroup.getContext());
-        newTag.setText(tagsTest[pos].toUpperCase());
+        newTag.setText(mData.get(i).getIr().tags[pos].toUpperCase());
         newTag.setTextColor(viewGroup.getResources().getColor(R.color.white));
         newTag.setTextSize(11);
         newTag.setClickable(true);

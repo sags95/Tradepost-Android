@@ -236,6 +236,10 @@ public class Welcome extends Activity implements OnClickListener {
                                 "  offerid int(10) ,\n" +
                                 "  itemid int(10) \n" +
                                 ")");
+                        Constants.db.execSQL("CREATE TABLE fav (\n" +
+                                " id int(10) ,\n" +
+                                " itemid int(10) \n" +
+                                ")");
                         Constants.db.execSQL("CREATE TABLE notifications (\n" +
                                 "  offerid int(10) ,\n" +
                                 "  notificationid int(10),msg varchar,type int(10),status int(10) \n" +

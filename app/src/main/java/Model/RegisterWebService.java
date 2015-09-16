@@ -34,6 +34,7 @@ import datamanager.Item;
 import datamanager.ItemResult;
 import datamanager.userdata;
 import webobjects.Message;
+import webservices.FavouriteWebService;
 import webservices.MainWebService;
 import webservices.SoapStringVector;
 
@@ -157,6 +158,7 @@ signUp(username, email, s, fb, profilepic, b, db);
            }
 
            userdata.i.add(ir);
+           FavouriteWebService.getfavouInts();
 
        }
 

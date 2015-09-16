@@ -4,11 +4,15 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 
@@ -27,10 +31,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.CustomButton;
+import Model.RegisterWebService;
+import datamanager.userdata;
+import webservices.MainWebService;
 
 /**
  * A login screen that offers login via email/password.
@@ -270,28 +280,56 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mEmail = email;
             mPassword = password;
         }
-
+        public  boolean isNumeric(String str)
+        {
+            try
+            {
+                double d = Double.parseDouble(str);
+            }
+            catch(NumberFormatException nfe)
+            {
+                return false;
+            }
+            return true;
+        }
+        private static final String NAMESPACE = "http://webser/";
+        private static final String URL ="http://73.37.238.238:8084/TDserverWeb/Register?wsdl";
+        private  static final String mname="gcmwebservice";
+        private static final String SOAP_ACTION1 = "http://webser/Register/gcmwebserviceRequest";
+        String error;
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+            SoapObject obj=new SoapObject("http://webser/","signIn");
+            obj.addProperty("email",mEmail);
+            obj.addProperty("password",mPassword);
+            SoapPrimitive p= MainWebService.getMsg(obj, "http://73.37.238.238:8084/TDserverWeb/Register?wsdl", "http://webser/Register/signInRequest");
+            if(isNumeric(p.getValue().toString())) {
+               SoapObject request=new SoapObject(NAMESPACE,mname);
+                request.addProperty("os", "android");
+                request.addProperty("userid", Integer.parseInt(p.getValue().toString()));
+                request.addProperty("apikey", Constants.GCM_Key);
+                ContentValues cv=new ContentValues();
+                cv.put("username",mEmail);
+                cv.put("email",mEmail);
+                cv.put("emailconfirm","");
+                cv.put("itype","");
+                cv.put("userid",Integer.parseInt(p.getValue().toString()));
+                Constants.userid =Integer.parseInt(p.getValue().toString());
+                userdata.userid = Integer.parseInt(p.getValue().toString());
+                cv.put("password", mPassword);
+                cv.put("profilepicture", "lib/profile.png");
+                SQLiteDatabase db=LoginActivity.this.  openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
+                db.insert("login",null,cv);
+                SoapPrimitive s1=MainWebService.getretryMsg(request,URL,SOAP_ACTION1,0);
+                RegisterWebService.getItems();
+                // TODO: register the new account here.
+                return true;
+            }
+            else{
+                error=p.getValue().toString();
                 return false;
             }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
         }
 
         @Override
@@ -304,9 +342,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 finish();
 
             } else {
-                mPasswordView
-                        .setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(LoginActivity.this);
+
+                dlgAlert.setMessage(error);
+                dlgAlert.setTitle("Error Message...");
+                dlgAlert.setPositiveButton("OK", null);
+                dlgAlert.setCancelable(true);
+                dlgAlert.create().show();
+
+                dlgAlert.setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
             }
         }
 
