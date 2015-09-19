@@ -66,6 +66,7 @@ public class MyItemsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_my_items, container, false);
         emptyView = rootView.findViewById(R.id.myItems_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.myItems_recyclerview);
+
         if(userdata.i!=null) {
             for (int i = 0; i < userdata.i.size(); i++) {
                 MyItems myItem = new MyItems(userdata.i.get(i).item.getItemname(), userdata.i.get(i).item.getItemid(), userdata.userid);

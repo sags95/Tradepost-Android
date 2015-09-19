@@ -270,8 +270,9 @@ public void setadapter(Boolean b)
 
         m1.setMsg(c1.getString(c1.getColumnIndex("msg")));
         //m1.setSeen());
-        m1.setSent(new Date(c1.getString(c1.getColumnIndex("sent"))));
-        m1.setUserid(userdata.userid);
+        //m1.setSent(new Date(c1.getString(c1.getColumnIndex("sent"))));
+
+        m1.setUserid(Integer.parseInt(c1.getString(c1.getColumnIndex("userid"))));
   c.add(m1);
         c1.moveToNext();
 
