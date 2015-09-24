@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/darkwhite"
+    >
+
+    <LinearLayout
+        android:id="@+id/chat_header_youItem_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        >
+
+        <Model.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOUR ITEM: "
+            android:textSize="14sp"
+            style="@style/OpenSansSemiBold"
+            android:gravity="center"
+            />
+
+        <Model.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sample Item"
+            android:textColor="@color/ColorPrimary"
+            style="@style/OpenSansSemiBold"
+            android:textSize="16sp"
+            android:gravity="center_vertical|left"
+            android:maxLines="2"
+            android:ellipsize="end"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chat_header_detail_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chat_header_userImg_placeholder"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/sample_img2"
+            android:scaleType="centerCrop"
+            app:border_width="2dp"
+            app:border_color="@color/text_color"
+            />
+
+        <LinearLayout
+            android:id="@+id/chat_header_trade_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp">
+
+            <Model.CustomTextView
+                android:id="@+id/chat_header_userName_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="20sp"
+                style="@style/OpenSansLight"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <Model.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OFFER: "
+                    android:textSize="14sp"
+                    style="@style/OpenSansBold"
+                    />
+
+                <Model.CustomTextView
+                    android:id="@+id/chat_header_itemOffer_placeholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="An Item"
+                    android:textSize="14sp"
+                    android:textColor="@color/ColorPrimary"
+
+                    style="@style/OpenSansBold"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <Model.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EXTRA: "
+                    android:textSize="14sp"
+                    style="@style/OpenSansBold"
+                    />
+
+                <Model.CustomTextView
+                    android:id="@+id/chat_header_extraCash_Placeholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$20 CAD"
+                    android:textSize="14sp"
+                    android:textColor="@color/ColorPrimary"
+                    style="@style/OpenSansBold"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

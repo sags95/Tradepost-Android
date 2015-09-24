@@ -11,25 +11,17 @@
     android:focusableInTouchMode="true"
     >
 
-    <include
-        android:id="@+id/chat_header"
-        layout="@layout/header_chat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-    />
-
 
     <ListView
         android:id="@+id/listview_chat"
-        android:transcriptMode="normal"
+        android:transcriptMode="alwaysScroll"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/send_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/chat_header"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
         />
 
     <View

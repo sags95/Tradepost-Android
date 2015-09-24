@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextThemeWrapper;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -66,6 +68,7 @@ public void updatemsg(MessageClass m)
     CustomEditText et;
     CustomButton send;
     private Toolbar toolbar;
+    private static View headerDatails;
 
     //for dialog
     int cancel_deal_dialog_layout = R.layout.dialog_cancel_deal;
@@ -73,7 +76,7 @@ public void updatemsg(MessageClass m)
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
     private CustomCheckBox blockUser;
-ListView lv;
+    ListView lv;
     public static int offerid;
     public  static Intent intent;
 
@@ -81,15 +84,32 @@ ListView lv;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-setContentView(R.layout.fragment_chat);
+        setContentView(R.layout.fragment_chat);
 
-Intent i=getIntent();
+        Intent i=getIntent();
         intent=i;
         offerid=i.getIntExtra("offerid",0);
-setadapter(false);
-IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
+        setadapter(false);
+        IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
         MessageReceiver m=new MessageReceiver();
         this.registerReceiver(m,f);
+
+        //headDatails
+        View header = findViewById(R.id.chat_header);
+        headerDatails = header.findViewById(R.id.chat_header_detail_bar);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(headerDatails.isShown()){
+                    slideUp(getApplicationContext(), headerDatails);
+                    headerDatails.setVisibility(View.GONE);
+                }else{
+                    headerDatails.setVisibility(View.VISIBLE);
+                    slideDown(getApplicationContext(),headerDatails);
+                }
+            }
+        });
+
 
 
        // rootView = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -202,7 +222,7 @@ IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
         //send
         SendController sendController = new SendController(this, et);
         send.setOnClickListener(sendController);
-        this.findViewById(android.R.id.content). getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        send.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if (et.getText().toString().length()==0) {
@@ -335,7 +355,35 @@ public void setadapter(Boolean b)
         }
 
 
-    private void showCancelDealDialog(){
+    public void expandHeaderDetails(View v){
+        headerDatails.setVisibility(headerDatails.isShown() ? View.GONE : View.VISIBLE);
+
+    }
+
+    public void slideDown(Context ctx, View v) {
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.header_chat_slide_down);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+
+            }
+        }
+    }
+
+    public static void slideUp(Context ctx, View v) {
+        Animation a = AnimationUtils.loadAnimation(ctx, R.anim.header_chat_slide_down);
+        if (a != null) {
+            a.reset();
+            if (v != null) {
+                v.clearAnimation();
+                v.startAnimation(a);
+            }
+        }
+    }
+
+        private void showCancelDealDialog(){
         final View dialogView = li.inflate(cancel_deal_dialog_layout, null,false);
         builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Want to Cancel The Deal?");
