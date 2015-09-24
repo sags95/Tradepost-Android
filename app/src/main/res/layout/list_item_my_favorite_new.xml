@@ -10,18 +10,22 @@
     card_view:cardElevation="0dp"
     android:background="@color/text_color_dark"
     android:focusable="true"
-    android:clickable="true">
+    android:clickable="true"
+    >
 
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="72dp">
+            android:layout_height="96dp"
+            android:padding="4dp"
+            >
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="72dp"
-                android:src="@drawable/sample_img"
+                android:id="@+id/myFav_itemImg"
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/sample_img2"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
@@ -29,6 +33,97 @@
 
                 />
 
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_toRightOf="@+id/myFav_itemImg"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Model.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ITEM TITLE"
+                    style="@style/OpenSansRegular"
+                    android:layout_marginBottom="4dp"
+                    android:minLines="1"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    />
+
+                <org.apmem.tools.layouts.FlowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <Model.CustomTextView
+                        android:id="@+id/marketplace_tag2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textColor="@color/white"
+                        android:clickable="true"
+                        android:padding="4dp"
+                        android:background="@drawable/tag_btn_shape"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/OpenSansLight"
+                        android:text="HHHH"
+
+                        />
+
+
+
+                    <Model.CustomTextView
+                        android:id="@+id/marketplace_tag2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:textColor="@color/white"
+                        android:clickable="true"
+                        android:padding="4dp"
+                        android:background="@drawable/tag_btn_shape"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginBottom="8dp"
+                        style="@style/OpenSansLight"
+                        android:text="HHHH"
+
+
+                        />
+
+
+
+                </org.apmem.tools.layouts.FlowLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/myFav_itemOfferCount_layout"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                >
+
+                <Model.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/OpenSansSemiBold"
+                    android:text="4"
+                    android:layout_marginRight="4dp"
+                    android:textColor="@color/ColorPrimary"
+                    />
+
+                <Model.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OFFER(S)"
+                    style="@style/OpenSansRegular"
+                    />
+
+
+            </LinearLayout>
 
 
         </RelativeLayout>

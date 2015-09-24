@@ -42,16 +42,8 @@ public class MyFavoriteAdapter extends RecyclerView.Adapter<MyFavoriteAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
-        viewHolder.mItemTitle.setText(mData.get(i).getItemTitle());
-        if (i % 2 == 0) {
-            viewHolder.mItemImg.setImageResource(R.drawable.sample_img5);
-        } else if(i%3 ==0) {
-            viewHolder.mItemImg.setImageResource(R.drawable.sample_img3);
-        }else if(i%5 ==0) {
-            viewHolder.mItemImg.setImageResource(R.drawable.sample_img6);
-        }else{
-            viewHolder.mItemImg.setImageResource(R.drawable.sample_img2);
-        }
+        viewHolder.mItemTitle.setText(mData.get(i).ir.item.getItemname());
+
 
 
             if (viewHolder.mTagFlowLayout.getChildCount() == 0) {

@@ -417,10 +417,8 @@ public class SingleListingActivity extends AppCompatActivity {
 
 
     public int DpToPx(int requireDp ){
-        int dpValue = requireDp; // margin in dips
         float d = getResources().getDisplayMetrics().density;
-        int margin = (int)(dpValue * d); // margin in pixels
-        return margin; // margin in pixels
+        return (int)(requireDp * d); // margin in pixels
 
     }
 

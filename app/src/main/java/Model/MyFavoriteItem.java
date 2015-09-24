@@ -33,6 +33,10 @@ ItemResult ir;
 
     }
 
+    public MyFavoriteItem(ItemResult ir){
+        this.ir=ir;
+    }
+
     public String getItemTitle() {
         return itemTitle;
     }

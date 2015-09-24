@@ -196,14 +196,15 @@ public class ChatPageFragment extends Fragment {
             int ruserid = cv.getInt(cv.getColumnIndex("userid"));
             int itemid = cv.getInt(cv.getColumnIndex("Itemid"));
             int getuser = userdata.userid != userid ? userid : ruserid;
+            int offerid=cv.getInt(cv.getColumnIndex("Offerid"));
             SoapObject o = new SoapObject("http://webser/", "getItemnameU");
             o.addProperty("userid",userid);
             o.addProperty("itemid",itemid);
             SoapPrimitive s = MainWebService.getretryMsg(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest", 0);
-            String username = s.getValue().toString().split("/,")[0].replace("username:", " ");
-            String itemname = s.getValue().toString().split("/,")[1].replace("itemname:", " ");
+//            String username = s.getValue().toString().split("/,")[0].replace("username:", " ");
+//            String itemname = s.getValue().toString().split("/,")[1].replace("itemname:", " ");
             Drawable d = new BitmapDrawable(getResources(), getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png"));
-            items.add(new ChatPageItem(username, itemname, d));
+            items.add(new ChatPageItem("", "", d,offerid));
  cv.moveToNext();
         }
         }
@@ -219,7 +220,7 @@ public class ChatPageFragment extends Fragment {
     public View.OnClickListener ItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-int offerid=Integer.parseInt(v.getTag().toString());
+            int offerid=Integer.parseInt(v.getTag().toString());
 
 
             Intent i=new Intent(getActivity(),ChatFragment.class);

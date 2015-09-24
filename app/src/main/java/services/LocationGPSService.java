@@ -29,6 +29,7 @@ public class LocationGPSService implements LocationListener {
     public void onLocationChanged(Location location) {
 double lat=location.getLatitude();
 double longi=location.getLongitude();
+
 this.location=location;
     }
 
