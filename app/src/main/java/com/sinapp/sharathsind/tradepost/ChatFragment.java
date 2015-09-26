@@ -309,6 +309,7 @@ public void setadapter(Boolean b)
     {
         m=new MessageAdapter(this,c);
         lv.setAdapter(m);
+
     }
 
 }

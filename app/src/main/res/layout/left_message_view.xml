@@ -1,21 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@android:color/transparent"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/left_msg_propic"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_profile_placeholder"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:border_width="2dp"
+        app:border_color="@color/text_color"
+        />
+    <Model.CustomTextView
+        android:layout_marginRight="48dp"
+        android:padding="4dp"
+        android:layout_toRightOf="@+id/left_msg_propic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Left_msg"
-        android:textSize="26sp"
-        android:layout_gravity="right"/>
+        android:textSize="20sp"
+        android:layout_gravity="left"
+        android:text="helloi am using the tradpost to offer item and exchange hing cool"
+        android:textColor="@color/text_color"
+        android:background="@drawable/left_message_background"
+        style="@style/OpenSansRegular"
+        />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/image_msg"
         android:layout_gravity="right"
+        android:visibility="gone"
 
         />
 
  
 
-</LinearLayout>
+</RelativeLayout>

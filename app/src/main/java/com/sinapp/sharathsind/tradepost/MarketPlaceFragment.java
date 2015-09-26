@@ -249,9 +249,7 @@ if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
         fab.attachToRecyclerView(mRecyclerView);
         //fab.attachToListView(mGridView);
 
-        //Like Button
-        ImageView likeBtn = (ImageView) rootView.findViewById(R.id.image_like_btn);
-        //likeBtn.setOnClickListener(likeOnClickListener);
+
 
         //Location
         View includeView = (View)rootView.findViewById(R.id.marketplace_header);

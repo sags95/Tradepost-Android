@@ -169,6 +169,7 @@ CircleImageView acept= (CircleImageView) findViewById(R.id.noti_offer_accept);
                     Intent i=new Intent(notificationoffertesting.this, ChatFragment.class);
                     i.putExtra("offerid",offerid);
                     startActivity(i);
+                    finish();
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
                     e.printStackTrace();

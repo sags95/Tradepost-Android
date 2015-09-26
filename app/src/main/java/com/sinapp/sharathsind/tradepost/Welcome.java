@@ -105,7 +105,7 @@ public class Welcome extends Activity implements OnClickListener {
             //editor.putInt("rad", radius);
             editor.putFloat("lat", userdata.mylocation.latitude);
             editor.putFloat("long",userdata. mylocation.Longitude);
-editor.commit();
+            editor.commit();
 
 
 

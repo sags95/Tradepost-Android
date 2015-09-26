@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingLeft="48dp"
+    android:paddingRight="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@android:color/transparent"
+    >
+    <Model.CustomTextView
+        android:padding="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Right_msg"/>
+        android:id="@+id/Right_msg"
+        android:textSize="20sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="hello i am using the tradpost to offer item and exchange hing cool"
+        android:textColor="@color/white"
+        android:background="@drawable/right_message_background"
+        style="@style/OpenSansRegular"
+        />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/image_msg"
-        android:layout_gravity="left"
-
+        android:layout_gravity="right"
+        android:visibility="gone"
         />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/pictureright"
-        android:layout_gravity="left"
-        android:src="@drawable/sample_img"
-        />
 
-</LinearLayout>
+</RelativeLayout>

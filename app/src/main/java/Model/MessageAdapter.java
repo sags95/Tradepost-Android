@@ -55,8 +55,8 @@ public class MessageAdapter extends BaseAdapter{
         TextView v2;
         if(userid== Constants.userid)
         {
-            v = inflater.inflate(R.layout.left_message_view, parent, false);
-            v2= (TextView) v.findViewById(R.id.Left_msg);
+            v = inflater.inflate(R.layout.right_message_view, parent, false);
+            v2= (TextView) v.findViewById(R.id.Right_msg);
             v1=(ImageView)v.findViewById(R.id.image_msg);
             if(m1.getPicmsg()!=null)
             {
@@ -71,9 +71,9 @@ public class MessageAdapter extends BaseAdapter{
 
         }
         else{
-            v = inflater.inflate(R.layout.right_message_view, parent, false);
-            v2= (TextView) v.findViewById(R.id.Right_msg);
-           v1=(ImageView)v.findViewById(R.id.pictureright);
+            v = inflater.inflate(R.layout.left_message_view, parent, false);
+            v2= (TextView) v.findViewById(R.id.Left_msg);
+           v1=(ImageView)v.findViewById(R.id.image_msg);
             if(m1.getPicmsg()!=null)
             {
 
