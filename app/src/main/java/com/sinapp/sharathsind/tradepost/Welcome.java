@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
@@ -56,6 +57,7 @@ import datamanager.ItemResult;
 import datamanager.MyLocationService;
 import datamanager.userdata;
 import services.MarketPlaceIntentService;
+import services.Mylocation;
 import webservices.MainWebService;
 
 
@@ -95,8 +97,18 @@ public class Welcome extends Activity implements OnClickListener {
         Location location = locationManager.getLastKnownLocation(provider);
 
         if(location!=null) {
-            userdata.longitude = location.getLongitude();
-            userdata.latitude = location.getLatitude();
+       userdata.mylocation=new Mylocation();
+
+            userdata.mylocation.Longitude =(float) location.getLongitude();
+            userdata.mylocation.latitude = (float)location.getLatitude();
+            SharedPreferences.Editor editor = getSharedPreferences("loctradepost", MODE_PRIVATE).edit();
+            //editor.putInt("rad", radius);
+            editor.putFloat("lat", userdata.mylocation.latitude);
+            editor.putFloat("long",userdata. mylocation.Longitude);
+editor.commit();
+
+
+
         }
 
         if(b) {

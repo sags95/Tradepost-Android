@@ -5,5 +5,5 @@ package services;
  */
 public class Mylocation {
     String city;
-    Double Longitude,latitude;
+  public   float Longitude,latitude;
 }

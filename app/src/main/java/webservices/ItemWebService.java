@@ -4,10 +4,12 @@ import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import datamanager.Item;
 import datamanager.ItemResult;
+import datamanager.userdata;
 
 /**
  * Created by sharathsind on 2015-07-06.
@@ -54,5 +56,22 @@ public class ItemWebService {
 
         }
         return ir;
+    }
+    public static ArrayList<Integer> getItems(int userid)
+    {
+        SoapObject object = new SoapObject("http://webser/", "getuseritems");
+        //SoapObject object = new SoapObject("http://webser/", "getuseritems");
+        object.addProperty("userid",  userdata.userid);
+        Vector object1 = MainWebService.getMsg1(object,"http://73.37.238.238:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
+        ArrayList items=new ArrayList<Integer>();
+
+
+        if(object1!=null) {
+            for (Object i : object1) {
+                userdata.items.add(Integer.parseInt(((SoapPrimitive) i).getValue().toString()));
+            }
+        }
+
+       return items;
     }
 }

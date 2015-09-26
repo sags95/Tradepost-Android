@@ -19,7 +19,8 @@ import services.Mylocation;
 public class userdata {
 public static ArrayList<Integer> items,favourites,offers;
     public static int userid;
-   public static double longitude,latitude;
+
+    public  static int radius;
 public static ArrayList<ItemResult>i;
     public static String city;
     public  static Mylocation mylocation;

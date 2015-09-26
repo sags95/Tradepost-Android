@@ -1,6 +1,7 @@
 package datamanager;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -27,11 +28,15 @@ Activity activity;
     @Override
     public void onLocationChanged(Location loc) {
 
-      userdata.longitude= loc.getLongitude();
+      userdata.mylocation.Longitude=(float) loc.getLongitude();
 
-      userdata.latitude =  loc.getLatitude();
+      userdata.mylocation.latitude = (float) loc.getLatitude();
 
-
+        SharedPreferences.Editor editor = activity.getSharedPreferences("loctradepost", activity.MODE_PRIVATE).edit();
+        //editor.putInt("rad", radius);
+        editor.putFloat("lat", userdata.mylocation.latitude);
+        editor.putFloat("long",userdata.mylocation.Longitude);
+        editor.commit();
         Geocoder gcd = new Geocoder(activity.getBaseContext(), Locale.getDefault());
         List<Address> addresses;
         try {

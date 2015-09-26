@@ -1,6 +1,7 @@
 package services;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,17 +21,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import datamanager.userdata;
+
 /**
  * Created by sharathsind on 2015-07-10.
  */
 public class LocationGPSService implements LocationListener {
     static  Location location;
+ SharedPreferences sp;
+
+    public LocationGPSService(SharedPreferences sp) {
+        this.sp = sp;
+    }
+
     @Override
+
     public void onLocationChanged(Location location) {
 double lat=location.getLatitude();
 double longi=location.getLongitude();
 
 this.location=location;
+        SharedPreferences.Editor editor = sp.edit();
+        //editor.putInt("rad", radius);
+        editor.putFloat("lat", (float)lat);
+        editor.putFloat("long",(float)longi);
+        editor.commit();
     }
 
     @Override
@@ -81,7 +96,7 @@ return location;
 
         return text;
     }
-    public Mylocation getfromAdress(Activity a,String zipCode)
+    public static  Mylocation getfromAdress(Activity a,String zipCode)
     {
         final Geocoder geocoder = new Geocoder(a);
         final String zip = "90210";
@@ -95,8 +110,8 @@ return location;
 
                 Mylocation l=new Mylocation();
                 l.city=address.getLocality();
-                l.latitude=address.getLatitude();
-                l.Longitude=address.getLongitude();
+                l.latitude=(float)address.getLatitude();
+                l.Longitude=(float)address.getLongitude();
                 return l;
                 //return new Location(address.getLatitude(), address.getLongitude());
               //  Toast.makeText(this, message, Toast.LENGTH_LONG).show();

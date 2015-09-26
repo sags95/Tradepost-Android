@@ -33,7 +33,7 @@ Button send ,cancel;       Bitmap bitmap;
             @Override
             public void onClick(View v) {
                 MessageClass m=new MessageClass("",bitmap,Constants.userid);
-//                RegisterWebService.sendMsg(m.getMsg(), m.getPicmsg(), 2);
+             //   RegisterWebService.sendMsg(m.getMsg(), m.getPicmsg(), 2);
 
 
             }

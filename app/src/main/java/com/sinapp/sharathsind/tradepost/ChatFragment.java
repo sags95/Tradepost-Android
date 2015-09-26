@@ -110,8 +110,6 @@ public void updatemsg(MessageClass m)
             }
         });
 
-
-
        // rootView = inflater.inflate(R.layout.fragment_chat, container, false);
         li=getLayoutInflater();
 

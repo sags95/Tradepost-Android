@@ -138,7 +138,7 @@ public class SingleListingActivity extends AppCompatActivity {
             //item username
             itemUsername.setText(itemInfo.get(2));
             //item distance
-            itemDistance.setText(String.valueOf(roundedDistance(distance(userdata.latitude,userdata.longitude, userdata.latitude, userdata.longitude, 'K'))));
+            itemDistance.setText(String.valueOf(roundedDistance(distance(userdata.mylocation.latitude,userdata.mylocation.Longitude, userdata.mylocation.latitude, userdata.mylocation.Longitude, 'K'))));
 
             String[] itemImages = getIntent().getStringArrayExtra("itemImages");
             String[] images = new String[itemImages.length];
@@ -184,7 +184,7 @@ public class SingleListingActivity extends AppCompatActivity {
             //item username
             itemUsername.setText(m.item.username);
             //item distance
-            itemDistance.setText(String.valueOf(roundedDistance(distance(m.item.item.getLatitude().doubleValue(), m.item.item.getLongtitude().doubleValue(), userdata.latitude, userdata.longitude, 'K'))));
+            itemDistance.setText(String.valueOf(roundedDistance(distance(m.item.item.getLatitude().doubleValue(), m.item.item.getLongtitude().doubleValue(), userdata.mylocation.latitude, userdata.mylocation.Longitude, 'K'))));
 
             //item tags
             for (String tempTag : m.item.tags) {

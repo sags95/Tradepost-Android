@@ -175,16 +175,14 @@ signUp(username, email, s, fb, profilepic, b, db);
         SoapObject object = new SoapObject(NAMESPACE, METHOD_NAME3);
         object.addProperty("itemname", itemTitle);
         object.addProperty("desc",descrpition);
-        object.addProperty("latitude", String.format("%.2f",userdata.latitude));
-        PropertyInfo propertyInfo=new PropertyInfo();
-        propertyInfo.setValue(userdata.latitude);
-        propertyInfo.setName("latitude");
+        object.addProperty("latitude", String.format("%.2f",userdata.mylocation.latitude));
+
         StringVector tag=new StringVector();
         for(int i = 0;i<tags.length;i++){
             tag.add(tags[i]);
         }
         object.addProperty("tags",tag);
-        object.addProperty("longi", String.format("%.2f",userdata.longitude));
+        object.addProperty("longi", String.format("%.2f",userdata.mylocation.Longitude));
         object.addProperty("userid", userdata.userid);
         object.addProperty("category", category);
         object.addProperty("condition",condition);

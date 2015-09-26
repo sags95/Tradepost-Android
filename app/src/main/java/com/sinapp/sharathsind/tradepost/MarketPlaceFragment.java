@@ -6,10 +6,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -37,10 +43,12 @@ import android.support.v7.app.AlertDialog;
 import com.etsy.android.grid.StaggeredGridView;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import Model.MarketPlaceData;
 import Model.MarketPlaceListAdapter;
@@ -48,6 +56,9 @@ import Model.MarketPlaceStaggeredAdapter;
 import Model.StaggeredAdapterTest;
 import datamanager.Item;
 import datamanager.ItemResult;
+import datamanager.userdata;
+import services.LocationGPSService;
+import services.Mylocation;
 
 /**
  * Created by HenryChiang on 15-06-25.
@@ -63,6 +74,7 @@ public class MarketPlaceFragment  extends Fragment {
     private StaggeredAdapterTest mStaggeredAdapterTest;
 
     private String locationRad="25Km)";
+   // int radius;
     private int[] imageResources = {
             R.drawable.sample_img,
             R.drawable.sample_img2,
@@ -163,11 +175,43 @@ public class MarketPlaceFragment  extends Fragment {
 
 
         mSwipeRefreshLayout.setVisibility(View.GONE);
+        Criteria criteria = new Criteria();
+        LocationManager lo=(LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        String provider = lo.getBestProvider(criteria, false);
+        SharedPreferences prefs =getActivity(). getSharedPreferences("loctradepost", getActivity().MODE_PRIVATE);
+        String restoredText = prefs.getString("postalcode", null);
+        userdata.mylocation=new Mylocation();
 
-        AsyncTaskRunner runner = new AsyncTaskRunner();
-        runner.execute();
+        userdata.mylocation.latitude= prefs.getFloat("lat", 0);//"No name defined" is the default value.
+        userdata.mylocation.Longitude= prefs.getFloat("long", 0); //0 is the default value.
+        radius=prefs.getInt("rad", 25);
+        userdata.radius=radius;
+if(userdata.mylocation.latitude==0&&userdata.mylocation.Longitude==0){
+    Location location = lo.getLastKnownLocation(provider);
+   if(location!=null) {
 
+       userdata.mylocation.latitude=  (float)location.getLatitude();//"No name defined" is the default value.
+       userdata.mylocation.Longitude=(float)location.getLongitude();
+       Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+       List<Address> addresses = null;
+       try {
+           addresses = geocoder.getFromLocation(userdata.mylocation.Longitude, userdata.mylocation.latitude, 1);
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       String cityName = addresses.get(0).getAddressLine(0);
+       String stateName = addresses.get(0).getAddressLine(1);
+       String countryName = addresses.get(0).getAddressLine(2);
+   }
+}
+if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
+    AsyncTaskRunner runner = new AsyncTaskRunner();
+    runner.execute();
 
+}
+        else {
+    customDialog();
+        }
 
 
 
@@ -290,6 +334,19 @@ public class MarketPlaceFragment  extends Fragment {
                     startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 } else if (rBPostalCode.isChecked()) {
                     getRadiusChanged();
+                    if (isPostalCodeValid(pCInputEdit.getText())){
+                    Mylocation mylocation = LocationGPSService.getfromAdress(getActivity(), pCInputEdit.getText().toString());
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("loctradepost", getActivity().MODE_PRIVATE).edit();
+                    editor.putInt("rad", radius);
+                    editor.putFloat("lat", mylocation.latitude);
+                        editor.putFloat("long", mylocation.Longitude);
+                        editor.putString("postalcode",pCInputEdit.getText().toString());
+
+                    editor.commit();
+                }
+                    else{
+                        setPostalCodeError(pCInputEdit.getText());
+                    }
                     headerRadText.setVisibility(View.VISIBLE);
                     headerRadText.setText("(Within " + locationRad);
                 }
@@ -463,20 +520,24 @@ public class MarketPlaceFragment  extends Fragment {
         c.setTypeface(Typeface.DEFAULT);
 
     }
-
+int radius;
     public void getRadiusChanged(){
         switch (seekBar.getProgress()){
             case 0:
                 locationRad = "25Km)";
+                radius=25;
                 break;
             case 1:
                 locationRad = "50Km)";
+                radius=50;
                 break;
             case 2:
                 locationRad = "75Km)";
+                radius=75;
                 break;
             case 3:
                 locationRad = "100Km)";
+                radius=100;
                 break;
         }
     }

@@ -131,9 +131,9 @@ public class MarketPlaceData implements Serializable {
 
 
             obje = new SoapObject("http://webser/", "getItems");
-            obje.addProperty("lat", userdata.latitude);
-            obje.addProperty("longi", userdata.longitude);
-            obje.addProperty("rad", 25);
+            obje.addProperty("lat", userdata.mylocation.latitude);
+            obje.addProperty("longi", userdata.mylocation.Longitude);
+            obje.addProperty("rad", userdata.radius);
             result = MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
                     , "http://webser/GetItems/getItemsRequest");
 
