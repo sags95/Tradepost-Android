@@ -72,6 +72,8 @@ public class NavigationDrawer extends AppCompatActivity
     private int mChatCount = 0;
     private int mNotificationsCount = 0;
 
+    private int selectedPosition;
+
 
 
 
@@ -154,10 +156,9 @@ public class NavigationDrawer extends AppCompatActivity
             }
 
         }
+        selectedPosition=position;
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment).commit();
+            displayView(fragment);
         }
     }
 
@@ -170,16 +171,9 @@ public class NavigationDrawer extends AppCompatActivity
         item = menu.add("Search");
         item.setIcon(R.drawable.ic_action_search);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        item = menu.add("Chat");
-        item.setIcon(R.drawable.ic_action_chat);
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
-        item = menu.add("Notification");
-        item.setIcon(R.drawable.ic_action_notification);
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
         */
 
         getMenuInflater().inflate(R.menu.main, menu);
-
 
         //search
         MenuItem itemSearch = menu.findItem(R.id.action_search);
@@ -247,17 +241,28 @@ public class NavigationDrawer extends AppCompatActivity
                 return;
             }
 
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            if (selectedPosition != 0) {
+                displayView(new MarketPlaceFragment());
+                selectedPosition=0;
+                mNavigationDrawerFragment.selectItem(0);
+            }else {
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
-            new Handler().postDelayed(new Runnable() {
+                new Handler().postDelayed(new Runnable() {
 
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce=false;
-                }
-            }, 2000);
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            }
         }
+    }
+
+    private void displayView(Fragment f) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, f).commit();
     }
 
     public void setUpLeftDrawerWidth(){
@@ -305,17 +310,17 @@ public class NavigationDrawer extends AppCompatActivity
         });
 
     }
-    public void openChatPageFragment(){
+    public void openChatPageFragment(Fragment f){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mDrawerLayout.openDrawer(Gravity.RIGHT);
-        if(!chatPageFrag.isAdded()){
-            transaction.replace(R.id.container_right, chatPageFrag, "chatPageFragment");
+        if(!f.isAdded()){
+            transaction.replace(R.id.container_right, f, "chatPageFragment");
             transaction.commit();
             mDrawerLayout.openDrawer(Gravity.RIGHT);
             Log.d("DEBUG", "adding chatPageFrag");
             Log.d("DEBUG", "chatPageFrag is :"+mDrawerLayout.isDrawerOpen(Gravity.RIGHT));
         }else{
-            transaction.show(chatPageFrag);
+            transaction.show(f);
             transaction.commit();
             mDrawerLayout.openDrawer(Gravity.RIGHT);
             Log.d("DEBUG","showing chatPageFrag");
@@ -324,18 +329,18 @@ public class NavigationDrawer extends AppCompatActivity
 
     }
 
-    public void openNotificationFragment(){
+    public void openNotificationFragment(Fragment f){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         mDrawerLayout.openDrawer(Gravity.RIGHT);
-        if(!notiFrag.isAdded()){
-            transaction.replace(R.id.container_right, notiFrag, "notificationFragment");
+        if(!f.isAdded()){
+            transaction.replace(R.id.container_right, f, "notificationFragment");
             transaction.commit();
             mDrawerLayout.openDrawer(Gravity.RIGHT);
             Log.d("DEBUG", "adding notiFrag");
             Log.d("DEBUG", "notiFrag is :"+mDrawerLayout.isDrawerOpen(Gravity.RIGHT));
 
         }else{
-            transaction.show(notiFrag);
+            transaction.show(f);
             transaction.commit();
             mDrawerLayout.openDrawer(Gravity.RIGHT);
             Log.d("DEBUG", "showing notiFrag");
@@ -346,7 +351,7 @@ public class NavigationDrawer extends AppCompatActivity
     public void chatPageFragmentHandling() {
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-            openChatPageFragment();
+            openChatPageFragment(chatPageFrag);
 
         }else {
             if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
@@ -354,10 +359,10 @@ public class NavigationDrawer extends AppCompatActivity
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
                     Log.d("DEBUG", "closing chatPageFrag");
                 }else{
-                    openChatPageFragment();
+                    openChatPageFragment(chatPageFrag);
                 }
             } else {
-                openChatPageFragment();
+                openChatPageFragment(chatPageFrag);
             }
         }
 
@@ -366,7 +371,7 @@ public class NavigationDrawer extends AppCompatActivity
     public void notificationFragmentHandling(){
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
-            openNotificationFragment();
+            openNotificationFragment(notiFrag);
         }else {
             if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                 if(notiFrag.isResumed()){
@@ -374,10 +379,10 @@ public class NavigationDrawer extends AppCompatActivity
                     Log.d("DEBUG", "closing notiFrag");
 
                 }else{
-                    openNotificationFragment();
+                    openNotificationFragment(notiFrag);
                 }
             } else {
-                openNotificationFragment();
+                openNotificationFragment(notiFrag);
             }
         }
     }
