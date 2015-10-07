@@ -235,8 +235,19 @@ signUp(username, email, s, fb, profilepic, b, db);
             HttpTransportSE ht = new HttpTransportSE(URL);
             try {
                 ht.call("http://webser/MessageWebService/sendpicRequest", envelope);
-                SoapObject response = (SoapObject) envelope.getResponse();
+                SoapObject result = (SoapObject) envelope.getResponse();
+                ContentValues cv=new ContentValues();
+                //   ContentValues cv = new ContentValues();
 
+                SQLiteDatabase db=  Constants.db=activity.openOrCreateDatabase("tradepostdb.db", activity.MODE_PRIVATE, null);
+                cv.put("msgid",result.getProperty("messageid").toString());
+                cv.put("msg",msg);
+                cv.put("ruserid",result.getProperty("ruserid").toString());
+                cv.put("userid",result.getProperty("userid").toString());
+                cv.put("sent",result.getProperty("sent").toString());
+                cv.put("msgpath", result.getProperty("messagepath").toString());
+                db.insert("m" + offerid, "seen", cv);
+                db.close();
 
 
             }

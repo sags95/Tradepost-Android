@@ -33,7 +33,7 @@ public class MainWebService {
         envelope.setOutputSoapObject(request);
         //    MarshalFloat m=new MarshalFloat();
         //   m.register(envelope);
-        // new MarshalBase64().register(envelope);
+        new MarshalBase64().register(envelope);
         System.setProperty("http.keepAlive", "false");
         HttpTransportSE ht = new HttpTransportSE( URL,50000000);
 

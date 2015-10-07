@@ -3,10 +3,13 @@ package com.sinapp.sharathsind.tradepost;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Matrix;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +58,9 @@ import datamanager.userdata;
  */
 public class ChatFragment extends Activity {
 
-public void updatemsg(MessageClass m)
+    private Uri mImageUri;
+
+    public void updatemsg(MessageClass m)
 {
     this.m.m.add(m);
    this.m.notifyDataSetChanged();
@@ -223,7 +229,7 @@ public void updatemsg(MessageClass m)
         send.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (et.getText().toString().length()==0) {
+                if (et.getText().toString().length() == 0) {
                     send.setEnabled(false);
                     send.setClickable(false);
                     send.setAlpha(0.2f);
@@ -235,14 +241,29 @@ public void updatemsg(MessageClass m)
             }
         });
 
-
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 0);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File photo=null;
+                try {
+                    // place where to store camera taken picture
+                    photo = createTemporaryFile("temp", ".jpg");
+                    photo.delete();
+                } catch (Exception e) {
+                    Log.v("camera", "Can't create file to take picture!");
+                    Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT);
+                }
+                mImageUri = Uri.fromFile(photo);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+                //start camera intent
+
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, 0);
+                }
+
             }
         });
 
@@ -275,7 +296,51 @@ setadapter(true);
         }
     };
     MessageAdapter m;
-public void setadapter(Boolean b)
+    private File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= Environment.getExternalStorageDirectory();
+        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
+        if(!tempDir.exists())
+        {
+            tempDir.mkdir();
+        }
+        return File.createTempFile(part, ext, tempDir);
+    }
+
+    public Bitmap grabImage()
+    {
+        this.getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = this.getContentResolver();
+        Bitmap bitmap=null;
+        try
+        {
+            bitmap = getResizedBitmap(android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri),960,720);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
+            Log.d("cam", "Failed to load", e);
+        }
+
+        return bitmap;
+    }
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+    }
+
+    public void setadapter(Boolean b)
 {
     lv= (ListView) findViewById(R.id.listview_chat);
     ArrayList<MessageClass> c=new ArrayList<>();
@@ -319,9 +384,10 @@ public void setadapter(Boolean b)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 0) {
 
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                Bitmap thumbnail = grabImage();
                 Intent intent = new Intent(this, PictureMsg.class);
                 intent.putExtra("BitmapImage", thumbnail);
+                intent.putExtra("offerid", offerid);
 
             }
         }else{
@@ -347,12 +413,21 @@ public void setadapter(Boolean b)
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
             Intent intent = new Intent(this, PictureMsg.class);
             intent.putExtra("BitmapImage", bm);
-
+            intent.putExtra("offerid",offerid);
             }
 
 
         }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     public void expandHeaderDetails(View v){
         headerDatails.setVisibility(headerDatails.isShown() ? View.GONE : View.VISIBLE);
@@ -434,18 +509,23 @@ public void setadapter(Boolean b)
     public void onStop() {
         super.onStop();
         isAlive = false;
+        this.unregisterReceiver(cv);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         isAlive = false;
+        this.unregisterReceiver(cv);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         isAlive = true;
+        IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
+        MessageReceiver m=new MessageReceiver();
+        this.registerReceiver(m,f);
     }
 
 

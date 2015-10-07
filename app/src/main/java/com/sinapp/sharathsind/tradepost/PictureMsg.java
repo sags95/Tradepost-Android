@@ -18,22 +18,24 @@ import data.MessageClass;
 public class PictureMsg extends Activity {
 
 Button send ,cancel;       Bitmap bitmap;
-
+int offerid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture_msg);
         Intent intent = getIntent();
        bitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
+        offerid=(int)intent.getIntExtra("offerid",0);
         ImageView im=(ImageView)findViewById(R.id.imageView);
         im.setImageBitmap(bitmap);
         send= (Button) findViewById(R.id.send);
         cancel=(Button) findViewById(R.id.cancel);
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MessageClass m=new MessageClass("",bitmap,Constants.userid);
-             //   RegisterWebService.sendMsg(m.getMsg(), m.getPicmsg(), 2);
+               RegisterWebService.sendMsg(m.getMsg(), m.getPicmsg(), Constants.userid,offerid,PictureMsg.this);
 
 
             }

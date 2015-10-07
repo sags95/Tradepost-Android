@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import services.Mylocation;
+
 /**
  * Created by sharathsind on 2015-07-17.
  */
@@ -27,7 +29,7 @@ Activity activity;
 
     @Override
     public void onLocationChanged(Location loc) {
-
+userdata.mylocation=new Mylocation();
       userdata.mylocation.Longitude=(float) loc.getLongitude();
 
       userdata.mylocation.latitude = (float) loc.getLatitude();

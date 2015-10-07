@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -44,6 +45,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
@@ -270,8 +272,10 @@ String result;
                     int i=0;
  for(Bitmap b:bits)
  {
-
- sendDImage(Integer.parseInt(result),FileManager.encode(b),i);
+     ByteArrayOutputStream stream = new ByteArrayOutputStream();
+     b.compress(Bitmap.CompressFormat.PNG, 100, stream);
+     byte[] byteArray = stream.toByteArray();
+ sendDImage(Integer.parseInt(result),byteArray,i);
 
 i++;
  }
@@ -296,8 +300,22 @@ i++;
 
         return super.onOptionsItemSelected(item);
     }
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
 
-    public SoapPrimitive sendDImage(int id,String im,int pic)
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+    }
+    public SoapPrimitive sendDImage(int id,byte[] im,int pic)
     {
         SoapObject object = new SoapObject("http://webser/", "addimage");
         object.addProperty("itemid", id);
@@ -433,7 +451,7 @@ i++;
         Bitmap bitmap=null;
         try
         {
-            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+            bitmap = getResizedBitmap(android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri),960,720);
         }
         catch (Exception e)
         {
@@ -510,7 +528,7 @@ i++;
                 bits.add(imageBitmap);
                 */
                 setImage(grabImage());
-                bits.add(grabImage());
+         //       bits.add(grabImage());
                 //... some code to inflate/create/find appropriate ImageView to place grabbed image
 
             }else if(requestCode == 1){
@@ -543,16 +561,16 @@ i++;
         if(currentImgPos<5) {
             switch (currentImgPos) {
                 case 0:
-                    itemImg1.setImageBitmap(imageBitmap);
+                    itemImg1.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
                     break;
                 case 1:
-                    itemImg2.setImageBitmap(imageBitmap);
+                    itemImg2.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
                     break;
                 case 2:
-                    itemImg3.setImageBitmap(imageBitmap);
+                    itemImg3.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
                     break;
                 case 3:
-                    itemImg4.setImageBitmap(imageBitmap);
+                    itemImg4.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
                     break;
             }
             bits.add(imageBitmap);

@@ -42,7 +42,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.gcm.GcmReceiver;
 import com.squareup.picasso.Picasso;
+
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -55,6 +59,7 @@ import Model.NavigationDrawerCallbacks;
 import Model.NavigationItem;
 import Model.Variables;
 import de.hdodenhof.circleimageview.CircleImageView;
+import webservices.MainWebService;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -338,7 +343,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         final View dialogView = li.inflate(feedback_layout, null, false);
 
         //set up the limit for user input
-        LimitedEditText feedbackEdit = (LimitedEditText)dialogView.findViewById(R.id.feedback_edit);
+        final LimitedEditText feedbackEdit = (LimitedEditText)dialogView.findViewById(R.id.feedback_edit);
         feedbackEdit.setMaxLines(7);
         feedbackEdit.setMaxCharacters(250);
 
@@ -363,6 +368,14 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                SoapObject obj =new SoapObject("http://webser/","addFeed");
+                obj.addProperty("buserid",Constants.userid);
+                obj.addProperty("userid",0);
+                obj.addProperty("stars",0);
+                obj.addProperty("feeback",feedbackEdit.getText().toString());
+
+            SoapPrimitive p= MainWebService.getMsg(obj, "http://73.37.238.238:8084/TDserverWeb/FeedbackWebservice?wsdl", "http://webser/FeedbackWebservice/addFeedRequest");
+        
             }
         });
 

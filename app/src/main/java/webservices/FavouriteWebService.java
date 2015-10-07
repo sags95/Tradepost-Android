@@ -1,8 +1,11 @@
 package webservices;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.facebook.share.model.AppInviteContent;
+import com.facebook.share.widget.AppInviteDialog;
 import com.sinapp.sharathsind.tradepost.Constants;
 
 import org.ksoap2.serialization.SoapObject;
@@ -40,6 +43,21 @@ if(soapPrimitive!=null) {
 
 }
         return null;
+    }
+    public void invite(Activity a)
+    {
+        String appLinkUrl, previewImageUrl;
+
+        appLinkUrl = "https://www.mydomain.com/myapplink";
+        previewImageUrl = "https://www.mydomain.com/my_invite_image.jpg";
+
+        if (AppInviteDialog.canShow()) {
+            AppInviteContent content = new AppInviteContent.Builder()
+                    .setApplinkUrl(appLinkUrl)
+                    .setPreviewImageUrl(previewImageUrl)
+                    .build();
+            AppInviteDialog.show(a, content);
+        }
     }
     public static int[] removefavouInts()
     {
