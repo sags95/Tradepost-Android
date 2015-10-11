@@ -9,11 +9,11 @@
     android:background="@android:color/transparent"
     >
     <Model.CustomTextView
-        android:padding="4dp"
+        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Right_msg"
-        android:textSize="20sp"
+        android:textSize="14sp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="hello i am using the tradpost to offer item and exchange hing cool"

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.CustomLinearLayoutManager;
+import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
@@ -73,15 +74,12 @@ public class MyOffersTabOne extends Fragment {
         BitmapFactory.decodeResource(getResources(),R.drawable.sample_img,options);
 
 
-        final List<MyOffersItem> myOffersItems =
-                addItem("Item Title",
-                        BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img),
-                        BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img),
-                        0, 0);
+        final List<MyOffersItem> myOffersItems = addItem();
 
 
 
         mMyOffersAdapter = new MyOffersAdapter(myOffersItems, getActivity().getApplicationContext());
+        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.setEmptyView(emptyView);
@@ -91,16 +89,16 @@ public class MyOffersTabOne extends Fragment {
         return rootView;
     }
 
-    public List<MyOffersItem> addItem(String itemTitle, Bitmap userPic, Bitmap itemImg, int itemAction, int offerType) {
+    public List<MyOffersItem> addItem() {
         List<MyOffersItem> items = new ArrayList<MyOffersItem>();
 
-        items.add(new MyOffersItem(itemTitle, userPic, BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3), 0,0));
-        items.add(new MyOffersItem(itemTitle, userPic, BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3), 1,0));
-        items.add(new MyOffersItem(itemTitle, userPic, BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3), -1,0));
-
-        items.add(new MyOffersItem(itemTitle, userPic, itemImg, 0,0));
-        items.add(new MyOffersItem(itemTitle, userPic, itemImg, 1,0));
-        items.add(new MyOffersItem(itemTitle, userPic, itemImg, -1,0));
+        items.add(new MyOffersItem("Title1",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img5),1));
+        items.add(new MyOffersItem("Title2",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img6),2));
+        items.add(new MyOffersItem("Long long long long title3",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3),3));
+        items.add(new MyOffersItem("Long long long long long long long long title4",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),4));
+        items.add(new MyOffersItem("Long long long long long long long long title5",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),5));
+        items.add(new MyOffersItem("Long long long long long long long long title6",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),5));
+        items.add(new MyOffersItem("Long long long long long long long long title7",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),5));
 
 
 

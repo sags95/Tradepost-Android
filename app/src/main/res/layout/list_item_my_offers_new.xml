@@ -2,13 +2,14 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/marketplace_card_view"
+    android:id="@+id/myOffers_card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    card_view:cardCornerRadius="1dp"
+    card_view:cardBackgroundColor="@color/white"
+    card_view:cardCornerRadius="4dp"
     card_view:cardUseCompatPadding="true"
-    card_view:cardElevation="0dp"
-    android:background="@color/text_color_dark"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
     android:focusable="true"
     android:clickable="true"
     >
@@ -17,12 +18,16 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:padding="4dp"
+            android:layout_height="108dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="4dp"
+            android:background="?android:attr/selectableItemBackground"
             >
 
             <ImageView
-                android:id="@+id/myFav_itemImg"
+                android:id="@+id/myOffers_itemImg"
                 android:layout_width="72dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/sample_img2"
@@ -35,29 +40,31 @@
 
             <LinearLayout
                 android:layout_margin="8dp"
-                android:layout_toRightOf="@+id/myFav_itemImg"
+                android:layout_toRightOf="@+id/myOffers_itemImg"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <Model.CustomTextView
+                    android:id="@+id/myOffers_itemTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ITEM TITLE"
                     style="@style/OpenSansRegular"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="8dp"
                     android:minLines="1"
-                    android:maxLines="2"
                     android:ellipsize="end"
+                    android:singleLine="true"
                     />
 
                 <org.apmem.tools.layouts.FlowLayout
+                    android:id="@+id/myOffers_flowLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
 
                     <Model.CustomTextView
-                        android:id="@+id/marketplace_tag2"
+                        android:id="@+id/myOffers_tag1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="10sp"
@@ -65,32 +72,10 @@
                         android:clickable="true"
                         android:padding="4dp"
                         android:background="@drawable/tag_btn_shape"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="4dp"
                         style="@style/OpenSansLight"
-                        android:text="HHHH"
-
                         />
-
-
-
-                    <Model.CustomTextView
-                        android:id="@+id/marketplace_tag2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="10sp"
-                        android:textColor="@color/white"
-                        android:clickable="true"
-                        android:padding="4dp"
-                        android:background="@drawable/tag_btn_shape"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/OpenSansLight"
-                        android:text="HHHH"
-
-
-                        />
-
 
 
                 </org.apmem.tools.layouts.FlowLayout>
@@ -98,7 +83,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/myFav_itemOfferCount_layout"
+                android:id="@+id/myOffers_itemOfferCount_layout"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,6 +92,7 @@
                 >
 
                 <Model.CustomTextView
+                    android:id="@+id/myOffers_offersCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/OpenSansSemiBold"

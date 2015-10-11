@@ -12,13 +12,6 @@
     </include>
 
 
-    <View android:layout_width="match_parent"
-        android:background="@color/black"
-        android:layout_height="1dp"
-        android:id="@+id/separator"
-        android:layout_above="@+id/single_listing_header"
-        />
-
     <include
         layout="@layout/single_listing_header"
         android:layout_width="match_parent"

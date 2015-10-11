@@ -130,10 +130,9 @@
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
-                android:src="@drawable/ic_image_thumbnail"
+                android:src="@drawable/image_placeholder"
                 android:background="@color/white"
                 android:layout_centerHorizontal="true"
-                android:scaleType="centerCrop"
                 />
 
             <Model.CustomEditText
@@ -152,16 +151,16 @@
 
 
             <LinearLayout
-                android:id="@+id/offer_selection_layout"
+                android:id="@+id/offer_process_selection_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2"
                 android:layout_below="@+id/offer_process_new_img_title"
+                android:weightSum="2"
                 >
 
                 <LinearLayout
-                    android:id="@+id/offer_cam_layout"
+                    android:id="@+id/offer_process_cam_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -171,7 +170,7 @@
 
                     >
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/offer_process_cam_btn"
                         android:layout_width="72dp"
                         android:layout_height="72dp"
@@ -181,34 +180,35 @@
                         android:src="@drawable/ic_camera"
 
 
+
                         />
 
                     <Model.CustomTextView
-                        android:id="@+id/offer_text_camera"
+                        android:id="@+id/offer_process_text_cam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section2_text_camera"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
-                        style="@style/OpenSansRegular"
-
+                        android:layout_marginTop="4dp"
+                        style="@style/OpenSansLight"
                         />
 
 
                 </LinearLayout>
 
                 <Model.CustomTextView
-                    android:id="@+id/offer_or"
+                    android:id="@+id/offer_process_or"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="OR"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    style="@style/OpenSansLight"
+                    style="@style/OpenSansRegular"
                     />
 
                 <LinearLayout
-                    android:id="@+id/offer_gal_layout"
+                    android:id="@+id/offer_process_gal_layout"
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -216,7 +216,7 @@
                     android:layout_weight="1"
                     >
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/offer_process_gallery_btn"
                         android:layout_width="72dp"
                         android:layout_height="72dp"
@@ -225,16 +225,19 @@
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/ic_folder"
 
+
                         />
 
                     <Model.CustomTextView
-                        android:id="@+id/offer_text_gallery"
+                        android:id="@+id/offer_process_text_folder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/section2_text_folder"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
-                        style="@style/OpenSansRegular"
+                        android:layout_marginTop="4dp"
+
+                        style="@style/OpenSansLight"
 
                         />
 
@@ -244,6 +247,7 @@
 
 
             </LinearLayout>
+
 
 
         </RelativeLayout>

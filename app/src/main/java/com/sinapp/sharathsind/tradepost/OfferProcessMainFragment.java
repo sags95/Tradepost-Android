@@ -45,7 +45,7 @@ public class OfferProcessMainFragment extends Fragment {
 
     private View rootView;
     private CustomButton addCashBtn, addItemBtn;
-    private ImageButton camBtn, galBtn;
+    private ImageView camBtn, galBtn;
     private CustomEditText addCashEdit;
     private FragmentManager fragmentManager;
     private ImageView newItemImg;
@@ -89,8 +89,8 @@ ITEMID=new ArrayList<>();
         addItemBtn.setOnClickListener(addItemOnClickListener);
 
         //
-        camBtn = (ImageButton)rootView.findViewById(R.id.offer_process_cam_btn);
-        galBtn = (ImageButton)rootView.findViewById(R.id.offer_process_gallery_btn);
+        camBtn = (ImageView)rootView.findViewById(R.id.offer_process_cam_btn);
+        galBtn = (ImageView)rootView.findViewById(R.id.offer_process_gallery_btn);
         camBtn.setOnClickListener(camBtnListener);
         galBtn.setOnClickListener(galleryBtnListener);
         newItemImg = (ImageView)rootView.findViewById(R.id.offer_process_new_img);

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
@@ -80,6 +81,7 @@ public class MyOffersTabTwo extends Fragment {
         */
         final List<MyOffersItem> myOffersItems = null;
         mMyOffersAdapter = new MyOffersAdapter(myOffersItems,getActivity().getApplicationContext());
+        //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
         mRecyclerView.setEmptyView(emptyView);
@@ -89,16 +91,13 @@ public class MyOffersTabTwo extends Fragment {
         return rootView;
     }
 
-    public List<MyOffersItem> addItem(String itemTitle, Bitmap userPic, Bitmap itemImg, int itemAction, int offerType) {
+    public List<MyOffersItem> addItem(String itemTitle, Bitmap itemImg, int offersCount) {
         List<MyOffersItem> items = new ArrayList<MyOffersItem>();
 
-        items.add(new MyOffersItem(itemTitle, userPic, BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3), 0,1));
-        items.add(new MyOffersItem(itemTitle, userPic, BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3), 1,1));
-        items.add(new MyOffersItem(itemTitle, userPic, BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3), -1,1));
-
-        items.add(new MyOffersItem(itemTitle, userPic, itemImg, 0,1));
-        items.add(new MyOffersItem(itemTitle, userPic, itemImg, 1,1));
-        items.add(new MyOffersItem(itemTitle, userPic, itemImg, -1,1));
+        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img5),1));
+        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img6),2));
+        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3),3));
+        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),4));
 
 
 

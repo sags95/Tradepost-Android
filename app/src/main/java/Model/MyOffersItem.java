@@ -8,53 +8,38 @@ import android.widget.ImageView;
  */
 public class MyOffersItem {
 
-    private String offerItemTitle;
-    private Bitmap offerItemImg, offerItemUserImg;
-    private int offerType,offerItemAction;
+    private String offersItemTitle;
+    private Bitmap offersItemImg;
+    private int offersCount;
 
-    public MyOffersItem(String offerItemTitle, Bitmap offerItemUserImg, Bitmap offerItemImg, int offerItemAction, int offerType){
-        this.offerItemTitle = offerItemTitle;
-        this.offerItemUserImg = offerItemUserImg;
-        this.offerItemImg = offerItemImg;
-        this.offerItemAction = offerItemAction;
-        this.offerType = offerType;
+    public MyOffersItem(String offersItemTitle,Bitmap offersItemImg, int offersCount){
+        this.offersItemTitle = offersItemTitle;
+        this.offersItemImg = offersItemImg;
+        this.offersCount=offersCount;
     }
 
-    public String getOfferItemTitle() {
-        return offerItemTitle;
+    public String getOffersItemTitle() {
+        return offersItemTitle;
     }
 
-    public void setOfferItemTitle(String offerItemTitle) {
-        this.offerItemTitle = offerItemTitle;
+    public void setOffersItemTitle(String offerItemTitle) {
+        this.offersItemTitle = offerItemTitle;
     }
 
-    public Bitmap getOfferItemImg() {
-        return offerItemImg;
+    public Bitmap getOffersItemImg() {
+        return offersItemImg;
     }
 
-    public void setOfferItemImg(Bitmap offerItemImg) {
-        this.offerItemImg = offerItemImg;
+    public void setOffersItemImg(Bitmap offerItemImg) {
+        this.offersItemImg = offerItemImg;
     }
 
-    public Bitmap getOfferItemUserImg() {
-        return offerItemUserImg;
+
+    public int getOffersCount() {
+        return offersCount;
     }
 
-    public void setOfferItemUserImg(Bitmap offerItemUserImg) {
-        this.offerItemUserImg = offerItemUserImg;
+    public void setOffersCount(int offersCount) {
+        this.offersCount = offersCount;
     }
-
-    public int getOfferItemAction() {
-        return offerItemAction;
-    }
-
-    public void setOfferItemAction(int offerItemAction) {
-        this.offerItemAction = offerItemAction;
-    }
-
-    public int getOfferType() {return offerType;}
-
-    public void setOfferType(int offerType) {this.offerType = offerType;}
-
-
 }

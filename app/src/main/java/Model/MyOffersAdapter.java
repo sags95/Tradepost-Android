@@ -8,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sinapp.sharathsind.tradepost.R;
+import com.sinapp.sharathsind.tradepost.SingleListingActivity;
+
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.List;
 
@@ -30,7 +34,7 @@ public class MyOffersAdapter extends RecyclerView.Adapter<MyOffersAdapter.ViewHo
     @Override
     public MyOffersAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_item_myoffers_received, viewGroup, false);
+                .inflate(R.layout.list_item_my_offers_new, viewGroup, false);
         MyOffersAdapter.ViewHolder vh = new ViewHolder(v);
         //v.setOnClickListener(mItemClick);
         return vh;
@@ -40,17 +44,44 @@ public class MyOffersAdapter extends RecyclerView.Adapter<MyOffersAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
-        viewHolder.mItemTitle.setText(mData.get(i).getOfferItemTitle());
-        viewHolder.mItemImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        viewHolder.mItemImg.setImageBitmap(mData.get(i).getOfferItemImg());
-        if(mData.get(i).getOfferType()==1){
-            viewHolder.mUserPic.setVisibility(View.INVISIBLE);
-        }else{
-            viewHolder.mUserPic.setVisibility(View.VISIBLE);
-            viewHolder.mUserPic.setImageBitmap(mData.get(i).getOfferItemUserImg());
+        viewHolder.mItemTitle.setText(mData.get(i).getOffersItemTitle());
+        viewHolder.mItemImg.setImageBitmap(mData.get(i).getOffersItemImg());
+        viewHolder.mOffersCount.setText(String.valueOf(mData.get(i).getOffersCount()));
+
+        switch (mData.get(i).getOffersCount()){
+            case 1:
+                viewHolder.mFlowLayout.addView(addTags("Hello1"));
+                break;
+            case 2:
+                viewHolder.mFlowLayout.addView(addTags("Hello1"));
+                viewHolder.mFlowLayout.addView(addTags("Hello2"));
+                break;
+            case 3:
+                viewHolder.mFlowLayout.addView(addTags("Hello1"));
+                viewHolder.mFlowLayout.addView(addTags("Hello2"));
+                viewHolder.mFlowLayout.addView(addTags("Hello3"));
+                break;
+
+            case 4:
+                viewHolder.mFlowLayout.addView(addTags("Hello1"));
+                viewHolder.mFlowLayout.addView(addTags("Hello2"));
+                viewHolder.mFlowLayout.addView(addTags("Hello3"));
+                viewHolder.mFlowLayout.addView(addTags("Hello4"));
+                break;
+
+            case 5:
+                viewHolder.mFlowLayout.addView(addTags("Hello1"));
+                viewHolder.mFlowLayout.addView(addTags("Hello2"));
+                viewHolder.mFlowLayout.addView(addTags("Hello3"));
+                viewHolder.mFlowLayout.addView(addTags("Hello4"));
+                viewHolder.mFlowLayout.addView(addTags("Hello5"));
+                break;
+
 
         }
-        viewHolder.mItemAction.setText(getItemActionStatus(mData.get(i).getOfferItemAction(),viewHolder.mItemAction,viewHolder.mItemImg));
+
+
+
 
     }
 
@@ -61,38 +92,43 @@ public class MyOffersAdapter extends RecyclerView.Adapter<MyOffersAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView mItemTitle;
-        public ImageView mItemImg, mUserPic;
-        public Button mItemAction;
-
+        public CustomTextView mItemTitle, mOffersCount;
+        public ImageView mItemImg;
+        public FlowLayout mFlowLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mItemTitle = (TextView) itemView.findViewById(R.id.myoffer_item_title);
-            mItemImg = (ImageView) itemView.findViewById(R.id.myoffers_img);
-            mUserPic = (ImageView) itemView.findViewById(R.id.myoffers_user_pic);
-            mItemAction = (Button) itemView.findViewById(R.id.myoffers_action_btn);
+            mItemTitle = (CustomTextView) itemView.findViewById(R.id.myOffers_itemTitle);
+            mItemImg = (ImageView) itemView.findViewById(R.id.myOffers_itemImg);
+            mOffersCount = (CustomTextView) itemView.findViewById(R.id.myOffers_offersCount);
+            mFlowLayout=(FlowLayout)itemView.findViewById(R.id.myOffers_flowLayout);
 
         }
     }
 
-    public String getItemActionStatus(int itemStatus, Button actionButton, ImageView itemImg){
-        String temp="";
-        switch (itemStatus){
-            case -1:
-                temp = "DECLINED";
-                actionButton.setTextColor(mContext.getResources().getColor(R.color.red));
-                break;
-            case 0:
-                temp = "PENDING";
-                actionButton.setTextColor(mContext.getResources().getColor(R.color.white));
-                break;
-            case 1:
-                temp = "ACCEPTED";
-                actionButton.setTextColor(mContext.getResources().getColor(R.color.green));
-                break;
-        }
-        return temp;
+    private CustomTextView addTags(String tag){
+
+        CustomTextView newTag = new CustomTextView(mContext);
+        newTag.setText(tag.toUpperCase());
+        newTag.setTextColor(mContext.getResources().getColor(R.color.white));
+        newTag.setTextSize(10f);
+        newTag.setClickable(true);
+        newTag.settingOpenSansLight();
+        newTag.setBackgroundResource(R.drawable.tag_btn_shape);
+        newTag.setPadding(DpToPx(4),DpToPx(4),DpToPx(4),DpToPx(4));
+        FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, DpToPx(8),DpToPx(4));
+
+        newTag.setLayoutParams(lp);
+
+        return newTag;
+    }
+
+    private int DpToPx(int requireDp ){
+        float d = mContext.getResources().getDisplayMetrics().density;
+        return (int)(requireDp * d); // margin in pixels
 
     }
+
+
 }
