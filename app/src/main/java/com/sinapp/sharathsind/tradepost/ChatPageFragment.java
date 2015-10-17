@@ -185,6 +185,7 @@ public class ChatPageFragment extends Fragment {
             return null;
         }
     }
+
     public List<ChatPageItem> addItem() {
         List<ChatPageItem> items = new ArrayList<ChatPageItem>();
         SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);

@@ -18,6 +18,8 @@ import Model.EmptyRecyclerView;
 import Model.MyFavoriteAdapter;
 import Model.MyFavoriteItem;
 import Model.RecyclerViewOnClickListener;
+import datamanager.ItemResult;
+import webservices.ItemWebService;
 
 /**
  * Created by HenryChiang on 15-08-11.
@@ -31,7 +33,7 @@ public class ProFileItemForTradeFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private android.support.v7.widget.LinearLayoutManager mLayoutManager;
     final List<MyFavoriteItem> myItems  = addItem("hello");
-
+int userid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,21 +101,19 @@ public class ProFileItemForTradeFragment extends Fragment {
 
     public List<MyFavoriteItem> addItem(String title) {
         List<MyFavoriteItem> items = new ArrayList<MyFavoriteItem>();
-        items.add(new MyFavoriteItem(title));
-        items.add(new MyFavoriteItem("User"));
-        items.add(new MyFavoriteItem("Long Long title"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Super Long Item Title"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
+   ArrayList<Integer> itemid= ItemWebService.getItems(userid);
+        if(itemid!=null)
+        {
+            for(int i:itemid)
+            {
+                ItemResult ir=ItemWebService.getItem(i);
+                MyFavoriteItem f=new MyFavoriteItem(ir);
+                f.setItemTitle(ir.item.getItemname());
+                items.add(f);
+            }
+
+        }
+
 
 
 

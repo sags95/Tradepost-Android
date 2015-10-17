@@ -68,10 +68,14 @@ public class ItemWebService {
 
         if(object1!=null) {
             for (Object i : object1) {
-                userdata.items.add(Integer.parseInt(((SoapPrimitive) i).getValue().toString()));
+                items.add(Integer.parseInt(((SoapPrimitive) i).getValue().toString()));
             }
         }
 
        return items;
+    }
+    public void deleteItem(int i)
+    {
+
     }
 }

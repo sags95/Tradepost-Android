@@ -47,6 +47,7 @@ public class MainWebService {
             //  String res = response.ge().toString();
             return response;
         } catch (Exception e) {
+
             e.printStackTrace();
         }
 
@@ -80,7 +81,7 @@ public class MainWebService {
             e.printStackTrace();
             if(i<4)
             {
-                return getretryMsg( request, URL, SOAP_ACTION,++ i);
+return getretryMsg( request, URL, SOAP_ACTION,++ i);
             }
         }
 

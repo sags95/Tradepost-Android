@@ -78,7 +78,7 @@ public class SingleListingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_listing_view);
         View includeView = (View)findViewById(R.id.single_listing_main_layout);
-
+GCMService.b=true;
 
         //single listing header
         singleListingHeader= (RelativeLayout)findViewById(R.id.single_listing_header);
@@ -277,6 +277,37 @@ public class SingleListingActivity extends AppCompatActivity {
 
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GCMService.b=true;
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        GCMService.b=true;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        GCMService.b=true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GCMService.b=false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        GCMService.b=false;
     }
 
     @Override

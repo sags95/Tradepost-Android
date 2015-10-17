@@ -5,6 +5,7 @@ package com.sinapp.sharathsind.tradepost;
  */
 
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -54,11 +55,12 @@ import Model.NavigationDrawerCallbacks;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationDrawerCallbacks, MarketPlaceFragment.TempMarketPlaceDataCallBack{
+    public enum num{chat,individualcha,notification};
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-
+public static num e;
     boolean doubleBackToExitPressedOnce = false;
     FrameLayout mFrameLayoutContainer, mFrameLayoutRight;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -349,6 +351,7 @@ public class NavigationDrawer extends AppCompatActivity
     }
 
     public void chatPageFragmentHandling() {
+        e=num.chat;
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             openChatPageFragment(chatPageFrag);
@@ -369,6 +372,7 @@ public class NavigationDrawer extends AppCompatActivity
     }
 
     public void notificationFragmentHandling(){
+        e=num.notification;
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             openNotificationFragment(notiFrag);
@@ -423,7 +427,13 @@ public class NavigationDrawer extends AppCompatActivity
     public void storeTempMarketPlaceData(ArrayList<MarketPlaceData> tempData){
             this.tempData=tempData;
     }
+public BroadcastReceiver br   =new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
 
+
+    }
+};
     @Override
     public boolean hasTempData() {
         return tempDataStatus;

@@ -25,6 +25,7 @@ import Model.RegisterWebService;
 public class CreateAccountActivity extends AppCompatActivity {
 
     private CustomButton nextButton;
+
     private LimitedEditText username,email,pw,pwConfirm;
     private CustomCheckBox showPw;
 public String user,pwd,em;

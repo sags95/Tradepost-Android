@@ -10,7 +10,7 @@ import java.util.Date;
 public class MessageClass {
     String msg;
     Date sent;
-
+public String msgpath;
     int userid;
     int ruserid;
 

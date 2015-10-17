@@ -2,7 +2,6 @@ package webservices;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.facebook.share.model.AppInviteContent;
 import com.facebook.share.widget.AppInviteDialog;
@@ -13,7 +12,6 @@ import org.ksoap2.serialization.SoapPrimitive;
 
 import java.util.Vector;
 
-import data.StringVector;
 import datamanager.userdata;
 
 /**

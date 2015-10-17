@@ -1,5 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +25,9 @@ import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
+import datamanager.ItemResult;
+import datamanager.userdata;
+import webservices.ItemWebService;
 
 
 /**
@@ -91,18 +100,43 @@ public class MyOffersTabOne extends Fragment {
 
     public List<MyOffersItem> addItem() {
         List<MyOffersItem> items = new ArrayList<MyOffersItem>();
+        SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
+        Cursor c=db.rawQuery("select distinct(itemid) from offers where recieveduserid="+ userdata.userid,null);
+        c.moveToFirst();
+        while(!c.isAfterLast())
+        {
+            int itemid=c.getInt(00);
+            ItemResult ir= ItemWebService.getItem(itemid);
+            Bitmap bitmap=getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/items/"+itemid+"/0.png");
 
-        items.add(new MyOffersItem("Title1",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img5),1));
-        items.add(new MyOffersItem("Title2",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img6),2));
-        items.add(new MyOffersItem("Long long long long title3",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3),3));
-        items.add(new MyOffersItem("Long long long long long long long long title4",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),4));
-        items.add(new MyOffersItem("Long long long long long long long long title5",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),5));
-        items.add(new MyOffersItem("Long long long long long long long long title6",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),5));
-        items.add(new MyOffersItem("Long long long long long long long long title7",BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),5));
+
+            int count=0;
+            Cursor c1=db.rawQuery("select count(*) from offers where itemid="+itemid ,null);
+            c1.moveToFirst();
+            count=c1.getInt(0);
+            MyOffersItem item=new MyOffersItem(ir.item.getItemname(),bitmap,count);
+items.add(item);
+            c.moveToNext();
+        }
+
 
 
 
         return items;
+    }
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void applyLinearLayoutManager() {

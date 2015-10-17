@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -19,6 +21,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.ContextThemeWrapper;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -36,6 +40,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -247,6 +252,7 @@ public class ChatFragment extends Activity {
                 //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 File photo=null;
                 try {
                     // place where to store camera taken picture
@@ -271,10 +277,12 @@ public class ChatFragment extends Activity {
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivityForResult(Intent.createChooser(intent, "Select File"), 1);
 
             }
@@ -345,6 +353,7 @@ setadapter(true);
     lv= (ListView) findViewById(R.id.listview_chat);
     ArrayList<MessageClass> c=new ArrayList<>();
     SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
+    db.execSQL("create table if not exists m"+offerid+"(msgid int(10),msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
     // rootView = inflater.inflate(R.layout.notification_offer, container, false);
     Cursor c1=db.rawQuery("select * from m"+offerid,null);
     c1.moveToFirst();
@@ -354,7 +363,7 @@ setadapter(true);
         m1.setMsg(c1.getString(c1.getColumnIndex("msg")));
         //m1.setSeen());
         //m1.setSent(new Date(c1.getString(c1.getColumnIndex("sent"))));
-
+m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
         m1.setUserid(Integer.parseInt(c1.getString(c1.getColumnIndex("userid"))));
   c.add(m1);
         c1.moveToNext();
@@ -388,12 +397,12 @@ setadapter(true);
                 Intent intent = new Intent(this, PictureMsg.class);
                 intent.putExtra("BitmapImage", thumbnail);
                 intent.putExtra("offerid", offerid);
-
-            }
-        }else{
+                startActivity(intent);
+                finish();
+            } else {
                 Uri selectedImageUri = data.getData();
-                String[] projection = { MediaStore.MediaColumns.DATA };
-            Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
+                String[] projection = {MediaStore.MediaColumns.DATA};
+                Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                 cursor.moveToFirst();
 
@@ -411,11 +420,13 @@ setadapter(true);
                 options.inSampleSize = scale;
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
-            Intent intent = new Intent(this, PictureMsg.class);
-            intent.putExtra("BitmapImage", bm);
-            intent.putExtra("offerid",offerid);
+                Intent intent = new Intent(this, PictureMsg.class);
+                intent.putExtra("BitmapImage", bm);
+                intent.putExtra("offerid", offerid);
+                startActivity(intent);
+                finish();
             }
-
+        }
 
         }
 
@@ -509,14 +520,18 @@ setadapter(true);
     public void onStop() {
         super.onStop();
         isAlive = false;
-        this.unregisterReceiver(cv);
+        try {
+            this.unregisterReceiver(cv);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         isAlive = false;
-        this.unregisterReceiver(cv);
+
     }
 
     @Override
@@ -527,7 +542,6 @@ setadapter(true);
         MessageReceiver m=new MessageReceiver();
         this.registerReceiver(m,f);
     }
-
 
 }
 

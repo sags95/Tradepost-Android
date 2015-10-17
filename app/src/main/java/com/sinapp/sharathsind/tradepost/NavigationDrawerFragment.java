@@ -374,7 +374,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 obj.addProperty("stars",0);
                 obj.addProperty("feeback",feedbackEdit.getText().toString());
 
-            SoapPrimitive p= MainWebService.getMsg(obj, "http://73.37.238.238:8084/TDserverWeb/FeedbackWebservice?wsdl", "http://webser/FeedbackWebservice/addFeedRequest");
+            SoapPrimitive p= MainWebService.getretryMsg(obj, "http://73.37.238.238:8084/TDserverWeb/FeedbackWebservice?wsdl", "http://webser/FeedbackWebservice/addFeedRequest",0);
         
             }
         });

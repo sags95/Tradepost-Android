@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +15,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,6 +38,7 @@ import Model.CustomEditText;
 import Model.CustomTextView;
 import Model.OfferProcessAdapter;
 import Model.OfferProcessItem;
+import datamanager.FileManager;
 import datamanager.userdata;
 import webservices.OfferWebService;
 
@@ -57,8 +61,8 @@ public class OfferProcessMainFragment extends Fragment {
     public String itemname;
     private CustomTextView itemTitle;
 public static ArrayList<Integer> ITEMID;
-
-
+public static boolean b,b1;
+static int cash ;
 
 
     @Override
@@ -83,7 +87,25 @@ ITEMID=new ArrayList<>();
         addCashBtn = (CustomButton)rootView.findViewById(R.id.offer_addcash);
         addCashBtn.setOnClickListener(addCashBtnListener);
         addCashEdit = (CustomEditText)rootView.findViewById(R.id.offer_addcash_edit);
+addCashEdit.addTextChangedListener(new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+cash=Integer.parseInt(addCashEdit.getText().toString());
+
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+});
         //
         addItemBtn = (CustomButton)rootView.findViewById(R.id.offer_process_addItem_btn);
         addItemBtn.setOnClickListener(addItemOnClickListener);
@@ -113,8 +135,8 @@ ITEMID=new ArrayList<>();
         Bundle args = getArguments();
         if(args!=null ){
             if(args.getString("Amount")!=null) {
-                addCashEdit.setVisibility(View.VISIBLE);
-                addCashEdit.setText(args.getString("Amount"));
+                    addCashEdit.setVisibility(View.VISIBLE);
+                    addCashEdit.setText(args.getString("Amount"));
                 addCashBtn.setText("REMOVE CASH");
             }
 
@@ -160,7 +182,7 @@ ITEMID.add(offerProcessItems.get(i).itemid);
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 newItemImg.setImageBitmap(imageBitmap);
-
+                  b=true;
 
             }else if(requestCode == 1){
                 Uri selectedImageUri = data.getData();
@@ -184,13 +206,37 @@ ITEMID.add(offerProcessItems.get(i).itemid);
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
                 newItemImg.setImageBitmap(bm);
+            b=true;
             }
         }
     }
     public void submitOffer()
     {
-        int cash;
+        String itemA;
+        itemA=itemTitle.getText().toString();
+        if(b && (itemA==null||itemA.length()<=0))
+        {
+            return;
+        }
+        else if(!b&(itemA!=null&&itemA.trim().length()>=1))
+        {
+
+        return;
+
+        }
+
         int[] itemid=new int[ITEMID.size()];
+        String s=addCashBtn.getText().toString();
+      if( !b1)
+      {
+          cash=0;
+      }
+        else{
+          cash=Integer.parseInt(addCashEdit.getText().toString());
+      }
+        String img=null;
+       if(b)
+        img= FileManager.encode(((BitmapDrawable) newItemImg.getDrawable()).getBitmap());
         int i=0;
         for(int item: ITEMID)
         {
@@ -198,12 +244,9 @@ ITEMID.add(offerProcessItems.get(i).itemid);
             i++;
         }
 
-        if(addCashEdit.getVisibility()==View.VISIBLE)
-         cash =Integer.parseInt(addCashEdit.getText().toString());
-        else
-            cash=0;
-        OfferWebService of=new OfferWebService();
-        of.sendOffer(itemid, userdata.userid,OfferProcessActivity.userid,OfferProcessActivity.itemid,cash,null,OfferProcessActivity.iteamname);
+
+            OfferWebService of=new OfferWebService();
+        of.sendOffer(itemid, userdata.userid,OfferProcessActivity.userid,OfferProcessActivity.itemid,cash,img,OfferProcessActivity.iteamname,itemA);
     }
 
     public View.OnClickListener addCashBtnListener = new View.OnClickListener() {
@@ -214,10 +257,12 @@ ITEMID.add(offerProcessItems.get(i).itemid);
                 addCashEdit.setVisibility(View.VISIBLE);
 
                 addCashBtn.setText("REMOVE CASH");
+                b1=true;
             }else{
                 addCashEdit.setText("");
                 addCashEdit.setVisibility(View.INVISIBLE);
                 addCashBtn.setText("ADD CASH");
+                b1=false;
             }
 
 

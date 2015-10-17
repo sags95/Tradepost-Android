@@ -1,6 +1,10 @@
 package com.sinapp.sharathsind.tradepost;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +24,7 @@ import Model.EmptyRecyclerView;
 import Model.NotificationAdapter;
 import Model.NotificationItem;
 import Model.RecyclerViewOnClickListener;
+import datamanager.userdata;
 
 /**
  * Created by HenryChiang on 15-07-01.
@@ -101,11 +106,19 @@ public class NotificationFragment extends Fragment {
 
     public List<NotificationItem> addItem(String userName, int viewType) {
         List<NotificationItem> items = new ArrayList<NotificationItem>();
-        items.add(new NotificationItem(userName, viewType));
-        items.add(new NotificationItem("User", 1));
-        items.add(new NotificationItem("UserABC",2));
-        items.add(new NotificationItem("UserLong",3));
-        items.add(new NotificationItem("UserXYZ",4));
+        SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
+    //    SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
+        Cursor c=db.rawQuery("select * from offers where status=1",null);
+        c.moveToFirst();
+        while(c.isAfterLast())
+        {
+            String username=c.getString(c.getColumnIndex("username"));
+       String type=c.getColumnName(c.getColumnIndex("type"));
+items.add(new NotificationItem(username,Integer.parseInt(type)));
+
+        }
+
+
 
 
 

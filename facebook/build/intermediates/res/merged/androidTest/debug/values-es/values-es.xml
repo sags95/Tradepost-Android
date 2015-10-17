@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/tradepost/Tradepost-Android/facebook/build/intermediates/bundles/debug/res/values-es/values-es.xml -->
+    <!-- From: file:/C:/Users/sharathsind/Desktop/tradepost/Tradepost-Android/facebook/build/intermediates/bundles/debug/res/values-es/values-es.xml -->
     <eat-comment/>
     <string name="com_facebook_image_download_unknown_error">Error al descargar la imagen.</string>
     <string name="com_facebook_internet_permission_error_message">WebView inicio de sesión requiere permiso INTERNET</string>

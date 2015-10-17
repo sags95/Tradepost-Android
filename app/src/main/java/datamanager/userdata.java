@@ -1,10 +1,7 @@
 package datamanager;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+
 
 import java.io.File;
 import java.util.ArrayList;

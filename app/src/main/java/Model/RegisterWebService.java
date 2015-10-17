@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import data.MessageClass;
-import data.StringVector;
+
 import datamanager.FileManager;
 import datamanager.Item;
 import datamanager.ItemResult;
@@ -158,14 +158,86 @@ signUp(username, email, s, fb, profilepic, b, db);
            }
 
            userdata.i.add(ir);
-           FavouriteWebService.getfavouInts();
+
+
 
        }
 
+       FavouriteWebService.getfavouInts();
+       int offers[]=getuserOffer();
+if(offers!=null)
+{
+    for(int i: offers)
+    {
+        setOffer(i);
+    }
 
+
+
+}
    }
+public  static void setOffer(int offerid)
+{SoapObject obje =new SoapObject("http://webser/","getItemsOffer");
+    obje.addProperty("offerid",offerid);
+    SoapObject obje1 =new SoapObject("http://webser/","getOffer");
+    obje1.addProperty("offerid",offerid);
+    KvmSerializable s= MainWebService.getMsg2(obje1,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/getOfferRequest");
+    ContentValues cv=new ContentValues();
+   // SQLiteDatabase db=  Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
+
+    SoapObject offer= (SoapObject) ((SoapObject)s).getProperty("of");
+    cv.put("offerid",offer.getPropertyAsString("offerid"));
+    cv.put("userid",offer.getPropertyAsString("userid"));
+    cv.put("itemid",offer.getPropertyAsString("itemid"));
+    cv.put("cash",offer.getPropertyAsString("cash"));
+    cv.put("recieveduserid",offer.getPropertyAsString("recieveduserid"));
+    cv.put("status",offer.getPropertyAsString("status"));
+    cv.put("dir", offer.getPropertyAsString("dir"));
+    //cv.put("dir");
+
+   Constants. db.insert("offers", null, cv);
+    if(((SoapObject )s).hasProperty("item"))
+    {
+        cv=new ContentValues();
+        if(((SoapObject)(((SoapObject) s).getProperty("item"))).getPropertyCount()>0) {
+            cv.put("Offerid", offerid);
+            cv.put("itemname",((SoapObject)(((SoapObject) s).getProperty("item"))).getPropertyAsString("itemname") );
+      Constants.      db.insert("offeradditionalitems", null, cv);
+        }
+
+    }
+    Vector s1=MainWebService.getMsg1(obje,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/getItemsOfferRequest");
+    for(Object c:s1) {
+        cv = new ContentValues();
+        cv.put("offerid",offerid);
+        cv.put("itemid", Integer.parseInt(c.toString()));
+     Constants.   db.insert("offeritems", null, cv);
+    }
+
+}
+public static int[] getuserOffer()
+{
+    int[] i=null;
+SoapObject    obje=new SoapObject("http://webser/","getuserOffer");
+    obje.addProperty("userid", userdata.userid);
+    Vector result2= MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl"
+            , "http://webser/OfferWebService/getuserOfferRequest");
+    if(result2!=null) {
+
+        int index=0;
+        i=new int[result2.size()];
+
+        for (Object o:result2 ) {
+           i[index] = Integer.parseInt(((SoapPrimitive)o).getValue().toString());
+            index++;
+
+        }
+
+    }
 
 
+return i;
+}
     private static final String SOAP_ACTION3 = "http://webser/Register/additemsRequest";
     private static final String METHOD_NAME3 = "additems";
    // private static final String NAMESPACE = "http://webser/";
@@ -177,11 +249,8 @@ signUp(username, email, s, fb, profilepic, b, db);
         object.addProperty("desc",descrpition);
         object.addProperty("latitude", String.format("%.2f",userdata.mylocation.latitude));
 
-        StringVector tag=new StringVector();
-        for(int i = 0;i<tags.length;i++){
-            tag.add(tags[i]);
-        }
-        object.addProperty("tags",tag);
+
+        //object.addProperty("tags",tag);
         object.addProperty("longi", String.format("%.2f",userdata.mylocation.Longitude));
         object.addProperty("userid", userdata.userid);
         object.addProperty("category", category);
@@ -225,13 +294,16 @@ signUp(username, email, s, fb, profilepic, b, db);
         {
             request= new SoapObject(NAMESPACE, "sendpic");
 
-            request.addProperty("userid",Constants.userid);
-            request.addProperty("picmsg", FileManager.encode(picture));
+            request.addProperty("userid", Constants.userid);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            request.addProperty("picmsg",byteArray);
             request.addProperty("key",Constants.GCM_Key);
             request.addProperty("offerid",offerid);
-            request.addProperty("name",msg);
+            request.addProperty("name", msg);
             envelope.setOutputSoapObject(request);
-
+new MarshalBase64().register(envelope);
             HttpTransportSE ht = new HttpTransportSE(URL);
             try {
                 ht.call("http://webser/MessageWebService/sendpicRequest", envelope);

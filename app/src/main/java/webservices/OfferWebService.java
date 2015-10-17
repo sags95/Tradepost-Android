@@ -16,7 +16,7 @@ import datamanager.userdata;
 public class OfferWebService {
 
     //SoapObject s=new SoapObject("http://webser/","get");
-    public void sendOffer(int[]itemid,int userid,int ruserid,int foritemid,int cash,String Images,String itemname)
+    public void sendOffer(int[] itemid, int userid, int ruserid, int foritemid, int cash, String Images, String itemname, String itemA)
     {
         SoapObject s=new SoapObject("http://webser/","sendOffer");
         s.addProperty("userid", userdata.userid);
@@ -55,10 +55,15 @@ if(Images!=null) {
     s.addProperty("images", Images);
     s.addProperty("pic", 0);
     soapPrimitive = MainWebService.getretryMsg(s, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/addOferImageRequest", 0);
+    s = new SoapObject("http://webser/", "AddAdtionalItem");
+    s.addProperty("offerid", offerid);
+    s.addProperty("name", itemA);
+    //s.addProperty("pic", 0);
+    soapPrimitive = MainWebService.getretryMsg(s, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/AddAdtionalItemRequest", 0);
 
     cv=new ContentValues();
     cv.put("offerid", offerid);
-    cv.put("itemname", s.getPropertyAsString("itemid"));
+    cv.put("itemname", itemA);
     Constants.db.insert("offeradditionalitems", null, cv);
 
 }

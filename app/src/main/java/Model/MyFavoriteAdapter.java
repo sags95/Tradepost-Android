@@ -47,7 +47,7 @@ public class MyFavoriteAdapter extends RecyclerView.Adapter<MyFavoriteAdapter.Vi
 
 
             if (viewHolder.mTagFlowLayout.getChildCount() == 0) {
-                for (int j = 0; j < tagsTest.length; j++) {
+                for (int j = 0; j <mData.get(i).ir.tags .length; j++) {
 
                     viewHolder.mTagFlowLayout.addView(addTags(j,i));
 

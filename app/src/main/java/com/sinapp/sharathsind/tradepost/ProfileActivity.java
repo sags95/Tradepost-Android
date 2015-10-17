@@ -29,13 +29,43 @@ public class ProfileActivity extends AppCompatActivity{
     private CircleImageView profilePic;
     private int numbOfTabs = 2;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        GCMService.b=true;
+     ProFileItemForTradeFragment pf  = new ProFileItemForTradeFragment();
+        ArrayList<String> profileClicked = getIntent().getStringArrayListExtra("profileDetails");
+        profilePic = (CircleImageView)findViewById(R.id.profile_userImg_placeholder);
+        profileUsername = (CustomTextView)findViewById(R.id.profile_username_placeholder);
 
-        adapter =  new OffersViewPagerAdapter(getSupportFragmentManager(),Titles, numbOfTabs, new ProFileItemForTradeFragment(), new ProfileFeedbackFragment());
+        if(getIntent().getStringExtra("caller").equals("MarketPlace")||getIntent().getStringExtra("caller").equals("SingleListingActivity")){
+
+            //Profile Picture
+            profilePic.setImageBitmap((Bitmap)getIntent().getParcelableExtra("profilePic"));
+
+            //Profile Username
+            profileClicked = getIntent().getStringArrayListExtra("itemProfileClicked");
+            profileUsername.setText(profileClicked.get(1));
+            pf.userid=Integer.parseInt(profileClicked.get(0));
+            Log.d("USERID", profileClicked.get(0));
+
+        }else if(getIntent().getStringExtra("caller").equals("NavigationDrawer")){
+
+            //Profile Picture
+            profilePic.setImageBitmap((Bitmap)getIntent().getParcelableExtra("profilePic"));
+
+            //Profile Username
+            profileClicked = getIntent().getStringArrayListExtra("profileDetails");
+            profileUsername.setText(profileClicked.get(1));
+            pf.userid=Integer.parseInt(profileClicked.get(0));
+            Log.d("EMAIL", profileClicked.get(2));
+            Log.d("USERID", profileClicked.get(0));
+        }
+
+
+
+        adapter =  new OffersViewPagerAdapter(getSupportFragmentManager(),Titles, numbOfTabs,pf , new ProfileFeedbackFragment());
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager)findViewById(R.id.profile_viewpager);
@@ -61,33 +91,37 @@ public class ProfileActivity extends AppCompatActivity{
 
 
 
-        profilePic = (CircleImageView)findViewById(R.id.profile_userImg_placeholder);
-        profileUsername = (CustomTextView)findViewById(R.id.profile_username_placeholder);
 
-        if(getIntent().getStringExtra("caller").equals("MarketPlace")||getIntent().getStringExtra("caller").equals("SingleListingActivity")){
+    }
 
-            //Profile Picture
-            profilePic.setImageBitmap((Bitmap)getIntent().getParcelableExtra("profilePic"));
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GCMService.b=true;
+    }
 
-            //Profile Username
-            ArrayList<String> profileClicked = getIntent().getStringArrayListExtra("itemProfileClicked");
-            profileUsername.setText(profileClicked.get(1));
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        GCMService.b=true;
+    }
 
-            Log.d("USERID", profileClicked.get(0));
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GCMService.b=true;
+    }
 
-        }else if(getIntent().getStringExtra("caller").equals("NavigationDrawer")){
+    @Override
+    protected void onPause() {
+        super.onPause();
+        GCMService.b=false;
+    }
 
-            //Profile Picture
-            profilePic.setImageBitmap((Bitmap)getIntent().getParcelableExtra("profilePic"));
-
-            //Profile Username
-            ArrayList<String> profileClicked = getIntent().getStringArrayListExtra("profileDetails");
-            profileUsername.setText(profileClicked.get(1));
-
-            Log.d("EMAIL", profileClicked.get(2));
-            Log.d("USERID", profileClicked.get(0));
-        }
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GCMService.b=false;
     }
 
     @Override

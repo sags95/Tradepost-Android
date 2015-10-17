@@ -35,7 +35,12 @@ int offerid;
             @Override
             public void onClick(View v) {
                 MessageClass m=new MessageClass("",bitmap,Constants.userid);
-               RegisterWebService.sendMsg(m.getMsg(), m.getPicmsg(), Constants.userid,offerid,PictureMsg.this);
+          m=     RegisterWebService.sendMsg(m.getMsg(), m.getPicmsg(), Constants.userid,offerid,PictureMsg.this);
+                Intent intent1 =new Intent(PictureMsg.this,ChatFragment.class);
+                intent1.putExtra("offerid",offerid);
+                startActivity(intent1);
+
+                finish();
 
 
             }

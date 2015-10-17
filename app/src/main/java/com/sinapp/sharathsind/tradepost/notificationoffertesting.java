@@ -104,7 +104,7 @@ c.moveToNext();
         count +=c.getCount();
         c.moveToFirst();
         if(c.getCount()>0)
-            items[count-1]="http://73.37.238.238:8084/TDserverWeb/images/items/"+c.getString(c.getColumnIndex("itemid"))+"/0.png";
+            items[count-1]="http://73.37.238.238:8084/TDserverWeb/images/Offers/"+offerid+"/0.png";
         myItemPlaceholder = (TextView)findViewById(R.id.noti_offer_myItem_placeholder);
 
         //

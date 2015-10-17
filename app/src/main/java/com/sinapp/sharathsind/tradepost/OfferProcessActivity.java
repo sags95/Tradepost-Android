@@ -175,6 +175,7 @@ itemid=Integer.parseInt(itemDetailsToOffer.get(0));
 
 
         }
+        OfferProcessMainFragment.ITEMID =new ArrayList<>();
         for(OfferProcessItem o:offerProcessItemArrayList)
         {
             OfferProcessMainFragment.ITEMID.add(o.itemid);

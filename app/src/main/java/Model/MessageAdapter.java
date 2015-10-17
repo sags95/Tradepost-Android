@@ -1,6 +1,11 @@
 package Model;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,6 +13,8 @@ import android.widget.BaseAdapter;
 import com.google.android.gms.plus.model.people.Person;
 import com.sinapp.sharathsind.tradepost.Constants;
 import com.sinapp.sharathsind.tradepost.R;
+import com.squareup.picasso.Picasso;
+
 import  android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,15 +65,23 @@ public class MessageAdapter extends BaseAdapter{
             v = inflater.inflate(R.layout.right_message_view, parent, false);
             v2= (TextView) v.findViewById(R.id.Right_msg);
             v1=(ImageView)v.findViewById(R.id.image_msg);
-            if(m1.getPicmsg()!=null)
+            if(m1.msgpath!=null&&m1.msgpath.length()>0)
             {
-
-          v1.setImageBitmap(m1.getPicmsg());
+v2.setVisibility(View.GONE);
+ v1.setVisibility(View.VISIBLE);
+                Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+m1.msgpath);
+                Picasso.with(b)
+                        .load(url1)
+                        .placeholder(R.drawable.sample_img3)
+                        .into(v1);
+          //v1.setImageBitmap(m1.getPicmsg());
 
 
             }
             else{
-                v2.setText(m1.getMsg());
+              ShowMessageTask sh=new ShowMessageTask(v2);
+                sh.execute(m1.getMsg());
+              //  v2.setText(m1.getMsg());
             }
 
         }
@@ -74,17 +89,70 @@ public class MessageAdapter extends BaseAdapter{
             v = inflater.inflate(R.layout.left_message_view, parent, false);
             v2= (TextView) v.findViewById(R.id.Left_msg);
            v1=(ImageView)v.findViewById(R.id.image_msg);
-            if(m1.getPicmsg()!=null)
+            if(m1.msgpath!=null&&m1.msgpath.length()<0)
             {
 
-                v1.setImageBitmap(m1.getPicmsg());
-
+                v2.setVisibility(View.GONE);
+                v1.setVisibility(View.VISIBLE);
+                Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+m1.msgpath);
+                Picasso.with(b)
+                        .load(url1)
+                        .placeholder(R.drawable.sample_img3)
+                        .into(v1);
 
             }
             else{
-                v2.setText(m1.getMsg());
+                ShowMessageTask sh=new ShowMessageTask(v2);
+                sh.execute(m1.getMsg());
             }
         }
         return v;
     }
+    class ShowMessageTask extends AsyncTask<String, Void, Spanned> {
+
+        private TextView textView;
+
+        public ShowMessageTask(TextView textView) {
+            this.textView = textView;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Spanned doInBackground(String... message) {
+
+            Spanned spannedMessage = Html.fromHtml(message[0], imageGetter, null);
+            return spannedMessage;
+        }
+
+        @Override
+        protected void onPostExecute(Spanned spannedMessage) {
+            textView.setText(spannedMessage);
+        }
+    }
+
+    /**
+     * Image getter for showing the emoticons in the message.
+     */
+    Html.ImageGetter imageGetter = new Html.ImageGetter() {
+        public Drawable getDrawable(String source) {
+
+            try {
+                Drawable drawable = Drawable.createFromPath(source);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight());
+
+                return drawable;
+            } catch(Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    };
+
+
+
+
 }

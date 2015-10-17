@@ -1,7 +1,10 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +28,9 @@ import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
+import datamanager.ItemResult;
+import datamanager.userdata;
+import webservices.ItemWebService;
 
 /**
  * Created by HenryChiang on 15-06-27.
@@ -79,7 +91,7 @@ public class MyOffersTabTwo extends Fragment {
                         0,
                         1);
         */
-        final List<MyOffersItem> myOffersItems = null;
+        final List<MyOffersItem> myOffersItems = addItem();
         mMyOffersAdapter = new MyOffersAdapter(myOffersItems,getActivity().getApplicationContext());
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
@@ -91,19 +103,47 @@ public class MyOffersTabTwo extends Fragment {
         return rootView;
     }
 
-    public List<MyOffersItem> addItem(String itemTitle, Bitmap itemImg, int offersCount) {
+    public List<MyOffersItem> addItem() {
         List<MyOffersItem> items = new ArrayList<MyOffersItem>();
+        SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
+        Cursor c=db.rawQuery("select distinct(itemid) from offers where userid="+ userdata.userid,null);
+      c.moveToFirst();
+        while(!c.isAfterLast())
+        {
+            int itemid=c.getInt(0);
+            ItemResult ir= ItemWebService.getItem(itemid);
+            Bitmap bitmap=getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/items/"+itemid+"/0.png");
 
-        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img5),1));
-        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img6),2));
-        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img3),3));
-        items.add(new MyOffersItem(itemTitle,BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.sample_img2),4));
+
+            int count=0;
+            Cursor c1=db.rawQuery("select count(*) from offers where itemid="+itemid ,null);
+            c1.moveToFirst();
+            count=c1.getInt(0);
+            MyOffersItem item=new MyOffersItem(ir.item.getItemname(),bitmap,count);
+
+            c.moveToNext();
+            items.add(item);
+        }
+
 
 
 
         return items;
     }
-
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     private void applyLinearLayoutManager() {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);

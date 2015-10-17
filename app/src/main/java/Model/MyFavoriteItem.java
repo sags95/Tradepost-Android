@@ -14,6 +14,7 @@ public class MyFavoriteItem {
     private boolean favoriteStatus;
 ItemResult ir;
 
+
     public ItemResult getIr() {
         return ir;
     }

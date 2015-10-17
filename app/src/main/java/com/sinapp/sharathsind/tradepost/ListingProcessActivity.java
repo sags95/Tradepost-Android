@@ -1,6 +1,5 @@
 package com.sinapp.sharathsind.tradepost;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -9,10 +8,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,13 +23,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -47,19 +41,14 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import Model.CustomEditText;
 import Model.CustomSpinnerAdapter;
 import Model.CustomTextView;
 import Model.LimitedEditText;
 import Model.RegisterWebService;
-import Model.Variables;
-import data.StringVector;
-import datamanager.FileManager;
 import datamanager.userdata;
 import webservices.MainWebService;
 
@@ -95,7 +84,7 @@ public ArrayList<Bitmap>bits;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_process);
         tagFlowLayout = (FlowLayout) findViewById(R.id.section5_tags);
-
+        GCMService.b=true;
         //toolbar
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitle("Post Your Item");
@@ -204,6 +193,30 @@ public ArrayList<Bitmap>bits;
         spinner.setAdapter(adapter);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        GCMService.b=false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GCMService.b=true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GCMService.b=false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GCMService.b=false;
     }
 
     @Override
@@ -468,7 +481,7 @@ i++;
         public void onClick(View v) {
             /*
 
-            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+  gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg                                                                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(pickPhoto , 0);
             */

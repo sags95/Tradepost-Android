@@ -1,5 +1,8 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,7 +22,11 @@ import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyFavoriteAdapter;
 import Model.MyFavoriteItem;
+import Model.MyOffersItem;
 import Model.SwipeableRecyclerViewTouchListener;
+import datamanager.ItemResult;
+import datamanager.userdata;
+import webservices.ItemWebService;
 
 /**
  * Created by HenryChiang on 15-08-11.
@@ -142,21 +149,26 @@ public class MyFavoriteFragment extends Fragment {
 
     public List<MyFavoriteItem> addItem(String title) {
         List<MyFavoriteItem> items = new ArrayList<MyFavoriteItem>();
-        items.add(new MyFavoriteItem(title));
-        items.add(new MyFavoriteItem("User"));
-        items.add(new MyFavoriteItem("Long Long title"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Super Long Item Title"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
-        items.add(new MyFavoriteItem("Very Very Very Long Item Title is Created By Henry"));
+//        SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
+        Cursor c=Constants.db.rawQuery("select * from fav ",null);
+        c.moveToFirst();
+        while(!c.isAfterLast())
+        {
+            int itemid=c.getInt(c.getColumnIndex("itemid"));
+            ItemResult ir= ItemWebService.getItem(itemid);
+            Bitmap bitmap=MyOffersTabTwo.getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/items/" + itemid + "/0.png");
+
+
+            int count=0;
+
+            MyFavoriteItem item=new MyFavoriteItem(ir);
+item.setItemTitle(ir.item.getItemname());
+ item.setItemBitmap(bitmap);
+        items.add(item);
+            c.moveToNext();
+
+        }
+
 
 
 
