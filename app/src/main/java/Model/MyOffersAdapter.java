@@ -24,19 +24,50 @@ import java.util.List;
 public class MyOffersAdapter extends RecyclerView.Adapter<MyOffersAdapter.ViewHolder> {
 
     private List<MyOffersItem> mData;
-    private Context mContext;
+    private View.OnClickListener mItemClick;
 
-    public MyOffersAdapter(List<MyOffersItem> mData, Context mContext) {
+    public MyOffersAdapter(List<MyOffersItem> mData,  View.OnClickListener mItemClick) {
         this.mData = mData;
-        this.mContext = mContext;
+        this.mItemClick = mItemClick;
     }
 
+    public MyOffersAdapter(List<MyOffersItem> mData){
+        this.mData = mData;
+
+    }
     @Override
-    public MyOffersAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.list_item_my_offers_new, viewGroup, false);
-        MyOffersAdapter.ViewHolder vh = new ViewHolder(v);
-        //v.setOnClickListener(mItemClick);
+    public MyOffersAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View v=null;
+        ViewHolder vh;
+        switch (viewType) {
+            case 1:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_my_offers_one_tag, viewGroup, false);
+                v.setOnClickListener(mItemClick);
+                break;
+            case 2:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_my_offers_two_tags, viewGroup, false);
+                v.setOnClickListener(mItemClick);
+                break;
+            case 3:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_my_offers_three_tags, viewGroup, false);
+                v.setOnClickListener(mItemClick);
+                break;
+            case 4:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_my_offers_four_tags, viewGroup, false);
+                v.setOnClickListener(mItemClick);
+                break;
+            case 5:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.list_item_my_offers_five_tags, viewGroup, false);
+                v.setOnClickListener(mItemClick);
+                break;
+        }
+
+        vh = new ViewHolder(v, viewType);
         return vh;
 
     }
@@ -48,87 +79,98 @@ public class MyOffersAdapter extends RecyclerView.Adapter<MyOffersAdapter.ViewHo
         viewHolder.mItemImg.setImageBitmap(mData.get(i).getOffersItemImg());
         viewHolder.mOffersCount.setText(String.valueOf(mData.get(i).getOffersCount()));
 
-        switch (mData.get(i).getOffersCount()){
+        final int viewType=getItemViewType(i);
+
+        switch (viewType) {
             case 1:
-                viewHolder.mFlowLayout.addView(addTags("Hello1"));
+                viewHolder.tag1.setText("Sample".toUpperCase());
                 break;
             case 2:
-                viewHolder.mFlowLayout.addView(addTags("Hello1"));
-                viewHolder.mFlowLayout.addView(addTags("Hello2"));
+                viewHolder.tag1.setText("Sample".toUpperCase());
+                viewHolder.tag2.setText("Sample".toUpperCase());
                 break;
             case 3:
-                viewHolder.mFlowLayout.addView(addTags("Hello1"));
-                viewHolder.mFlowLayout.addView(addTags("Hello2"));
-                viewHolder.mFlowLayout.addView(addTags("Hello3"));
+                viewHolder.tag1.setText("Sample".toUpperCase());
+                viewHolder.tag2.setText("Sample".toUpperCase());
+                viewHolder.tag3.setText("Sample".toUpperCase());
                 break;
-
             case 4:
-                viewHolder.mFlowLayout.addView(addTags("Hello1"));
-                viewHolder.mFlowLayout.addView(addTags("Hello2"));
-                viewHolder.mFlowLayout.addView(addTags("Hello3"));
-                viewHolder.mFlowLayout.addView(addTags("Hello4"));
+                viewHolder.tag1.setText("Sample".toUpperCase());
+                viewHolder.tag2.setText("Sample".toUpperCase());
+                viewHolder.tag3.setText("Sample".toUpperCase());
+                viewHolder.tag4.setText("Sample".toUpperCase());
                 break;
-
             case 5:
-                viewHolder.mFlowLayout.addView(addTags("Hello1"));
-                viewHolder.mFlowLayout.addView(addTags("Hello2"));
-                viewHolder.mFlowLayout.addView(addTags("Hello3"));
-                viewHolder.mFlowLayout.addView(addTags("Hello4"));
-                viewHolder.mFlowLayout.addView(addTags("Hello5"));
+                viewHolder.tag1.setText("Sample".toUpperCase());
+                viewHolder.tag2.setText("Sample".toUpperCase());
+                viewHolder.tag3.setText("Sample".toUpperCase());
+                viewHolder.tag4.setText("Sample".toUpperCase());
+                viewHolder.tag5.setText("Sample".toUpperCase());
                 break;
-
-
         }
 
 
-
-
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(mData==null){
+            return 0;
+        }else {
+            return mData.get(position).getOffersCount();
+        }
+    }
+
 
     @Override
     public int getItemCount() {
         return mData != null ? mData.size() : 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public CustomTextView mItemTitle, mOffersCount;
         public ImageView mItemImg;
         public FlowLayout mFlowLayout;
+        public CustomTextView tag1, tag2, tag3, tag4, tag5;
 
-        public ViewHolder(View itemView) {
+
+        public ViewHolder(View itemView, int viewType) {
             super(itemView);
             mItemTitle = (CustomTextView) itemView.findViewById(R.id.myOffers_itemTitle);
             mItemImg = (ImageView) itemView.findViewById(R.id.myOffers_itemImg);
             mOffersCount = (CustomTextView) itemView.findViewById(R.id.myOffers_offersCount);
-            mFlowLayout=(FlowLayout)itemView.findViewById(R.id.myOffers_flowLayout);
+            mFlowLayout = (FlowLayout) itemView.findViewById(R.id.myOffers_flowLayout);
 
+            switch (viewType) {
+                case 1:
+                    tag1 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag1);
+                    break;
+                case 2:
+                    tag1 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag1);
+                    tag2 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag2);
+                    break;
+                case 3:
+                    tag1 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag1);
+                    tag2 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag2);
+                    tag3 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag3);
+                    break;
+                case 4:
+                    tag1 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag1);
+                    tag2 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag2);
+                    tag3 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag3);
+                    tag4 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag4);
+                    break;
+                case 5:
+                    tag1 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag1);
+                    tag2 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag2);
+                    tag3 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag3);
+                    tag4 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag4);
+                    tag5 = (CustomTextView) itemView.findViewById(R.id.myOffers_tag5);
+                    break;
+
+
+            }
         }
     }
-
-    private CustomTextView addTags(String tag){
-
-        CustomTextView newTag = new CustomTextView(mContext);
-        newTag.setText(tag.toUpperCase());
-        newTag.setTextColor(mContext.getResources().getColor(R.color.white));
-        newTag.setTextSize(10f);
-        newTag.setClickable(true);
-        newTag.settingOpenSansLight();
-        newTag.setBackgroundResource(R.drawable.tag_btn_shape);
-        newTag.setPadding(DpToPx(4),DpToPx(4),DpToPx(4),DpToPx(4));
-        FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, 0, DpToPx(8),DpToPx(4));
-
-        newTag.setLayoutParams(lp);
-
-        return newTag;
-    }
-
-    private int DpToPx(int requireDp ){
-        float d = mContext.getResources().getDisplayMetrics().density;
-        return (int)(requireDp * d); // margin in pixels
-
-    }
-
-
 }

@@ -12,6 +12,7 @@ public class MyOffersItem {
     private Bitmap offersItemImg;
     private int offersCount;
 
+
     public MyOffersItem(String offersItemTitle,Bitmap offersItemImg, int offersCount){
         this.offersItemTitle = offersItemTitle;
         this.offersItemImg = offersItemImg;

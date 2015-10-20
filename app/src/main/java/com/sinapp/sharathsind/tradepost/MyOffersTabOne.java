@@ -2,16 +2,20 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +45,23 @@ public class MyOffersTabOne extends Fragment {
     private CustomLinearLayoutManager mLayoutManager;
     private BitmapFactory.Options options;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private static View.OnClickListener mItemClick;
+
+
+    public MyOffersTabOne(){
+
+    }
+    public MyOffersTabOne(View.OnClickListener mItemClick){
+
+    }
+
+    public static MyOffersTabOne newInstance(View.OnClickListener mItemClick) {
+        MyOffersTabOne.mItemClick=mItemClick;
+        MyOffersTabOne f = new MyOffersTabOne();
+        return f;
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,7 +108,7 @@ public class MyOffersTabOne extends Fragment {
 
 
 
-        mMyOffersAdapter = new MyOffersAdapter(myOffersItems, getActivity().getApplicationContext());
+        mMyOffersAdapter = new MyOffersAdapter(myOffersItems,mItemClick);
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
