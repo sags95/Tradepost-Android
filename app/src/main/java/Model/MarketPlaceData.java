@@ -230,6 +230,7 @@ public class MarketPlaceData implements Serializable {
 
 
     public static String strSeparator = "__,__";
+
     public static String convertArrayToString(String[] array){
         String str = "";
         for (int i = 0;i<array.length; i++) {

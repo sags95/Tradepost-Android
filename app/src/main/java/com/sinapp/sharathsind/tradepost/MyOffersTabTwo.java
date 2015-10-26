@@ -43,6 +43,15 @@ public class MyOffersTabTwo extends Fragment {
     private android.support.v7.widget.LinearLayoutManager mLayoutManager;
     private BitmapFactory.Options options;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private static View.OnClickListener mItemClick;
+
+
+
+    public static MyOffersTabTwo newInstance(View.OnClickListener mItemClick) {
+        MyOffersTabTwo.mItemClick=mItemClick;
+        MyOffersTabTwo f = new MyOffersTabTwo();
+        return f;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,7 +101,7 @@ public class MyOffersTabTwo extends Fragment {
                         1);
         */
         final List<MyOffersItem> myOffersItems = addItem();
-        mMyOffersAdapter = new MyOffersAdapter(myOffersItems,getActivity().getApplicationContext());
+        mMyOffersAdapter = new MyOffersAdapter(myOffersItems);
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
