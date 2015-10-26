@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -283,6 +285,13 @@ String result;
                     SoapPrimitive r= RegisterWebService.sendDataToServer(title,description,tagarray,bits.toArray(),i, userdata.userid,cat);
                     result=r.getValue().toString();
                     int i=0;
+                 if(bits.size()==0)
+                 {
+                     Drawable myDrawable = getResources().getDrawable(R.drawable.sample_img, getTheme());
+                     Bitmap myLogo = ((BitmapDrawable) myDrawable).getBitmap();
+                     bits.add(myLogo);
+                 }
+
  for(Bitmap b:bits)
  {
      ByteArrayOutputStream stream = new ByteArrayOutputStream();
