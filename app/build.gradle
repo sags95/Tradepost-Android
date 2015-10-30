@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.sinapp.sharathsind.tradepost"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
 
@@ -28,11 +28,11 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:design:22.2.1'
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:design:23.0.1'
+
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.android.support:cardview-v7:23.0.1'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'org.apmem.tools:layouts:1.9@aar'
     compile 'de.hdodenhof:circleimageview:1.3.0'
@@ -42,4 +42,6 @@ dependencies {
     compile 'com.wefika:flowlayout:0.4.0'
     compile project(':facebook')
     compile 'com.google.android.gms:play-services:7.5+'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+
 }

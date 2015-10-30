@@ -1,5 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -7,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
@@ -20,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.Spanned;
@@ -43,6 +47,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -55,8 +62,10 @@ import Model.CustomCheckBox;
 import Model.CustomEditText;
 import Model.CustomTextView;
 import Model.MessageAdapter;
+import Model.Variables;
 import data.MessageClass;
 import datamanager.userdata;
+import webservices.MainWebService;
 
 /**
  * Created by HenryChiang on 15-05-26.
@@ -88,18 +97,42 @@ public class ChatFragment extends Activity {
     private AlertDialog dialog;
     private CustomCheckBox blockUser;
     ListView lv;
-    public static int offerid;
+    public static int offerid,userid;
     public  static Intent intent;
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_chat);
-
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
         Intent i=getIntent();
         intent=i;
         offerid=i.getIntExtra("offerid",0);
+        userid=i.getIntExtra("userid",0);
         setadapter(false);
         IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
         MessageReceiver m=new MessageReceiver();
@@ -189,6 +222,10 @@ public class ChatFragment extends Activity {
                             case R.id.item_cancel:
                                 showCancelDealDialog();
                                 // Toast.makeText(getActivity().getApplicationContext(), "cancel Clicked", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.item_finalize:
+
+
                                 return true;
                         }
                         return false;
@@ -317,20 +354,29 @@ setadapter(true);
 
     public Bitmap grabImage()
     {
-        this.getContentResolver().notifyChange(mImageUri, null);
-        ContentResolver cr = this.getContentResolver();
-        Bitmap bitmap=null;
-        try
-        {
-            bitmap = getResizedBitmap(android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri),960,720);
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
-            Log.d("cam", "Failed to load", e);
-        }
+        Uri selectedImageUri = mImageUri;
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
 
-        return bitmap;
+        String selectedImagePath = cursor.getString(column_index);
+
+        Bitmap bm;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(selectedImagePath, options);
+        final int REQUIRED_SIZE = 200;
+        int scale = 1;
+        while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+            scale *= 2;
+        options.inSampleSize = scale;
+        options.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(selectedImagePath, options);
+
+
+        return bm;
     }
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
@@ -371,7 +417,6 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
     }
     c1.close();
     db.close();
-
     if(b) {
 
         m.m=c;
@@ -495,7 +540,21 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
         @Override
         public void onClick(DialogInterface dialog, int which) {
             Log.d("BLOCK", blockUser.isChecked() ? "yes":"no");
+            SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
+            Cursor       c=Constants.db.rawQuery("select * from login", null);
+            c.moveToFirst();
 
+            //Variables.email=c.getString(c.getColumnIndex("email"));
+            Variables.username=c.getString(c.getColumnIndex("username"));
+            SoapObject obje=new SoapObject("http://webser/", "sendOfferDeclined");
+            obje.addProperty("msg",Variables.username+" has cancelled your offer");
+            obje.addProperty("offerid",offerid);
+            obje.addProperty("userid",userid);
+            obje.addProperty("username", Variables.username);
+            SoapPrimitive soapPrimitive1= MainWebService.getretryMsg(obje, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferDeclineRequest", 0);
+            db.execSQL("update offers set status =2 where offerid ="+offerid);
+            db.close();
+            finish();
         }
 
     };

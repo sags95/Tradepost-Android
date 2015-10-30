@@ -34,7 +34,7 @@ public class OfferProcessActivity extends AppCompatActivity implements OfferProc
 
 public static  int userid,itemid;
     public  static String iteamname;
-
+public static Bitmap bit;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

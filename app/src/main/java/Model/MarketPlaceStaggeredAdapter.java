@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -125,6 +127,7 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
         // each data item is just a string in this case
         public CustomTextView mTextViewItemTitle, mItemDateAdded;
         public ImageView mImageViewItemImg;
+        public ImageButton im;
         public ImageView mImageViewProPic;
         public FlowLayout mTagFlowLayout;
         public CustomTextView tag1,tag2,tag3,tag4,tag5;
@@ -133,6 +136,8 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
+
+            im = (ImageButton) itemView.findViewById(R.id.image_like_btn);
             switch (viewType){
                 case 1:
                     mImageViewProPic = (ImageView) itemView.findViewById(R.id.pro_img);
@@ -207,6 +212,18 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
                     .into(mImageViewItemImg);
 
             //date
+            if(data.isFav)
+                im.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_favorite_selected));
+
+            im.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(data.isFav)
+                        im.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_favorite_not_selected));
+                    else
+                        im.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_favorite_selected));
+                }
+            });
             mItemDateAdded.setText(daysOffset);
 
             //item title

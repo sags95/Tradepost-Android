@@ -15,7 +15,13 @@ public class OffersViewPagerAdapter extends FragmentStatePagerAdapter {
     Fragment tab1;
     Fragment tab2;
     private View.OnClickListener mItemClick;
-
+    public OffersViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb, Fragment tab1, Fragment tab2) {
+        super(fm);
+        this.Titles = mTitles;
+        this.NumbOfTabs = mNumbOfTabsumb;
+        this.tab1=tab1;
+        this.tab2=tab2;
+    }
 
     // Build a Constructor and assign the passed Values to appropriate values in the class
     public OffersViewPagerAdapter(FragmentManager fm,CharSequence mTitles[], int mNumbOfTabsumb, Fragment tab1, Fragment tab2, View.OnClickListener mItemClick) {

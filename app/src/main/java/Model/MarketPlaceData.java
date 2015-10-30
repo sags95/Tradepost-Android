@@ -51,7 +51,7 @@ public class MarketPlaceData implements Serializable {
     private static SoapObject obje;
     private static Vector result;
     private static ArrayList<MarketPlaceData> datas = new ArrayList<MarketPlaceData>();
-
+public  boolean isFav;
     public static String[] columns = new String[]{ "itemid", "itemtitle", "itemdescription","itemcondition","itemcategory","itemtags","itemdate","itemlatitude","itemlongitude","itemusername","itemimages","userid"};
 
 

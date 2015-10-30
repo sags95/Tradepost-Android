@@ -61,7 +61,7 @@ public class ItemWebService {
     {
         SoapObject object = new SoapObject("http://webser/", "getuseritems");
         //SoapObject object = new SoapObject("http://webser/", "getuseritems");
-        object.addProperty("userid",  userdata.userid);
+        object.addProperty("userid",  userid);
         Vector object1 = MainWebService.getMsg1(object,"http://73.37.238.238:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
         ArrayList items=new ArrayList<Integer>();
 

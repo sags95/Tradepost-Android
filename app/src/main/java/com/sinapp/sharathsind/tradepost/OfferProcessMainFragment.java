@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,9 +29,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import Model.CustomButton;
@@ -179,9 +182,10 @@ ITEMID.add(offerProcessItems.get(i).itemid);
         super.onActivityResult(requestCode,resultCode,data);
         if (resultCode == Activity.RESULT_OK) {
             if(requestCode ==0){
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                newItemImg.setImageBitmap(imageBitmap);
+                Bitmap thumbnail = grabImage();
+
+                newItemImg.setImageBitmap(thumbnail);
+                OfferProcessActivity.bit=thumbnail;
                   b=true;
 
             }else if(requestCode == 1){
@@ -206,6 +210,7 @@ ITEMID.add(offerProcessItems.get(i).itemid);
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
                 newItemImg.setImageBitmap(bm);
+                OfferProcessActivity.bit=bm;
             b=true;
             }
         }
@@ -246,7 +251,7 @@ ITEMID.add(offerProcessItems.get(i).itemid);
 
 
             OfferWebService of=new OfferWebService();
-        of.sendOffer(itemid, userdata.userid,OfferProcessActivity.userid,OfferProcessActivity.itemid,cash,img,OfferProcessActivity.iteamname,itemA);
+        of.sendOffer(itemid, userdata.userid, OfferProcessActivity.userid, OfferProcessActivity.itemid, cash, img, OfferProcessActivity.iteamname, itemA);
     }
 
     public View.OnClickListener addCashBtnListener = new View.OnClickListener() {
@@ -268,11 +273,63 @@ ITEMID.add(offerProcessItems.get(i).itemid);
 
         }
     };
+    private File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= Environment.getExternalStorageDirectory();
+        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
+        if(!tempDir.exists())
+        {
+            tempDir.mkdir();
+        }
+        return File.createTempFile(part, ext, tempDir);
+    }
+Uri mImageUri;
+    public Bitmap grabImage()
+    {
+        Uri selectedImageUri = mImageUri;
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(selectedImageUri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+
+        String selectedImagePath = cursor.getString(column_index);
+
+        Bitmap bm;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(selectedImagePath, options);
+        final int REQUIRED_SIZE = 200;
+        int scale = 1;
+        while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+            scale *= 2;
+        options.inSampleSize = scale;
+        options.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(selectedImagePath, options);
+
+
+        return bm;
+    }
+
 
     public View.OnClickListener camBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            File photo=null;
+            try {
+                // place where to store camera taken picture
+                photo = createTemporaryFile("temp", ".jpg");
+                photo.delete();
+            } catch (Exception e) {
+                Log.v("camera", "Can't create file to take picture!");
+            //Toast.makeText(getApplicationContext(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT);
+            }
+            mImageUri = Uri.fromFile(photo);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+            //start camera intent
+
             if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, 0);
             }

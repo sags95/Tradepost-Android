@@ -57,7 +57,7 @@ if(soapPrimitive!=null) {
             AppInviteDialog.show(a, content);
         }
     }
-    public static int[] removefavouInts()
+    public static int[] removefavouInts( int itemid)
     {
         SoapObject s=new SoapObject("http://webser/","remove");
         s.addProperty("userid", userdata.userid);
@@ -67,6 +67,11 @@ if(soapPrimitive!=null) {
 
 
         return null;
+    }
+    public static void  add(int itemid)
+    {
+
+
     }
 
 

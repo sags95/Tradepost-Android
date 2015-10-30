@@ -55,12 +55,12 @@ import Model.NavigationDrawerCallbacks;
 
 public class NavigationDrawer extends AppCompatActivity
         implements NavigationDrawerCallbacks, MarketPlaceFragment.TempMarketPlaceDataCallBack{
-    public enum num{chat,individualcha,notification};
+//    public enum num{chat,individualcha,notification};
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-public static num e;
+public static int e;
     boolean doubleBackToExitPressedOnce = false;
     FrameLayout mFrameLayoutContainer, mFrameLayoutRight;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -351,7 +351,7 @@ public static num e;
     }
 
     public void chatPageFragmentHandling() {
-        e=num.chat;
+        e=0;
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             openChatPageFragment(chatPageFrag);
@@ -372,7 +372,7 @@ public static num e;
     }
 
     public void notificationFragmentHandling(){
-        e=num.notification;
+        e=1;
         if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
             mDrawerLayout.closeDrawer(Gravity.LEFT);
             openNotificationFragment(notiFrag);

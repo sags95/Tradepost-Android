@@ -1,5 +1,6 @@
 package Model;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.List;
 public class MyFavoriteAdapter extends RecyclerView.Adapter<MyFavoriteAdapter.ViewHolder> {
 
     private List<MyFavoriteItem> mData;
+    public Activity a;
 
     public MyFavoriteAdapter(List<MyFavoriteItem> mData) {
         this.mData = mData;

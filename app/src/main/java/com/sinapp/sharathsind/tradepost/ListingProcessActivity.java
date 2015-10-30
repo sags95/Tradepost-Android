@@ -1,7 +1,10 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
@@ -15,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -246,16 +250,57 @@ String result;
                 final String title=tv.getText().toString();
                 final String description=desc.getText().toString();
                 final String cat=spinner.getSelectedItem().toString();
-                pg=ProgressDialog.show(ListingProcessActivity.this,"Please Wait","adding",false,false);
-                pg.setCancelable(false);
-                pg.setMessage("please wait..");
+
 //pg.show();
                new AsyncTask<String,String,String>()
                 {
+                   boolean cancel;
+                   @Override
+                   protected void onPreExecute() {
+                       super.onPreExecute();
+                       if(title==null||title.trim().length()<=0)
+                       {
+                           new AlertDialog.Builder(ListingProcessActivity.this)
+                                   .setTitle("Error")
+                                   .setMessage("item title cannot be empty")
+                                   .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                       public void onClick(DialogInterface dialog, int which) {
+                                           // continue with delete
+                                       }
+                                   })
+
+                                   .setIcon(android.R.drawable.ic_dialog_alert)
+                                   .show();
+                           cancel=true;
+                           return;
+                       }
+                       if( getAllTagNames(tagFlowLayout).size()>=0)
+                       {
+                           new AlertDialog.Builder(ListingProcessActivity.this)
+                                   .setTitle("Error")
+                                   .setMessage("Please create atleast one tag")
+                                   .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                       public void onClick(DialogInterface dialog, int which) {
+                                           // continue with delete
+                                       }
+                                   })
+
+                                   .setIcon(android.R.drawable.ic_dialog_alert)
+                                   .show();
+                           cancel=true;
+                       }
+                       else {
+                           pg=ProgressDialog.show(ListingProcessActivity.this,"Please Wait","adding",false,false);
+                           pg.setCancelable(false);
+                           pg.setMessage("please wait..");
+                       }
+                   }
 
                    @Override
                    protected void onPostExecute(String s) {
                        super.onPostExecute(s);
+                       if(cancel)
+                           return;
                        pg.dismiss();
                        Intent i = new Intent(getApplicationContext(),ListingProcessDoneActivity.class);
                        if(s.equals("success")){
@@ -272,6 +317,8 @@ String result;
 
                    @Override
                     protected String doInBackground(String... voids) {
+                       if(cancel)
+                           return null;
                 try {
                     tags=getAllTagNames(tagFlowLayout);
                     String[] tagarray = new String[tags.size()];
@@ -287,7 +334,7 @@ String result;
                     int i=0;
                  if(bits.size()==0)
                  {
-                     Drawable myDrawable = getResources().getDrawable(R.drawable.sample_img, getTheme());
+                     Drawable myDrawable = ContextCompat.getDrawable(ListingProcessActivity.this, R.drawable.sample_img);
                      Bitmap myLogo = ((BitmapDrawable) myDrawable).getBitmap();
                      bits.add(myLogo);
                  }
@@ -314,7 +361,7 @@ i++;
                 }
 
                    }
-                }.execute(null,null);
+                }.execute(null, null);
         //        a.execute(" ","","");
        //         break;
             }
@@ -468,20 +515,29 @@ i++;
 
     public Bitmap grabImage()
     {
-        this.getContentResolver().notifyChange(mImageUri, null);
-        ContentResolver cr = this.getContentResolver();
-        Bitmap bitmap=null;
-        try
-        {
-            bitmap = getResizedBitmap(android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri),960,720);
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
-            Log.d("cam", "Failed to load", e);
-        }
+        Uri selectedImageUri = mImageUri;
+        String[] projection = { MediaStore.MediaColumns.DATA };
+        Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
 
-        return bitmap;
+        String selectedImagePath = cursor.getString(column_index);
+
+        Bitmap bm;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(selectedImagePath, options);
+        final int REQUIRED_SIZE = 200;
+        int scale = 1;
+        while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+            scale *= 2;
+        options.inSampleSize = scale;
+        options.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(selectedImagePath, options);
+        setImage(bm);
+
+        return bm;
     }
 
 
