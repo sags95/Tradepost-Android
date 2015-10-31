@@ -37,13 +37,12 @@
                 android:id="@+id/image_like_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/favorite_effect"
                 android:paddingTop="8dp"
                 android:paddingRight="8dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:clickable="true"
-                android:background="@null"
+                android:background="@drawable/ic_favorite_not_selected"
                 />
 
             <de.hdodenhof.circleimageview.CircleImageView

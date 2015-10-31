@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         GCMService.b=true;
-     ProFileItemForTradeFragment pf  = new ProFileItemForTradeFragment();
+        ProFileItemForTradeFragment pf  = new ProFileItemForTradeFragment();
         ArrayList<String> profileClicked = getIntent().getStringArrayListExtra("profileDetails");
         profilePic = (CircleImageView)findViewById(R.id.profile_userImg_placeholder);
         profileUsername = (CustomTextView)findViewById(R.id.profile_username_placeholder);

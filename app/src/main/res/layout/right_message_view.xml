@@ -16,7 +16,6 @@
         android:textSize="14sp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="hello i am using the tradpost to offer item and exchange hing cool"
         android:textColor="@color/white"
         android:background="@drawable/right_message_background"
         style="@style/OpenSansRegular"
