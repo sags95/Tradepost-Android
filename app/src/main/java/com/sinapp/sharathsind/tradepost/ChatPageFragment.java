@@ -32,6 +32,7 @@ import Model.ChatPageItem;
 import Model.CustomLinearLayoutManager;
 import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
+import Model.RecyclerViewOnClickListener;
 import Model.SimpleSectionedRecyclerViewAdapter;
 import Model.SwipeableRecyclerViewTouchListener;
 import datamanager.userdata;
@@ -62,7 +63,7 @@ public class ChatPageFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_chatpage, container, false);
         emptyView = rootView.findViewById(R.id.chatpage_emptyView);
-      //  chatFrag = new ChatFragment();
+        //  chatFrag = new ChatFragment();
 
         //SwipeToRefresh
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.chatpage_swipe_refresh_layout);
@@ -70,7 +71,7 @@ public class ChatPageFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                 Log.d("SwipeToRefresh", "Refreshing");
+                Log.d("SwipeToRefresh", "Refreshing");
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -80,7 +81,7 @@ public class ChatPageFragment extends Fragment {
 
         final List<ChatPageItem> chatItem = addItem();
 
-        mChatPageAdapter = new ChatPageAdapter(chatItem,ItemClickListener);
+//        mChatPageAdapter = new ChatPageAdapter(chatItem,ItemClickListener);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
@@ -122,18 +123,18 @@ public class ChatPageFragment extends Fragment {
         });
 
 
-        /*
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.container_right, chatFrag);
-                        transaction.commit();
+                        Intent i=new Intent(getActivity(),ChatFragment.class);
+                        i.putExtra("offerid", offers.get(position));
+                        startActivity(i);
+
                     }
                 })
         );
-        */
+
         //mRecyclerView.setAdapter(mSectionedAdapter);
 
 
@@ -185,29 +186,30 @@ public class ChatPageFragment extends Fragment {
             return null;
         }
     }
-
+    ArrayList<Integer>offers;
     public List<ChatPageItem> addItem() {
         List<ChatPageItem> items = new ArrayList<ChatPageItem>();
         SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
         Cursor cv=db.rawQuery("select * from offers where status=1",null);
-        if(cv.getCount()>0){
-        cv.moveToFirst();
-        while(!cv.isAfterLast()) {
-            int userid = cv.getInt(cv.getColumnIndex("recieveduserid"));
-            int ruserid = cv.getInt(cv.getColumnIndex("userid"));
-            int itemid = cv.getInt(cv.getColumnIndex("Itemid"));
-            int getuser = userdata.userid != userid ? userid : ruserid;
-            int offerid=cv.getInt(cv.getColumnIndex("Offerid"));
-            SoapObject o = new SoapObject("http://webser/", "getItemnameU");
-            o.addProperty("userid",userid);
-            o.addProperty("itemid",itemid);
-            SoapPrimitive s = MainWebService.getretryMsg(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest", 0);
+        offers=new ArrayList<>();        if(cv.getCount()>0){
+            cv.moveToFirst();
+            while(!cv.isAfterLast()) {
+                int userid = cv.getInt(cv.getColumnIndex("recieveduserid"));
+                int ruserid = cv.getInt(cv.getColumnIndex("userid"));
+                int itemid = cv.getInt(cv.getColumnIndex("Itemid"));
+                int getuser = userdata.userid != userid ? userid : ruserid;
+                int offerid=cv.getInt(cv.getColumnIndex("Offerid"));
+                offers.add(offerid);
+                SoapObject o = new SoapObject("http://webser/", "getItemnameU");
+                o.addProperty("userid",userid);
+                o.addProperty("itemid",itemid);
+                SoapPrimitive s = MainWebService.getretryMsg(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest", 0);
 //            String username = s.getValue().toString().split("/,")[0].replace("username:", " ");
 //            String itemname = s.getValue().toString().split("/,")[1].replace("itemname:", " ");
-            Drawable d = new BitmapDrawable(getResources(), getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png"));
-            items.add(new ChatPageItem("", "", d,offerid));
- cv.moveToNext();
-        }
+                Drawable d = new BitmapDrawable(getResources(), getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png"));
+                items.add(new ChatPageItem("", "", d,offerid));
+                cv.moveToNext();
+            }
         }
         cv.close();
         db.close();
@@ -218,18 +220,7 @@ public class ChatPageFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-    public View.OnClickListener ItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int offerid=Integer.parseInt(v.getTag().toString());
 
-
-            Intent i=new Intent(getActivity(),ChatFragment.class);
-            i.putExtra("offerid",offerid);
-            startActivity(i);
-
-        }
-    };
 
     @Override
     public void onResume() {

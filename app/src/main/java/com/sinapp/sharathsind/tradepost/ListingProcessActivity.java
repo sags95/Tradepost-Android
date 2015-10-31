@@ -47,6 +47,8 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -513,20 +515,16 @@ i++;
         return File.createTempFile(part, ext, tempDir);
     }
 
-    public Bitmap grabImage()
-    {
-        Uri selectedImageUri = mImageUri;
-        String[] projection = { MediaStore.MediaColumns.DATA };
-        Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        cursor.moveToFirst();
+    public Bitmap grabImage() {
+        this.getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = this.getContentResolver();
 
-        String selectedImagePath = cursor.getString(column_index);
 
         Bitmap bm;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(selectedImagePath, options);
+      //  android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+        BitmapFactory.decodeFile(mImageUri.getPath(), options);
         final int REQUIRED_SIZE = 200;
         int scale = 1;
         while (options.outWidth / scale / 2 >= REQUIRED_SIZE
@@ -534,8 +532,8 @@ i++;
             scale *= 2;
         options.inSampleSize = scale;
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(selectedImagePath, options);
-        setImage(bm);
+        bm =          BitmapFactory.decodeFile(mImageUri.getPath(), options);;
+      //  setImage(bm);
 
         return bm;
     }

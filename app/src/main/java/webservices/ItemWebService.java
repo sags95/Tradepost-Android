@@ -76,6 +76,10 @@ public class ItemWebService {
     }
     public void deleteItem(int i)
     {
+        SoapObject obje = new SoapObject("http://webser/", "getItembyId");
+        obje.addProperty("itemid", i);
+        KvmSerializable result1 = MainWebService.getMsg2(obje, "http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
+                , "http://webser/GetItems/getItembyIdRequest");
 
     }
 }

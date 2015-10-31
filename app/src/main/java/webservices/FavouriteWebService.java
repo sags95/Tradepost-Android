@@ -60,16 +60,26 @@ if(soapPrimitive!=null) {
     public static int[] removefavouInts( int itemid)
     {
         SoapObject s=new SoapObject("http://webser/","remove");
-        s.addProperty("userid", userdata.userid);
+        s.addProperty("d", itemid);
 
         SoapPrimitive soapPrimitive = MainWebService.getMsg(s, "http://73.37.238.238:8084/TDserverWeb/WebSericeFavourites?wsdl", "http://webser/WebSericeFavourites/removeRequest");
-
+        Constants.db.execSQL("delete from fav where id="+itemid
+        );
 
 
         return null;
     }
     public static void  add(int itemid)
     {
+        SoapObject s=new SoapObject("http://webser/","addFav");
+        s.addProperty("userid", userdata.userid);
+        s.addProperty("item",itemid);
+
+        SoapPrimitive soapPrimitive = MainWebService.getMsg(s, "http://73.37.238.238:8084/TDserverWeb/WebSericeFavourites?wsdl", "http://webser/WebSericeFavourites/removeRequest");
+        ContentValues cv=new ContentValues();
+        cv.put("id",Integer.parseInt(soapPrimitive.toString()));
+        cv.put("itemid", itemid);
+        Constants.db.insert("fav", null, cv);
 
 
     }

@@ -354,18 +354,13 @@ setadapter(true);
 
     public Bitmap grabImage()
     {
-        Uri selectedImageUri = mImageUri;
-        String[] projection = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        cursor.moveToFirst();
-
-        String selectedImagePath = cursor.getString(column_index);
+        this.getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = this.getContentResolver();
 
         Bitmap bm;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(selectedImagePath, options);
+        BitmapFactory.decodeFile(mImageUri.getPath(), options);
         final int REQUIRED_SIZE = 200;
         int scale = 1;
         while (options.outWidth / scale / 2 >= REQUIRED_SIZE
@@ -373,7 +368,7 @@ setadapter(true);
             scale *= 2;
         options.inSampleSize = scale;
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(selectedImagePath, options);
+        bm = BitmapFactory.decodeFile(mImageUri.getPath(), options);
 
 
         return bm;
