@@ -28,7 +28,6 @@
         android:id="@+id/Left_msg"
         android:textSize="14sp"
         android:layout_gravity="left"
-        android:text="helloi am using the tradpost to offer item and exchange hing cool"
         android:textColor="@color/text_color"
         android:background="@drawable/left_message_background"
         style="@style/OpenSansRegular"

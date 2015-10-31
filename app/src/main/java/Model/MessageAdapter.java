@@ -67,14 +67,13 @@ public class MessageAdapter extends BaseAdapter{
             v1=(ImageView)v.findViewById(R.id.image_msg);
             if(m1.msgpath!=null&&m1.msgpath.length()>0)
             {
-v2.setVisibility(View.GONE);
- v1.setVisibility(View.VISIBLE);
+                v2.setVisibility(View.GONE);
+                v1.setVisibility(View.VISIBLE);
                 Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+m1.msgpath);
                 Picasso.with(b)
                         .load(url1)
-                        .placeholder(R.drawable.sample_img3)
                         .into(v1);
-          //v1.setImageBitmap(m1.getPicmsg());
+                //v1.setImageBitmap(m1.getPicmsg());
 
 
             }
@@ -97,7 +96,6 @@ v2.setVisibility(View.GONE);
                 Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+m1.msgpath);
                 Picasso.with(b)
                         .load(url1)
-                        .placeholder(R.drawable.sample_img3)
                         .into(v1);
 
             }
