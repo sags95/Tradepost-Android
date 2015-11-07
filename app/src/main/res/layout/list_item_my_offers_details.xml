@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/myOffers_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardBackgroundColor="@color/white"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardUseCompatPadding="true"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:focusable="true"
+    android:clickable="true">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="4dp"
+        android:background="?android:attr/selectableItemBackground"
+        >
+
+        <ImageView
+            android:id="@+id/myOffers_details_itemImg"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/sample_img2"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/myOffers_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@id/myOffers_details_itemImg"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/myOffers_details_profileImg"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/sample_img2"
+                android:scaleType="centerCrop"
+                app:border_width="2dp"
+                app:border_color="@color/darkgrey"
+
+                />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="16dp">
+
+                <TextView
+                    android:id="@+id/myOffers_details_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Username"
+                    android:textSize="16sp"
+                    />
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OFFER: "
+                        android:textSize="12sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/myOffers_details_itemTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="An Item"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ColorPrimary"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EXTRA: "
+                        android:textSize="12sp"
+                        />
+
+                    <TextView
+                        android:id="@+id/myOffers_details_cash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$20 CAD"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/ColorPrimary"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+        <Model.CustomTextView
+            android:id="@+id/myOffers_details_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PENDING"
+            style="@style/OpenSansBold"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

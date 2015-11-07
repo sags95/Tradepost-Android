@@ -67,8 +67,9 @@ public class MyItemsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_my_items, container, false);
         emptyView = rootView.findViewById(R.id.myItems_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.myItems_recyclerview);
-userdata.i=new ArrayList<>();
-     ArrayList<Integer> i1= ItemWebService.getItems(Constants.userid);
+
+        userdata.i=new ArrayList<>();
+        ArrayList<Integer> i1= ItemWebService.getItems(Constants.userid);
         for(Integer i:i1)
         userdata.i.add(ItemWebService.getItem(i));
 
