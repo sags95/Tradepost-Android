@@ -2,10 +2,12 @@ package Model;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.sinapp.sharathsind.tradepost.Constants;
 import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
 import com.sinapp.sharathsind.tradepost.SingleListingActivity;
@@ -37,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import datamanager.MyVolleySingleton;
+import webservices.FavouriteWebService;
 
 /**
  * Created by HenryChiang on 15-06-10.
@@ -200,7 +204,7 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
 
 
         }
-
+static boolean unfav,fav;
         public void bind(final MarketPlaceData data, int viewType, String daysOffset) {
 
 
@@ -218,10 +222,73 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(data.isFav)
-                        im.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_favorite_not_selected));
-                    else
-                        im.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_favorite_selected));
+                    if(data.isFav) {
+                 //   view.setEnabled(false);
+                       new AsyncTask<Void,Void,Void>()
+                       {
+                           @Override
+                           protected void onPostExecute(Void aVoid) {
+
+                               super.onPostExecute(aVoid);
+                               data.isFav=false;
+                               im.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_favorite_not_selected));
+
+                           }
+
+                           @Override
+                           protected Void doInBackground(Void... params) {
+                               Cursor c=Constants.db.rawQuery("select * from fav where itemid="+data.item.item.getItemid(),null);
+                               c.moveToFirst();
+                               FavouriteWebService.removefavouInts(c.getInt(c.getColumnIndex("id")));
+                               return null;
+                           }
+                       }.execute(null,null);
+                    }
+                    else {
+                   //     view.setEnabled(false);
+
+                        new AsyncTask<Void,Void,Void>()
+                        {
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+
+                                super.onPostExecute(aVoid);
+                                data.isFav=true;
+                                im.setBackground(ContextCompat.getDrawable(context, R.drawable.ic_favorite_selected));
+
+                            }
+
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                FavouriteWebService.add(data.item.item.getItemid());
+                                return null;
+                            }
+                        }.execute(null, null);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    }
                 }
             });
             mItemDateAdded.setText(daysOffset);

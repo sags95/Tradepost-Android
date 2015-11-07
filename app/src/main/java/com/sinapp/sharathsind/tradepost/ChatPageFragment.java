@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
@@ -81,7 +82,7 @@ public class ChatPageFragment extends Fragment {
 
         final List<ChatPageItem> chatItem = addItem();
 
-//        mChatPageAdapter = new ChatPageAdapter(chatItem,ItemClickListener);
+        mChatPageAdapter = new ChatPageAdapter(this.getContext(),chatItem);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
@@ -128,7 +129,9 @@ public class ChatPageFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent i=new Intent(getActivity(),ChatFragment.class);
-                        i.putExtra("offerid", offers.get(position));
+                        i.putExtra("offerid", offers.get(position));    i.putExtra("userid", userid.get(position));    i.putExtra("username", usernames.get(position));
+
+
                         startActivity(i);
 
                     }
@@ -187,10 +190,14 @@ public class ChatPageFragment extends Fragment {
         }
     }
     ArrayList<Integer>offers;
+    ArrayList<Integer>userid;
+    ArrayList<String>usernames;
     public List<ChatPageItem> addItem() {
         List<ChatPageItem> items = new ArrayList<ChatPageItem>();
         SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
         Cursor cv=db.rawQuery("select * from offers where status=1",null);
+        userid=new ArrayList<>();
+        usernames=new ArrayList<>();
         offers=new ArrayList<>();        if(cv.getCount()>0){
             cv.moveToFirst();
             while(!cv.isAfterLast()) {
@@ -200,14 +207,19 @@ public class ChatPageFragment extends Fragment {
                 int getuser = userdata.userid != userid ? userid : ruserid;
                 int offerid=cv.getInt(cv.getColumnIndex("Offerid"));
                 offers.add(offerid);
+              //  int so=userid==Constants.userid?userid:ruserid;
                 SoapObject o = new SoapObject("http://webser/", "getItemnameU");
-                o.addProperty("userid",userid);
+                o.addProperty("userid", getuser);
+                this.userid.add(getuser);
+
                 o.addProperty("itemid",itemid);
-                SoapPrimitive s = MainWebService.getretryMsg(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest", 0);
-//            String username = s.getValue().toString().split("/,")[0].replace("username:", " ");
-//            String itemname = s.getValue().toString().split("/,")[1].replace("itemname:", " ");
-                Drawable d = new BitmapDrawable(getResources(), getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png"));
-                items.add(new ChatPageItem("", "", d,offerid));
+              KvmSerializable s = MainWebService.getMsg2(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest");
+                SoapObject s1=(SoapObject)s;
+            String username = s1.getProperty(0).toString();
+            String itemname = s1.getProperty(1).toString();
+                this.usernames.add(username);
+                Bitmap d =  getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png");
+                items.add(new ChatPageItem(username, itemname, d,offerid));
                 cv.moveToNext();
             }
         }

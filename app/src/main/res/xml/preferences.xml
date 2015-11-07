@@ -32,7 +32,9 @@
         <Preference android:title="Sign Out"
             android:key="Sign Out"
             android:selectable="true"/>
-
+        <Preference android:title="Invite Friends"
+            android:key="Invite Friend"
+            android:selectable="true"/>
 
     </PreferenceCategory>
 

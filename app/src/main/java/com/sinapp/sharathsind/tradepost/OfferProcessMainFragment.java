@@ -1,6 +1,7 @@
 package com.sinapp.sharathsind.tradepost;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -54,6 +55,7 @@ public class OfferProcessMainFragment extends Fragment {
     private CustomButton addCashBtn, addItemBtn;
     private ImageView camBtn, galBtn;
     private CustomEditText addCashEdit;
+    public static  CustomEditText g;
     private FragmentManager fragmentManager;
     private ImageView newItemImg;
     private OfferProcessDataPassingListener dataPassingListener;
@@ -61,7 +63,7 @@ public class OfferProcessMainFragment extends Fragment {
     private ArrayList<OfferProcessItem> tempList;
     private String itemText;
     public int item;
-    public String itemname;
+    public static String itemname;
     private CustomTextView itemTitle;
 public static ArrayList<Integer> ITEMID;
 public static boolean b,b1;
@@ -85,7 +87,7 @@ ITEMID=new ArrayList<>();
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         rootView = inflater.inflate(R.layout.fragment_offer_process_main, container, false);
-
+g=(CustomEditText)rootView.findViewById(R.id.offer_process_new_img_title);
         //
         addCashBtn = (CustomButton)rootView.findViewById(R.id.offer_addcash);
         addCashBtn.setOnClickListener(addCashBtnListener);
@@ -110,6 +112,22 @@ cash=Integer.parseInt(addCashEdit.getText().toString());
     }
 });
         //
+    g.addTextChangedListener(new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+    itemname=s.toString();
+        }
+    });
         addItemBtn = (CustomButton)rootView.findViewById(R.id.offer_process_addItem_btn);
         addItemBtn.setOnClickListener(addItemOnClickListener);
 
@@ -217,8 +235,7 @@ ITEMID.add(offerProcessItems.get(i).itemid);
     }
     public void submitOffer()
     {
-        String itemA;
-        itemA=itemTitle.getText().toString();
+     String  itemA=itemname;
         if(b && (itemA==null||itemA.length()<=0))
         {
             return;
@@ -286,18 +303,13 @@ ITEMID.add(offerProcessItems.get(i).itemid);
 Uri mImageUri;
     public Bitmap grabImage()
     {
-        Uri selectedImageUri = mImageUri;
-        String[] projection = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = getActivity().getContentResolver().query(selectedImageUri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        cursor.moveToFirst();
-
-        String selectedImagePath = cursor.getString(column_index);
+        getActivity().getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = getActivity().getContentResolver();
 
         Bitmap bm;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(selectedImagePath, options);
+        BitmapFactory.decodeFile(mImageUri.getPath(), options);
         final int REQUIRED_SIZE = 200;
         int scale = 1;
         while (options.outWidth / scale / 2 >= REQUIRED_SIZE
@@ -305,18 +317,17 @@ Uri mImageUri;
             scale *= 2;
         options.inSampleSize = scale;
         options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(selectedImagePath, options);
+        bm = BitmapFactory.decodeFile(mImageUri.getPath(), options);
 
 
         return bm;
     }
 
-
     public View.OnClickListener camBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             File photo=null;
             try {
                 // place where to store camera taken picture

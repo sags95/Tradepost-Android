@@ -283,6 +283,48 @@ return i;
         return null;
 
     }
+    public static  SoapPrimitive sendDataEdit(String itemTitle, String descrpition, String[] tags, Object[] images, int condition, int userid, String category,int item) {
+
+        SoapObject object = new SoapObject(NAMESPACE,"saveitem" );
+        object.addProperty("itemname", itemTitle);
+        object.addProperty("itemid", item);
+        object.addProperty("desc",descrpition);
+        object.addProperty("latitude", String.format("%.2f",userdata.mylocation.latitude));
+
+
+        //object.addProperty("tags",tag);
+        object.addProperty("longi", String.format("%.2f",userdata.mylocation.Longitude));
+        object.addProperty("userid", userdata.userid);
+        object.addProperty("category", category);
+        object.addProperty("condition",condition);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        ArrayList<HeaderProperty> headerPropertyArrayList = new ArrayList<HeaderProperty>();
+        headerPropertyArrayList.add(new HeaderProperty("Connection", "close"));
+        envelope.setOutputSoapObject(object);
+        //    MarshalFloat m=new MarshalFloat();
+        //   m.register(envelope);
+        // new MarshalBase64().register(envelope);
+        System.setProperty("http.keepAlive", "false");
+        HttpTransportSE ht = new HttpTransportSE( "http://73.37.238.238:8084/TDserverWeb/EditdeleteItem?wsdl",50000000);
+
+        ht.debug=true;
+        try {
+
+
+            ht.call("http://webser/EditdeleteItem/saveitemRequest", envelope,headerPropertyArrayList);
+            ht.getServiceConnection().setRequestProperty("connection","close");
+            SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            //  String res = response.ge().toString();
+            return response;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+
+    }
 
     public static MessageClass sendMsg(String msg,Bitmap picture,int userid,int offerid,Activity activity)
     {

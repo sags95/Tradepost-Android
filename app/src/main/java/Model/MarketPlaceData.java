@@ -188,6 +188,7 @@ public  boolean isFav;
                         data.userid = ir.item.getUserid();
                         data.image = new String[ir.images.length];
 
+
                         int ij = 0;
                         for (String s : ir.images) {
                             data.image[ij] = "http://73.37.238.238:8084/TDserverWeb/images/items/" + ir.item.getItemid() + "/" + s;
@@ -196,7 +197,11 @@ public  boolean isFav;
                         }
 
                         data.item = ir;
-
+                        Cursor c=Constants.db.rawQuery("select * from fav where itemid="+data.item.item.getItemid(),null);
+                        if(c.getCount()>0)
+                            data.isFav=true;
+                        else
+                            data.isFav=false;
                         /*
                         ContentValues cv = new ContentValues();
                         cv.put("itemid", data.item.item.getItemid().toString());

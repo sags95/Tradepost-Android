@@ -46,7 +46,12 @@ public class MainWebService {
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
             //  String res = response.ge().toString();
             return response;
-        } catch (Exception e) {
+        }
+        catch (EOFException ex)
+        {
+         return   getMsg( request, URL, SOAP_ACTION );
+        }
+        catch (Exception e) {
 
             e.printStackTrace();
         }

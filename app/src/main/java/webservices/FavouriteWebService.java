@@ -63,8 +63,7 @@ if(soapPrimitive!=null) {
         s.addProperty("d", itemid);
 
         SoapPrimitive soapPrimitive = MainWebService.getMsg(s, "http://73.37.238.238:8084/TDserverWeb/WebSericeFavourites?wsdl", "http://webser/WebSericeFavourites/removeRequest");
-        Constants.db.execSQL("delete from fav where id="+itemid
-        );
+        Constants.db.execSQL("delete from fav where id="+itemid);
 
 
         return null;

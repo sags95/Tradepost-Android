@@ -26,7 +26,7 @@
     <item
         android:id="@+id/item_finalize"
         app:showAsAction="ifRoom|withText"
-        android:title="Cancel Deal"
+        android:title="Finalize Deal"
         android:icon="@drawable/ic_cross"
         android:visible="true"/>
 

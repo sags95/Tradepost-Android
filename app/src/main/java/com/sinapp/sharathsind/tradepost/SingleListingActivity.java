@@ -175,6 +175,7 @@ GCMService.b=true;
             proPic.setImageBitmap(proPicReceived);
             //item title
             itemTitle.setText(m.item.item.getItemname());
+            itemId=m.item.item.getItemid().toString();
             //item description
             itemDescription.setText(m.item.item.getDescription());
             //item condition
@@ -316,8 +317,8 @@ GCMService.b=true;
         if (item.getTitle().toString().equals("Edit")){
             Toast.makeText(getApplicationContext(), "Edit", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(getApplicationContext(),EditListingActivity.class);
+            //General Information\
 
-            //General Information
             ArrayList<String> editListing = new ArrayList<>();
             editListing.add(0,itemId);
             editListing.add(1,itemTitle.getText().toString());

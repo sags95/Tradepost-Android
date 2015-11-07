@@ -42,7 +42,7 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
                 .inflate(R.layout.list_item_chatpage, viewGroup, false);
         v.setTag(mData.get(i).getOfferitem());
         ChatPageAdapter.ViewHolder vh = new ViewHolder(v);
-        v.setOnClickListener(mItemClick);
+    //    v.setOnClickListener(mItemClick);
         return vh;
 
     }
@@ -50,8 +50,8 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.mTextViewItemName.setText(mData.get(i).getTitle());
-        //viewHolder.mImageViewItemImg.setImageDrawable(mData.get(i).getDrawable());
-
+      viewHolder.mImageViewItemImg.setImageBitmap(mData.get(i).getDrawable());
+ viewHolder.user.setText(mData.get(i).getDetails());
     }
 
     @Override
@@ -62,6 +62,7 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // each data item is just a string in this case
         public TextView mTextViewItemName;
+        public CustomTextView user;
         public ImageView mImageViewItemImg;
 
 
@@ -69,6 +70,7 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
             super(itemView);
             mTextViewItemName = (TextView) itemView.findViewById(R.id.chat_item_title);
             mImageViewItemImg = (ImageView) itemView.findViewById(R.id.chat_item_img);
+            user=(CustomTextView)itemView.findViewById(R.id.chat_username_placeholder);
 
         }
     }

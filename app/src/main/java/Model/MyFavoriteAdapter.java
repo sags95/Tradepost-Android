@@ -1,6 +1,7 @@
 package Model;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sinapp.sharathsind.tradepost.R;
+import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -46,6 +48,11 @@ public class MyFavoriteAdapter extends RecyclerView.Adapter<MyFavoriteAdapter.Vi
 
         viewHolder.mItemTitle.setText(mData.get(i).ir.item.getItemname());
 
+        Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/items/" + mData.get(i).ir.item.getItemid() + "/0.png");
+        Picasso.with(a)
+                .load(url1)
+                .placeholder(R.drawable.image_placeholder)
+                .into(viewHolder.mItemImg);
 
 
             if (viewHolder.mTagFlowLayout.getChildCount() == 0) {

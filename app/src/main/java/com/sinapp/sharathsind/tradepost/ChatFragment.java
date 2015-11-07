@@ -31,6 +31,7 @@ import android.view.ContextThemeWrapper;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +47,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -65,6 +68,7 @@ import Model.MessageAdapter;
 import Model.Variables;
 import data.MessageClass;
 import datamanager.userdata;
+import de.hdodenhof.circleimageview.CircleImageView;
 import webservices.MainWebService;
 
 /**
@@ -97,6 +101,7 @@ public class ChatFragment extends Activity {
     private AlertDialog dialog;
     private CustomCheckBox blockUser;
     ListView lv;
+    String username;
     public static int offerid,userid;
     public  static Intent intent;
     @Override
@@ -133,6 +138,7 @@ public class ChatFragment extends Activity {
         intent=i;
         offerid=i.getIntExtra("offerid",0);
         userid=i.getIntExtra("userid",0);
+        username=i.getStringExtra("username");
         setadapter(false);
         IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
         MessageReceiver m=new MessageReceiver();
@@ -141,6 +147,14 @@ public class ChatFragment extends Activity {
         //headDatails
         View header = findViewById(R.id.chat_header);
         headerDatails = header.findViewById(R.id.chat_header_detail_bar);
+        CircleImageView im= (CircleImageView) headerDatails.findViewById(R.id.chat_header_userImg_placeholder);
+        Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+userid+"/profile.png");
+        Picasso.with(this)
+                .load(url1)
+                .into(im);
+        LinearLayout ll=(LinearLayout)headerDatails.findViewById(R.id.chat_header_trade_detail);
+        CustomTextView user=(CustomTextView)ll.findViewById(R.id.chat_header_userName_placeholder);
+        user.setText(username);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -535,6 +549,11 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
         @Override
         public void onClick(DialogInterface dialog, int which) {
             Log.d("BLOCK", blockUser.isChecked() ? "yes":"no");
+            if(blockUser.isChecked())
+            {
+
+
+            }
             SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
             Cursor       c=Constants.db.rawQuery("select * from login", null);
             c.moveToFirst();
@@ -585,7 +604,11 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
     public void onPause() {
         super.onPause();
         isAlive = false;
-
+        try {
+            this.unregisterReceiver(cv);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

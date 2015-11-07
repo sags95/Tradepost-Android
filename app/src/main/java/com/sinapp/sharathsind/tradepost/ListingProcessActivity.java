@@ -276,7 +276,7 @@ String result;
                            cancel=true;
                            return;
                        }
-                       if( getAllTagNames(tagFlowLayout).size()>=0)
+                       if( getAllTagNames(tagFlowLayout).size()<=0)
                        {
                            new AlertDialog.Builder(ListingProcessActivity.this)
                                    .setTitle("Error")

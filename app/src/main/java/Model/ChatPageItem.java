@@ -1,11 +1,12 @@
 package Model;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 public class ChatPageItem {
     private String mTitle;
     private String mDetails;
-    private Drawable mDrawable;
+    private Bitmap mDrawable;
 private  int offeritem;
 
     public int getOfferitem() {
@@ -16,9 +17,9 @@ private  int offeritem;
         this.offeritem = offeritem;
     }
 
-    public ChatPageItem(String text, String details, Drawable drawable,int of) {
-        this.mTitle = text;
-        this.mDetails = details;
+    public ChatPageItem(String text, String details, Bitmap drawable,int of) {
+        this.mTitle = details;
+        this.mDetails = text;
         this.mDrawable = drawable;
         offeritem=of;
     }
@@ -39,11 +40,11 @@ private  int offeritem;
         this.mDetails = details;
     }
 
-    public Drawable getDrawable() {
+    public Bitmap getDrawable() {
         return mDrawable;
     }
 
-    public void setDrawable(Drawable drawable) {
+    public void setDrawable(Bitmap drawable) {
         this.mDrawable = drawable;
     }
 }

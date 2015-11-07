@@ -29,6 +29,7 @@ import Model.RecyclerViewOnClickListener;
 import Model.Variables;
 import datamanager.ItemResult;
 import datamanager.userdata;
+import webservices.ItemWebService;
 
 /**
  * Created by HenryChiang on 15-08-10.
@@ -66,6 +67,10 @@ public class MyItemsFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_my_items, container, false);
         emptyView = rootView.findViewById(R.id.myItems_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.myItems_recyclerview);
+userdata.i=new ArrayList<>();
+     ArrayList<Integer> i1= ItemWebService.getItems(Constants.userid);
+        for(Integer i:i1)
+        userdata.i.add(ItemWebService.getItem(i));
 
         if(userdata.i!=null) {
             for (int i = 0; i < userdata.i.size(); i++) {

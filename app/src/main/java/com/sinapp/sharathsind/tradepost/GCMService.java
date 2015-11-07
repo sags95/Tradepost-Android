@@ -165,7 +165,7 @@ if(((SoapObject )s).hasProperty("item"))
 cv=new ContentValues();
     if(((SoapObject)(((SoapObject) s).getProperty("item"))).getPropertyCount()>0) {
         cv.put("Offerid", offerid);
-        cv.put("itemname",((SoapObject)(((SoapObject) s).getProperty("item"))).getPropertyAsString("itemname") );
+        cv.put("itemname",((SoapObject)(((SoapObject) s).getProperty("item"))).getPropertyAsString("itemName") );
    db.insert("offeradditionalitems",null,cv);
     }
 
