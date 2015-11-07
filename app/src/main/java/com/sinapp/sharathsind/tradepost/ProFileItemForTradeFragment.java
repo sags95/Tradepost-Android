@@ -48,7 +48,7 @@ int userid;
         rootView = inflater.inflate(R.layout.fragment_profile_itemfortrade, container, false);
         emptyView = rootView.findViewById(R.id.itemForTrade_emptyView);
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.itemForTrade_recyclerview);
-
+userid=ProfileActivity.u;
         //SwipeToRefresh
         mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.itemForTrade_swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.ColorPrimary);
@@ -98,9 +98,27 @@ int userid;
 
         return rootView;
     }
+public void i(int u)
+{
+    List<MyFavoriteItem> items = new ArrayList<MyFavoriteItem>();
+    ArrayList<Integer> itemid= ItemWebService.getItems(u);
+    if(itemid!=null)
+    {
+        for(int i:itemid)
+        {
+            ItemResult ir=ItemWebService.getItem(i);
+            MyFavoriteItem f=new MyFavoriteItem(ir);
+            f.setItemTitle(ir.item.getItemname());
+            items.add(f);
+        }
 
+    }
+    itemForTradeAdapter = new MyFavoriteAdapter(items);
+   itemForTradeAdapter.notifyDataSetChanged();
+}
     public List<MyFavoriteItem> addItem(String title) {
         List<MyFavoriteItem> items = new ArrayList<MyFavoriteItem>();
+        userid=ProfileActivity.u;
    ArrayList<Integer> itemid= ItemWebService.getItems(userid);
         if(itemid!=null)
         {

@@ -9,6 +9,8 @@ import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -16,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -269,7 +272,7 @@ ArrayList<Integer>userid;
 
         switch (item.getTitle().toString()){
             case "Save":
-                delete(itemid);
+                delete1(itemid);
                 final EditText tv=(EditText)findViewById(R.id.section1_edit);
                 final    EditText desc=(EditText)findViewById(R.id.section4_edit);
                 final     SeekBar s=(SeekBar)findViewById(R.id.seekBar1);
@@ -409,17 +412,19 @@ ArrayList<Integer>userid;
                                 //Variables.email=c.getString(c.getColumnIndex("email"));
                                 Variables.username=c.getString(c.getColumnIndex("username"));
                                 SoapObject obje=new SoapObject("http://webser/", "sendOfferDeclined");
-                                obje.addProperty("msg",Variables.username+" has declined your offer");
+                                obje.addProperty("msg",Variables.username+" has deleted his item");
                                 obje.addProperty("offerid",i);
                                 obje.addProperty("userid",userid.get(k));
                                 k++;
                                 obje.addProperty("username", Variables.username);
                                 SoapPrimitive soapPrimitive1=MainWebService.getretryMsg(obje,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/sendOfferDeclineRequest",0);
-                                db.execSQL("update offers set status =2 where offerid ="+i);
+                                db.execSQL("update offers set status =2 where offerid =" + i);
                                 db.close();
-                                finish();
+                              //  finish();
                             }
 delete(itemid);
+                            finish();
+                            startActivity(new Intent(EditListingActivity.this,NavigationDrawer.class));
 
 
 
@@ -437,6 +442,9 @@ delete(itemid);
                 }
                 else{
 delete(itemid);
+                    Toast.makeText(this,"item deleted",Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(new Intent(EditListingActivity.this, NavigationDrawer.class));
                 }
 
 
@@ -465,12 +473,19 @@ delete(itemid);
     public void delete(int itemid)
     {
         SoapObject soapObject=new SoapObject("http://webser/","delete");
-        soapObject.addProperty("i",itemid);
+        soapObject.addProperty("id",itemid);
         SoapPrimitive res= MainWebService.getMsg(soapObject, "http://73.37.238.238:8084/TDserverWeb/EditdeleteItem?wsdl", "http://webser/EditdeleteItem/deleteRequest");
 
 
     }
+    public void delete1(int itemid)
+    {
+        SoapObject soapObject=new SoapObject("http://webser/","deletetags");
+        soapObject.addProperty("id",itemid);
+        SoapPrimitive res= MainWebService.getMsg(soapObject, "http://73.37.238.238:8084/TDserverWeb/EditdeleteItem?wsdl", "http://webser/EditdeleteItem/deletetagsRequest");
 
+
+    }
     private void setItemInfoForEdit(){
         ArrayList<String> itemInfoForEdit = getIntent().getStringArrayListExtra("itemToEdit");
 
@@ -638,22 +653,27 @@ delete(itemid);
         return File.createTempFile(part, ext, tempDir);
     }
 
-    public Bitmap grabImage()
-    {
+    public Bitmap grabImage() {
         this.getContentResolver().notifyChange(mImageUri, null);
         ContentResolver cr = this.getContentResolver();
-        Bitmap bitmap=null;
-        try
-        {
-            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
-            Log.d("cam", "Failed to load", e);
-        }
 
-        return bitmap;
+
+        Bitmap bm;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        //  android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+        BitmapFactory.decodeFile(mImageUri.getPath(), options);
+        final int REQUIRED_SIZE = 200;
+        int scale = 1;
+        while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+            scale *= 2;
+        options.inSampleSize = scale;
+        options.inJustDecodeBounds = false;
+        bm =          BitmapFactory.decodeFile(mImageUri.getPath(), options);;
+        //  setImage(bm);
+
+        return bm;
     }
 
 
@@ -672,4 +692,82 @@ delete(itemid);
             startActivityForResult( Intent.createChooser(intent, "Select File"), requestCodeGal);
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (resultCode == RESULT_OK) {
+            if(requestCode ==0){
+               /*
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                setImage(imageBitmap);
+                bits.add(imageBitmap);
+                */
+                setImage(grabImage());
+                //       bits.add(grabImage());
+                //... some code to inflate/create/find appropriate ImageView to place grabbed image
+
+            }else if(requestCode == 1){
+                Uri selectedImageUri = data.getData();
+                String[] projection = { MediaStore.MediaColumns.DATA };
+                Cursor cursor = getContentResolver().query(selectedImageUri, projection, null, null, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                cursor.moveToFirst();
+
+                String selectedImagePath = cursor.getString(column_index);
+
+                Bitmap bm;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(selectedImagePath, options);
+                final int REQUIRED_SIZE = 200;
+                int scale = 1;
+                while (options.outWidth / scale / 2 >= REQUIRED_SIZE
+                        && options.outHeight / scale / 2 >= REQUIRED_SIZE)
+                    scale *= 2;
+                options.inSampleSize = scale;
+                options.inJustDecodeBounds = false;
+                bm = BitmapFactory.decodeFile(selectedImagePath, options);
+                setImage(bm);
+            }
+        }
+    }
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+    }
+    public void setImage(Bitmap imageBitmap){
+        if(currentImgPos<5) {
+            switch (currentImgPos) {
+                case 0:
+                    itemImg1.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
+                    break;
+                case 1:
+                    itemImg2.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
+                    break;
+                case 2:
+                    itemImg3.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
+                    break;
+                case 3:
+                    itemImg4.setImageBitmap(getResizedBitmap(imageBitmap,itemImg1.getWidth(),itemImg1.getHeight()));
+                    break;
+            }
+            bits.add(imageBitmap);
+            currentImgPos++;
+
+        }
+    }
+
 }

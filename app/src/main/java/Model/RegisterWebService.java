@@ -191,6 +191,14 @@ public  static void setOffer(int offerid)
     cv.put("itemid",offer.getPropertyAsString("itemid"));
     cv.put("cash",offer.getPropertyAsString("cash"));
     cv.put("recieveduserid",offer.getPropertyAsString("recieveduserid"));
+    String status=offer.getPropertyAsString("status");
+    if(status.equals("1"))
+    {
+
+        Constants.db.execSQL("create table IF NOT EXISTS  m" + offerid + "(msgid int(10),msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
+
+
+    }
     cv.put("status",offer.getPropertyAsString("status"));
     cv.put("dir", offer.getPropertyAsString("dir"));
     //cv.put("dir");

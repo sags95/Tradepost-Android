@@ -2,6 +2,7 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -125,6 +126,7 @@ public class OfferProcessListingFragment extends Fragment {
             case "Save": {
                 Log.d("in listing fragment", "go to main fragment");
                 saveCheckedTitles();
+                ((OfferProcessActivity)getActivity()).onBackPressed();
                 break;
             }
 

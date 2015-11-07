@@ -28,13 +28,13 @@ public class ProfileActivity extends AppCompatActivity{
     private CustomTextView profileUsername;
     private CircleImageView profilePic;
     private int numbOfTabs = 2;
-
+public static int u;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         GCMService.b=true;
-        ProFileItemForTradeFragment pf  = new ProFileItemForTradeFragment();
+
         ArrayList<String> profileClicked = getIntent().getStringArrayListExtra("profileDetails");
         profilePic = (CircleImageView)findViewById(R.id.profile_userImg_placeholder);
         profileUsername = (CustomTextView)findViewById(R.id.profile_username_placeholder);
@@ -47,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity{
             //Profile Username
             profileClicked = getIntent().getStringArrayListExtra("itemProfileClicked");
             profileUsername.setText(profileClicked.get(1));
-            pf.userid=Integer.parseInt(profileClicked.get(0));
+            u=Integer.parseInt(profileClicked.get(0));
             Log.d("USERID", profileClicked.get(0));
 
         }else if(getIntent().getStringExtra("caller").equals("NavigationDrawer")){
@@ -58,13 +58,15 @@ public class ProfileActivity extends AppCompatActivity{
             //Profile Username
             profileClicked = getIntent().getStringArrayListExtra("profileDetails");
             profileUsername.setText(profileClicked.get(1));
-            pf.userid=Integer.parseInt(profileClicked.get(0));
+            u=Integer.parseInt(profileClicked.get(0));
             Log.d("EMAIL", profileClicked.get(2));
             Log.d("USERID", profileClicked.get(0));
         }
 
 
-
+        ProFileItemForTradeFragment pf  = new ProFileItemForTradeFragment();
+        pf.userid=u;
+//        pf.i(u);
         adapter =  new OffersViewPagerAdapter(getSupportFragmentManager(),Titles, numbOfTabs,pf , new ProfileFeedbackFragment());
 
         // Assigning ViewPager View and setting the adapter
