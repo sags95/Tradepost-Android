@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -91,6 +92,11 @@ public static int u;
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
 
+        //For eidt the profile
+        if(pf.userid == Constants.userid){
+            ImageView edit = (ImageView)findViewById(R.id.profile_edit);
+
+        }
 
 
 

@@ -90,8 +90,9 @@ itemid=Integer.parseInt(itemDetailsToOffer.get(0));
 
         switch (item.getTitle().toString()) {
             case "Submit Offer": {
-                Toast.makeText(getApplicationContext(), "Submit?", Toast.LENGTH_SHORT).show();
                 ((OfferProcessMainFragment)mainFragment).submitOffer();
+                Toast.makeText(getApplicationContext(),"Submitted", Toast.LENGTH_SHORT).show();
+                super.onBackPressed();
                 break;
             }
         }

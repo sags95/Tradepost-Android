@@ -14,13 +14,6 @@
         layout="@layout/toolbar_default">
     </include>
 
-    <View android:layout_width="match_parent"
-        android:background="@color/black"
-        android:layout_height="1dp"
-        android:id="@+id/separator"
-        android:layout_above="@+id/scrollView"
-        />
-
 
     <ScrollView
         android:layout_width="match_parent"
