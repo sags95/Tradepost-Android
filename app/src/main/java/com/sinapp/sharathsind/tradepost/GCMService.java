@@ -51,11 +51,15 @@ notifyOffer(offerid,msg);
     case "aoffer":
          offerid=Integer.parseInt(data.getString("offerid"));
          msg =data.getString("message");
+        insertNotification(msg,offerid,1);
         aOffer(offerid,msg);
         break;
     case "doffer":
+
         offerid=Integer.parseInt(data.getString("offerid"));
+
         msg =data.getString("message");
+        insertNotification(msg,offerid,2);
         dOffer(offerid,msg);
         break;
     case "mesage":
@@ -345,7 +349,7 @@ db.close();
 {
     NotificationCompat.Builder mBuilder =
             new NotificationCompat.Builder(this)
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.drawable.tradepost_logo)
                     .setContentTitle("Tradepost")
                     .setContentText(msg).setAutoCancel(true);
     int mNotificationId = id;
@@ -361,7 +365,20 @@ mBuilder.setContentIntent(intent);
     mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
 }
-    }
+public   void insertNotification(String msg , int offerid,int type)
+{
+    SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
+
+    ContentValues cv=new ContentValues();
+    cv.put("msg",msg);
+    cv.put("offerid",offerid);
+    cv.put("status",0);
+    cv.put("type",type);
+db.insert("notifications","notificationid",cv);
+
+}
+
+}
 
 
 

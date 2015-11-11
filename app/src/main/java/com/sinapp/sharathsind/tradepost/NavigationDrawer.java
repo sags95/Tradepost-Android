@@ -178,8 +178,7 @@ public static int e;
         getMenuInflater().inflate(R.menu.main, menu);
 
         //search
-        MenuItem itemSearch = menu.findItem(R.id.action_search);
-        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
 
         // Get the notifications MenuItem and
         // its LayerDrawable (layer-list)
@@ -200,7 +199,13 @@ public static int e;
         // Update LayerDrawable's BadgeDrawable
         BadgeUtils.setBadgeCount(this, notifiactionIcon, mNotificationsCount);
 
-
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        menu.findItem(R.id.search).setActionView(R.layout.activity_search);
+        menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
 
 
 
@@ -223,7 +228,7 @@ public static int e;
                 break;
             }
             case "Search":{
-                Toast.makeText(getApplicationContext(), "Search?", Toast.LENGTH_SHORT).show();
+
                 new FetchCountTask().execute();
                 break;
             }

@@ -43,6 +43,7 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.sinapp.sharathsind.tradepost.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -107,6 +108,12 @@
         <activity
             android:name=".NavigationDrawer"
             android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".Search" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".ProfileActivity"
@@ -192,6 +199,24 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
+
+        <activity
+            android:name=".Search"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <service
+            android:name="services.OffersMessage"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
