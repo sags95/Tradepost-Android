@@ -201,6 +201,19 @@
         </receiver>
 
         <activity
+            android:name=".MyOffersItemDetailActivity"
+            android:label="Offers Details"
+            android:theme="@style/NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity
             android:name=".Search"
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme" >
@@ -213,10 +226,13 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+
         <service
             android:name="services.OffersMessage"
             android:exported="false" >
         </service>
+
+
     </application>
 
 </manifest>
