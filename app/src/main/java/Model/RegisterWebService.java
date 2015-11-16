@@ -108,7 +108,7 @@ signUp(username, email, s, fb, profilepic, b, db);
        SoapObject object = new SoapObject("http://webser/", "getuseritems");
        //SoapObject object = new SoapObject("http://webser/", "getuseritems");
        object.addProperty("userid",  userdata.userid);
-       Vector object1 = MainWebService.getMsg1(object,"http://73.37.238.238:8084/TDserverWeb/Search?wsdl","http://webser/Search/getuseritemsRequest");
+       Vector object1 = MainWebService.getMsg1(object, "http://73.37.238.238:8084/TDserverWeb/Search?wsdl", "http://webser/Search/getuseritemsRequest");
        userdata.items=new ArrayList<Integer>();
 
 
@@ -186,6 +186,7 @@ public  static void setOffer(int offerid)
    // SQLiteDatabase db=  Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
 
     SoapObject offer= (SoapObject) ((SoapObject)s).getProperty("of");
+    int offerid1=Integer.parseInt(offer.getPropertyAsString("offerid"));
     cv.put("offerid",offer.getPropertyAsString("offerid"));
     cv.put("userid",offer.getPropertyAsString("userid"));
     cv.put("itemid",offer.getPropertyAsString("itemid"));
@@ -196,6 +197,17 @@ public  static void setOffer(int offerid)
     {
 
         Constants.db.execSQL("create table IF NOT EXISTS  m" + offerid + "(msgid int(10),msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
+SoapObject request=new SoapObject("http://webser/","getMessages");
+        request.addProperty("offerid",offerid1);
+        Vector soapObject=MainWebService.getMsg1(request,"http://73.37.238.238:8084/TDserverWeb/MessageandNotification?wsdl","http://webser/MessageandNotification/getMessagesRequest");
+        if(soapObject!=null)
+        {
+            for(Object p: soapObject)
+            {
+
+                get((SoapObject)p,offerid1);
+            }
+        }
 
 
     }
@@ -223,6 +235,56 @@ public  static void setOffer(int offerid)
     }
 
 }
+    public static void getnot()
+    {
+      //  Constants.db.execSQL("create table IF NOT EXISTS  m" + offerid + "(msgid int(10),msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
+        SoapObject request=new SoapObject("http://webser/","getNotifications");
+        request.addProperty("userid",Constants.userid);
+        Vector soapObject=MainWebService.getMsg1(request,"http://73.37.238.238:8084/TDserverWeb/MessageandNotification?wsdl","http://webser/MessageandNotification/getNotificationsRequest");
+        if(soapObject!=null)
+        {
+            for(Object p: soapObject)
+            {
+                setnot((SoapObject)p);
+
+//                get((SoapObject)p,}
+
+
+        }
+
+    }
+    }
+
+
+
+public static void  setnot(SoapObject result)
+{
+    ContentValues cv = new ContentValues();
+    SQLiteDatabase db = Constants.db;
+    cv.put("notificationid", result.getProperty("id").toString());
+    cv.put("offerid", result.getProperty("offerid").toString());
+    cv.put("msg", result.getProperty("message").toString());
+    cv.put("type", result.getProperty("type").toString());
+    cv.put("status", result.getProperty("status").toString());
+    long l= db.insert("notifications" , null, cv);
+    l++;
+}
+    public static void get(SoapObject result,int offerid) {
+        ContentValues cv = new ContentValues();
+        //   ContentValues cv = new ContentValues();
+
+        SQLiteDatabase db = Constants.db;
+        cv.put("msgid", result.getProperty("messageid").toString());
+        cv.put("msg", result.getProperty("message").toString());
+        cv.put("ruserid", result.getProperty("ruserid").toString());
+        cv.put("userid", result.getProperty("userid").toString());
+        cv.put("sent", result.getProperty("sent").toString());
+        cv.put("msgpath", result.getProperty("messagepath").toString());
+
+       long l= db.insert("m" + offerid, "seen", cv);
+        l++;
+       // db.close();
+    }
 public static int[] getuserOffer()
 {
     int[] i=null;
@@ -444,6 +506,7 @@ new MarshalBase64().register(envelope);
 
         return null;
     }
+
 
 
 }

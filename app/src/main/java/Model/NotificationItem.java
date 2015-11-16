@@ -56,7 +56,7 @@ public class NotificationItem {
                 break;
         }
 
-        SpannableStringBuilder sb = new SpannableStringBuilder(userPlaceholder + " " + tempMsg);
+        SpannableStringBuilder sb = new SpannableStringBuilder(userPlaceholder);
         sb.setSpan(new StyleSpan(Typeface.ITALIC), 0, userPlaceholder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
         this.msg = sb.toString();
 

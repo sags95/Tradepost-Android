@@ -40,6 +40,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.15'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.wefika:flowlayout:0.4.0'
-    compile 'com.google.android.gms:play-services:8.1.0'
+    compile 'com.google.android.gms:play-services:7.5+'
     compile 'com.android.support:appcompat-v7:23.0.1'
 }

@@ -14,11 +14,13 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import com.google.android.gms.gcm.GcmReceiver;
 import com.sinapp.sharathsind.tradepost.ChatFragment;
 
 import org.ksoap2.serialization.KvmSerializable;
@@ -45,7 +47,9 @@ switch (message)
 {
      case "offer":
 int offerid=Integer.parseInt(data.getString("offerid"));
+
  String msg =data.getString("message");
+         insertNotification(msg,offerid,0);
 notifyOffer(offerid,msg);
      break;
     case "aoffer":
@@ -85,7 +89,7 @@ notifyOffer(offerid,msg);
     private void message(int offerid, String msg,String p,Bundle data) {
         int mesgid=Integer.parseInt(data.getString("messageid"));
         SQLiteDatabase db=  openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
-        Cursor cursor=db.rawQuery("select * from m"+offerid+" where msgid = "+mesgid,null);
+        Cursor cursor=db.rawQuery("select * from m" + offerid + " where msgid = " + mesgid, null);
 
         if(cursor.getCount()>0)
         {
@@ -350,7 +354,7 @@ db.close();
     NotificationCompat.Builder mBuilder =
             new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.tradepost_logo)
-                    .setContentTitle("Tradepost")
+                    .setContentTitle("Tradepost").setSound( RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                     .setContentText(msg).setAutoCancel(true);
     int mNotificationId = id;
 if(intent!=null)
@@ -365,16 +369,51 @@ mBuilder.setContentIntent(intent);
     mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
 }
+    public void buildNotificationmsg(PendingIntent intent,String msg,int id)
+    {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.tradepost_logo)
+                        .setContentTitle("Tradepost").setSound( RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setContentText(msg).setAutoCancel(true);
+        int mNotificationId = id;
+        if(intent!=null)
+        {
+            mBuilder.setContentIntent(intent);
+
+        }
+// Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+// Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+
+    }
 public   void insertNotification(String msg , int offerid,int type)
 {
     SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
+Cursor x=db.rawQuery("SELECT *\n" +
+        "FROM notifications\n" +
+        "ORDER BY notificationid  DESC\n" +
+        "LIMIT 1", null);
+
 
     ContentValues cv=new ContentValues();
-    cv.put("msg",msg);
+    cv.put("msg", msg);
     cv.put("offerid",offerid);
-    cv.put("status",0);
-    cv.put("type",type);
-db.insert("notifications","notificationid",cv);
+    cv.put("status", 0);
+    cv.put("type", type);
+    if(x.getCount()==0)
+        cv.put("notificationid",1);
+    else {
+        x.moveToFirst();
+        int i=x.getInt(x.getColumnIndex("notificationid"));
+        i++;
+                cv.put("notificationid", i);
+
+    }
+        long l=db.insert("notifications",null,cv);
+    l++;
 
 }
 

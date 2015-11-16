@@ -65,7 +65,7 @@ public class MessageAdapter extends BaseAdapter{
             v = inflater.inflate(R.layout.right_message_view, parent, false);
             v2= (TextView) v.findViewById(R.id.Right_msg);
             v1=(ImageView)v.findViewById(R.id.image_msg);
-            if(m1.msgpath!=null&&m1.msgpath.length()>0)
+            if(m1.msgpath!=null&&m1.msgpath.length()<0)
             {
                 v2.setVisibility(View.GONE);
                 v1.setVisibility(View.VISIBLE);

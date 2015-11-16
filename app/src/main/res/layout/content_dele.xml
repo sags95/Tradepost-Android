@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_dele" tools:context="com.sinapp.sharathsind.tradepost.Dele">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_main_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!--
+
+                    <com.etsy.android.grid.StaggeredGridView
+                        android:id="@+id/recylcer_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical"
+                        app:column_count="2"
+                        app:item_margin="8dp"
+                        />
+
+-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recylcer_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+
+
+            />
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_main_swipe_refresh_layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <Model.CustomTextView
+            android:id="@+id/recylcer_emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            style="@style/OpenSansRegular"
+            android:text="Getting Data...."
+            android:gravity="center"
+
+            />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/fab_plus_icon"
+        fab:fab_colorNormal="@color/fab_primaryColor"
+        fab:fab_colorPressed="@color/red"
+        fab:borderWidth="0dp"
+
+
+
+        />
+
+
+</RelativeLayout>

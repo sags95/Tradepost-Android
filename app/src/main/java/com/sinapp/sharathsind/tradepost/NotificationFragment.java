@@ -108,14 +108,14 @@ public class NotificationFragment extends Fragment {
         List<NotificationItem> items = new ArrayList<NotificationItem>();
         SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
     //    SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
-        Cursor c=db.rawQuery("select * from offers where status=1",null);
+        Cursor c=db.rawQuery("select * from notifications",null);
         c.moveToFirst();
-        while(c.isAfterLast())
+        while(!c.isAfterLast())
         {
-            String username=c.getString(c.getColumnIndex("username"));
-       String type=c.getColumnName(c.getColumnIndex("type"));
-items.add(new NotificationItem(username,Integer.parseInt(type)));
-
+            String username=c.getString(c.getColumnIndex("msg"));
+       int type=c.getInt(c.getColumnIndex("type"));
+items.add(new NotificationItem(username,type));
+c.moveToNext();
         }
 
 

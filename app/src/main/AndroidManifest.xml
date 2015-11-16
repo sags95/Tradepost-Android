@@ -202,7 +202,6 @@
 
         <activity
             android:name=".Search"
-            android:label="@string/title_activity_search"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -216,6 +215,29 @@
         <service
             android:name="services.OffersMessage"
             android:exported="false" >
+        </service>
+
+        <activity
+            android:name=".Dele"
+            android:label="@string/title_activity_dele"
+            android:theme="@style/AppTheme" >
+        </activity>
+
+        <receiver
+            android:name="services.OnBootReciever"
+             >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="services.CheckNotfication"
+            >
+        </receiver>
+
+        <service
+            android:name="services.MyService"
+         >
         </service>
     </application>
 

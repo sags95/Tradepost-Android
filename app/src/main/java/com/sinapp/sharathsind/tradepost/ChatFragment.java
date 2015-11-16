@@ -405,6 +405,7 @@ setadapter(true);
 
     public void setadapter(Boolean b)
 {
+    seen();
     lv= (ListView) findViewById(R.id.listview_chat);
     ArrayList<MessageClass> c=new ArrayList<>();
     SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
@@ -579,7 +580,15 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
             dialog.dismiss();
         }
     };
+public void seen()
+{
+    java.text.SimpleDateFormat sdf =
+            new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String seen=sdf.format(new Date());
+    Constants.db.execSQL("Update m"+offerid+" set seen='"+seen+"' where seen=' ' and userid !="+Constants.userid);
 
+
+}
 
 
     @Override

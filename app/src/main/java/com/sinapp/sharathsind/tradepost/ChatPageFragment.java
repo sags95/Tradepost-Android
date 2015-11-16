@@ -215,9 +215,12 @@ public class ChatPageFragment extends Fragment {
                 o.addProperty("itemid",itemid);
               KvmSerializable s = MainWebService.getMsg2(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest");
                 SoapObject s1=(SoapObject)s;
-            String username = s1.getProperty(0).toString();
-            String itemname = s1.getProperty(1).toString();
-                this.usernames.add(username);
+                String itemname = null,username = null;
+                if(s1!=null) {
+                    username = s1.getProperty(0).toString();
+                    itemname = s1.getProperty(1).toString();
+                }
+                    this.usernames.add(username);
                 Bitmap d =  getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png");
                 items.add(new ChatPageItem(username, itemname, d,offerid));
                 cv.moveToNext();
