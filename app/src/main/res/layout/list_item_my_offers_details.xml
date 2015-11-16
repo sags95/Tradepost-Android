@@ -67,12 +67,13 @@
                 android:orientation="vertical"
                 android:layout_marginLeft="16dp">
 
-                <TextView
+                <Model.CustomTextView
                     android:id="@+id/myOffers_details_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Username"
                     android:textSize="16sp"
+                    style="@style/OpenSansRegular"
                     />
 
                 <LinearLayout
@@ -82,14 +83,16 @@
                     android:orientation="horizontal"
                     >
 
-                    <TextView
+                    <Model.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="OFFER: "
                         android:textSize="12sp"
+                        style="@style/OpenSansRegular"
+
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/myOffers_details_itemTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -97,6 +100,8 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/ColorPrimary"
+                        style="@style/OpenSansBold"
+
                         />
 
                 </LinearLayout>
@@ -108,14 +113,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     >
-                    <TextView
+                    <Model.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="EXTRA: "
                         android:textSize="12sp"
+                        style="@style/OpenSansRegular"
+
                         />
 
-                    <TextView
+                    <Model.CustomTextView
                         android:id="@+id/myOffers_details_cash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -123,6 +130,8 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/ColorPrimary"
+                        style="@style/OpenSansBold"
+
                         />
                 </LinearLayout>
             </LinearLayout>
