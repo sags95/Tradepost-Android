@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#000</color>
+    <color name="blackTransparent">#c9000000</color>
     <color name="blue">#00f</color>
     <color name="red">#f00000</color>
     <color name="fab_primaryColor">#eb5a5d</color>

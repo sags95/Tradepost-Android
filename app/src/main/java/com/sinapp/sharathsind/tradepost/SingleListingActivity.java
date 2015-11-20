@@ -2,19 +2,19 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,15 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.apmem.tools.layouts.FlowLayout;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +36,10 @@ import java.util.List;
 import Model.CustomPagerAdapter;
 import Model.CustomTextView;
 import Model.MarketPlaceData;
-import Model.MarketPlaceListAdapter;
 import Model.MarketPlaceStaggeredAdapter;
-import Model.Variables;
 import datamanager.userdata;
 import de.hdodenhof.circleimageview.CircleImageView;
+import webservices.FavouriteWebService;
 
 /**
  * Created by HenryChiang on 15-06-06.
@@ -63,6 +56,8 @@ public class SingleListingActivity extends AppCompatActivity {
     private CustomTextView itemTitle,itemDescription,itemCondition,itemDateAdded,itemUsername,itemDistance;
     private FlowLayout tagsLayout;
     private CircleImageView proPic;
+    private ImageView favouriteItemStatus;
+
 
     private RelativeLayout singleListingHeader;
     MarketPlaceData m;
@@ -78,7 +73,7 @@ public class SingleListingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_listing_view);
         View includeView = (View)findViewById(R.id.single_listing_main_layout);
-GCMService.b=true;
+        GCMService.b=true;
 
         //single listing header
         singleListingHeader= (RelativeLayout)findViewById(R.id.single_listing_header);
@@ -110,6 +105,8 @@ GCMService.b=true;
         itemUsername = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_username);
         itemDistance = (CustomTextView)singleListingHeader.findViewById(R.id.single_listing_header_distance);
 
+        favouriteItemStatus = (ImageView) includeView.findViewById(R.id.single_listing_fav_btn);
+        favouriteItemStatus.setOnClickListener(addedTofavourite);
         //floating action button
         //offerFab = (FloatingActionButton)findViewById(R.id.offer_fab2);
         offerFab = (FloatingActionButton)includeView.findViewById(R.id.fab);
@@ -187,6 +184,12 @@ GCMService.b=true;
             //item distance
             itemDistance.setText(String.valueOf(roundedDistance(distance(m.item.item.getLatitude().doubleValue(), m.item.item.getLongtitude().doubleValue(), userdata.mylocation.latitude, userdata.mylocation.Longitude, 'K'))));
 
+            // favourite status
+            if(m.isFav) {
+                favouriteItemStatus.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_selected));
+            }else{
+                favouriteItemStatus.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_not_selected));
+            }
             //item tags
             for (String tempTag : m.item.tags) {
                 tagsLayout.addView(addTagsSingleListing(tempTag));
@@ -400,6 +403,53 @@ GCMService.b=true;
             items.add(2,String.valueOf(m.item.item.getUserid()));
             intent.putStringArrayListExtra("itemToOfferProcess", items);
             startActivity(intent);
+
+        }
+    };
+
+    public View.OnClickListener addedTofavourite = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(m.isFav) {
+                //   view.setEnabled(false);
+                new AsyncTask<Void,Void,Void>()
+                {
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+
+                        super.onPostExecute(aVoid);
+                        m.isFav=false;
+                        favouriteItemStatus.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_not_selected));
+
+                    }
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        Cursor c=Constants.db.rawQuery("select * from fav where itemid="+m.item.item.getItemid(),null);
+                        c.moveToFirst();
+                        FavouriteWebService.removefavouInts(c.getInt(c.getColumnIndex("id")));
+                        return null;
+                    }
+                }.execute(null,null);
+            }
+            else {
+                //     view.setEnabled(false);
+
+                new AsyncTask<Void,Void,Void>()
+                {
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        m.isFav=true;
+                        favouriteItemStatus.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_favorite_selected));
+                    }
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        FavouriteWebService.add(m.item.item.getItemid());
+                        return null;
+                    }
+                }.execute(null, null);
+            }
 
         }
     };

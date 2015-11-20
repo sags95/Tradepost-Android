@@ -3,6 +3,7 @@ package com.sinapp.sharathsind.tradepost;
 /**
  * Created by HenryChiang on 15-06-25.
  */
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -11,47 +12,38 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.google.android.gms.gcm.GcmReceiver;
 import com.squareup.picasso.Picasso;
 
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.Blur;
 import Model.CustomTextView;
 import Model.LimitedEditText;
 import Model.NavigationDrawerAdapter;
@@ -97,7 +89,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-    private LinearLayout mHeaderLayout;
+    private FrameLayout mHeaderLayout;
 
     //feedback
     private LinearLayout feedbackLayout;
@@ -130,7 +122,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         li = getActivity().getLayoutInflater();
-        mHeaderLayout = (LinearLayout)view.findViewById(R.id.navigationHeader);
+        mHeaderLayout = (FrameLayout)view.findViewById(R.id.navigationHeader);
         mHeaderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +135,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 i.putStringArrayListExtra("profileDetails",profileDetails);
                 i.putExtra("caller", "NavigationDrawer");
                 if(avatarContainer.getDrawable()!=null) {
-                    i.putExtra("profilePic", ((BitmapDrawable) avatarContainer.getDrawable()).getBitmap());
+                    i.putExtra("profilePic", Variables.profilepic);
                 }
 
                 startActivity(i);
@@ -319,9 +311,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mEmail = (CustomTextView)mFragmentContainerView.findViewById(R.id.txtUserEmail);
         mUsername.setText(user);
         mEmail.setText(email);
-        Uri url = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
+        String url = "http://73.37.238.238:8084/TDserverWeb/images/" + Constants.userid + "/profile.png";
         Picasso.with(getActivity().getApplicationContext()).load(url).into(avatarContainer);
-
+        Bitmap image = getBitmapFromURL(url);
+        Variables.setProfilepic(image);
         if(Variables.username!=null&&Variables.email!=null)
         {
             mUsername.setText(Variables.username);
@@ -330,12 +323,33 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             if(Variables.profilepic!=null){
                 int i = Constants.userid;
                 avatarContainer.setImageBitmap(Variables.profilepic);
+                Bitmap blurImage = Blur.fastblur(getActivity().getApplicationContext(),Variables.profilepic,7);
+                Drawable d = new BitmapDrawable(getResources(), blurImage);
+                mHeaderLayout.setBackground(d);
 
             }else {
                 Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/" + Constants.userid + "/profile.png");
                 Picasso.with(getActivity().getApplicationContext()).load(url1).into(avatarContainer);
-                //Variables.setProfilepic(((BitmapDrawable)avatarContainer.getDrawable()).getBitmap());
             }
+        }
+    }
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            System.out.printf("src", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            System.out.printf("Bitmap", "returned");
+            myBitmap = Bitmap.createScaledBitmap(myBitmap, 164, 320, false);//This is only if u want to set the image size.
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.printf("Exception", e.getMessage());
+            return null;
         }
     }
 

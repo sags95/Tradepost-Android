@@ -11,33 +11,33 @@
     android:focusableInTouchMode="true"
     >
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/zip_postal_code"
-        android:id="@+id/radioButton_postalCode"
-        android:layout_gravity="left"
-        android:textSize="@dimen/customEntry"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        />
+    <!--<RadioButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/zip_postal_code"-->
+        <!--android:id="@+id/radioButton_postalCode"-->
+        <!--android:layout_gravity="left"-->
+        <!--android:textSize="@dimen/customEntry"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--/>-->
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dialog_postalCode"
-        android:layout_marginBottom="8dp"
-        >
-        <EditText
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/dialog_postalCode"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!-->-->
+        <!--<EditText-->
 
-            android:id="@+id/dialog_postalCode_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textCapCharacters"
-            android:hint="example: H3X2A1"
-            android:maxLength="6"
-            />
-    </android.support.design.widget.TextInputLayout>
+            <!--android:id="@+id/dialog_postalCode_edit"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:inputType="textCapCharacters"-->
+            <!--android:hint="example: H3X2A1"-->
+            <!--android:maxLength="6"-->
+            <!--/>-->
+    <!--</android.support.design.widget.TextInputLayout>-->
 
     <RadioButton
         android:layout_width="wrap_content"

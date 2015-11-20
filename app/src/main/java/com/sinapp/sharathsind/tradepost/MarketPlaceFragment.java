@@ -30,12 +30,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.support.v7.app.AlertDialog;
@@ -50,6 +53,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import Model.HideScrollListener;
 import Model.MarketPlaceData;
 import Model.MarketPlaceListAdapter;
 import Model.MarketPlaceStaggeredAdapter;
@@ -63,18 +67,18 @@ import services.Mylocation;
 /**
  * Created by HenryChiang on 15-06-25.
  */
-public class MarketPlaceFragment  extends Fragment {
+public class MarketPlaceFragment extends Fragment {
 
     private StaggeredGridView mGridView;
     private RecyclerView mRecyclerView;
     private MarketPlaceStaggeredAdapter stagAdapter2;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private View rootView;
-    private SwipeRefreshLayout mSwipeRefreshLayout,mSwipeRefreshLayoutEmpty;
+    private SwipeRefreshLayout mSwipeRefreshLayout, mSwipeRefreshLayoutEmpty;
     private StaggeredAdapterTest mStaggeredAdapterTest;
 
-    private String locationRad="25Km)";
-   // int radius;
+    private String locationRad = "25Km)";
+    // int radius;
     private int[] imageResources = {
             R.drawable.sample_img,
             R.drawable.sample_img2,
@@ -92,9 +96,11 @@ public class MarketPlaceFragment  extends Fragment {
     private TextInputLayout postalCodeInput;
     private EditText pCInputEdit;
     private SeekBar seekBar;
-    private TextView headerRadText,radiusText, locServiceText, label25Km,label50Km,label75Km,label100Km;
+    private TextView headerRadText, radiusText, locServiceText, label25Km, label50Km, label75Km, label100Km;
     private LinearLayout seekBarLabel;
     TempMarketPlaceDataCallBack mCallback;
+    View includeView;
+    FloatingActionButton fab;
 
 
     public MarketPlaceFragment() {
@@ -123,7 +129,7 @@ public class MarketPlaceFragment  extends Fragment {
         li = getActivity().getLayoutInflater();
 
         //SwipeToRefresh
-        mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.ColorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -135,7 +141,7 @@ public class MarketPlaceFragment  extends Fragment {
         });
 
         //
-        mSwipeRefreshLayoutEmpty = (SwipeRefreshLayout)rootView.findViewById(R.id.activity_main_swipe_refresh_layout_empty);
+        mSwipeRefreshLayoutEmpty = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout_empty);
 
 
         /*
@@ -154,13 +160,33 @@ public class MarketPlaceFragment  extends Fragment {
         applyStaggeredGridLayoutManager();
         */
 
-
-
-
-
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recylcer_view);
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(fabOnClickListener);
+        includeView = (View) rootView.findViewById(R.id.marketplace_header);
+        headerRadText = (TextView) includeView.findViewById(R.id.marketplace_header_rad);
+        includeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog();
+            }
+        });
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addOnScrollListener(new HideScrollListener(getContext()) {
+            @Override
+            public void onHide() {
+                includeView.animate().translationY(-includeView.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) fab.getLayoutParams();
+                int fabBottomMargin = lp.bottomMargin;
+                fab.animate().translationY(fab.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+            }
 
+            @Override
+            public void onShow() {
+                includeView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+                fab.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            }
+        });
         applyStaggeredGridLayoutManager();
 
 
@@ -176,41 +202,40 @@ public class MarketPlaceFragment  extends Fragment {
 
         mSwipeRefreshLayout.setVisibility(View.GONE);
         Criteria criteria = new Criteria();
-        LocationManager lo=(LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lo = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         String provider = lo.getBestProvider(criteria, false);
-        SharedPreferences prefs =getActivity(). getSharedPreferences("loctradepost", getActivity().MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getSharedPreferences("loctradepost", getActivity().MODE_PRIVATE);
         String restoredText = prefs.getString("postalcode", null);
-        userdata.mylocation=new Mylocation();
+        userdata.mylocation = new Mylocation();
 
-        userdata.mylocation.latitude= prefs.getFloat("lat", 0);//"No name defined" is the default value.
-        userdata.mylocation.Longitude= prefs.getFloat("long", 0); //0 is the default value.
-        radius=prefs.getInt("rad", 25);
-        userdata.radius=radius;
-if(userdata.mylocation.latitude==0&&userdata.mylocation.Longitude==0){
-    Location location = lo.getLastKnownLocation(provider);
-   if(location!=null) {
+        userdata.mylocation.latitude = prefs.getFloat("lat", 0);//"No name defined" is the default value.
+        userdata.mylocation.Longitude = prefs.getFloat("long", 0); //0 is the default value.
+        radius = prefs.getInt("rad", 25);
+        userdata.radius = radius;
+        if (userdata.mylocation.latitude == 0 && userdata.mylocation.Longitude == 0) {
+            Location location = lo.getLastKnownLocation(provider);
+            if (location != null) {
 
-       userdata.mylocation.latitude=  (float)location.getLatitude();//"No name defined" is the default value.
-       userdata.mylocation.Longitude=(float)location.getLongitude();
-       Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-       List<Address> addresses = null;
-       try {
-           addresses = geocoder.getFromLocation(userdata.mylocation.Longitude, userdata.mylocation.latitude, 1);
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-       String cityName = addresses.get(0).getAddressLine(0);
-       String stateName = addresses.get(0).getAddressLine(1);
-       String countryName = addresses.get(0).getAddressLine(2);
-   }
-}
-if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
-    AsyncTaskRunner runner = new AsyncTaskRunner();
-    runner.execute();
+                userdata.mylocation.latitude = (float) location.getLatitude();//"No name defined" is the default value.
+                userdata.mylocation.Longitude = (float) location.getLongitude();
+                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                List<Address> addresses = null;
+                try {
+                    addresses = geocoder.getFromLocation(userdata.mylocation.Longitude, userdata.mylocation.latitude, 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String cityName = addresses.get(0).getAddressLine(0);
+                String stateName = addresses.get(0).getAddressLine(1);
+                String countryName = addresses.get(0).getAddressLine(2);
+            }
+        }
+        if (userdata.mylocation.Longitude != 0 && userdata.mylocation.latitude != 0) {
+            AsyncTaskRunner runner = new AsyncTaskRunner();
+            runner.execute();
 
-}
-        else {
-    customDialog();
+        } else {
+            customDialog();
         }
 
 
@@ -241,32 +266,21 @@ if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
         */
 
 
-
-        //Floating Action Button
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(fabOnClickListener);
-
-        fab.attachToRecyclerView(mRecyclerView);
+//        //Floating Action Button
+//        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+//        fab.setOnClickListener(fabOnClickListener);
+//
+//        fab.attachToRecyclerView(mRecyclerView);
         //fab.attachToListView(mGridView);
 
 
-
         //Location
-        View includeView = (View)rootView.findViewById(R.id.marketplace_header);
-        headerRadText = (TextView)includeView.findViewById(R.id.marketplace_header_rad);
-        includeView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customDialog();
-            }
-        });
 
 
 
         return rootView;
 
     }
-
 
 
     private void applyStaggeredGridLayoutManager() {
@@ -289,65 +303,59 @@ if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
     };
 
 
-
-
     public View.OnClickListener listingItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Log.d("child position", String.valueOf(mRecyclerView.getChildLayoutPosition(v)));
 
 
-
             Intent i = new Intent(getActivity(), SingleListingActivity.class);
             ArrayList<String> clickedItemDetails = new ArrayList<>();
 
-            i.putExtra("caller","MarketPlace");
+            i.putExtra("caller", "MarketPlace");
 
             clickedItemDetails.add(0, String.valueOf(mRecyclerView.getChildLayoutPosition(v)));
             i.putStringArrayListExtra("itemClicked", clickedItemDetails);
 
             //profile picture
-            BitmapDrawable bitmapDrawable = (BitmapDrawable)((ImageView) v.findViewById(R.id.pro_img)).getDrawable();
-            Bitmap b =bitmapDrawable.getBitmap();
-            i.putExtra("profilePic",b);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) ((ImageView) v.findViewById(R.id.pro_img)).getDrawable();
+            Bitmap b = bitmapDrawable.getBitmap();
+            i.putExtra("profilePic", b);
 
             startActivity(i);
         }
     };
 
 
+    public void customDialog() {
 
-
-
-
-    public void customDialog(){
-
-        final View dialogView = li.inflate(location_dialog_layout, null,false);
+        final View dialogView = li.inflate(location_dialog_layout, null, false);
         builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (rBLocSer.isChecked()) {
+                    getRadiusChanged();
                     headerRadText.setText("(Location Service)");
                     startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                } else if (rBPostalCode.isChecked()) {
-                    getRadiusChanged();
-                    if (isPostalCodeValid(pCInputEdit.getText())){
-                    Mylocation mylocation = LocationGPSService.getfromAdress(getActivity(), pCInputEdit.getText().toString());
-                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("loctradepost", getActivity().MODE_PRIVATE).edit();
-                    editor.putInt("rad", radius);
-                    editor.putFloat("lat", mylocation.latitude);
-                        editor.putFloat("long", mylocation.Longitude);
-                        editor.putString("postalcode",pCInputEdit.getText().toString());
-
-                    editor.commit();
                 }
-                    else{
-                        setPostalCodeError(pCInputEdit.getText());
-                    }
-                    headerRadText.setVisibility(View.VISIBLE);
-                    headerRadText.setText("(Within " + locationRad);
-                }
+//                } else if (rBPostalCode.isChecked()) {
+//                    getRadiusChanged();
+//                    if (isPostalCodeValid(pCInputEdit.getText())) {
+//                        Mylocation mylocation = LocationGPSService.getfromAdress(getActivity(), pCInputEdit.getText().toString());
+//                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("loctradepost", getActivity().MODE_PRIVATE).edit();
+//                        editor.putInt("rad", radius);
+//                        editor.putFloat("lat", mylocation.latitude);
+//                        editor.putFloat("long", mylocation.Longitude);
+//                        editor.putString("postalcode", pCInputEdit.getText().toString());
+//
+//                        editor.commit();
+//                    } else {
+//                        setPostalCodeError(pCInputEdit.getText());
+//                    }
+//                    headerRadText.setVisibility(View.VISIBLE);
+//                    headerRadText.setText("(Within " + locationRad);
+//                }
             }
         });
 
@@ -363,19 +371,19 @@ if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
         //set up the variables
-        rBPostalCode = (RadioButton)dialogView.findViewById(R.id.radioButton_postalCode);
-        rBLocSer = (RadioButton)dialogView.findViewById(R.id.radioButton_locService);
-        postalCodeInput = (TextInputLayout)dialogView.findViewById(R.id.dialog_postalCode);
-        pCInputEdit = (EditText)dialogView.findViewById(R.id.dialog_postalCode_edit);
-        seekBar = (SeekBar)dialogView.findViewById(R.id.dialog_seekbar);
-        radiusText = (TextView)dialogView.findViewById(R.id.dialog_radius_txt);
-        locServiceText = (TextView)dialogView.findViewById(R.id.dialog_loc_text);
-        seekBarLabel = (LinearLayout)dialogView.findViewById(R.id.dialog_seekbar_label);
-        label25Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_25km);
+        //rBPostalCode = (RadioButton) dialogView.findViewById(R.id.radioButton_postalCode);
+        rBLocSer = (RadioButton) dialogView.findViewById(R.id.radioButton_locService);
+        //postalCodeInput = (TextInputLayout) dialogView.findViewById(R.id.dialog_postalCode);
+        //pCInputEdit = (EditText) dialogView.findViewById(R.id.dialog_postalCode_edit);
+        seekBar = (SeekBar) dialogView.findViewById(R.id.dialog_seekbar);
+        radiusText = (TextView) dialogView.findViewById(R.id.dialog_radius_txt);
+        locServiceText = (TextView) dialogView.findViewById(R.id.dialog_loc_text);
+        seekBarLabel = (LinearLayout) dialogView.findViewById(R.id.dialog_seekbar_label);
+        label25Km = (TextView) dialogView.findViewById(R.id.dialog_seekbar_25km);
         label25Km.setTextColor(getResources().getColor(R.color.ColorPrimary));
-        label50Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_50km);
-        label75Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_75km);
-        label100Km = (TextView)dialogView.findViewById(R.id.dialog_seekbar_100km);
+        label50Km = (TextView) dialogView.findViewById(R.id.dialog_seekbar_50km);
+        label75Km = (TextView) dialogView.findViewById(R.id.dialog_seekbar_75km);
+        label100Km = (TextView) dialogView.findViewById(R.id.dialog_seekbar_100km);
 
         //set progress changed on seekbar
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -410,106 +418,115 @@ if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
             }
         });
 
-        //check the zip/postal code input
-        pCInputEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                setPostalCodeError(s);
-            }
-        });
-
-        rBPostalCode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rBLocSer.setChecked(!isChecked);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                if(pCInputEdit.isFocused()&&pCInputEdit.getEditableText().length()!=0) {
-                    setPostalCodeError(pCInputEdit.getEditableText());
-                }
-                setPostalCodeInput(1);
-                setLocationService(0);
-
-            }
-        });
+//        //check the zip/postal code input
+//        pCInputEdit.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                setPostalCodeError(s);
+//            }
+//        });
+//
+//        rBPostalCode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                rBLocSer.setChecked(!isChecked);
+//                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+//                if (pCInputEdit.isFocused() && pCInputEdit.getEditableText().length() != 0) {
+//                    setPostalCodeError(pCInputEdit.getEditableText());
+//                }
+//                setPostalCodeInput(1);
+//                setLocationService(0);
+//
+//            }
+//        });
         rBLocSer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rBPostalCode.setChecked(!isChecked);
+                //rBPostalCode.setChecked(!isChecked);
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                postalCodeInput.setErrorEnabled(false);
-                setPostalCodeInput(0);
+                //postalCodeInput.setErrorEnabled(false);
+                //setPostalCodeInput(0);
                 setLocationService(1);
             }
         });
 
         //initialize
         label25Km.setTypeface(Typeface.DEFAULT_BOLD);
-        setPostalCodeInput(0);
+       // setPostalCodeInput(0);
         setLocationService(0);
     }
 
-    public void setPostalCodeInput(int visibility){
-        if(visibility == 0){
-            postalCodeInput.setVisibility(View.GONE);
-            pCInputEdit.setVisibility(View.GONE);
-        }else{
-            postalCodeInput.setVisibility(View.VISIBLE);
-            pCInputEdit.setVisibility(View.VISIBLE);
+//    public void setPostalCodeInput(int visibility) {
+//        if (visibility == 0) {
+//            postalCodeInput.setVisibility(View.GONE);
+//            pCInputEdit.setVisibility(View.GONE);
+//        } else {
+//            postalCodeInput.setVisibility(View.VISIBLE);
+//            pCInputEdit.setVisibility(View.VISIBLE);
+//
+//        }
+//    }
+//
+//    //set different error message according to the input errors.
+//    public void setPostalCodeError(Editable s) {
+//        if (!isPostalCodeValid(s)) {
+//            postalCodeInput.setError("Only Letters or Digits Are Allowed.");
+//            postalCodeInput.setErrorEnabled(true);
+//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+//
+//        } else if (!isPostalCodeValid(s) && pCInputEdit.length() != 6 && pCInputEdit.length() > 0) {
+//            postalCodeInput.setError("Only Letters or Digits Are Allowed. Zip/Postal Code Too Short.");
+//            postalCodeInput.setErrorEnabled(true);
+//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+//
+//        } else if (pCInputEdit.length() != 6 && pCInputEdit.length() >= 0) {
+//            postalCodeInput.setError("Zip/Postal Code Too Short.");
+//            postalCodeInput.setErrorEnabled(true);
+//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+//        } else {
+//            postalCodeInput.setErrorEnabled(false);
+//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+//
+//        }
+//
+//    }
+//
+//    //check if zip/postal code input contains any not acceptable symbols.
+//    public boolean isPostalCodeValid(Editable s) {
+//        if (s.length() > 0 && !Character.isLetterOrDigit(s.charAt(pCInputEdit.length() - 1))) {
+//            return false;
+//        }
+//        for (int i = 0; i < s.length(); i++) {
+//            if (!Character.isLetterOrDigit(s.charAt(i))) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
+
+    public void setLocationService(int visibility) {
+        if (visibility == 0) {
+            locServiceText.setVisibility(View.GONE);
+        } else {
+            locServiceText.setVisibility(View.VISIBLE);
         }
     }
 
-    //set different error message according to the input errors.
-    public void setPostalCodeError(Editable s){
-            if (!isPostalCodeValid(s)) {
-                postalCodeInput.setError("Only Letters or Digits Are Allowed.");
-                postalCodeInput.setErrorEnabled(true);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-            } else if (!isPostalCodeValid(s) && pCInputEdit.length() != 6 && pCInputEdit.length() > 0) {
-                postalCodeInput.setError("Only Letters or Digits Are Allowed. Zip/Postal Code Too Short.");
-                postalCodeInput.setErrorEnabled(true);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-            } else if (pCInputEdit.length() != 6 && pCInputEdit.length() >=0) {
-                postalCodeInput.setError("Zip/Postal Code Too Short.");
-                postalCodeInput.setErrorEnabled(true);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-            } else {
-                postalCodeInput.setErrorEnabled(false);
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-
-            }
-
-    }
-
-    //check if zip/postal code input contains any not acceptable symbols.
-    public boolean isPostalCodeValid(Editable s){
-        if(s.length()>0&&!Character.isLetterOrDigit(s.charAt(pCInputEdit.length()-1))){return false;}
-        for(int i=0;i<s.length();i++){if(!Character.isLetterOrDigit(s.charAt(i))){return false;}}
-        return true;
-    }
-
-
-    public void setLocationService(int visibility){
-        if(visibility==0){locServiceText.setVisibility(View.GONE);}
-        else {locServiceText.setVisibility(View.VISIBLE);}
-    }
-
-    public void setTypefaceForChosen(TextView chosenTextView){
+    public void setTypefaceForChosen(TextView chosenTextView) {
         chosenTextView.setTextColor(getResources().getColor(R.color.ColorPrimary));
         chosenTextView.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
-    public void setTextStyle(TextView a, TextView b, TextView c){
+    public void setTextStyle(TextView a, TextView b, TextView c) {
         a.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
         b.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
         c.setTextColor(getResources().getColor(R.color.primary_dark_material_light));
@@ -518,24 +535,26 @@ if(userdata.mylocation.Longitude!=0&& userdata.mylocation.latitude!=0) {
         c.setTypeface(Typeface.DEFAULT);
 
     }
-int radius;
-    public void getRadiusChanged(){
-        switch (seekBar.getProgress()){
+
+    int radius;
+
+    public void getRadiusChanged() {
+        switch (seekBar.getProgress()) {
             case 0:
                 locationRad = "25Km)";
-                radius=25;
+                radius = 25;
                 break;
             case 1:
                 locationRad = "50Km)";
-                radius=50;
+                radius = 50;
                 break;
             case 2:
                 locationRad = "75Km)";
-                radius=75;
+                radius = 75;
                 break;
             case 3:
                 locationRad = "100Km)";
-                radius=100;
+                radius = 100;
                 break;
         }
     }
@@ -548,11 +567,11 @@ int radius;
 
             ArrayList<MarketPlaceData> mData;
 
-            if(!mCallback.hasTempData()) {
+            if (!mCallback.hasTempData()) {
                 mData = MarketPlaceData.generateSampleData(getActivity().getApplicationContext());
                 mCallback.setTempDataStatus(true);
-            }else{
-                mData=mCallback.getTempData();
+            } else {
+                mData = mCallback.getTempData();
 
             }
 
@@ -573,21 +592,16 @@ int radius;
             */
 
 
-
-
             //old
 
 
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-            stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(),result,listingItemClickListener);
+            stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(), result, listingItemClickListener);
             mRecyclerView.setAdapter(stagAdapter2);
             mSwipeRefreshLayoutEmpty.setRefreshing(false);
             mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
 
             mCallback.storeTempMarketPlaceData(result);
-
-
-
 
 
         }
@@ -637,6 +651,7 @@ int radius;
                 }
             });
         }
+
         @Override
         protected void onProgressUpdate(String... text) {
         }
@@ -645,8 +660,11 @@ int radius;
     public interface TempMarketPlaceDataCallBack {
 
         void storeTempMarketPlaceData(ArrayList<MarketPlaceData> tempData);
+
         void setTempDataStatus(boolean status);
+
         boolean hasTempData();
+
         ArrayList<MarketPlaceData> getTempData();
 
     }

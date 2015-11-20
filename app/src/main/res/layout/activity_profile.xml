@@ -5,29 +5,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/profile_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_profile_edit"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/profile_edit_background"
-        />
 
-    <LinearLayout
+    <FrameLayout
         android:orientation="vertical"
         android:id="@+id/profile_user_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="16dp"
         >
+        <LinearLayout
+            android:id="@+id/overlayProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/blackTransparent"
+            android:alpha="0.2"
+            android:orientation="vertical" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical" >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_userImg_placeholder"
@@ -35,7 +33,7 @@
             android:layout_height="80dp"
             android:src="@drawable/sample_img"
             app:border_width="5dp"
-            app:border_color="@color/darkgrey"
+            app:border_color="@color/white"
             android:layout_marginBottom="8dp"
 
             />
@@ -46,6 +44,7 @@
             android:layout_height="wrap_content"
             android:text="Username"
             android:textSize="20sp"
+            android:textColor="@color/white"
             style="@style/OpenSansRegular"
             />
 
@@ -55,6 +54,7 @@
             android:layout_height="wrap_content"
             android:text="user since 2015"
             android:textSize="12sp"
+            android:textColor="@color/white"
             android:layout_marginBottom="16dp"
             style="@style/OpenSansLight"
             />
@@ -66,7 +66,21 @@
             android:numStars="5"
             android:progressDrawable="@drawable/ratingbar"
             />
-    </LinearLayout>
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/profile_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_profile_edit"
+            android:layout_gravity="top|right"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/profile_edit_background"
+            />
+
+    </FrameLayout>
 
     <Model.SlidingTabLayout
         android:id="@+id/profile_sliding_tabs"

@@ -2,9 +2,7 @@ package com.sinapp.sharathsind.tradepost;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 
-import Model.CustomLinearLayoutManager;
 import Model.EmptyRecyclerView;
 import Model.MyOffersDetailsAdapter;
 
@@ -22,13 +20,13 @@ public class MyOffersItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_offers_details);
 
 
-        mRecyclerView = (EmptyRecyclerView)findViewById(R.id.myOffers_details_rcv);
-        LinearLayoutManager mLayoutManager = new CustomLinearLayoutManager(this);
-
-        //adapter
-        myOffersDetailsAdapter = new MyOffersDetailsAdapter();
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(myOffersDetailsAdapter);
+//        mRecyclerView = (EmptyRecyclerView)findViewById(R.id.myOffers_details_rcv);
+//        LinearLayoutManager mLayoutManager = new CustomLinearLayoutManager(this);
+//
+//        //adapter
+//        myOffersDetailsAdapter = new MyOffersDetailsAdapter();
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        mRecyclerView.setAdapter(myOffersDetailsAdapter);
 
     }
 
