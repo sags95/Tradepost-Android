@@ -61,6 +61,7 @@ String items[];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
      setContentView(R.layout.notification_offer);
 Intent i=getIntent();
@@ -69,7 +70,17 @@ Intent i=getIntent();
         obje.addProperty("offerid",offerid);
         SoapPrimitive soapPrimitive1=MainWebService.getretryMsg(obje,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/sendOfferDeclineRequest",0);
 int status=Integer.parseInt(soapPrimitive1.getValue().toString());
+if(status==1)
+{
+    Intent intent=new Intent(this,ChatFragment.class);
+    intent.putExtra("offerid",offerid);
+    //intent.putExtra("userid",)
+    startActivity(intent);
+}
+        else if(status==2)
+{
 
+}
         String itemname=" ";
         if(offerid>0)
         {
@@ -164,6 +175,8 @@ CircleImageView acept= (CircleImageView) findViewById(R.id.noti_offer_accept);
                     db.execSQL("update offers set status =1 where offerid =" + offerid);
 
                     db.execSQL("create table m" + offerid + "(msgid int(10),msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10) )");
+
+
                    c.close();
                     db.close();
                     Intent i=new Intent(notificationoffertesting.this, ChatFragment.class);
@@ -208,7 +221,7 @@ CircleImageView acept= (CircleImageView) findViewById(R.id.noti_offer_accept);
      //   userImgPlaceholder.setImageBitmap(userImg);
         usernamePlaceholder.setText(username);
 
-        if(itemOfferCount==0){
+        if(itemOfferCount>1){
             itemOfferPlaceholder.setText(singleItem);
         }else{
             itemOfferPlaceholder.setText(multiItems);

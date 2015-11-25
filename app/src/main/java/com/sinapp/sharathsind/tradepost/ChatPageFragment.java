@@ -17,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.internal.CollectionMapper;
+
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
@@ -25,7 +27,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import Model.ChatPageAdapter;
@@ -207,7 +213,6 @@ public class ChatPageFragment extends Fragment {
                 int getuser = userdata.userid != userid ? userid : ruserid;
                 int offerid=cv.getInt(cv.getColumnIndex("Offerid"));
                 offers.add(offerid);
-              //  int so=userid==Constants.userid?userid:ruserid;
                 SoapObject o = new SoapObject("http://webser/", "getItemnameU");
                 o.addProperty("userid", getuser);
                 this.userid.add(getuser);
@@ -222,12 +227,30 @@ public class ChatPageFragment extends Fragment {
                 }
                     this.usernames.add(username);
                 Bitmap d =  getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png");
-                items.add(new ChatPageItem(username, itemname, d,offerid));
+              ChatPageItem chatPageItem=new ChatPageItem(username, itemname, d,offerid);
+                Cursor cursor=db.rawQuery("select * from m"+offerid+" ORDER BY msgid DESC LIMIT 1",null);
+                //  int so=userid==Constants.userid?userid:ruserid;
+cursor.moveToFirst();
+                if(cursor.getCount()>0)
+                {
+                    try {
+                        Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                                .parse(cursor.getString(cursor.getColumnIndex("sent")));
+                        chatPageItem.sent=date;
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                items.add(chatPageItem);
+
                 cv.moveToNext();
             }
         }
         cv.close();
         db.close();
+        Collections.sort(items);
         return items;
     }
     private void applyLinearLayoutManager(){

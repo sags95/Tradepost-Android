@@ -1,6 +1,8 @@
 package com.sinapp.sharathsind.tradepost;
 
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.ksoap2.serialization.KvmSerializable;
+import org.ksoap2.serialization.SoapObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +30,7 @@ import Model.NotificationAdapter;
 import Model.NotificationItem;
 import Model.RecyclerViewOnClickListener;
 import datamanager.userdata;
+import webservices.MainWebService;
 
 /**
  * Created by HenryChiang on 15-07-01.
@@ -93,6 +99,15 @@ public class NotificationFragment extends Fragment {
                         Log.d("viewtype",view.getTag().toString());
                         if(view.getTag().toString().equals("0")){
 
+                         int offerid= offer.get(position);
+                            SoapObject obje1 =new SoapObject("http://webser/","getOffer");
+                            obje1.addProperty("offerid",offerid);
+                            KvmSerializable s= MainWebService.getMsg2(obje1, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getOfferRequest");
+                            Intent i=new Intent(getActivity(),notificationoffertesting.class);
+                            i.putExtra("offerid",offerid);
+                            i.putExtra("itemname",(((SoapObject)s).getProperty("itemname")).toString());
+                           startActivity(i);
+
                         }
                     }
                 })
@@ -103,9 +118,10 @@ public class NotificationFragment extends Fragment {
 
         return rootView;
     }
-
+ArrayList<Integer> offer;
     public List<NotificationItem> addItem(String userName, int viewType) {
         List<NotificationItem> items = new ArrayList<NotificationItem>();
+        offer=new ArrayList<>();
         SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
     //    SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
         Cursor c=db.rawQuery("select * from notifications",null);
@@ -114,6 +130,7 @@ public class NotificationFragment extends Fragment {
         {
             String username=c.getString(c.getColumnIndex("msg"));
        int type=c.getInt(c.getColumnIndex("type"));
+            offer.add(c.getInt(c.getColumnIndex("offerid")));
 items.add(new NotificationItem(username,type));
 c.moveToNext();
         }

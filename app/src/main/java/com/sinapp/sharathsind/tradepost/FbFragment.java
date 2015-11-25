@@ -115,7 +115,7 @@ public class FbFragment extends Fragment {
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.activity_first_time, container, false);
         LoginButton authButton = (LoginButton) view.findViewById(R.id.fb_sign_in_btn);
-        authButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+        authButton.setReadPermissions(Arrays.asList("public_profile", "email","publish_actions"));
         b = CallbackManager.Factory.create();
         authButton.registerCallback(b, new FacebookCallback<LoginResult>() {
             @Override

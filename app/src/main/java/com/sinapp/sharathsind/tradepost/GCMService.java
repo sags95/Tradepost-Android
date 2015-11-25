@@ -18,6 +18,8 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.gcm.GcmListenerService;
 
 import com.google.android.gms.gcm.GcmReceiver;
@@ -41,7 +43,18 @@ public class GCMService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
+        TradePost application = (TradePost) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
 
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);                                         // Context of the application.
+
+// Make myHandler the new default uncaught exception handler.
+        Thread.setDefaultUncaughtExceptionHandler(myHandler);
 String message=data.getString("type");
 switch (message)
 {
@@ -189,7 +202,7 @@ if(!b)
 {
     Intent i=new Intent(this,notificationoffertesting.class);
     i.putExtra("offerid",offerid);
-    i.putExtra("itemname",(((SoapObject)s).getProperty("itemname")).toString());
+    i.putExtra("itemname", (((SoapObject) s).getProperty("itemname")).toString());
     PendingIntent resultPendingIntent =
             PendingIntent.getActivity(
                     this,

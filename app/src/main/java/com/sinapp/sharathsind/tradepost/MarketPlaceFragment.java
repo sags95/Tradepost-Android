@@ -22,6 +22,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
@@ -172,7 +173,14 @@ public class MarketPlaceFragment extends Fragment {
         });
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recylcer_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addOnScrollListener(new HideScrollListener(getContext()) {
+        LinearLayoutManager d= new LinearLayoutManager(this.getActivity());
+        mRecyclerView.setLayoutManager(d);
+        mRecyclerView.addOnScrollListener(new HideScrollListener(getContext(),d) {
+            @Override
+            public void onLoadMore(int current_page) {
+
+            }
+
             @Override
             public void onHide() {
                 includeView.animate().translationY(-includeView.getHeight()).setInterpolator(new AccelerateInterpolator(2));

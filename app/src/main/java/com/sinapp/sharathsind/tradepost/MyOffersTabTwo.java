@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
+import Model.RecyclerViewOnClickListener;
 import datamanager.ItemResult;
 import datamanager.userdata;
 import webservices.ItemWebService;
@@ -88,6 +90,7 @@ public class MyOffersTabTwo extends Fragment {
             }
         });
 
+
         options= new BitmapFactory.Options();
         options.inJustDecodeBounds =true;
         BitmapFactory.decodeResource(getResources(),R.drawable.sample_img,options);
@@ -101,6 +104,19 @@ public class MyOffersTabTwo extends Fragment {
                         1);
         */
         final List<MyOffersItem> myOffersItems = addItem();
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        int i=myOffersItems.get(position).getItemid();
+                        //       int i=Integer.parseInt(view.findViewById(R.id.myOffers_itemTitle).getTag().toString());
+                        Intent iny=new Intent(getActivity(),MyOffersItemDetailActivity.class);
+                        iny.putExtra("itemid",i);
+                        iny.putExtra("f","two");
+                        getActivity().startActivity(iny);
+                    }
+                })
+        );
         mMyOffersAdapter = new MyOffersAdapter(myOffersItems);
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
@@ -129,7 +145,7 @@ public class MyOffersTabTwo extends Fragment {
             c1.moveToFirst();
             count=c1.getInt(0);
             MyOffersItem item=new MyOffersItem(ir.item.getItemname(),bitmap,count);
-
+item.setItemid(itemid);
             c.moveToNext();
             items.add(item);
         }

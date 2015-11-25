@@ -1,5 +1,6 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class MyOffersFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_myoffers, container, false);
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new OffersViewPagerAdapter(getFragmentManager(),Titles, numbOfTabs, new MyOffersTabOne(), new MyOffersTabTwo(),myOffersItemClickListener);
+        adapter =  new OffersViewPagerAdapter(getFragmentManager(),Titles, numbOfTabs, new MyOffersTabOne(myOffersItemClickListener), new MyOffersTabTwo(),myOffersItemClickListener);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager)rootView.findViewById(R.id.offers_viewpager);
@@ -83,6 +84,7 @@ public class MyOffersFragment extends Fragment {
     public View.OnClickListener myOffersItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
 
 
         }

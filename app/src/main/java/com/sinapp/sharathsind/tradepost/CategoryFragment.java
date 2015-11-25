@@ -70,7 +70,7 @@ public class CategoryFragment extends Fragment {
 
         mRecyclerView = (RecyclerView)rootView.findViewById(R.id.category_recyclerview);
 
-        mCategoryAdapter = new CategoryAdapter(categories,imgRes);
+        mCategoryAdapter = new CategoryAdapter(categories,imgRes,getActivity());
         mRecyclerView.setHasFixedSize(true);
         applyGridLayoutManager();
 

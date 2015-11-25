@@ -1,5 +1,6 @@
 package Model;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.sinapp.sharathsind.tradepost.Constants;
 import com.sinapp.sharathsind.tradepost.ProfileActivity;
 import com.sinapp.sharathsind.tradepost.R;
+import com.sinapp.sharathsind.tradepost.Search;
 import com.sinapp.sharathsind.tradepost.SingleListingActivity;
 import com.squareup.picasso.Picasso;
 
@@ -417,7 +419,10 @@ static boolean unfav,fav;
         @Override
         public void onClick(View v) {
             TextView temp = (TextView)v;
-            Toast.makeText(context, temp.getText().toString(), Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(context, Search.class);
+            intent.putExtra("type","tags");
+            intent.putExtra(SearchManager.QUERY,temp.getText().toString());
+            context.startActivity(intent);
         }
     };
 }

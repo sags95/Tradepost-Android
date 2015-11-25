@@ -29,6 +29,7 @@ import Model.DividerItemDecoration;
 import Model.EmptyRecyclerView;
 import Model.MyOffersAdapter;
 import Model.MyOffersItem;
+import Model.RecyclerViewOnClickListener;
 import datamanager.ItemResult;
 import datamanager.userdata;
 import webservices.ItemWebService;
@@ -106,7 +107,19 @@ public class MyOffersTabOne extends Fragment {
 
         final List<MyOffersItem> myOffersItems = addItem();
 
-
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        int i=myOffersItems.get(position).getItemid();
+                                //       int i=Integer.parseInt(view.findViewById(R.id.myOffers_itemTitle).getTag().toString());
+                                Intent iny=new Intent(getActivity(),MyOffersItemDetailActivity.class);
+                        iny.putExtra("itemid",i);
+                        iny.putExtra("f","one");
+                        getActivity().startActivity(iny);
+                    }
+                })
+        );
 
         mMyOffersAdapter = new MyOffersAdapter(myOffersItems,mItemClick);
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
@@ -126,7 +139,7 @@ public class MyOffersTabOne extends Fragment {
         c.moveToFirst();
         while(!c.isAfterLast())
         {
-            int itemid=c.getInt(00);
+            int itemid=c.getInt(0);
             ItemResult ir= ItemWebService.getItem(itemid);
             Bitmap bitmap=getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/items/"+itemid+"/0.png");
 
@@ -136,6 +149,7 @@ public class MyOffersTabOne extends Fragment {
             c1.moveToFirst();
             count=c1.getInt(0);
             MyOffersItem item=new MyOffersItem(ir.item.getItemname(),bitmap,count);
+            item.setItemid(itemid);
 items.add(item);
             c.moveToNext();
         }

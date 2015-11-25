@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import com.sinapp.sharathsind.tradepost.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -52,7 +55,23 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
         viewHolder.mTextViewItemName.setText(mData.get(i).getTitle());
       viewHolder.mImageViewItemImg.setImageBitmap(mData.get(i).getDrawable());
  viewHolder.user.setText(mData.get(i).getDetails());
-    }
+        if (mData.get(i).sent!=null) {
+            DateFormat fmt = new SimpleDateFormat("MMM dd,yyyy");
+
+            viewHolder.date.setText(fmt.format(mData.get(i).sent));
+            fmt = new SimpleDateFormat("h:mm a");
+
+            viewHolder.time.setText(fmt.format(mData.get(i).sent));
+        }
+        else{
+            DateFormat fmt = new SimpleDateFormat("MMM dd,yyyy");
+
+            viewHolder.date.setText(fmt.format(Calendar.getInstance().getTime()));
+            fmt = new SimpleDateFormat("h:mm a");
+
+            viewHolder.time.setText(fmt.format(Calendar.getInstance().getTime()));
+        }
+        }
 
     @Override
     public int getItemCount() {
@@ -62,7 +81,7 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // each data item is just a string in this case
         public TextView mTextViewItemName;
-        public CustomTextView user;
+        public CustomTextView user,date,time;
         public ImageView mImageViewItemImg;
 
 
@@ -71,6 +90,8 @@ public class ChatPageAdapter extends RecyclerView.Adapter<ChatPageAdapter.ViewHo
             mTextViewItemName = (TextView) itemView.findViewById(R.id.chat_item_title);
             mImageViewItemImg = (ImageView) itemView.findViewById(R.id.chat_item_img);
             user=(CustomTextView)itemView.findViewById(R.id.chat_username_placeholder);
+            date=(CustomTextView)itemView.findViewById(R.id.chat_date_date);
+            time=(CustomTextView)itemView.findViewById(R.id.chat_date_time);
 
         }
     }

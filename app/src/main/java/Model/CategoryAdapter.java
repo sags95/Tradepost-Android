@@ -1,5 +1,8 @@
 package Model;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sinapp.sharathsind.tradepost.R;
+import com.sinapp.sharathsind.tradepost.Search;
 
 import java.util.ArrayList;
 
@@ -20,10 +24,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     private String[] mData;
     private int[] imgRes;
-
-    public CategoryAdapter(String[] mData, int[] imgRes) {
+static Context context;
+    public CategoryAdapter(String[] mData, int[] imgRes,Context  c) {
         this.mData = mData;
         this.imgRes = imgRes;
+    context=c;
     }
 
     @Override
@@ -41,7 +46,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         final int currentPos = i;
         viewHolder.categoryTitle.setText(mData[i]);
         viewHolder.categoryImg.setImageResource(imgRes[i]);
-
+        final String t=viewHolder.categoryTitle.getText().toString();
+        viewHolder.categoryImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Search.class);
+                intent.putExtra("type", "cat");
+                intent.putExtra(SearchManager.QUERY,t );
+                context.startActivity(intent);
+            }
+        });
 
 
     }
@@ -60,6 +74,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             super(itemView);
             categoryTitle = (TextView) itemView.findViewById(R.id.category_text);
             categoryImg = (ImageView) itemView.findViewById(R.id.category_img);
+
 
         }
     }

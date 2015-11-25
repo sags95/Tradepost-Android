@@ -16,6 +16,7 @@ import com.sinapp.sharathsind.tradepost.SingleListingActivity;
 
 import org.apmem.tools.layouts.FlowLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +40,7 @@ public class MyOffersAdapter extends RecyclerView.Adapter<MyOffersAdapter.ViewHo
     public MyOffersAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v=null;
         ViewHolder vh;
+
         switch (viewType) {
             case 1:
                 v = LayoutInflater.from(viewGroup.getContext())
@@ -78,7 +80,7 @@ public class MyOffersAdapter extends RecyclerView.Adapter<MyOffersAdapter.ViewHo
         viewHolder.mItemTitle.setText(mData.get(i).getOffersItemTitle());
         viewHolder.mItemImg.setImageBitmap(mData.get(i).getOffersItemImg());
         viewHolder.mOffersCount.setText(String.valueOf(mData.get(i).getOffersCount()));
-
+       viewHolder.mItemTitle.setTag(String.valueOf(mData.get(i).getItemid()));
         final int viewType=getItemViewType(i);
 
         switch (viewType) {

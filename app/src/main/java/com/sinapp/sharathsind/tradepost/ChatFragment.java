@@ -48,8 +48,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
+import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
@@ -77,6 +81,7 @@ import webservices.MainWebService;
 public class ChatFragment extends Activity {
 
     private Uri mImageUri;
+    private Tracker mTracker;
 
     public void updatemsg(MessageClass m)
 {
@@ -128,17 +133,87 @@ public class ChatFragment extends Activity {
             // permissions this app might request
         }
     }
+    String itemname;
+    public String getOffer(int offerid,int getuser)
+    {
+        String itemname=null;
+        Cursor c=Constants.db.rawQuery("select * from offeritems where offerid="+ offerid,null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) {
+            int itemid=c.getInt(c.getColumnIndex("itemid"));
+
+            SoapObject o = new SoapObject("http://webser/", "getItemnameU");
+            o.addProperty("userid", getuser);
+            //this.userid.add(getuser);
+
+            o.addProperty("itemid",itemid);
+            KvmSerializable s = MainWebService.getMsg2(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest");
+            SoapObject s1=(SoapObject)s;
+            String item1 = null,username = null;
+            if(s1!=null) {
+                username = s1.getProperty(0).toString();
+                item1 = s1.getProperty(1).toString();
+            }
+            if(c.isFirst())
+            {
+                itemname=item1;
+            }
+            else{
+                itemname+=","+itemname;
+            }
+            c.moveToNext();
+        }
+        c=Constants.db.rawQuery("select * from offeradditionalitems where offerid="+ offerid,null);
+        c.moveToFirst();
+        if(c.getCount()>0)
+        {
+            itemname=","+c.getString(c.getColumnIndex("ItemName"));
+        }
+
+
+        return itemname;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_chat);
+        TradePost application = (TradePost) getApplication();
+        mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
+
+// Build and send exception.
+Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);                                         // Context of the application.
+
+// Make myHandler the new default uncaught exception handler.
+        Thread.setDefaultUncaughtExceptionHandler(myHandler);
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
         Intent i=getIntent();
         intent=i;
         offerid=i.getIntExtra("offerid",0);
         userid=i.getIntExtra("userid",0);
         username=i.getStringExtra("username");
+            Cursor cv=Constants.db.rawQuery("select * from offers where offerid="+offerid,null);
+        cv.moveToFirst();
+            int userid = cv.getInt(cv.getColumnIndex("recieveduserid"));
+            int ruserid = cv.getInt(cv.getColumnIndex("userid"));
+            int itemid = cv.getInt(cv.getColumnIndex("Itemid"));
+        int cash= cv.getInt(cv.getColumnIndex("cash"));
+            int getuser = userdata.userid != userid ? userid : ruserid;
+            SoapObject o = new SoapObject("http://webser/", "getItemnameU");
+            o.addProperty("userid", getuser);
+            o.addProperty("itemid",itemid);
+            KvmSerializable s = MainWebService.getMsg2(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest");
+            SoapObject s1=(SoapObject)s;
+            if(s1!=null) {
+                username = s1.getProperty(0).toString();
+                itemname=s1.getProperty(1).toString();
+            }
+
+
         setadapter(false);
         IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
         MessageReceiver m=new MessageReceiver();
@@ -148,13 +223,29 @@ public class ChatFragment extends Activity {
         View header = findViewById(R.id.chat_header);
         headerDatails = header.findViewById(R.id.chat_header_detail_bar);
         CircleImageView im= (CircleImageView) headerDatails.findViewById(R.id.chat_header_userImg_placeholder);
-        Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+userid+"/profile.png");
+        Uri url1 = Uri.parse("http://73.37.238.238:8084/TDserverWeb/images/"+getuser+"/profile.png");
         Picasso.with(this)
                 .load(url1)
                 .into(im);
+        CustomTextView item=(CustomTextView)header.findViewById(R.id.item);
         LinearLayout ll=(LinearLayout)headerDatails.findViewById(R.id.chat_header_trade_detail);
         CustomTextView user=(CustomTextView)ll.findViewById(R.id.chat_header_userName_placeholder);
+        CustomTextView offertext=(CustomTextView) ll.findViewById(R.id.chat_header_itemOffer_placeholder);
+        CustomTextView extraCash=(CustomTextView)ll.findViewById(R.id.chat_header_extraCash_Placeholder);
         user.setText(username);
+        if(ruserid==Constants.userid){
+
+offertext.setText(getOffer(offerid,getuser));
+extraCash.setText("$"+cash+" CAD");
+
+item.setText(itemname);
+        }
+        else{
+extraCash.setText("$0 CAD");
+offertext.setText(itemname);
+ item.setText(getOffer(offerid,getuser)+",$"+cash+" CAD");
+
+        }
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

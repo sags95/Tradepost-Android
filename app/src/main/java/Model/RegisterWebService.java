@@ -90,6 +90,7 @@ private  static final String mname="gcmwebservice";
             SoapPrimitive s1=MainWebService.getretryMsg(request,URL,SOAP_ACTION1,0);
             String sj="h";
             getItems();
+            getnot();
     //  long l=   db.insert("login",null,cv);
 //long k=l;
         }
@@ -104,54 +105,54 @@ signUp(username, email, s, fb, profilepic, b, db);
         return cv;
     }
    public  static void getItems()
-   {
+   {try {
        SoapObject object = new SoapObject("http://webser/", "getuseritems");
        //SoapObject object = new SoapObject("http://webser/", "getuseritems");
-       object.addProperty("userid",  userdata.userid);
+       object.addProperty("userid", userdata.userid);
        Vector object1 = MainWebService.getMsg1(object, "http://73.37.238.238:8084/TDserverWeb/Search?wsdl", "http://webser/Search/getuseritemsRequest");
-       userdata.items=new ArrayList<Integer>();
+       userdata.items = new ArrayList<Integer>();
 
 
-       if(object1!=null) {
+       if (object1 != null) {
            for (Object i : object1) {
                userdata.items.add(Integer.parseInt(((SoapPrimitive) i).getValue().toString()));
            }
        }
-       userdata.i=new ArrayList<ItemResult>();
+       userdata.i = new ArrayList<ItemResult>();
 
-       for(int i :userdata.items) {
+       for (int i : userdata.items) {
 
-           SoapObject  obje=new SoapObject("http://webser/","getItembyId");
+           SoapObject obje = new SoapObject("http://webser/", "getItembyId");
            obje.addProperty("itemid", i);
-           KvmSerializable result1= MainWebService.getMsg2(obje,"http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
-                   ,"http://webser/GetItems/getItembyIdRequest");
+           KvmSerializable result1 = MainWebService.getMsg2(obje, "http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
+                   , "http://webser/GetItems/getItembyIdRequest");
 
-           ItemResult ir= new ItemResult();
-           ir.item=new Item();
+           ItemResult ir = new ItemResult();
+           ir.item = new Item();
 
-           SoapObject object12=(SoapObject)result1.getProperty(0);
+           SoapObject object12 = (SoapObject) result1.getProperty(0);
            //for(int u=0;u<object.getPropertyCount())
            ir.item.set(object12);
            //SoapObject o7=(SoapObject)result1;
            //Object j=       o.getProperty("images");
-           int i1=result1.getPropertyCount();
-           ir.images=new String[i1-1];
+           int i1 = result1.getPropertyCount();
+           ir.images = new String[i1 - 1];
 
-           for(int u1=1;u1<i1;u1++) {
-               ir.images[u1-1]=  result1.getProperty(u1).toString();
+           for (int u1 = 1; u1 < i1; u1++) {
+               ir.images[u1 - 1] = result1.getProperty(u1).toString();
 
            }
-           obje=new SoapObject("http://webser/","searchbyint");
+           obje = new SoapObject("http://webser/", "searchbyint");
            obje.addProperty("name", i);
-           Vector result2= MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/NewWebService?wsdl"
+           Vector result2 = MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/NewWebService?wsdl"
                    , "http://webser/NewWebService/searchbyintRequest");
-           if(result2!=null) {
+           if (result2 != null) {
 
-               int index=0;
-               ir.tags=new String[result2.size()];
+               int index = 0;
+               ir.tags = new String[result2.size()];
 
-               for (Object o:result2 ) {
-                   ir.tags[index] = ((SoapPrimitive)o).getValue().toString();
+               for (Object o : result2) {
+                   ir.tags[index] = ((SoapPrimitive) o).getValue().toString();
                    index++;
 
                }
@@ -160,21 +161,22 @@ signUp(username, email, s, fb, profilepic, b, db);
            userdata.i.add(ir);
 
 
-
        }
 
        FavouriteWebService.getfavouInts();
-       int offers[]=getuserOffer();
-if(offers!=null)
-{
-    for(int i: offers)
-    {
-        setOffer(i);
-    }
+       int offers[] = getuserOffer();
+       if (offers != null) {
+           for (int i : offers) {
+               setOffer(i);
+           }
 
 
+       }
+   }
+   catch (Exception e)
+   {
 
-}
+   }
    }
 public  static void setOffer(int offerid)
 {SoapObject obje =new SoapObject("http://webser/","getItemsOffer");

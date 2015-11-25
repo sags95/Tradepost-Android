@@ -19,6 +19,8 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
+import webservices.FavouriteWebService;
+
 /**
  * Created by HenryChiang on 15-08-11.
  */
@@ -89,6 +91,14 @@ FirstTime.mGoogleApiClient.disconnect();
 
 
                     getActivity().finish();
+                    return false;
+                }
+            });
+            Preference p= (Preference) findPreference("Invite Friend");
+            p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    FavouriteWebService.invite(getActivity());
                     return false;
                 }
             });

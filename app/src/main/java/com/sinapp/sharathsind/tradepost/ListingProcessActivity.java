@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,14 +26,17 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -188,6 +192,39 @@ public ArrayList<Bitmap>bits;
 
         //section 5
         tagInput = (CustomEditText) findViewById(R.id.section5_edit);
+        tagInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == 6) {
+                    if (tagInput.getText().length() > 0 && tagFlowLayout.getChildCount() < MAX_NUM_TAGS) {
+                        singleTagLayout = (LinearLayout) View.inflate(getApplicationContext(), R.layout.single_tag, null);
+                        singleTagLayout.setId(TAGS_COUNT);
+                        //Button for removing Tag
+                        ImageView cancelTag = (ImageView)singleTagLayout.findViewById(R.id.tag_cancel_btn);
+                        cancelTag.setId(TAGS_COUNT);
+                        cancelTag.setOnClickListener(tagCancelButtonListener);
+
+                        //Tag Name
+                        CustomTextView tagName = (CustomTextView) singleTagLayout.findViewById(R.id.tag_name);
+                        //tagName.setId(TAGS_COUNT);
+                        tagName.setText(tagInput.getText().toString().trim());
+                        //tags.add(tagInput.getText().toString().trim());
+                        tagName.setTag(tagInput.getText().toString());
+
+                        tagInput.setText("");
+                        TAGS_COUNT++;
+                        tagFlowLayout.addView(singleTagLayout);
+                        tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
+                        Log.d("Child Added", "Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
+
+                    }        //  sendMessage();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+        tagInput.setOnKeyListener(y);
         ImageView addTags = (ImageView) findViewById(R.id.section5_plus);
         addTags.setOnClickListener(addTagButtonListener);
         tagsCount = (CustomTextView)findViewById(R.id.section5_tag_count);
@@ -307,6 +344,7 @@ String result;
                        Intent i = new Intent(getApplicationContext(),ListingProcessDoneActivity.class);
                        if(s.equals("success")){
                            i.putExtra("isSuccess", true);
+                           i.putExtra("im",bits.get(0));
                            startActivity(i);
                            finish();
 
@@ -402,7 +440,42 @@ i++;
         object.addProperty("tag",im);
         return     MainWebService.getMsg(object, "http://73.37.238.238:8084/TDserverWeb/AddItems?wsdl", "http://webser/AddItems/addtagRequest");
     }
+public View.OnKeyListener y=new View.OnKeyListener() {
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() ==       KeyEvent.KEYCODE_ENTER)
+        {
+            if (tagInput.getText().length() > 0 && tagFlowLayout.getChildCount() < MAX_NUM_TAGS) {
+                singleTagLayout = (LinearLayout) View.inflate(getApplicationContext(), R.layout.single_tag, null);
+                singleTagLayout.setId(TAGS_COUNT);
+                //Button for removing Tag
+                ImageView cancelTag = (ImageView)singleTagLayout.findViewById(R.id.tag_cancel_btn);
+                cancelTag.setId(TAGS_COUNT);
+                cancelTag.setOnClickListener(tagCancelButtonListener);
 
+                //Tag Name
+                CustomTextView tagName = (CustomTextView) singleTagLayout.findViewById(R.id.tag_name);
+                //tagName.setId(TAGS_COUNT);
+                tagName.setText(tagInput.getText().toString().trim());
+                //tags.add(tagInput.getText().toString().trim());
+                tagName.setTag(tagInput.getText().toString());
+
+                tagInput.setText("");
+                TAGS_COUNT++;
+                tagFlowLayout.addView(singleTagLayout);
+                tagsCount.setText(String.valueOf(tagFlowLayout.getChildCount()));
+                Log.d("Child Added", "Add 1, total: " + String.valueOf(tagFlowLayout.getChildCount()));
+
+            }
+
+
+            return false;
+        }
+
+        return false;
+    }
+};
     public View.OnClickListener addTagButtonListener = new View.OnClickListener() {
 
         @Override
@@ -532,12 +605,35 @@ i++;
             scale *= 2;
         options.inSampleSize = scale;
         options.inJustDecodeBounds = false;
-        bm =          BitmapFactory.decodeFile(mImageUri.getPath(), options);;
+
+        bm =          BitmapFactory.decodeFile(mImageUri.getPath(), options);
+        ExifInterface ei = null;
+        try {
+            ei = new ExifInterface(mImageUri.getPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch(orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+         bm=       RotateBitmap(bm, 90);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+          bm=      RotateBitmap(bm, 180);
+                break;
+            // etc.
+        }
       //  setImage(bm);
 
         return bm;
     }
-
+    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
 
     public View.OnClickListener galleryBtnListener = new View.OnClickListener() {
         @Override

@@ -26,6 +26,7 @@ import Model.MyOffersItem;
 import Model.SwipeableRecyclerViewTouchListener;
 import datamanager.ItemResult;
 import datamanager.userdata;
+import webservices.FavouriteWebService;
 import webservices.ItemWebService;
 
 /**
@@ -121,11 +122,17 @@ public class MyFavoriteFragment extends Fragment {
                             public boolean canSwipe(int position) {
                                 return true;
                             }
-
+public void remove( int id){
+    Cursor c=Constants.db.rawQuery("select * from fav where itemid="+id,null);
+    c.moveToFirst();
+    FavouriteWebService.removefavouInts(c.getInt(c.getColumnIndex("id")));
+}
                             @Override
                             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
+                                  MyFavoriteItem item=  myItems.get(position);
                                     myItems.remove(position);
+                                    remove(item.getIr().item.getItemid());
                                     myFavoriteAdapter.notifyItemRemoved(position);
                                 }
                                 myFavoriteAdapter.notifyDataSetChanged();
@@ -134,7 +141,9 @@ public class MyFavoriteFragment extends Fragment {
                             @Override
                             public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
                                 for (int position : reverseSortedPositions) {
+                                    MyFavoriteItem item=  myItems.get(position);
                                     myItems.remove(position);
+                                    remove(item.getIr().item.getItemid());
                                     myFavoriteAdapter.notifyItemRemoved(position);
                                 }
                                 myFavoriteAdapter.notifyDataSetChanged();
@@ -160,13 +169,14 @@ public class MyFavoriteFragment extends Fragment {
 
 
             int count=0;
+if(ir!=null) {
+    MyFavoriteItem item = new MyFavoriteItem(ir);
+    item.setItemTitle(ir.item.getItemname());
+    item.setItemBitmap(bitmap);
+    items.add(item);
 
-            MyFavoriteItem item=new MyFavoriteItem(ir);
-item.setItemTitle(ir.item.getItemname());
- item.setItemBitmap(bitmap);
-        items.add(item);
+}
             c.moveToNext();
-
         }
 
 

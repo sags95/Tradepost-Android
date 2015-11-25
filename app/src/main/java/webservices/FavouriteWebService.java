@@ -42,7 +42,7 @@ if(soapPrimitive!=null) {
 }
         return null;
     }
-    public void invite(Activity a)
+    public static void invite(Activity a)
     {
         String appLinkUrl, previewImageUrl;
 

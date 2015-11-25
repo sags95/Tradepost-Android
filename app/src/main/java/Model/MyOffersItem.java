@@ -11,7 +11,15 @@ public class MyOffersItem {
     private String offersItemTitle;
     private Bitmap offersItemImg;
     private int offersCount;
+public int itemid;
 
+    public int getItemid() {
+        return itemid;
+    }
+
+    public void setItemid(int itemid) {
+        this.itemid = itemid;
+    }
 
     public MyOffersItem(String offersItemTitle,Bitmap offersItemImg, int offersCount){
         this.offersItemTitle = offersItemTitle;

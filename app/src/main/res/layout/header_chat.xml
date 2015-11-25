@@ -22,13 +22,14 @@
         <Model.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="YOUR ITEM: "
+            android:text="ITEM: "
             android:textSize="14sp"
             style="@style/OpenSansSemiBold"
             android:gravity="center"
             />
 
         <Model.CustomTextView
+            android:id="@+id/item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sample Item"
