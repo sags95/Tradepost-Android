@@ -177,7 +177,7 @@ public class ChatFragment extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.fragment_chat);
+
         TradePost application = (TradePost) getApplication();
         mTracker = application.getDefaultTracker();
         //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
@@ -190,6 +190,7 @@ Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
 
 // Make myHandler the new default uncaught exception handler.
         Thread.setDefaultUncaughtExceptionHandler(myHandler);
+        setContentView(R.layout.fragment_chat);
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
         Intent i=getIntent();
         intent=i;
@@ -658,6 +659,7 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
             obje.addProperty("userid",userid);
             obje.addProperty("username", Variables.username);
             SoapPrimitive soapPrimitive1= MainWebService.getretryMsg(obje, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/sendOfferDeclineRequest", 0);
+            c.close();
             db.execSQL("update offers set status =2 where offerid ="+offerid);
             db.close();
             finish();

@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.ArrayList;
 
 import Model.Blur;
@@ -42,6 +45,15 @@ public class ProfileActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        TradePost application = (TradePost) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
+
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);
         GCMService.b = true;
 
         ArrayList<String> profileClicked = getIntent().getStringArrayListExtra("profileDetails");

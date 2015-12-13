@@ -38,7 +38,13 @@ import webservices.MainWebService;
  * Created by sharathsind on 2015-06-01.
  */
 public class GCMService extends GcmListenerService {
+
     public static boolean b;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
@@ -60,23 +66,29 @@ switch (message)
 {
      case "offer":
 int offerid=Integer.parseInt(data.getString("offerid"));
-
+         int notid=Integer.parseInt(data.getString("notid"));
  String msg =data.getString("message");
-         insertNotification(msg,offerid,0);
+
+        long res= insertNotification(msg,offerid,0,notid);
+         if(res!=-1)
 notifyOffer(offerid,msg);
      break;
     case "aoffer":
          offerid=Integer.parseInt(data.getString("offerid"));
+        notid=Integer.parseInt(data.getString("notid"));
          msg =data.getString("message");
-        insertNotification(msg,offerid,1);
+     res=   insertNotification(msg,offerid,1,notid);
+        if(res!=-1)
         aOffer(offerid,msg);
         break;
     case "doffer":
 
         offerid=Integer.parseInt(data.getString("offerid"));
-
+         notid=Integer.parseInt(data.getString("notid"));
         msg =data.getString("message");
-        insertNotification(msg,offerid,2);
+
+        res=insertNotification(msg,offerid,2,notid);
+        if(res!=-1)
         dOffer(offerid,msg);
         break;
     case "mesage":
@@ -168,7 +180,7 @@ else{
     obje1.addProperty("offerid",offerid);
     KvmSerializable s= MainWebService.getMsg2(obje1,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/getOfferRequest");
     ContentValues cv=new ContentValues();
-    SQLiteDatabase db=  Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
+    SQLiteDatabase db=  openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
 
     SoapObject offer= (SoapObject) ((SoapObject)s).getProperty("of");
     cv.put("offerid",offer.getPropertyAsString("offerid"));
@@ -233,7 +245,7 @@ db.close();
         KvmSerializable s= MainWebService.getMsg2(obje1,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/getOfferRequest");
         ContentValues cv=new ContentValues();
         SQLiteDatabase db=  Constants.db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
-        db.execSQL("create table m"+offerid+"(msgid int(10),msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
+        db.execSQL("create table m"+offerid+"(msgid INTEGER PRIMARY KEY,msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
 
         SoapObject offer= (SoapObject) ((SoapObject)s).getProperty("of");
         Cursor c1=db.rawQuery("select * from offers where offerid="+offer.getPropertyAsString("offerid"),null);
@@ -402,7 +414,7 @@ mBuilder.setContentIntent(intent);
         mNotifyMgr.notify(mNotificationId, mBuilder.build());
 
     }
-public   void insertNotification(String msg , int offerid,int type)
+public  long insertNotification(String msg , int offerid,int type,int id)
 {
     SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db",MODE_PRIVATE,null);
 Cursor x=db.rawQuery("SELECT *\n" +
@@ -417,16 +429,16 @@ Cursor x=db.rawQuery("SELECT *\n" +
     cv.put("status", 0);
     cv.put("type", type);
     if(x.getCount()==0)
-        cv.put("notificationid",1);
+        cv.put("notificationid",id);
     else {
         x.moveToFirst();
         int i=x.getInt(x.getColumnIndex("notificationid"));
         i++;
-                cv.put("notificationid", i);
+                cv.put("notificationid", id);
 
     }
         long l=db.insert("notifications",null,cv);
-    l++;
+    return l;
 
 }
 

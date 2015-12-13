@@ -344,6 +344,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             System.out.printf("Bitmap", "returned");
+            connection.disconnect();
             myBitmap = Bitmap.createScaledBitmap(myBitmap, 164, 320, false);//This is only if u want to set the image size.
             return myBitmap;
         } catch (IOException e) {

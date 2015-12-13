@@ -198,7 +198,7 @@ public  static void setOffer(int offerid)
     if(status.equals("1"))
     {
 
-        Constants.db.execSQL("create table IF NOT EXISTS  m" + offerid + "(msgid int(10),msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
+        Constants.db.execSQL("create table IF NOT EXISTS  m" + offerid + "(msgid INTEGER PRIMARY KEY,msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
 SoapObject request=new SoapObject("http://webser/","getMessages");
         request.addProperty("offerid",offerid1);
         Vector soapObject=MainWebService.getMsg1(request,"http://73.37.238.238:8084/TDserverWeb/MessageandNotification?wsdl","http://webser/MessageandNotification/getMessagesRequest");
@@ -347,6 +347,11 @@ return i;
             //  String res = response.ge().toString();
             return response;
         }
+catch (EOFException ex)
+{
+    return  sendDataToServer(itemTitle,descrpition,tags,images,condition,userid,category);
+
+}
         catch (Exception e) {
             e.printStackTrace();
         }

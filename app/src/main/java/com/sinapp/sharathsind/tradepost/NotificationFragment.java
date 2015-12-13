@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -64,13 +65,28 @@ public class NotificationFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+new AsyncTask<List<NotificationItem>,List<NotificationItem>,List<NotificationItem>>()
+        {
+    @Override
+    protected void onPostExecute(List<NotificationItem> notificationItems) {
+        super.onPostExecute(notificationItems);
+        mNotificationAdapter = new NotificationAdapter(notificationItems);
+        mRecyclerView.setAdapter(mNotificationAdapter);
 
 
+    }
 
-        final List<NotificationItem> notiItem = addItem("Longusername", 0);
+    @Override
+    protected List<NotificationItem> doInBackground(List<NotificationItem>... params) {
+
+        return addItem("Longusername", 0);
+    }
+}.execute();
+
+
         //final List<NotificationItem> notiItem = null;
 
-        mNotificationAdapter = new NotificationAdapter(notiItem);
+
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
@@ -96,24 +112,25 @@ public class NotificationFragment extends Fragment {
                 new RecyclerViewOnClickListener(getActivity(), new RecyclerViewOnClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Log.d("viewtype",view.getTag().toString());
-                        if(view.getTag().toString().equals("0")){
+                        Log.d("viewtype", view.getTag().toString());
+                        if (view.getTag().toString().equals("0")) {
 
-                         int offerid= offer.get(position);
-                            SoapObject obje1 =new SoapObject("http://webser/","getOffer");
-                            obje1.addProperty("offerid",offerid);
-                            KvmSerializable s= MainWebService.getMsg2(obje1, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getOfferRequest");
-                            Intent i=new Intent(getActivity(),notificationoffertesting.class);
-                            i.putExtra("offerid",offerid);
-                            i.putExtra("itemname",(((SoapObject)s).getProperty("itemname")).toString());
-                           startActivity(i);
+                            int offerid = offer.get(position);
+                            SoapObject obje1 = new SoapObject("http://webser/", "getOffer");
+                            obje1.addProperty("offerid", offerid);
+                            KvmSerializable s = MainWebService.getMsg2(obje1, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getOfferRequest");
+                            Intent i = new Intent(getActivity(), notificationoffertesting.class);
+                            i.putExtra("offerid", offerid);
+                            i.putExtra("itemname", (((SoapObject) s).getProperty("itemname")).toString());
+                            startActivity(i);
 
                         }
+
                     }
                 })
         );
 
-        mRecyclerView.setAdapter(mNotificationAdapter);
+
         applyLinearLayoutManager();
 
         return rootView;

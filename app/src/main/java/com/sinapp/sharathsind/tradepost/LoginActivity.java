@@ -31,6 +31,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
+
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 
@@ -63,12 +66,21 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        TradePost application = (TradePost) getApplication();
+        mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
 
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();

@@ -22,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
 import org.ksoap2.serialization.SoapObject;
@@ -58,13 +60,23 @@ public class notificationoffertesting extends AppCompatActivity {
 String items[];
     private TextView myItemPlaceholder, usernamePlaceholder, itemOfferPlaceholder, extraCashPlaceholder;
     private CircleImageView userImgPlaceholder;
+    private Tracker mTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
      setContentView(R.layout.notification_offer);
-Intent i=getIntent();
+        TradePost application = (TradePost) getApplication();
+        mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
+
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);
+        Intent i=getIntent();
         final int offerid=i.getIntExtra("offerid", 0);
         SoapObject obje=new SoapObject("http://webser/", "getStatus");
         obje.addProperty("offerid",offerid);

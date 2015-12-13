@@ -428,6 +428,7 @@ public class SingleListingActivity extends AppCompatActivity {
                         Cursor c=Constants.db.rawQuery("select * from fav where itemid="+m.item.item.getItemid(),null);
                         c.moveToFirst();
                         FavouriteWebService.removefavouInts(c.getInt(c.getColumnIndex("id")));
+                        c.close();
                         return null;
                     }
                 }.execute(null,null);

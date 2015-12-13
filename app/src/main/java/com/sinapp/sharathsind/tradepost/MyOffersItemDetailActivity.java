@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +35,20 @@ public class MyOffersItemDetailActivity extends AppCompatActivity {
     private MyOffersDetailsAdapter myOffersDetailsAdapter;
 int offerid;
     ArrayList<Integer>itemid;
+    private Tracker mTracker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TradePost application = (TradePost) getApplication();
+        mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
+
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);
         setContentView(R.layout.activity_my_offers_details);
 
 offerid=getIntent().getIntExtra("itemid",0);

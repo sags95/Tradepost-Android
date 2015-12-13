@@ -46,7 +46,7 @@ if(soapPrimitive!=null) {
     {
         String appLinkUrl, previewImageUrl;
 
-        appLinkUrl = "https://www.mydomain.com/myapplink";
+        appLinkUrl = "http://play.google.com/store/apps/details?id=com.sinapp.sharathsind.tradepost";
         previewImageUrl = "https://www.mydomain.com/my_invite_image.jpg";
 
         if (AppInviteDialog.canShow()) {

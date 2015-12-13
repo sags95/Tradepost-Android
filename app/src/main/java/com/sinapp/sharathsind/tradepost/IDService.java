@@ -12,7 +12,9 @@ public class IDService extends InstanceIDListenerService {
 
     @Override
     public void onTokenRefresh() {
+
         super.onTokenRefresh();
+
 
     }
 }

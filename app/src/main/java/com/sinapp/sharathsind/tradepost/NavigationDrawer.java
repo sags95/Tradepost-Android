@@ -4,23 +4,23 @@ package com.sinapp.sharathsind.tradepost;
  * Created by HenryChiang on 15-06-25.
  */
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceFragment;
+import android.os.StrictMode;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -31,26 +31,23 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
 
-import org.w3c.dom.Text;
-
+import java.io.File;
 import java.util.ArrayList;
 
 import Model.BadgeUtils;
 import Model.MarketPlaceData;
 import Model.NavigationDrawerCallbacks;
+import services.OffersMessage;
 
 
 public class NavigationDrawer extends AppCompatActivity
@@ -75,14 +72,48 @@ public static int e;
     private int mNotificationsCount = 0;
 
     private int selectedPosition;
-
-
-
+    private Tracker mTracker;
 
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()   // or .detectAll() for all detectable problems
+                .penaltyLog()
+                .build());
+        TradePost application = (TradePost) getApplication();
+        mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
+
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);                                         // Context of the application.
+        File sdcard = Environment.getExternalStorageDirectory();
+// to this path add a new directory path
+        String s=sdcard.getAbsolutePath()+"/trade/";
+        File dir = new File(sdcard.getAbsolutePath()+"/trade/" );
+// create this directory if not already created
+        dir.mkdir();
+// Make myHandler the new default uncaught exception handler.
+        Thread.setDefaultUncaughtExceptionHandler(myHandler);
+      Intent o=new Intent();
+       o.setAction("com.tradepost.logged");
+        sendBroadcast(o);
+        //Context context=getApplicationContext();
+//        WakefulIntentService.acquireStaticLock(context);
+      //  OffersMessage.startActionFoo(this,",","");
+       /*final Intent intent = new Intent(context, MyService.class);
+        final PendingIntent pending = PendingIntent.getService(context, 0, intent, 0);
+        final AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(pending);
+        long interval = 30;//milliseconds
+        alarm.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), interval, pending);*/
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         //mToolbar.setBackgroundColor(getResources().getColor(R.color.lightgrey));

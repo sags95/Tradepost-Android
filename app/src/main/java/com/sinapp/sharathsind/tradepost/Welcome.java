@@ -151,6 +151,7 @@ public class Welcome extends Activity implements OnClickListener {
                         if(c.getCount()>0)
                         {
                             startActivity(new Intent(Welcome.this, NavigationDrawer.class));
+                            c.close();
                             finish();
                             //  locationManager.removeUpdates(service);
                         }

@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.ArrayList;
 
 import Model.OfferProcessItem;
@@ -35,11 +38,21 @@ public class OfferProcessActivity extends AppCompatActivity implements OfferProc
     public static  int userid,itemid;
     public  static String iteamname;
     public static Bitmap bit;
+    private Tracker mTracker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offer_process);
+        TradePost application = (TradePost) getApplication();
+        mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
 
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);
         tempBundle = new Bundle();
 
         //get Intent;

@@ -14,7 +14,6 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
-import com.squareup.picasso.Picasso;
 
 import Model.CustomButton;
 import Model.RegisterWebService;
@@ -26,7 +25,6 @@ import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -35,7 +33,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -115,7 +112,7 @@ public class FbFragment extends Fragment {
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.activity_first_time, container, false);
         LoginButton authButton = (LoginButton) view.findViewById(R.id.fb_sign_in_btn);
-        authButton.setReadPermissions(Arrays.asList("public_profile", "email","publish_actions"));
+        authButton.setReadPermissions(Arrays.asList("public_profile", "email"));
         b = CallbackManager.Factory.create();
         authButton.registerCallback(b, new FacebookCallback<LoginResult>() {
             @Override

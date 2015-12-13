@@ -15,7 +15,10 @@ import android.widget.TextView;
 import com.facebook.FacebookActivity;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.iid.InstanceID;
+import com.google.android.gms.plus.Plus;
 
 import java.io.IOException;
 
@@ -46,7 +49,8 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    public static class MyPreferenceFragment extends PreferenceFragment {
+    public static class MyPreferenceFragment extends PreferenceFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        public GoogleApiClient mGoogleApiClient;
         public MyPreferenceFragment() {}
 
 
@@ -62,7 +66,15 @@ public class SettingsFragment extends Fragment {
             TextView title1 = (TextView) v.findViewById(R.id.toolbar_title1);
             TextView title2 = (TextView) v.findViewById(R.id.toolbar_title2);
             Preference preference= (Preference) findPreference("Sign Out");
+            mGoogleApiClient = new GoogleApiClient.Builder(this.getActivity())
+                    .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(Plus.API)
+                    .addScope(Plus.SCOPE_PLUS_LOGIN)
+                    .build();
             preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Constants.db=getActivity().openOrCreateDatabase("tradepostdb.db",getActivity(). MODE_PRIVATE, null);
@@ -76,7 +88,7 @@ public class SettingsFragment extends Fragment {
 
                     }
                     else if(c.getString(c.getColumnIndex("itype")).equals("g+")){
-FirstTime.mGoogleApiClient.disconnect();
+mGoogleApiClient.disconnect();
 
                     }
                     try {
@@ -106,6 +118,21 @@ FirstTime.mGoogleApiClient.disconnect();
             title2.setVisibility(View.GONE);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setCustomView(v);
 
+
+        }
+
+        @Override
+        public void onConnected(Bundle bundle) {
+
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+
+        }
+
+        @Override
+        public void onConnectionFailed(ConnectionResult connectionResult) {
 
         }
     }

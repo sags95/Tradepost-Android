@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import com.sinapp.sharathsind.tradepost.R;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -85,10 +87,23 @@ public class ChatPageFragment extends Fragment {
 
 
         mRecyclerView = (EmptyRecyclerView)rootView.findViewById(R.id.chatpage_list);
+       new AsyncTask<List<ChatPageItem>,List<ChatPageItem>,List<ChatPageItem>>(){
+            @Override
+            protected List<ChatPageItem> doInBackground(List<ChatPageItem>... params) {
 
-        final List<ChatPageItem> chatItem = addItem();
+                return addItem();
+            }
 
-        mChatPageAdapter = new ChatPageAdapter(this.getContext(),chatItem);
+            @Override
+            protected void onPostExecute(List<ChatPageItem> chatPageItems) {
+                mChatPageAdapter = new ChatPageAdapter(getContext(),chatPageItems);
+                mRecyclerView.setAdapter(mChatPageAdapter);
+                super.onPostExecute(chatPageItems);
+            }
+        }.execute(null,null);
+
+
+
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setSwipeRefreshLayout(mSwipeRefreshLayout);
@@ -111,7 +126,7 @@ public class ChatPageFragment extends Fragment {
         */
 
 
-        mRecyclerView.setAdapter(mChatPageAdapter);
+
 
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -189,6 +204,8 @@ public class ChatPageFragment extends Fragment {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
+
+            connection.disconnect();
             return myBitmap;
         } catch (IOException e) {
             // Log exception
@@ -242,7 +259,7 @@ cursor.moveToFirst();
                         e.printStackTrace();
                     }
                 }
-
+cursor.close();
                 items.add(chatPageItem);
 
                 cv.moveToNext();

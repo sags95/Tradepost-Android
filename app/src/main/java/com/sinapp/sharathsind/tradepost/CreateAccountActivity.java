@@ -13,6 +13,9 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.Tracker;
+
 import Model.CustomButton;
 import Model.CustomCheckBox;
 import Model.CustomTextView;
@@ -29,12 +32,22 @@ public class CreateAccountActivity extends AppCompatActivity {
     private LimitedEditText username,email,pw,pwConfirm;
     private CustomCheckBox showPw;
 public String user,pwd,em;
+    private Tracker mTracker;
+
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+        TradePost application = (TradePost) getApplication();
+        mTracker = application.getDefaultTracker();
+        //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
 
+// Build and send exception.
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                mTracker,                                        // Currently used Tracker.
+                Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
+                this);
 
         nextButton = (CustomButton)findViewById(R.id.create_account_next_btn);
         nextButton.setOnClickListener(new View.OnClickListener() {

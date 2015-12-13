@@ -218,7 +218,7 @@ public  boolean isFav;
                         cv.put("userid", data.item.item.getUserid());
                         Constants.db.insert("marketplacelisting", null, cv);
                         */
-
+c.close();
                         tempdata.add(data);
 
 
