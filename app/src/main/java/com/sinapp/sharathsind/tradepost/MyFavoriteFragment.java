@@ -125,7 +125,9 @@ public class MyFavoriteFragment extends Fragment {
 public void remove( int id){
     Cursor c=Constants.db.rawQuery("select * from fav where itemid="+id,null);
     c.moveToFirst();
+
     FavouriteWebService.removefavouInts(c.getInt(c.getColumnIndex("id")));
+    c.close();
 }
                             @Override
                             public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
@@ -181,7 +183,7 @@ if(ir!=null) {
 
 
 
-
+c.close();
 
         return items;
     }

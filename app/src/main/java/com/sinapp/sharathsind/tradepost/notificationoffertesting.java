@@ -191,10 +191,11 @@ CircleImageView acept= (CircleImageView) findViewById(R.id.noti_offer_accept);
 
                    c.close();
                     db.close();
+                    finish();
                     Intent i=new Intent(notificationoffertesting.this, ChatFragment.class);
                     i.putExtra("offerid",offerid);
                     startActivity(i);
-                    finish();
+
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -217,8 +218,9 @@ CircleImageView acept= (CircleImageView) findViewById(R.id.noti_offer_accept);
                 obje.addProperty("userid",userid);
                 obje.addProperty("username", Variables.username);
                 SoapPrimitive soapPrimitive1=MainWebService.getretryMsg(obje,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/sendOfferDeclineRequest",0);
+                 c.close();
                 db.execSQL("update offers set status =2 where offerid ="+offerid);
-               db.close();
+                 db.close();
                 finish();
             }
         });
@@ -233,7 +235,7 @@ CircleImageView acept= (CircleImageView) findViewById(R.id.noti_offer_accept);
      //   userImgPlaceholder.setImageBitmap(userImg);
         usernamePlaceholder.setText(username);
 
-        if(itemOfferCount>1){
+        if(itemOfferCount<=1){
             itemOfferPlaceholder.setText(singleItem);
         }else{
             itemOfferPlaceholder.setText(multiItems);

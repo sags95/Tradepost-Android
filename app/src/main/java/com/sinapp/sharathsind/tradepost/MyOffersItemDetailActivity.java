@@ -110,7 +110,7 @@ ArrayList<MyOffersItem> a=new ArrayList<>();
             c.moveToNext();
         }
 
-
+c.close();
 
 
         return items;

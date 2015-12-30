@@ -155,7 +155,7 @@ c.moveToNext();
 
 
 
-
+c.close();
         return items;
     }
     private void applyLinearLayoutManager(){

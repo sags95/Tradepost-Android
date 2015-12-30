@@ -390,7 +390,7 @@ type="tags";
                         data.isFav = true;
                     else
                         data.isFav = false;
-
+c.close();
                     m.add(data);
 
                 }

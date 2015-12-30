@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -15,11 +17,13 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
@@ -29,6 +33,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.ContactsContract.CommonDataKinds.Relation;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -73,7 +79,7 @@ public class Welcome extends Activity implements OnClickListener {
     public static MyLocationService service;
     public static boolean isDatabaseExist= false;
     public static Context context;
-
+    Permission permission;
 
 
     @Override
@@ -91,25 +97,30 @@ public class Welcome extends Activity implements OnClickListener {
         boolean b = doesDatabaseExist(new ContextWrapper(getBaseContext()), "tradepostdb.db");
 
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, service);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(provider);
+        permission=new Permission(this,locationManager);
 
-        if(location!=null) {
-       userdata.mylocation=new Mylocation();
+        if(permission.checkPermission(com.sinapp.sharathsind.tradepost.Manifest.permission.C2D_MESSAGE)!=PackageManager.PERMISSION_GRANTED) {
 
-            userdata.mylocation.Longitude =(float) location.getLongitude();
-            userdata.mylocation.latitude = (float)location.getLatitude();
-            SharedPreferences.Editor editor = getSharedPreferences("loctradepost", MODE_PRIVATE).edit();
-            //editor.putInt("rad", radius);
-            editor.putFloat("lat", userdata.mylocation.latitude);
-            editor.putFloat("long",userdata. mylocation.Longitude);
-            editor.commit();
-
+            permission.askPermission(new String[]{com.sinapp.sharathsind.tradepost.Manifest.permission.C2D_MESSAGE},0);
 
 
         }
+        if(permission.checkPermission(Manifest.permission.WAKE_LOCK)!=PackageManager.PERMISSION_GRANTED) {
+
+                permission.askPermission(new String[]{Manifest.permission.WAKE_LOCK},0);
+
+
+        }
+        if(permission.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED||permission.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+        {
+
+        permission.askPermission(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},0);
+
+        }
+        else {
+
+        }
+
 
         if(b) {
             isDatabaseExist=true;
@@ -341,7 +352,11 @@ public class Welcome extends Activity implements OnClickListener {
         };
         r.setOnTouchListener(gestureListener);
     }
-
+public boolean ispermitted()
+{
+    boolean a=false;
+    return a;
+}
 
     class MyGestureDetector extends SimpleOnGestureListener {
         @Override
@@ -351,9 +366,11 @@ public class Welcome extends Activity implements OnClickListener {
                     return false;
                 // right to left swipe
                 if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    startActivity(new Intent(Welcome.this, FirstTime.class));
-                    finish();
-                } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                  if(  permission.checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+                      startActivity(new Intent(Welcome.this, FirstTime.class));
+                      finish();
+                  }
+                  } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 
                 }
             } catch (Exception e) {

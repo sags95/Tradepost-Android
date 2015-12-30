@@ -134,7 +134,7 @@ ArrayList<Integer>userid;
 
                }
 
-
+cursor.close();
               //  int h = res.size();
 
                 return null;
@@ -419,6 +419,7 @@ ArrayList<Integer>userid;
                                 obje.addProperty("username", Variables.username);
                                 SoapPrimitive soapPrimitive1=MainWebService.getretryMsg(obje,"http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl","http://webser/OfferWebService/sendOfferDeclineRequest",0);
                                 db.execSQL("update offers set status =2 where offerid =" + i);
+                                c.close();
                                 db.close();
                               //  finish();
                             }
@@ -723,6 +724,7 @@ delete(itemid);
                 BitmapFactory.decodeFile(selectedImagePath, options);
                 final int REQUIRED_SIZE = 200;
                 int scale = 1;
+                cursor.close();
                 while (options.outWidth / scale / 2 >= REQUIRED_SIZE
                         && options.outHeight / scale / 2 >= REQUIRED_SIZE)
                     scale *= 2;

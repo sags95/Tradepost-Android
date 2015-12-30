@@ -313,9 +313,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mEmail.setText(email);
         String url = "http://73.37.238.238:8084/TDserverWeb/images/" + Constants.userid + "/profile.png";
         Picasso.with(getActivity().getApplicationContext()).load(url).into(avatarContainer);
-        Bitmap image = getBitmapFromURL(url);
-        Variables.setProfilepic(image);
-        if(Variables.username!=null&&Variables.email!=null)
+  //      Bitmap image = getBitmapFromURL(url);
+        try {
+            Variables.setProfilepic(Picasso.with(getActivity().getApplicationContext()).load(url).get());
+        }
+        catch (Exception e)
+        {
+
+        }
+            if(Variables.username!=null&&Variables.email!=null)
         {
             mUsername.setText(Variables.username);
             mEmail.setText(Variables.email);
@@ -333,26 +339,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             }
         }
     }
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            System.out.printf("src", src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            System.out.printf("Bitmap", "returned");
-            connection.disconnect();
-            myBitmap = Bitmap.createScaledBitmap(myBitmap, 164, 320, false);//This is only if u want to set the image size.
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.printf("Exception", e.getMessage());
-            return null;
-        }
-    }
+
 
     public void customDialog() {
         final View dialogView = li.inflate(feedback_layout, null, false);

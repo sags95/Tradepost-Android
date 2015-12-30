@@ -71,7 +71,7 @@ int offerid=Integer.parseInt(data.getString("offerid"));
 
         long res= insertNotification(msg,offerid,0,notid);
          if(res!=-1)
-notifyOffer(offerid,msg);
+            notifyOffer(offerid,msg);
      break;
     case "aoffer":
          offerid=Integer.parseInt(data.getString("offerid"));
@@ -114,9 +114,18 @@ notifyOffer(offerid,msg);
     private void message(int offerid, String msg,String p,Bundle data) {
         int mesgid=Integer.parseInt(data.getString("messageid"));
         SQLiteDatabase db=  openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
-        Cursor cursor=db.rawQuery("select * from m" + offerid + " where msgid = " + mesgid, null);
+        Cursor cursor= null;
+        try {
+            cursor = db.rawQuery("select * from m" + offerid + " where msgid = " + mesgid, null);
+        } catch (Exception e) {
 
-        if(cursor.getCount()>0)
+            db.execSQL("create table m" + offerid + "(msgid INTEGER PRIMARY KEY,msg varchar,msgpath varchar,seen DATETIME,sent DATETIME,userid int(10),ruserid int(10)) ");
+            db.execSQL("update offers set status=1 where offerid="+offerid);
+
+        }
+
+        if(cursor!=null&&cursor.getCount()>0)
+        if(cursor!=null&&cursor.getCount()>0)
         {
             db.close();
             cursor.close();
@@ -301,7 +310,8 @@ if(c1.getCount()==0) {
 
 
         }
-
+if(!c1.isClosed())
+    c1.close();
 
 
 
@@ -360,7 +370,8 @@ if(c1.getCount()==0) {
                     );
 db.close();
             buildNotification(null, msg, 1);
-
+if(!c1.isClosed())
+    c1.close();
 
 
 
@@ -438,6 +449,8 @@ Cursor x=db.rawQuery("SELECT *\n" +
 
     }
         long l=db.insert("notifications",null,cv);
+    if(!x.isClosed())
+        x.close();
     return l;
 
 }

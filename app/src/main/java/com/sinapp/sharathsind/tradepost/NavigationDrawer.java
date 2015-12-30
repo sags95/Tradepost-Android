@@ -93,12 +93,7 @@ public static int e;
                 mTracker,                                        // Currently used Tracker.
                 Thread.getDefaultUncaughtExceptionHandler(),      // Current default uncaught exception handler.
                 this);                                         // Context of the application.
-        File sdcard = Environment.getExternalStorageDirectory();
-// to this path add a new directory path
-        String s=sdcard.getAbsolutePath()+"/trade/";
-        File dir = new File(sdcard.getAbsolutePath()+"/trade/" );
-// create this directory if not already created
-        dir.mkdir();
+
 // Make myHandler the new default uncaught exception handler.
         Thread.setDefaultUncaughtExceptionHandler(myHandler);
       Intent o=new Intent();

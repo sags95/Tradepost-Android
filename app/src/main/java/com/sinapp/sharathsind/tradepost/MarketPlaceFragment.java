@@ -54,6 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import Model.CustomTextView;
 import Model.HideScrollListener;
 import Model.MarketPlaceData;
 import Model.MarketPlaceListAdapter;
@@ -135,13 +136,16 @@ public class MarketPlaceFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                AsyncTaskRunnerSRL runner = new AsyncTaskRunnerSRL();
+num=0;
+
+                                AsyncTaskRunnerSRL runner = new AsyncTaskRunnerSRL();
                 runner.execute();
 
             }
         });
 
-        //
+        //m.
+
         mSwipeRefreshLayoutEmpty = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout_empty);
 
 
@@ -165,6 +169,7 @@ public class MarketPlaceFragment extends Fragment {
         fab.setOnClickListener(fabOnClickListener);
         includeView = (View) rootView.findViewById(R.id.marketplace_header);
         headerRadText = (TextView) includeView.findViewById(R.id.marketplace_header_rad);
+        CustomTextView customTextView=(CustomTextView)includeView.findViewById(R.id.marketplace_header_loc);
         includeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,27 +180,9 @@ public class MarketPlaceFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager d= new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(d);
-        mRecyclerView.addOnScrollListener(new HideScrollListener(getContext(),d) {
-            @Override
-            public void onLoadMore(int current_page) {
-
-            }
-
-            @Override
-            public void onHide() {
-                includeView.animate().translationY(-includeView.getHeight()).setInterpolator(new AccelerateInterpolator(2));
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) fab.getLayoutParams();
-                int fabBottomMargin = lp.bottomMargin;
-                fab.animate().translationY(fab.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
-            }
-
-            @Override
-            public void onShow() {
-                includeView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-                fab.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-            }
-        });
         applyStaggeredGridLayoutManager();
+
+
 
 
 
@@ -215,7 +202,27 @@ public class MarketPlaceFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("loctradepost", getActivity().MODE_PRIVATE);
         String restoredText = prefs.getString("postalcode", null);
         userdata.mylocation = new Mylocation();
+        mRecyclerView.addOnScrollListener(new HideScrollListener(getContext(), mStaggeredGridLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                new AsyncTaskRunner().execute();
 
+            }
+
+            @Override
+            public void onHide() {
+                includeView.animate().translationY(-includeView.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) fab.getLayoutParams();
+                int fabBottomMargin = lp.bottomMargin;
+                fab.animate().translationY(fab.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+            }
+
+            @Override
+            public void onShow() {
+                includeView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+                fab.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            }
+        });
         userdata.mylocation.latitude = prefs.getFloat("lat", 0);//"No name defined" is the default value.
         userdata.mylocation.Longitude = prefs.getFloat("long", 0); //0 is the default value.
         radius = prefs.getInt("rad", 25);
@@ -224,23 +231,25 @@ public class MarketPlaceFragment extends Fragment {
             Location location = lo.getLastKnownLocation(provider);
             if (location != null) {
 
-                userdata.mylocation.latitude = (float) location.getLatitude();//"No name defined" is the default value.
-                userdata.mylocation.Longitude = (float) location.getLongitude();
-                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = geocoder.getFromLocation(userdata.mylocation.Longitude, userdata.mylocation.latitude, 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String cityName = addresses.get(0).getAddressLine(0);
-                String stateName = addresses.get(0).getAddressLine(1);
-                String countryName = addresses.get(0).getAddressLine(2);
+
             }
         }
         if (userdata.mylocation.Longitude != 0 && userdata.mylocation.latitude != 0) {
+
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> addresses = null;
+            try {
+                addresses = geocoder.getFromLocation(userdata.mylocation.latitude, userdata.mylocation.Longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String cityName = addresses.get(0).getLocality();
+            String stateName = addresses.get(0).getAdminArea();
+            String countryName = addresses.get(0).getAddressLine(2);
+            customTextView.setText(cityName + "," + stateName);
             AsyncTaskRunner runner = new AsyncTaskRunner();
             runner.execute();
+
 
         } else {
             customDialog();
@@ -567,12 +576,13 @@ public class MarketPlaceFragment extends Fragment {
         }
     }
 
-
+public static int num;
     private class AsyncTaskRunner extends AsyncTask<ArrayList<MarketPlaceData>, String, ArrayList<MarketPlaceData>> {
 
         @Override
         protected ArrayList<MarketPlaceData> doInBackground(ArrayList<MarketPlaceData>... params) {
-
+if(num==0)
+    MarketPlaceData.create();
             ArrayList<MarketPlaceData> mData;
 
             if (!mCallback.hasTempData()) {
@@ -604,8 +614,13 @@ public class MarketPlaceFragment extends Fragment {
 
 
             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-            stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(), result, listingItemClickListener);
-            mRecyclerView.setAdapter(stagAdapter2);
+if(stagAdapter2==null) {
+    stagAdapter2 = new MarketPlaceStaggeredAdapter(getActivity(), result, listingItemClickListener);
+    mRecyclerView.setAdapter(stagAdapter2);
+}
+            else {
+    stagAdapter2.updateList(result);
+            }
             mSwipeRefreshLayoutEmpty.setRefreshing(false);
             mSwipeRefreshLayoutEmpty.setVisibility(View.GONE);
 
@@ -630,11 +645,12 @@ public class MarketPlaceFragment extends Fragment {
         }
     }
 
-
     private class AsyncTaskRunnerSRL extends AsyncTask<ArrayList<MarketPlaceData>, String, ArrayList<MarketPlaceData>> {
 
         @Override
         protected ArrayList<MarketPlaceData> doInBackground(ArrayList<MarketPlaceData>... params) {
+            if(num==0)
+                MarketPlaceData.create();
             ArrayList<MarketPlaceData> mData;
             mData = MarketPlaceData.generateSampleData(getActivity().getApplicationContext());
             mCallback.setTempDataStatus(true);
@@ -647,6 +663,7 @@ public class MarketPlaceFragment extends Fragment {
             MarketPlaceStaggeredAdapter m = new MarketPlaceStaggeredAdapter();
             m.updateList(result);
             mCallback.storeTempMarketPlaceData(result);
+
             mSwipeRefreshLayout.setRefreshing(false);
         }
 

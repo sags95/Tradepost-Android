@@ -103,6 +103,7 @@ pb=new ProgressDialog(CreateAccountPicActivity.this,ProgressDialog.STYLE_SPINNER
                 BitmapFactory.decodeFile(selectedImagePath, options);
                 final int REQUIRED_SIZE = 200;
                 int scale = 1;
+                cursor.close();
                 while (options.outWidth / scale / 2 >= REQUIRED_SIZE
                         && options.outHeight / scale / 2 >= REQUIRED_SIZE)
                     scale *= 2;

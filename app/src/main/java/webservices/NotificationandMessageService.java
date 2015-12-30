@@ -17,7 +17,9 @@ public class NotificationandMessageService {
      SoapObject s=new SoapObject("http://webser/","getLastNotification");
      s.addProperty("offerid", userdata.userid);
      SoapPrimitive s1=MainWebService.getretryMsg(s,"http://73.37.238.238:8084/TDserverWeb/MessageandNotification","http://webser/OfferWebService/getLastNotificationRequest",0);
-id=Integer.parseInt(s1.getValue().toString());
+if(s1==null)
+    return 0;
+   id=Integer.parseInt(s1.getValue().toString());
 
      return id;
  }

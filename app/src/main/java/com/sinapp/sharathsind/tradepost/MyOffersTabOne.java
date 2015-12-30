@@ -151,9 +151,10 @@ public class MyOffersTabOne extends Fragment {
             MyOffersItem item=new MyOffersItem(ir.item.getItemname(),bitmap,count);
             item.setItemid(itemid);
 items.add(item);
+            c1.close();
             c.moveToNext();
         }
-
+c.close();
 
 
 

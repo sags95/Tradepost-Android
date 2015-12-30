@@ -170,7 +170,7 @@ public class ChatFragment extends Activity {
             itemname=","+c.getString(c.getColumnIndex("ItemName"));
         }
 
-
+c.close();
         return itemname;
     }
     @Override
@@ -213,7 +213,7 @@ Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
                 username = s1.getProperty(0).toString();
                 itemname=s1.getProperty(1).toString();
             }
-
+cv.close();
 
         setadapter(false);
         IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
@@ -234,7 +234,7 @@ Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
         CustomTextView offertext=(CustomTextView) ll.findViewById(R.id.chat_header_itemOffer_placeholder);
         CustomTextView extraCash=(CustomTextView)ll.findViewById(R.id.chat_header_extraCash_Placeholder);
         user.setText(username);
-        if(ruserid==Constants.userid){
+        if(ruserid!=Constants.userid){
 
 offertext.setText(getOffer(offerid,getuser));
 extraCash.setText("$"+cash+" CAD");
@@ -497,7 +497,7 @@ setadapter(true);
 
     public void setadapter(Boolean b)
 {
-    seen();
+//    seen();
     lv= (ListView) findViewById(R.id.listview_chat);
     ArrayList<MessageClass> c=new ArrayList<>();
     SQLiteDatabase db=openOrCreateDatabase("tradepostdb.db", MODE_PRIVATE, null);
@@ -567,6 +567,7 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
                 options.inSampleSize = scale;
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
+                cursor.close();
                 Intent intent = new Intent(this, PictureMsg.class);
                 intent.putExtra("BitmapImage", bm);
                 intent.putExtra("offerid", offerid);
@@ -673,15 +674,7 @@ m1.msgpath=c1.getString(c1.getColumnIndex("msgpath"));
             dialog.dismiss();
         }
     };
-public void seen()
-{
-    java.text.SimpleDateFormat sdf =
-            new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String seen=sdf.format(new Date());
-    Constants.db.execSQL("Update m"+offerid+" set seen='"+seen+"' where seen=' ' and userid !="+Constants.userid);
 
-
-}
 
 
     @Override
@@ -719,7 +712,15 @@ public void seen()
         isAlive = true;
         IntentFilter f=new IntentFilter("com.sinapp.sharathsind.chat."+offerid);
         MessageReceiver m=new MessageReceiver();
-        this.registerReceiver(m,f);
+try {
+
+    this.registerReceiver(m, f);
+}
+catch (Exception e )
+{
+
+}
+
     }
 
 }

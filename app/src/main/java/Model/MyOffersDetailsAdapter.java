@@ -104,7 +104,7 @@ public ArrayList<Integer> offerid;
         viewHolder.mUsername.setText(username);
         viewHolder.mItemTitle.setText(getOffer(offerid.get(i),getuser));
        // viewHolder.mProfileImg.setImageBitmap();
-
+c.close();
     }
 public String getOffer(int offerid,int getuser)
 {
@@ -142,7 +142,7 @@ public String getOffer(int offerid,int getuser)
         itemname=","+c.getString(c.getColumnIndex("ItemName"));
     }
 
-
+c.close();
 return itemname;
 }
 

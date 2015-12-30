@@ -41,6 +41,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import datamanager.Item;
+import datamanager.ItemResult;
 import datamanager.MyVolleySingleton;
 import webservices.FavouriteWebService;
 
@@ -73,7 +75,15 @@ public class MarketPlaceStaggeredAdapter extends RecyclerView.Adapter<MarketPlac
         if(mData==null){
             return 0;
         }else {
-            return mData.get(position).item.tags.length;
+            if(mData.get(position).item.tags==null) {
+                MarketPlaceData i=mData.get(position);
+                i.item.tags=new String[1];
+                i.item.tags[0]="notag";
+                mData.remove(position);
+                mData.add(position,i);
+
+            }
+                return mData.get(position).item.tags.length;
         }
     }
 
@@ -242,6 +252,7 @@ static boolean unfav,fav;
                                Cursor c=Constants.db.rawQuery("select * from fav where itemid="+data.item.item.getItemid(),null);
                                c.moveToFirst();
                                FavouriteWebService.removefavouInts(c.getInt(c.getColumnIndex("id")));
+                               c.close();
                                return null;
                            }
                        }.execute(null,null);

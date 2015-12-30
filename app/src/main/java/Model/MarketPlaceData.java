@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.facebook.share.widget.LikeView;
 import com.sinapp.sharathsind.tradepost.Constants;
+import com.sinapp.sharathsind.tradepost.MarketPlaceFragment;
 import com.sinapp.sharathsind.tradepost.Welcome;
 
 import org.ksoap2.serialization.KvmSerializable;
@@ -58,7 +59,15 @@ public  boolean isFav;
     public MarketPlaceData() {
     }
 
-
+public static  void  create()
+{
+    obje = new SoapObject("http://webser/", "getItems");
+    obje.addProperty("lat", userdata.mylocation.latitude);
+    obje.addProperty("longi", userdata.mylocation.Longitude);
+    obje.addProperty("rad", userdata.radius);
+    result = MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
+            , "http://webser/GetItems/getItemsRequest");
+}
     public static ArrayList<MarketPlaceData> generateSampleDataTest() {
         String repeat = " long";
         final ArrayList<MarketPlaceData> dataTest = new ArrayList<MarketPlaceData>();
@@ -77,10 +86,11 @@ public  boolean isFav;
 
     }
 
-
+   static  ArrayList<MarketPlaceData> tempdata ;
     public static ArrayList<MarketPlaceData> generateSampleData(Context context) {
 
-
+if(tempdata==null)
+    tempdata=new ArrayList<>();
         /*
         if (Welcome.isDatabaseExist) {
             ArrayList<MarketPlaceData> tempdata = new ArrayList<MarketPlaceData>();
@@ -130,21 +140,16 @@ public  boolean isFav;
         */
 
 
-            obje = new SoapObject("http://webser/", "getItems");
-            obje.addProperty("lat", userdata.mylocation.latitude);
-            obje.addProperty("longi", userdata.mylocation.Longitude);
-            obje.addProperty("rad", userdata.radius);
-            result = MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
-                    , "http://webser/GetItems/getItemsRequest");
+
 
             //doAsync();
 
 
-            ArrayList<MarketPlaceData> tempdata = new ArrayList<MarketPlaceData>();
+int h=MarketPlaceFragment.num;
             if (result != null) {
-                for (Object i : result) {
+                for (int i= MarketPlaceFragment.num;i<result.size()&&i-h<8;i++) {
                     obje = new SoapObject("http://webser/", "getItembyId");
-                    obje.addProperty("itemid", Integer.parseInt(((SoapPrimitive) i).getValue().toString()));
+                    obje.addProperty("itemid", Integer.parseInt(((SoapPrimitive) result.get(i)).getValue().toString()));
                     KvmSerializable result1 = MainWebService.getMsg2(obje, "http://73.37.238.238:8084/TDserverWeb/GetItems?wsdl"
                             , "http://webser/GetItems/getItembyIdRequest");
 
@@ -164,7 +169,7 @@ public  boolean isFav;
 
                         }
                         obje = new SoapObject("http://webser/", "searchbyint");
-                        obje.addProperty("name", i);
+                        obje.addProperty("name",  Integer.parseInt(((SoapPrimitive) result.get(i)).getValue().toString()));
                         Vector result2 = MainWebService.getMsg1(obje, "http://73.37.238.238:8084/TDserverWeb/NewWebService?wsdl"
                                 , "http://webser/NewWebService/searchbyintRequest");
                         if (result2 != null) {
@@ -219,7 +224,7 @@ public  boolean isFav;
                         Constants.db.insert("marketplacelisting", null, cv);
                         */
 c.close();
-                        tempdata.add(data);
+                        MarketPlaceFragment.num++;                        tempdata.add(data);
 
 
 

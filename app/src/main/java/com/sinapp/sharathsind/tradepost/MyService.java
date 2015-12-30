@@ -39,7 +39,12 @@ public class MyService extends WakefulIntentService {
         super("Myservice");
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        doWakefulWork(intent);
+        return START_STICKY;
 
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,52 +56,17 @@ public class MyService extends WakefulIntentService {
 
 @Override
     void doWakefulWork(Intent intent) {
-
-        android.os.Debug.waitForDebugger();
-        File sdcard = Environment.getExternalStorageDirectory();
-// to this path add a new directory path
-        File dir = new File(sdcard.getAbsolutePath()+"/trade/" );
-// create this directory if not already created
-        dir.mkdir();
-// create the file in which we will write the contents
-        File file = new File(dir, "tradepost.txt");
-        FileOutputStream os= null;
-        try {
-            os = new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    Date d= Calendar.getInstance().getTime();
-    String data = "This is the content of my file"+ new SimpleDateFormat("dd-mm-yyyy hh:mm:ss").format(d);
-        try {
-            os.write(data.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Thread t=new Thread(new MessageLoader());
+       Thread t=new Thread(new MessageLoader());
         t.start();
 Thread t1=new Thread(new NotificationLoader());
         t1.start();
-
     }
     class MessageLoader  implements Runnable
     {
 
         @Override
-        public void run( ){
-
-
+        public void run(){
                 searchMesage();
-
-
-
-
-
         }
         public  void searchMesage()
         {
@@ -109,7 +79,7 @@ Thread t1=new Thread(new NotificationLoader());
             cv.moveToFirst();
             while(!cv.isAfterLast()) {
                 ArrayList<Message>m1=new ArrayList<>();
-               int offerid= cv.getInt(cv.getColumnIndex("offerid"));
+               int offerid= cv.getInt(cv.getColumnIndex("Offerid"));
                 Cursor cv1=db.rawQuery("SELECT *\n" +
                         "FROM m" +offerid+
                         " ORDER BY msgid DESC\n" +
@@ -127,9 +97,8 @@ Thread t1=new Thread(new NotificationLoader());
                         request.addProperty("offerid",offerid);
                         request.addProperty("id",maxid);
                         KvmSerializable soapObject=MainWebService.getMsg2(request,"http://73.37.238.238:8084/TDserverWeb/MessageandNotification?wsdl","http://webser/MessageandNotification/getmessageRequest");
+                        if(soapObject!=null)
                         get((SoapObject)soapObject,offerid);
-
-
                     }
 
 
@@ -304,7 +273,7 @@ Thread t1=new Thread(new NotificationLoader());
         else{
             db.execSQL("update offers set status=1 where offerid="+offerid);
         }
-
+ c1.close();
             Intent i=new Intent(this,ChatFragment.class);
             i.putExtra("offerid",offerid);
             PendingIntent resultPendingIntent =
@@ -373,6 +342,7 @@ Thread t1=new Thread(new NotificationLoader());
                         0,i,
                         PendingIntent.FLAG_CANCEL_CURRENT
                 );
+        c1.close();
         db.close();
         buildNotificationmsg(null, msg, 1);
 
@@ -409,18 +379,23 @@ searchMesage();
                 if(cv1.getCount()>0)
                 {
                     cv1.moveToFirst();
-                    int maxid=cv1.getInt(0);
+                    int maxid=cv1.getInt(cv1.getColumnIndex("notificationid"));
                     int maxserverid=m.maxId();
                     cv1.close();
                     while (maxid!=maxserverid)
                     {
                         maxid++;
                         SoapObject request=new SoapObject("http://webser/","getNotification");
-                        request.addProperty("userid",Constants.userid);
-                        request.addProperty("id",maxid);
+                        request.addProperty("userid",maxid);
+                        request.addProperty("id",Constants.userid);
                         KvmSerializable soapObject=MainWebService.getMsg2(request,"http://73.37.238.238:8084/TDserverWeb/MessageandNotification?wsdl","http://webser/MessageandNotification/getNotificationRequest");
-                        setnot((SoapObject)soapObject);
+                        try {
+                            setnot((SoapObject) soapObject);
+                        }
+                        catch (Exception e)
+                        {
 
+                        }
 
                     }
 
@@ -437,8 +412,15 @@ searchMesage();
                         request.addProperty("userid",Constants.userid);
                         request.addProperty("id",maxid);
                         KvmSerializable soapObject=MainWebService.getMsg2(request,"http://73.37.238.238:8084/TDserverWeb/MessageandNotification?wsdl","http://webser/MessageandNotification/getNotificationRequest");
-                        setnot((SoapObject)soapObject);
 
+                     if (soapObject!=null)
+                         try {
+                             setnot((SoapObject) soapObject);
+                         }
+                         catch (Exception e)
+                         {
+
+                         }
                         maxid++;
                     }
                 }
@@ -449,13 +431,14 @@ searchMesage();
     {
         ContentValues cv = new ContentValues();
         SQLiteDatabase db = Constants.db;
-        cv.put("notificationid", result.getProperty("id").toString());
-        cv.put("offerid", result.getProperty("offerid").toString());
+
+        cv.put("notificationid", Integer.parseInt(result.getProperty("id").toString()));
+        cv.put("offerid", Integer.parseInt(result.getProperty("offerid").toString()));
         cv.put("msg", result.getProperty("message").toString());
-        cv.put("type", result.getProperty("type").toString());
+        cv.put("type", Integer.parseInt(result.getProperty("type").toString()));
 
 
-        cv.put("status", result.getProperty("status").toString());
+        cv.put("status",Integer.parseInt( result.getProperty("status").toString()));
         long l= db.insert("notifications" , null, cv);
         if(l!=-1)
         {

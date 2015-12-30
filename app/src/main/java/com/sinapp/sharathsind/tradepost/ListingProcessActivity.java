@@ -1,11 +1,14 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.*;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -96,8 +99,14 @@ public ArrayList<Bitmap>bits;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_process);
         tagFlowLayout = (FlowLayout) findViewById(R.id.section5_tags);
-        GCMService.b=true;
+        GCMService.b = true;
+        Permission permission = new Permission(this, null);
+        if (permission.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || permission.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            permission.askPermission(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
         //toolbar
+        }
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitle("Post Your Item");
         toolbar.setTitleTextColor(getResources().getColor(R.color.ColorPrimary));
@@ -723,6 +732,7 @@ public View.OnKeyListener y=new View.OnKeyListener() {
                     scale *= 2;
                 options.inSampleSize = scale;
                 options.inJustDecodeBounds = false;
+                cursor.close();
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
                 setImage(bm);
             }

@@ -11,7 +11,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import java.util.Calendar;
 
 public class OnBootReciever extends WakefulBroadcastReceiver {
-    private static final int PERIOD=1000 * 30;  // 5 minutes
+    private static final int PERIOD=100 * 20;  // 5 minutes
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -21,7 +21,7 @@ public class OnBootReciever extends WakefulBroadcastReceiver {
                 i, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar cal = Calendar.getInstance();
         // start 30 seconds after boot completed
-        cal.add(Calendar.SECOND, 30);
+        cal.add(Calendar.SECOND, 20);
         // fetch every 30 seconds
         // InexactRepeating allows Android to optimize the energy consumption
         mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,

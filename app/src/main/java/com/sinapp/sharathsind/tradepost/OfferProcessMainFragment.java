@@ -228,6 +228,7 @@ ITEMID.add(offerProcessItems.get(i).itemid);
                 options.inJustDecodeBounds = false;
                 bm = BitmapFactory.decodeFile(selectedImagePath, options);
                 newItemImg.setImageBitmap(bm);
+                cursor.close();
                 OfferProcessActivity.bit=bm;
             b=true;
             }
