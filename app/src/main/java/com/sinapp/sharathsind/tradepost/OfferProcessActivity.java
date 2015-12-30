@@ -1,6 +1,8 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.*;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,6 +48,13 @@ public class OfferProcessActivity extends AppCompatActivity implements OfferProc
         setContentView(R.layout.activity_offer_process);
         TradePost application = (TradePost) getApplication();
         mTracker = application.getDefaultTracker();
+        Permission permission = new Permission(this, null);
+        if (permission.checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || permission.checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            permission.askPermission(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
+            //toolbar
+        }
         //ctivity().getApplication()).getTracker(TrackerName.APP_TRACKER);
 
 // Build and send exception.

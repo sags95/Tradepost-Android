@@ -1,8 +1,10 @@
 package com.sinapp.sharathsind.tradepost;
 
+import android.*;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +45,13 @@ gal=(ImageView)findViewById(R.id.create_account_img_folder);
 create=(CustomButton)findViewById(R.id.create_account_signUp_btn);
         cam.setOnClickListener(camBtnListener);
         gal.setOnClickListener(galleryBtnListener);
+        Permission permission = new Permission(this, null);
+        if (permission.checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || permission.checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            permission.askPermission(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+
+            //toolbar
+        }
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

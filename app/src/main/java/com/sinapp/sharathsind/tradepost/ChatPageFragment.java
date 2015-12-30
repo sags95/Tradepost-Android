@@ -217,57 +217,62 @@ public class ChatPageFragment extends Fragment {
     ArrayList<String>usernames;
     public List<ChatPageItem> addItem() {
         List<ChatPageItem> items = new ArrayList<ChatPageItem>();
-        SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
-        Cursor cv=db.rawQuery("select * from offers where status=1",null);
-        userid=new ArrayList<>();
-        usernames=new ArrayList<>();
-        offers=new ArrayList<>();        if(cv.getCount()>0){
-            cv.moveToFirst();
-            while(!cv.isAfterLast()) {
-                int userid = cv.getInt(cv.getColumnIndex("recieveduserid"));
-                int ruserid = cv.getInt(cv.getColumnIndex("userid"));
-                int itemid = cv.getInt(cv.getColumnIndex("Itemid"));
-                int getuser = userdata.userid != userid ? userid : ruserid;
-                int offerid=cv.getInt(cv.getColumnIndex("Offerid"));
-                offers.add(offerid);
-                SoapObject o = new SoapObject("http://webser/", "getItemnameU");
-                o.addProperty("userid", getuser);
-                this.userid.add(getuser);
+        try {
+            SQLiteDatabase db=getActivity().openOrCreateDatabase("tradepostdb.db", getActivity().MODE_PRIVATE, null);
+            Cursor cv=db.rawQuery("select * from offers where status=1",null);
+            userid=new ArrayList<>();
+            usernames=new ArrayList<>();
+            offers=new ArrayList<>();
+            if(cv.getCount()>0){
+                cv.moveToFirst();
+                while(!cv.isAfterLast()) {
+                    int userid = cv.getInt(cv.getColumnIndex("recieveduserid"));
+                    int ruserid = cv.getInt(cv.getColumnIndex("userid"));
+                    int itemid = cv.getInt(cv.getColumnIndex("Itemid"));
+                    int getuser = userdata.userid != userid ? userid : ruserid;
+                    int offerid=cv.getInt(cv.getColumnIndex("Offerid"));
+                    offers.add(offerid);
+                    SoapObject o = new SoapObject("http://webser/", "getItemnameU");
+                    o.addProperty("userid", getuser);
+                    this.userid.add(getuser);
 
-                o.addProperty("itemid",itemid);
-              KvmSerializable s = MainWebService.getMsg2(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest");
-                SoapObject s1=(SoapObject)s;
-                String itemname = null,username = null;
-                if(s1!=null) {
-                    username = s1.getProperty(0).toString();
-                    itemname = s1.getProperty(1).toString();
-                }
-                    this.usernames.add(username);
-                Bitmap d =  getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png");
-              ChatPageItem chatPageItem=new ChatPageItem(username, itemname, d,offerid);
-                Cursor cursor=db.rawQuery("select * from m"+offerid+" ORDER BY msgid DESC LIMIT 1",null);
-                //  int so=userid==Constants.userid?userid:ruserid;
-cursor.moveToFirst();
-                if(cursor.getCount()>0)
-                {
-                    try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                                .parse(cursor.getString(cursor.getColumnIndex("sent")));
-                        chatPageItem.sent=date;
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                    o.addProperty("itemid",itemid);
+                  KvmSerializable s = MainWebService.getMsg2(o, "http://73.37.238.238:8084/TDserverWeb/OfferWebService?wsdl", "http://webser/OfferWebService/getItemnameURequest");
+                    SoapObject s1=(SoapObject)s;
+                    String itemname = null,username = null;
+                    if(s1!=null) {
+                        username = s1.getProperty(0).toString();
+                        itemname = s1.getProperty(1).toString();
                     }
-                }
-cursor.close();
-                items.add(chatPageItem);
+                        this.usernames.add(username);
+                    Bitmap d =  getBitmapFromURL("http://73.37.238.238:8084/TDserverWeb/images/" + getuser + "/profile.png");
+                  ChatPageItem chatPageItem=new ChatPageItem(username, itemname, d,offerid);
+                    Cursor cursor=db.rawQuery("select * from m"+offerid+" ORDER BY msgid DESC LIMIT 1",null);
+                    //  int so=userid==Constants.userid?userid:ruserid;
+    cursor.moveToFirst();
+                    if(cursor.getCount()>0)
+                    {
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                                    .parse(cursor.getString(cursor.getColumnIndex("sent")));
+                            chatPageItem.sent=date;
 
-                cv.moveToNext();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+    cursor.close();
+                    items.add(chatPageItem);
+
+                    cv.moveToNext();
+                }
             }
+            cv.close();
+            db.close();
+            Collections.sort(items);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        cv.close();
-        db.close();
-        Collections.sort(items);
         return items;
     }
     private void applyLinearLayoutManager(){

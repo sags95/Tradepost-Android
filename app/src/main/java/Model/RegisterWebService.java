@@ -12,9 +12,6 @@ import org.ksoap2.HeaderProperty;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.KvmSerializable;
 import org.ksoap2.serialization.MarshalBase64;
-import org.ksoap2.serialization.MarshalDate;
-import org.ksoap2.serialization.MarshalFloat;
-import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -29,14 +26,11 @@ import java.util.Vector;
 
 import data.MessageClass;
 
-import datamanager.FileManager;
 import datamanager.Item;
 import datamanager.ItemResult;
 import datamanager.userdata;
-import webobjects.Message;
 import webservices.FavouriteWebService;
 import webservices.MainWebService;
-import webservices.SoapStringVector;
 
 /**
  * Created by sharathsind on 2015-06-01.

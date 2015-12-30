@@ -42,7 +42,7 @@ public class MyService extends WakefulIntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         doWakefulWork(intent);
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
 
     }
 
